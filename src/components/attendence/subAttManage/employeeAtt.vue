@@ -1,0 +1,186 @@
+<template>
+	<div class="tab-pane fade" id="gscqtj">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="table-responsive">
+				<div class="col-lg-10 mtr_a"> <span>部门：</span> <span class="com-sel">
+						<depart></depart>
+					</span> <span>职位：</span> <span class="com-sel">
+						<position></position>
+					</span> <span>姓名：</span> <span>
+						<input type="text" value="" id="" v-model='name' />
+					</span> <span>工号：</span> <span>
+						<input type="text" value="" id="" v-model="jobNum" />
+					</span> <span class="search">
+						<button class="btn btn-primary">导出</button>
+					</span> <span class="search">
+						<button class="btn btn-warning" v-on:click="searchRYKQInfo('0')">查询所有</button>
+					</span> <span class="search">
+						<button class="btn btn-warning" v-on:click="searchRYKQInfo('1')">查询</button>
+					</span> </div>
+				<div class="col-lg-11 mtr_a"> <span>时间：</span> <span>
+						<input type="date" value="" v-model="beginDate" />
+					</span> <span>&nbsp;&nbsp;&nbsp;至：</span> <span>
+						<input type="date" value="" v-model="endData" />
+					</span> </div>
+				<div class="col-lg-11 mtr_a"> <span>注：</span> <span style="color:#FF0000; margin-right:10px;">旷工</span> <span
+					 style="color:#CD853F; margin-right:10px;">迟到</span> <span style="color:#000000; margin-right:10px;">正常</span>
+					<span style="color:#9370DB; margin-right:10px;">休息</span> <span style="color:#006400; margin-right:10px;">请假</span>
+					<span style="color:#00679D; margin-right:10px;">倒休</span> <span style="color:#FF7F50; margin-right:10px;">打卡异常</span>
+					<span style="color:#87CEFA; margin-right:10px;">加班</span> <span style="color:#D2B48C; margin-right:10px;">漏打卡</span>
+				</div>
+				<table class="table table-bordered table-hover">
+					<thead>
+						<tr>
+							<th class="text-center">姓名</th>
+							<th class="text-center">工号</th>
+							<th class="text-center">部门</th>
+							<th class="text-center">职位</th>
+							<th class="text-center">上班正常打卡</th>
+							<th class="text-center">下班正常打卡</th>
+							<th class="text-center">迟到次数</th>
+							<th class="text-center">早退次数</th>
+							<th class="text-center">旷工次数</th>
+							<th class="text-center">上班打卡异常</th>
+							<th class="text-center">下班打卡异常</th>
+							<th class="text-center">休息天数</th>
+							<th class="text-center">加班天数</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="(item,index) in ryKqList" :key="index" v-if="(departId == '0' && positionName == '0') || (departId == '0' && item.positionName  == positionName) 
+				||(item.departId == departId && positionName == '0') || (item.departId == departId && item.positionName  == positionName) "
+						 @dblclick="showSearchRYKQInfo(item)">
+							<td>{{item.ryKQName}}</td>
+							<td>{{item.ryJobNum}}</td>
+							<td>{{item.ryDepartKQName}}</td>
+							<td>{{item.positionName}}</td>
+							<td>{{item.ryOnNomalPA}}</td>
+							<td>{{item.ryDownNomalPA}}</td>
+							<td>{{item.ryLaterTimes}}</td>
+							<td>{{item.ryLeaveEarlyTimes}}</td>
+							<td>{{item.ryMinersTimes}}</td>
+							<td>{{item.ryOnPA}}</td>
+							<td>{{item.ryDownPA}}</td>
+							<td>{{item.ryRestDays}}</td>
+							<td>{{item.ryOverTimesDays}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	
+</template>
+
+<script>
+	import axios from 'axios'
+	import {timeInit} from '../../../assets/js/date.js'
+	import depart from '../../vuecommon/department.vue'
+	import position from '../../vuecommon/position.vue'
+	export default {
+		components:{
+			depart,
+			position
+		},
+		data() {
+			return {
+				departId:'0',
+				departName:'',
+				positionName:'0',
+				name:'',
+				jobNum:'',
+				beginDate:timeInit(''),
+				endData:timeInit(''),
+				ryKqList:[],
+			};
+		},
+		methods:{
+			//人员考勤汇总
+			searchRYKQInfo: function(param) {
+				var departName, pName
+				if (this.departId == 0) {
+					departName = ''
+				} else {
+					departName = this.exchangeDepartName(this.departId)
+				}
+				
+				if (this.positionName == "0") {
+					pName = ''
+				}
+				if (param == '0') {
+					departName = ''
+					pName = ''
+				}
+			
+			
+				var url = this.url + '/kqgl/ryKQList'
+			
+				axios({
+					method: 'post',
+					url: url,
+					headers: {
+						'Content-Type': this.contentType,
+						'Access-Token': this.accessToken
+					},
+					data: {
+						departName: departName,
+						positionName: pName,
+						name: this.name,
+						jobNum: this.jobNum,
+						beginData: this.beginDate + ' ' + '00:00:00.000',
+						endData: this.endData + ' ' + '23:59:59.000',
+					},
+					dataType: 'json',
+				}).then((response) => {
+					console.log('searchKQInfo')
+					//console.log(data.data)
+					if (response.data.length > 0) {
+						alert(response.data.length)
+						this.ryKqList = response.data
+						console.log(this.ryKqList)
+					}
+				}).catch((error) => {
+					console.log('请求失败')
+				});
+			},
+			//获取人员考勤
+			async getRyKqList() {
+			
+				// var url= 'http://172.16.2.40:8080/Erp1.1/search/testList'
+				var url = this.url + '/kqgl/ryKQList'
+				// alert(url)
+				axios({
+					method: 'post',
+					url: url,
+					headers: {
+						'Content-Type': this.contentType,
+						'Access-Token': this.accessToken
+					},
+					data: {
+						departName: "",
+						positionName: "",
+						name: "",
+						jobNum: "",
+						beginData: this.beginDate,
+						endData: this.endData,
+					},
+					dataType: 'json',
+				}).then((response) => {
+					console.log('getRyKqList')
+					this.ryKqList = response.data
+					//console.log(data.data)
+					// alert(employeeList)
+				}).catch((error) => {
+					console.log('请求失败')
+				});
+			},
+		},
+		created(){
+			this.getRyKqList()
+		}
+	}
+</script>
+
+<style>
+
+</style>

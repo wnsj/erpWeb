@@ -1,0 +1,76 @@
+@charset "utf-8";
+
+body{
+    background-color: #eeeeee;
+}
+.clear-mp{
+    margin: 0;
+    padding: 0;
+}
+.my-aside{
+    height: 100%;
+    background-color: #283643;
+}
+.my-aside ul{
+    list-style: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+.my-aside ul li{
+    text-align: left;
+    line-height: 50px;
+    font-size: 16px;
+    color: aliceblue;
+}
+.my-aside ul li i{
+    padding: 0 15px 0 22px;
+}
+.my-aside ul .li-active{
+    background-color: #1CC09F;
+}
+.second-menu{
+    /* display: none; */
+    background-color: #1e2831;
+}
+.second-menu li{
+    padding-left: 15px;
+}
+
+.aside-logo{
+    height: 68px;
+    width: 100%;
+}
+.aside-logo h2{
+    color: #fff;
+    width: 100%;
+    text-align: center;
+    line-height: 68px;
+}
+.item-down{
+    float: right;
+    margin-top: 14px;
+    font-size: 18px;
+}
+
+.my-navbar{
+    border: none;
+    height: 68px;
+    background-color: #fff;
+    border-radius: 0;
+}
+.my-navbar-brand{
+    height: 68px;
+}
+.my-signed{
+    margin-top: 9px;
+    font-size: 16px;
+}
+.my-signed i{
+    font-size: 20px;
+}
+.my-main{
+    margin: 0 15px;
+}
+
+#myModalJoin{ overflow-y:hidden!important;}

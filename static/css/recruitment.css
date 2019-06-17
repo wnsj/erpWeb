@@ -1,0 +1,53 @@
+@charset "utf-8";
+
+.clear-mp {
+    margin: 0;
+    padding: 0;
+}
+
+@-moz-document url-prefix() {
+    fieldset {
+        display: table-cell;
+    }
+}
+
+.user-container {
+    background-color: #fff;
+    width: 100%;
+    padding: 0 20px;
+}
+.container_recruit{
+	padding-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+#myTab{
+	float: left;
+	margin-top: 20px;
+}
+
+#myTab li{
+	float: left;
+	margin-left: 15px;
+}
+#myTab li:nth-child(1){
+	margin-left: 185px;
+}
+#myTab li a{
+	padding: 0;
+	color: #333;
+}
+#myTab li a:hover{
+	background:none;
+}
+#myTab li.btn-default.active{
+	background: #333333;
+	color: #ffffff;
+}
+#myTab li.btn-default.active a{
+	background: #333333;
+	color: #ffffff;
+}
+
+
+
+

@@ -1,0 +1,105 @@
+@charset "utf-8";
+.clear-mp {
+    margin: 0;
+    padding: 0;
+}
+.my-dropdown{
+    float: right;
+    margin-right: 15px;
+}
+.my-panel-nav{
+    padding: 25px 0 15px 0;
+    border-bottom: 2px solid rgb(40, 54, 67, 0.1);
+}
+.my-panel-nav h2{
+    float: left;
+    margin: 0;
+}
+.my-table{
+    margin-top: 20px;
+}
+
+.clearfix{ zoom:1; }
+.clearfix:after{ content: ''; display: block; height: 0; visibility: hidden; clear: both; }
+
+#myTab{ width:98%; margin:0 auto;}
+#myTab li{ margin-top:1rem;}
+#myTabContent{ padding:1.5rem 0;}
+.com-sel{ line-height:1.8rem; cursor:pointer}
+table tr:nth-child(even){ 
+background: #F2F2F2; 
+}
+
+
+.mtr_a{ margin:10px auto;}
+.mtr_a input{ padding-left:4px; width:140px; height:26px!important; line-height:26px!important; margin-right:10px;}
+input[type="file"]{ display:inline-block; width:200px!important;}
+.mtr_a input[type='radio']{ width:15px; height:15px; display:block; float:left;}
+.mtr_a select{ width:140px; height:32px; line-height:32px;}
+/*.search + .search button{ margin-right:5px;}*/
+#new_jqlx{ width:185px; height:24px; line-height:24px; padding-left:5px;}
+.modal-header,.modal-footer{ border:none; padding:5px;}
+.modal-footer { padding-bottom:10px;}
+#mymodal button[type='submit']{ margin-bottom:10px; margin-right:20px;}
+.form-group{ margin-bottom:10px; height:40px;}
+textarea{ width:100%; margin-bottom:20px; padding:4px;}
+#mypbgzgl .form-group .col-md-2,#mypbgzgl_add .form-group .col-md-2{ padding:0; text-align:right;}
+#mypbgzgl .form-group  input,#mypbgzgl_add .form-group  input{ line-height:24px;}
+#mypbgzgl .form-group select,#mypbgzgl_add .form-group select{ width:160px; height:32px; line-height:20px;}
+
+#mypbgzgl .modal-dialog,#mypbgzgl_add .modal-dialog{ position:relative;}
+#myzwgl button,#mymodale button,#mygwlxgl button,#mychangePositionInfo button{ position:absolute; right:10px;}
+#mypbgzgl button+button,#myzwgl button+button,#mymodale button+button,#mygwlxgl button+button,#mypbgzgl_add button+button,#mychangePositionInfo button+button{ position:absolute; right:90px; bottom:10px;}
+h2{ margin-bottom:40px;}
+#mybmgl select,#mybmgl input,#myzwgl select,#mychangePositionInfo input,#mychangePositionInfo select{ width:300px; height:34px; line-height:24px;}
+#myzwgl input[type='checkbox'],#mychangePositionInfo input[type='checkbox']{ width:15px; height:15px; display:inline-block; margin-right:10px}
+
+#mymodale button,#mygwlxgl button,.mt_10{ margin-bottom:10px;}
+.mt_5{ margin-bottom:5px;}
+#mymodale button+button,#mygwlxgl button+button{ bottom:0;}
+#myzwgl .btn-primary+.btn-primary{ margin:0;}
+
+#mypbgzgl .btn-primary,#mypbgzgl_add .btn-primary{ position:absolute; right:100px; bottom:10px;}
+#mypbgzgl .btn-primary+.btn-danger,#mypbgzgl_add .btn-primary+.btn-danger{ position:absolute; right:20px; bottom:10px;}
+
+/*#pbgzgl button{ position:absolute; left:30px; top:250px;}*/
+#pbgzgl button{ margin-left:30px; margin-bottom:30px;}
+#jqzlgl button{ position:absolute; left:250px; bottom:20px;}
+#jqzlgl button+button{ position:absolute; left:440px; bottom:20px;}
+#cqgzgl button{ position:absolute; left:640px; bottom:20px;}
+
+#bzgl button,#bmgl button,#zwgl button,#gwlxgl button{ position:absolute; right:20px; bottom:20px;}
+#mymodale button>button{ position:absolute; right:20px; bottom:20px;}
+#myzwgl button>button,#mychangePositionInfo button>button{ bottom:10px;}
+#mymodale .close{ right:10px;}
+.mtbox{ bottom:10px;}
+.mtbod{ bottom:0px;}
+
+
+#qjgl select,#qjgl input{ width:200px!important;}
+#user_name{ position:absolute; left:15px; bottom:0px;}
+
+.form-control{ display:inline;}
+.big_font_size{ font-size:18px;}
+.big_font_size span{ margin:20px 10px;}
+#pb td{ height:24px!important; padding:0!important; text-align:center;}
+#pb tr:nth-child(even){ 
+background: #FFF; 
+}
+#sub{ width:160px!important; display:inline-block; margin:0 auto; text-align:center;}
+#monitor{ width:900px; margin-left:68px; position:absolute; bottom:15px;}
+.btn-primary,.btn-warning,.btn-danger,.btn-infor{ margin-right:10px;}
+#last-week,#next-week{ border:none; background-color:#FFFFFF;}
+.close_menu span, .open_menu span{ opacity:1; margin-right:10px;}
+
+.staff_t {
+    width: 760px !important;
+}
+
+.attendanceModal .modal-header h4{padding: 10px;border-bottom: 1px solid #ddd;}
+.attendanceModal .modal-body .mb-2{width: 100%;overflow: hidden;margin-bottom:10px;}
+.attendanceModal .modal-body .mb-2 .checkbox-inline{padding-top:7px;}
+
+.myheight{height: 50px;}
+.mychoose{width: 10%;background: #d9edf7;}
+.embed-responsive{overflow: auto;}

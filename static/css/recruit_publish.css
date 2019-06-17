@@ -1,0 +1,61 @@
+@charset "utf-8";
+
+.clear-mp {
+    margin: 0;
+    padding: 0;
+}
+
+@-moz-document url-prefix() {
+    fieldset {
+        display: table-cell;
+    }
+}
+
+.user-container {
+    background-color: #fff;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.user-btn-group {
+    text-align: right;
+    padding: 15px 15px;
+}
+
+.user-btn-group>button {
+    margin: 0 2px;
+}
+
+.main-title h2 {
+    line-height: 50px;
+}
+
+.bootstrap-select {
+    width: 200px !important;
+}
+.martop{ margin-top:10px;}
+.martop1{ margin-top:50px;}
+.nopad{ padding-left:0; padding-right:0; line-height:34px;}
+.linhet{ line-height:34px;}
+.dateicon{ position:absolute; right:20px; top:0; width:30px; height:30px;}
+.col12{ width:100%;}
+.addbord{ border:1px solid #ddd; padding-bottom:20px;}
+
+
+.ygtc{ position:fixed; top:0px; left:300px; background-color:#fff; width:760px; height:871px; overflow:scroll;}
+.staff_close,.fam_close{ /*position:absolute; right:20px; top:10px; z-index:99;*/ float:right;}
+
+.fam_con{ width:1140px; height:628px; position:fixed; top:100px; background-color:#fff; display:none;}
+.form_date.input-group[class*=col-]{ float:left; padding-left:15px; padding-right:15px;}
+
+.m_r_10{ margin-right:10px;}
+
+input[type="date"]{line-height: 26px!important;}
+
+
+
+
+
+
+
+

@@ -1,0 +1,36 @@
+@charset "utf-8";
+
+
+.user-container {
+    background-color: #fff;
+    width: 100%;
+    padding: 10px 20px;
+}
+
+.user-btn-group {
+    text-align: right;
+    padding: 15px 15px;
+}
+
+.user-btn-group>button {
+    margin: 0 2px;
+}
+
+.form-group{
+	line-height: 30px;
+}
+.form-group>label{
+	padding: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+

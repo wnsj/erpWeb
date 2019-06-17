@@ -1,0 +1,62 @@
+body{margin: 0;}
+ul,li{list-style: none;padding: 0;margin: 0;}
+.centent{
+	width: 100%;
+	margin: 0% auto;
+    margin-top:4%;
+	margin-left:3%;
+	height:auto;
+	min-height: 800px;
+	max-height:999999px;
+	border: solid 1px #d6d7dc;
+	box-shadow:1px 1px 5px 1px #DDDDDD;
+}
+.treebox{
+	width: 100%;
+	height: auto; min-height:1000px; max-height:999999px;
+	overflow: hidden;
+}
+.table-responsive{ overflow-y: hidden; overflow-x:scroll;}
+.ontree{
+	background-color: #337AB7;
+	padding: 5px;
+	color: white !important;
+}
+.tree a{
+	color: #646464;
+	height: 24px;
+	line-height: 24px;
+	font-size: 14px;
+	overflow: hidden; font-size:14px;
+}
+.tree a:hover{
+	color: #18C0DF;
+	cursor: pointer;
+}
+.tree ul{
+	padding-left: 10px;
+	padding-top:10px;
+	margin-top: 4px;
+}
+.close_menu,.open_menu{
+	overflow: hidden;
+}
+.close_menu span,.open_menu span{
+	width: 24px;
+	height: 24px;
+	display: block;
+	float: left;
+	cursor: pointer;
+	opacity: 0.5;
+}
+.top_menu span{
+	background: url(img/top_menu2.jpg) no-repeat;
+}
+.sun_menu span{
+	background: url(img/son_menu2.jpg) no-repeat left top;
+}
+.close_menu span:hover,.open_menu span:hover{
+	opacity: 1;
+}
+.sex,.bm_sun{ padding-top:0!important;}
+.bm_sun li{ margin-top:5px;}

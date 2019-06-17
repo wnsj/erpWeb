@@ -1,0 +1,29 @@
+
+ .main_alert {
+   position: fixed;
+   width: 100%;
+   overflow: hidden;
+   background: rgba(125, 125, 125, .7);
+   top: 0px;
+   left: 0;
+   bottom: 0;
+   right: 0;
+   z-index: 2008;
+   display: none;
+}
+
+.main_alert_main {
+   width: 720px;
+   height: 620px;
+   margin: 60px auto;
+   background-color: #fff;
+   box-sizing: border-box;
+   box-shadow: 0 0 15px #666;
+   padding: 30px;
+   border-radius: 10px;
+    
+  }
+  .modify_alert {
+     
+  } 
+  .modify div {margin-top: 20px;}
