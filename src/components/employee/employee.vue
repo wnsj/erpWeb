@@ -144,7 +144,6 @@
 
 <script>
 	import axios from 'axios'
-	import {isBlank} from '@/assets/js/constant.js'
 	import department from '../vuecommon/department.vue'
 	import project from '../vuecommon/project.vue'
 	import advance from '../employee/subEmp/advance.vue'
@@ -226,7 +225,7 @@
 			//模糊搜索
 			searchEmployee: function(param) {
 				var newList = [];
-					if (isBlank(param)) {
+				if (this.isBlank(param)) {
 					return this.employeeList
 				}
 				this.employeeList.forEach(function(item) {
