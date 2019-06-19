@@ -1,5 +1,5 @@
 <template>
-	<select class="form-control" v-model="departId" v-on:change="departChange()">
+	<select class="form-control" v-model="departId" v-on:change="departChange(),returnDeptObj()">
 		<option value="0">九博健康管理有限公司</option>
 		<!-- <option v-for="(item,index) in departmentList" :key="index" v-bind:value="item.id" v-html="item.name">{{item.name}}</option> -->
 		<option v-for="item in departmentList" :key="item.id" v-bind:value="item.id" v-html="item.preFixName">
@@ -30,6 +30,7 @@
 				departId: '0',
 				departmentList: [],
 				departSortList: [],
+				deptObj:{}
 			};
 		},
 		methods: {
@@ -53,13 +54,10 @@
 				// alert(this.departName + '-' + this.departId)
 				this.$emit('departChange', this.departId, this.departName)
 			},
-			/**
-			 * 请求数据通过接口请求数据
-			 * 	1、必须导入axios，在main.js或者App.vue中导入可全局使用的，但是暂时不能，不知道是不是配置问题
-			 * 	2、在main.js 定义了共用的请求路径
-			 * 		Vue.prototype.url = 'http://172.16.2.248:8080/Erp'
-			 * 	3、下面为请求方法，没有写带参数的请求，测试后在补充
-			 */
+			//子组件返回dept对象
+			returnDeptObj(){
+				this.$emit('getDeptObj', this.deptObj);
+			},
 			setDpart:function(departId){
 				this.departId = departId
 			},
@@ -67,12 +65,20 @@
 			exchangeDepartName: function(param) {
 				var dp = {}
 				for (var i = 0; i < this.departmentList.length; i++) {
-					dp = this.departmentList[i]
+					dp = this.departmentList[i];
+					this.deptObj = dp;
 					if (dp.id == param) {
 						return dp.name
 					}
 				}
 			},
+			/**
+			 * 请求数据通过接口请求数据
+			 * 	1、必须导入axios，在main.js或者App.vue中导入可全局使用的，但是暂时不能，不知道是不是配置问题
+			 * 	2、在main.js 定义了共用的请求路径
+			 * 		Vue.prototype.url = 'http://172.16.2.248:8080/Erp'
+			 * 	3、下面为请求方法，没有写带参数的请求，测试后在补充
+			 */
 			async getDepartment() {
 				// var url = this.url + '/search/departList'
 				var url = this.url + '/kqParamSetContr/queryDeptTree'
