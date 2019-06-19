@@ -1,7 +1,10 @@
 <template>
 	<select class="form-control" v-model="departId" v-on:change="departChange()">
 		<option value="0">九博健康管理有限公司</option>
-		<option v-for="(item,index) in departmentList" :key="index" v-bind:value="item.id" v-html="item.name">{{item.name}}</option>
+		<!-- <option v-for="(item,index) in departmentList" :key="index" v-bind:value="item.id" v-html="item.name">{{item.name}}</option> -->
+		<option v-for="item in departmentList" :key="item.id" v-bind:value="item.id" v-html="item.preFixName">
+			{{item.preFixName}}
+		</option>
 	</select>
 </template>
 
@@ -21,7 +24,6 @@
 				}
 			} 
 		 */
-		
 		data() {
 			return {
 				departName: '',
@@ -61,14 +63,14 @@
 			setDpart:function(departId){
 				this.departId = departId
 			},
-			setDepartment(departId){
+			/* setDepartment(departId){
 				this.departId = departId;
-			},
+			}, */
 			//添加前缀的部门名字兑换原来的名字
 			exchangeDepartName: function(param) {
 				var dp = {}
-				for (var i = 0; i < this.departSortList.length; i++) {
-					dp = this.departSortList[i]
+				for (var i = 0; i < this.departmentList.length; i++) {
+					dp = this.departmentList[i]
 					if (dp.id == param) {
 						return dp.name
 					}
@@ -76,21 +78,22 @@
 			},
 			async getDepartment() {
 				// var url = "http://172.16.2.248:8080/Erp/search/nationList"
-				var url = this.url + '/search/departList'
-				// alert(url)
+				// var url = this.url + '/search/departList'
+				var url = this.url + '/kqParamSetContr/queryDeptTree'
 				axios({
 						method: 'post',
 						url: url
 					})
 					.then((response) => {
-						this.departmentList = this.departSort(response.data)
-						this.departmentList = this.addPrefix(this.departmentList)
+						// this.departmentList = this.departSort(response.data)
+						// this.departmentList = this.addPrefix(this.departmentList)
+						 this.departmentList = response.data.retData;
 					})
 					.catch((error) => {
 						console.log(error)
 					})
 			},
-			async getDepartmentSort() {
+			/*async getDepartmentSort() {
 				// var url = "http://172.16.2.248:8080/Erp/search/nationList"
 				var url = this.url +'/search/departList'
 				// alert(url)
@@ -106,22 +109,25 @@
 					.catch((error) => {
 						console.log(error)
 					})
-			},
+			},*/
 
 			//部门数据源排序处理
-			departSort: function(param) {
+			/*departSort: function(param) {
 				var dataList2 = param
 				var tempList2 = []
 
 				//排序数据
 
 				this.$set(dataList2[10], 'name', '财务部')
+				this.$set(dataList2[10], 'level', '1')
 				tempList2.push(dataList2[10])
 
 				this.$set(dataList2[9], 'name', '人力综合办')
+				this.$set(dataList2[10], 'level', '1')
 				tempList2.push(dataList2[9])
 
 				this.$set(dataList2[16], 'name', '一事业部')
+				this.$set(dataList2[10], 'level', '1')
 				tempList2.push(dataList2[16])
 
 				this.$set(dataList2[23], 'name', '脑康运营')
@@ -149,6 +155,7 @@
 				tempList2.push(dataList2[14])
 
 				this.$set(dataList2[35], 'name', '二事业部')
+				this.$set(dataList2[10], 'level', '1')
 				tempList2.push(dataList2[35])
 
 				this.$set(dataList2[4], 'name', '天津总院运营')
@@ -179,6 +186,7 @@
 				tempList2.push(dataList2[33])
 
 				this.$set(dataList2[36], 'name', '三事业部')
+				this.$set(dataList2[10], 'level', '1')
 				tempList2.push(dataList2[36])
 
 				this.$set(dataList2[3], 'name', '成都运营')
@@ -188,6 +196,7 @@
 				tempList2.push(dataList2[30])
 
 				this.$set(dataList2[37], 'name', '四事业部')
+				this.$set(dataList2[10], 'level', '1')
 				tempList2.push(dataList2[37])
 
 				this.$set(dataList2[26], 'name', '南昌运营')
@@ -207,11 +216,14 @@
 
 				this.$set(dataList2[28], 'name', '华慈客服')
 				tempList2.push(dataList2[28])
+				
+				//柚子健康网
 
 				this.$set(dataList2[34], 'name', '九博健康网')
 				tempList2.push(dataList2[34])
 
 				this.$set(dataList2[38], 'name', '公共事业部')
+				this.$set(dataList2[10], 'level', '1')
 				tempList2.push(dataList2[38])
 
 				this.$set(dataList2[22], 'name', '企划组')
@@ -242,16 +254,18 @@
 				tempList2.push(dataList2[31])
 
 				this.$set(dataList2[17], 'name', '总经办')
+				this.$set(dataList2[10], 'level', '1')
 				tempList2.push(dataList2[17])
 
 				this.$set(dataList2[24], 'name', '总务科')
+				this.$set(dataList2[10], 'level', '1')
 				tempList2.push(dataList2[24])
 
 				return tempList2
-			},
+			},*/
 
 			//给排序的部门数据源添加前缀
-			addPrefix: function(param) {
+			/*addPrefix: function(param) {
 				var dataList1 = param
 				var tempList1 = []
 
@@ -388,11 +402,11 @@
 				this.$set(dataList1[42], 'name', '&nbsp;&nbsp;└总务科')
 				tempList1.push(dataList1[42])
 				return tempList1
-			},
+			},*/
 		},
 		created() {
 			this.getDepartment()
-			this.getDepartmentSort()
+			//this.getDepartmentSort()
 		},
 	}
 </script>
