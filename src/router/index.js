@@ -7,44 +7,49 @@ import recruitment from '../components/recruitment/recruitment.vue'
 
 import recruitChannels from '../components/recruitment/recruitChannels.vue'
 import recruitPlan from '../components/recruitment/recruitPlan.vue'
-import recruitPublish from '../components/recruitment/recruitPublish.vue' 
+import recruitPublish from '../components/recruitment/recruitPublish.vue'
+import recruitData from '../components/recruitment/recruitData.vue'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
-		{
-		  path: '/employee',
-		  component: employee
-		},
-		{
-		  path: '/attendence',
-		  component: attendence
-		},
-		//招聘
-		{
-		  path: '/recruitment',
-		  component: recruitment,
-			 children:[            
-		      {                                   
-		        path:'/recruitment/recruitChannels',
-		        name:'recruitChannels',
-		        component:recruitChannels,
-		      },
-		      {
-		        path:'/recruitment/recruitPlan',
-		        name:'recruitPlan',
-		        component:recruitPlan
-		      },
-					{
-					  path:'/recruitment/recruitPublish',
-					  name:'recruitPublish',
-					  component:recruitPublish
-					},
-		    ],
-				redirect:'/recruitment/recruitChannels'
-		
-		},
+    {
+      path: '/employee',
+      component: employee
+    },
+    {
+      path: '/attendence',
+      component: attendence
+    },
+    //招聘
+    {
+      path: '/recruitment',
+      component: recruitment,
+      children:[
+        {
+          path: '/recruitment/recruitChannels',
+          name: 'recruitChannels',
+          component: recruitChannels,
+        },
+        {
+          path: '/recruitment/recruitPlan',
+          name: 'recruitPlan',
+          component: recruitPlan
+        },
+        {
+          path: '/recruitment/recruitPublish',
+          name: 'recruitPublish',
+          component: recruitPublish
+        },
+        {
+          path: '/recruitment/recruitData',
+          name: 'recruitData',
+          component : recruitData
 
+        }
+      ],
+      redirect:'/recruitment/recruitChannels'
+    },
   ]
 })
