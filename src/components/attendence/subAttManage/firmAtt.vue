@@ -78,8 +78,8 @@
 			return {
 				departId:'0',
 				departName:'0',
-				firmStartDate:timeInit(''),
-				firmEndDate:timeInit(''),
+				firmStartDate:this.getCurrentDay,
+				firmEndDate:this.getCurrentDay,
 				positionName:'0',
 				kquName:'',
 				kquJobNum:'',
@@ -119,24 +119,21 @@
 						positionName: pName,
 						name: this.kquName,
 						jobNum: this.kquJobNum,
-						beginData: this.firmStartDate,
-						endData: this.firmEndDate,
+						beginDate: this.firmStartDate,
+						endDate: this.firmEndDate,
 					},
 					dataType: 'json',
 				}).then((response) => {
 					console.log('searchKQInfo')
 					console.log(response.data)
-					if (response.data.length > 0) {
-						alert(response.data.length)
-						this.kquList = response.data
-					}
+					
 				}).catch((error) => {
 					console.log('请求失败')
 				});
 			},
 			//获取公司全部考勤
 			async getKqList() {
-			
+				
 				var url = this.url + '/kqgl/allKQBaseInfo'
 				
 				axios({
@@ -151,8 +148,8 @@
 						positionName: "",
 						name: "",
 						jobNum: "",
-						beginData: this.firmStartDate,
-						endData: this.firmEndDate,
+						beginDate: this.firmStartDate,
+						endDate: this.firmEndDate,
 					},
 					dataType: 'json',
 				}).then((response) => {

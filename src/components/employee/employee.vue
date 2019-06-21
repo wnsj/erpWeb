@@ -7,7 +7,6 @@
 			</div>
 		</div>
 		<div class="row">
-
 			<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
 				<div class="col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">
 					<p>项目：</p>
@@ -22,7 +21,7 @@
 					<p>状态：</p>
 				</div>
 				<div class="col-md-10 col-lg-10">
-					<select class="form-control" v-model="state">
+					<select class="form-control" v-model="state" v-on:change="getEmployee('state')">
 						<option value="0">全部</option>
 						<option value="1">在职</option>
 						<option value="2">离职</option>
@@ -50,7 +49,8 @@
 					<input type="text" class="form-control" placeholder="Search for..." v-model.lazy="searchContent">
 					<span class="input-group-btn">
 						<button class="btn btn-default" type="button" v-on:change="searchEmployee(searchContent)">搜索</button>
-					</span> </div>
+					</span> 
+				</div>
 			</div>
 			<div style="padding-right:1.5%;">
 				<button type="button" class="btn btn-primary pull-right m_r_10" @click="requireAllInfo('人员管理表')">导出</button>
@@ -82,7 +82,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="(item,index) in searchEmployee(searchContent)" :key="index" v-if="(state == 0     	&& departName == 0                && projectName=='0') 
+							<!-- <tr v-for="(item,index) in searchEmployee(searchContent)" :key="index" v-if="(state == 0     	&& departName == 0                && projectName=='0') 
 							|| (state == 0     		&& item.departName == departName  && projectName=='0') 
 						   || (state == 0     		&& departName == 0                && item.projectName == projectName) 
 						   || (state == 0     		&& item.departName == departName  && item.projectName == projectName)
@@ -90,14 +90,15 @@
 						   || (item.state == state 	&& item.departName == departName  && projectName =='0') 
 						   || (item.state == state 	&& departName == 0                && item.projectName  == projectName) 
 						   || (item.state == state 	&& item.departName == departName  && item.projectName == projectName)"
-							 v-on:dblclick="showEmployeeInfo(item)">
+							 v-on:dblclick="showEmployeeInfo(item)"> -->
+							 <tr v-for="(item,index) in employeeList" :key="index" v-on:dblclick="showEmployeeInfo(item)">
 								<td>{{index}}</td>
 								<td>{{item.jobNum}}</td>
 								<td>{{item.name}}</td>
 								<td>{{item.sex}}</td>
 								<td>{{item.departName}}</td>
 								<td>{{item.positionName}}</td>
-								<td>{{item.ERPAaccount}}</td>
+								<td>{{item.erpaaccount}}</td>
 								<td>{{item.birth}}</td>
 								<td>{{item.entryDate}}</td>
 								<td>{{item.positiveDate}}</td>
@@ -133,7 +134,7 @@
 			<div class="modal fade" id="myModalupdata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog staff_t">
 					<mEE ref='mEE' :personalBase='personalBase' :personalDetail='personalDetail' :personalFamily='personalFamily'
-					 :personalShift='personalShift' @updataEmployeeInfo='receivePersonalBase'></mEE>
+					 :personalShift='personalShift' @submitBackUpPage='receivePersonalBase'></mEE>
 				</div>
 			</div>
 		</div>
@@ -144,17 +145,14 @@
 
 <script>
 	import axios from 'axios'
-	import {isBlank} from '@/assets/js/constant.js'
 	import department from '../vuecommon/department.vue'
 	import project from '../vuecommon/project.vue'
 	import advance from '../employee/subEmp/advance.vue'
 	import family from '../employee/subEmp/family.vue'
 	import empEntry from '../employee/subEmp/empEntry.vue'
 	import mEE from '../employee/subEmp/modifyEmpEntry.vue'
-
-	import {
-		timeInit
-	} from '../../assets/js/date.js'
+	
+	import {timeInit} from '../../assets/js/date.js'
 	/**
 	 * 这个导入路径没有提示。按照自己的路径写，按提示可能不能实现，具体原因不详
 	 */
@@ -167,8 +165,6 @@
 			family,
 			empEntry,
 			mEE,
-
-
 		},
 		// props:['faasdfsdfsadfasdf'],
 		data() {
@@ -180,7 +176,7 @@
 				state: '1',
 				searchContent: '',
 				employeeId: '',
-				accountId: '',
+				accountId:'',
 
 				employeeList: [], //从服务器请求的个人信息
 
@@ -193,47 +189,52 @@
 				personalShift: [], //服务器获取的一个人的调动信息
 			}
 		},
-
+		
 		methods: {
-			requireAllInfo: function() {
-				// 				alert(this.$store.state.count)
-				// 				console.log(this.$store.state.count)
+			
+			requireAllInfo:function(){
 				alert(this.getMonthFirstDay)
 			},
 			//获取项目名字和id
 			projectChange: function(projectId, projectName) {
 				this.projectId = projectId
 				this.projectName = projectName
+				this.getEmployee("project")
 			},
 			//获取部门名字和id
 			departChange: function(departId, departName) {
 				this.departId = departId
 				this.departName = departName
+				this.getEmployee("depart")
 			},
-			advanceSelect: function(advanceParam) {
+			//高级查询
+			advanceSelect:function(advanceParam){
 				$("#myModalQuery").modal('hide');
-				if (advanceParam.selectType == '0') {
+				if(advanceParam.selectType=='0'){
 					this.birthdayScreen(advanceParam.birthday)
-				} else {
+				}else{
 					this.advancedQuery(advanceParam)
 				}
-
+				
 			},
-			receivePersonalBase: function(baseInfo) {
-				this.getEmployee()
+			//接收修改返回的基本信息
+			receivePersonalBase:function(){
+				this.getEmployee('all')
 				$("#myModalupdata").modal('hide')
 			},
 			//模糊搜索
 			searchEmployee: function(param) {
-				var newList = [];
-					if (isBlank(param)) {
+				if(this.isBlank(param)){
 					return this.employeeList
 				}
+				var newList = []
 				this.employeeList.forEach(function(item) {
 					if (item.name.search(param) != -1 || item.jobNum.search(param) != -1) {
 						newList.push(item)
 					}
 				})
+				console.log('searchEmployee')
+				console.log(newList)
 				if (newList.length > 0) {
 					return newList
 				} else {
@@ -242,9 +243,9 @@
 			},
 			// 高级查询
 			advancedQuery: function(advanceParam) {
-
+				
 				var url = this.url + '/search/advanceAllList'
-				console.log(advanceParam.begin + advanceParam.end)
+				console.log(advanceParam.begin+advanceParam.end+advanceParam.category)
 				axios({
 					method: 'post',
 					url: url,
@@ -256,26 +257,26 @@
 						searchType: advanceParam.category,
 						startDate: advanceParam.begin,
 						endDate: advanceParam.end,
-						resignType: advanceParam.advanceResignType,
-						resignReasonId: advanceParam.advanceReasonId,
+						resignType:advanceParam.advanceResignType,
+						resignReasonId:advanceParam.advanceReasonId,
 					},
 					dataType: 'json',
 				}).then((response) => {
 					console.log('advancedQuery')
-					var res = response.data
+					var res=response.data
 					console.log(res)
-					if (res.retCode == '0000') {
+					if(res.retCode=='0000'){
 						// alert(res.resData.length)
-						if (res.resData.length > 0) {
+						if(res.resData.length>0){
 							this.employeeList = res.resData
 							$("#myModalQuery").modal('hide');
-						} else {
+						}else{
 							alert('没有查询到相关数据')
 						}
-					} else {
+					}else{
 						alert(res.retMsg)
 					}
-
+					
 				}).catch((error) => {
 					console.log('请求失败处理')
 				});
@@ -284,7 +285,7 @@
 			birthdayScreen: function(param) {
 				alert(param)
 				var url = this.url + '/search/advanceBirthQuery'
-
+				
 				axios({
 					method: 'post',
 					url: url,
@@ -298,50 +299,68 @@
 					dataType: 'json',
 				}).then((response) => {
 					console.log('birthdayScreen')
-					var res = response.data
+					var res=response.data
 					console.log(res)
-					if (res.retCode == '0000') {
+					if(res.retCode=='0000'){
 						alert(res.resData.length)
-						if (res.resData.length > 0) {
+						if(res.resData.length>0){
 							this.employeeList = res.resData
+							if(this.projectId != '0'){
+								this.searchEmployee('')
+							}
 							$("#myModalQuery").modal('hide');
-						} else {
+						}else{
 							alert('没有查询到相关数据')
 						}
-					} else {
+					}else{
 						alert(res.retMsg)
 					}
-
+					
 				}).catch((error) => {
 					console.log('请求失败处理')
 				});
 			},
-
+			
 			// 双击弹出员工修改框
 			showEmployeeInfo: function(item) {
-
+				
 				$("#myModalupdata").modal('show')
-				this.personalInfo = Object.assign({}, item)
+				this.accountId = item.accountId
+				this.personalInfo = Object.assign({},item)
 				this.$refs.mEE.paramDevliverToSubModel(this.personalInfo)
-				item.entryDte = timeInit(item.entryDate)
-				item.positiveDate = timeInit(item.positiveDate)
-				item.resignDate = timeInit(item.resignDate)
-
+				this.personalInfo.entryDate = timeInit(this.personalInfo.entryDate)
+				this.personalInfo.positiveDate = timeInit(this.personalInfo.positiveDate)
+				this.personalInfo.resignDate = timeInit(this.personalInfo.resignDate)
+			
 				var uDetailUrl = this.url + '/search/singleUDInfo'
 				var ufmUrl = this.url + '/search/singlefamilyList'
 				var uPositionUrl = this.url + '/search/positionShifts'
 			},
 			getEmployee: function(param) {
-				if (param == 'all') {
+				var copyProjectId=''
+				var copyDepartName=''
+				if(param == 'all'){
 					this.state = '1'
 					this.projectId = '0'
+					copyProjectId = ''
 					this.projectName = '0'
 					this.departName = '0'
 					this.searchContent = ''
 					this.$refs.department.setDpart('0')
 					this.$refs.project.setProject('0')
+				}else if(param == 'project'){
+					copyDepartName=''
+				}else if(param == 'depart'){
+					copyProjectId=''
+				}else{
+					if(this.projectId !='0'){
+						copyProjectId = this.projectId
+					}
+					if(this.departName !='0'){
+						copyDepartName = this.departName
+					}
 				}
-
+				console.log('projectId:'+this.projectId+'departName'+this.departName)
 				var url = this.url + '/search/allList'
 				axios({
 					method: 'post',
@@ -352,17 +371,17 @@
 					},
 					data: {
 						state: this.state,
-						projectID: this.projectID,
-						departName: this.departName,
+						projectId: copyProjectId,
+						departName: copyDepartName,
 						searchContent: this.searchContent,
 					},
 					dataType: 'json',
 				}).then((response) => {
 					var res = response.data
-					console.log('getEmployee')
-					console.log(res)
 					if (res.retCode == '0000') {
+						console.log('employeeList-length:'+res.resData.length)
 						if (res.resData.length > 0) {
+							console.log('employeeList-length:'+res.resData.length)
 							this.employeeList = res.resData
 							$("#myModalQuery").modal('hide');
 						} else {

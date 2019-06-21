@@ -103,7 +103,7 @@
 			},
 		},
 		created(){
-			this.getCountKqTableList()
+			// this.getCountKqTableList()
 		}
 	}
 </script>

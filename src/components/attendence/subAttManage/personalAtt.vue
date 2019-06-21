@@ -111,7 +111,7 @@
 			},
 		},
 		created(){
-			this.getSingleKqList()
+			// this.getSingleKqList()
 		}
 	}
 </script>

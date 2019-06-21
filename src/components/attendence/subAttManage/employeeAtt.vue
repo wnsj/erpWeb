@@ -176,7 +176,7 @@
 			},
 		},
 		created(){
-			this.getRyKqList()
+			// this.getRyKqList()
 		}
 	}
 </script>

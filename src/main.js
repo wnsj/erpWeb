@@ -60,6 +60,12 @@ Vue.prototype.getNowFormatDate = function() {
   var currentdate = year + seperator1 + month + seperator1 + strDate;
   return currentdate;
 };
+Vue.prototype.getCurrentDayAction = function(param){
+	return timeInit(param)
+}
+Vue.prototype.isBlank = function(param){
+	return isBlank(param)
+}
 
 
 
