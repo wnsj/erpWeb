@@ -132,7 +132,7 @@
 				this.deptObj.ORDERNUM = this.deptObj.ORDERNUM.replace('.', '');
 			},
 			setDepartmentParam(deptId){
-				this.$refs.department.setDepartment(deptId);
+				this.$refs.department.setDpart(deptId);
 			}
 		},
 		created() {

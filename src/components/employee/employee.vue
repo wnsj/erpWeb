@@ -224,10 +224,11 @@
 			},
 			//模糊搜索
 			searchEmployee: function(param) {
-				if(this.isBlank(param)){
+
+				var newList = [];
+				if (this.isBlank(param)) {
 					return this.employeeList
 				}
-				var newList = []
 				this.employeeList.forEach(function(item) {
 					if (item.name.search(param) != -1 || item.jobNum.search(param) != -1) {
 						newList.push(item)
