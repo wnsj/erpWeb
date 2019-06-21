@@ -11,33 +11,30 @@ import {getCurrentMonthFirst} from '../src/assets/js/date.js'
 import {getCurrentMonthLast} from '../src/assets/js/date.js'
 import {timeInit} from '../src/assets/js/date.js'
 import {isBlank} from '../src/assets/js/constant.js'
+import {jsGetAge} from '../src/assets/js/date.js'
 
 
 
 Vue.config.productionTip = false
 import axios from 'axios';
-Vue.use(VueResource) 
+Vue.use(VueResource)
 
 /*------------------------------------------公共属性-----------------------------------------------------------*/
 
 Vue.prototype.$ajax = axios
 
 
-/*------本机路径----*/ 
+/*------本机路径----*/
 // Vue.prototype.url = 'http://172.16.2.248:8080/Erp'
 // Vue.prototype.url = 'http://172.16.213.210:8080/Erp'
-Vue.prototype.url = process.env.API_HOST
+Vue.prototype.url = 'http://172.16.2.203:8080/Erp'
+// Vue.prototype.url = process.env.API_HOST
 // Vue.prototype.url = '/api'
 
-/*------当月第一天、当天、最后一天----*/ 
+/*------当月第一天、当天、最后一天----*/
 Vue.prototype.getMonthFirst = getCurrentMonthFirst()
 Vue.prototype.getMonthLast = getCurrentMonthLast()
 Vue.prototype.getCurrentDay = timeInit('')
-Vue.prototype.isBlank = function(param){
-	return isBlank(param)
-}
-
-
 
 /*-----------------------------------------公共方法---------------------------------------------------*/
 
@@ -60,6 +57,15 @@ Vue.prototype.getNowFormatDate = function() {
   var currentdate = year + seperator1 + month + seperator1 + strDate;
   return currentdate;
 };
+Vue.prototype.getCurrentDayAction = function(param){
+  return timeInit(param)
+}
+Vue.prototype.isBlank = function(param){
+  return isBlank(param)
+}
+Vue.prototype.jsGetAge = function(param){
+  return jsGetAge(param)
+}
 
 
 
@@ -69,7 +75,7 @@ Vue.prototype.getNowFormatDate = function() {
  */
 new Vue({
   el: '#app',
-	store,
+  store,
   router,
   components: { App },
   template: '<App/>'
