@@ -16,58 +16,90 @@
           <span><input type="date" value="" id="secondTime" v-model="endDate" /></span>
         </div>
       </div>
-      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-        <div class="col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">
-          <p>部门：</p>
-        </div>
-        <div class="col-md-10 col-lg-10">
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="input-group">
+          <span class="input-group-addon">部门</span>
           <department :departId="departId" @departChange='departChange'></department>
         </div>
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-        <div class="col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">
-          <p>职位：</p>
-        </div>
-        <div class="col-md-10 col-lg-10">
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="input-group">
+          <span class="input-group-addon">职位</span>
           <position :positionId="positionId" @positionChange="positionChange"></position>
         </div>
       </div>
-      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-md-offset-5">
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <div class="input-group">
+          <span class="input-group-addon">是否完成</span>
+          <select class="form-control" v-model="isYes">
+            <option v-for="(item,index) in status" :key="index" :value="item.value">
+              {{item.label}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <div class="input-group">
+          <span class="input-group-addon">是否撤销</span>
+          <select class="form-control" v-model="isBack">
+            <option v-for="(item,index) in status" :key="index" :value="item.value">
+              {{item.label}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-md-offset-2">
         <button type="button" class="btn btn-warning pull-right m_r_10">导出</button>
         <button type="button" class="btn btn-info pull-right m_r_10" data-toggle="modal" data-target="#planAdd">添加</button>
         <button type="button" class="btn btn-primary pull-right m_r_10" @click="queryRecruitPlan">查询</button>
       </div>
-    </div>
+    </div><br>
     <!-- 查询结果集 -->
-    <div class="row pre-scrollable">
+    <div class="row ">
       <div class="col-md-12 col-lg-12">
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover" id="datatable">
+        <div class="pre-scrollable">
+          <table class="table table-bordered table-hover text-nowrap" id="datatable">
             <thead>
-            <tr>
-              <th class="text-center">部门</th>
-              <th class="text-center">职位</th>
-              <th class="text-center">月份计划</th>
-              <th class="text-center">缺编人数</th>
-              <th class="text-center">计划招聘人数</th>
-              <th class="text-center">邀约人数</th>
-              <th class="text-center">编辑</th>
-              <th class="text-center">删除</th>
-            </tr>
+              <tr>
+                <th class="text-center">部门</th>
+                <th class="text-center">职位</th>
+                <th class="text-center">计划月份</th>
+                <th class="text-center">缺编人数</th>
+                <th class="text-center">计划招聘人数</th>
+                <th class="text-center">邀约人数</th>
+                <th class="text-center">点击完成</th>
+                <th class="text-center">点击撤销</th>
+                <th class="text-center">编辑</th>
+                <th class="text-center">删除</th>
+              </tr>
             </thead>
             <tbody>
-            <tr v-for="(item,index) in recruitPlanList" :key="index">
-              <td>{{item.departmentName}}</td>
-              <td>{{item.positionName}}</td>
-              <td class="text-center">{{item.planDate}}</td>
-              <td class="text-center">{{item.lackNum}}</td>
-              <td class="text-center">{{item.planNum}}</td>
-              <td class="text-center">{{item.phoneNum}}</td>
-              <td><center><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#planEdit" @click="getEditInfo(item)">编辑</button></center></td>
-              <td><center><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#planDelete" @click="getDelId(item)">删除</button></center></td>
-            </tr>
+              <tr v-for="(item,index) in recruitPlanList" :key="index">
+                <td>{{item.departmentName}}</td>
+                <td>{{item.positionName}}</td>
+                <td class="text-center">{{item.planDate}}</td>
+                <td class="text-center">{{item.lackNum}}</td>
+                <td class="text-center">{{item.planNum}}</td>
+                <td class="text-center">{{item.phoneNum}}</td>
+                <td class="text-center">
+                  <button type="button" 
+                    :class="item.isYes==1?'btn btn-sm btn-success':'btn btn-sm btn-info'" 
+                    :disabled="item.isYes==1?true:false" @click="changeIsYes(item)">
+                    {{item.isYes==1?'已完成':'点击完成'}}
+                  </button>
+                </td>
+                <td class="text-center">
+                  <button type="button" 
+                    :class="item.isBack==1?'btn btn-sm btn-inverse':'btn btn-sm btn-info'" 
+                    :disabled="item.isBack==1?true:false" @click="changeIsBack(item)">
+                    {{item.isBack==1?'已撤销':'点击撤销'}}
+                  </button>
+                </td>
+                <td><center><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#planEdit" @click="getEditInfo(item)">编辑</button></center></td>
+                <td><center><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#planDelete" @click="getDelId(item)">删除</button></center></td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -240,6 +272,14 @@
         beginDate: this.getCurrentDay,
         endDate: this.getCurrentDay,
         recruitPlanList: [],
+        isYes: null,
+        isBack: null,
+        status:[
+          {value:null,label:'全部'},
+          {value:'1',label:'是'},
+          {value:'0',label:'否'},
+        ],
+
         // 添加
         deptAddId: '0',
         positionAddId: '',
@@ -258,6 +298,7 @@
     },
 
     methods: {
+      msg(){},
       // ---------------------------------------查询----------------------------------
       departChange(departId){   // 渠道
         this.departId = departId
@@ -272,6 +313,10 @@
         if(this.positionId == '0'){
           this.positionId = null
         }
+
+        console.log("是否完成：" + this.isYes)
+        console.log("是否撤销：" + this.isBack)
+
         axios({
           method: 'post',
           url: this.url + '/zpglController/queryZpPlan',
@@ -283,12 +328,14 @@
             department: this.departId,
             position: this.positionId,
             begDate: this.beginDate,
-            endDate: this.endDate
+            endDate: this.endDate,
+            isYes: this.isYes,
+            isBack: this.isBack
           },
           dataType: 'json',
         }).then((response) => {
           this.recruitPlanList = response.data.retData
-          // console.log(this.recruitPublishList)
+          console.log(this.recruitPlanList)
         }).catch((error) => {
           console.log('请求失败处理')
         });
@@ -394,6 +441,14 @@
           alert('邀约人数不能小于0');
           return false;
         }
+
+        console.log("第一个planId:" + this.planId)
+        console.log("deptEditId:" + this.deptEditId)
+        console.log("positionEditId:" + this.positionEditId)
+        console.log("planEditDate:" + this.planEditDate)
+        console.log("lackEditNum:" + this.lackEditNum)
+        console.log("planEditNum:" + this.planEditNum)
+        console.log("phoneEditNum:" + this.phoneEditNum)
         axios({
           method: 'post',
           url: this.url + '/zpglController/updateZpPlan',
@@ -408,7 +463,7 @@
             planDate: this.planEditDate,
             lackNum: this.lackEditNum,
             planNum: this.planEditNum,
-            phoneNum: this.phoneEditNum
+            phoneNum: this.phoneEditNum,
           },
           dataType: 'json',
         }).then((response) => {
@@ -419,8 +474,50 @@
         });
         $('#planEdit').modal('hide');
       },
+      changeIsYes(item){
+          console.log("planId:" + item.planId)
+          axios({
+            method: 'post',
+            url: this.url + '/zpglController/updateZpPlan',
+            headers: {
+              'Content-Type': this.contentType,
+              'Access-Token': this.accessToken
+            },
+            data: {
+              planId: item.planId,
+              isYes: '1'
+            },
+            dataType: 'json',
+          }).then((response) => {
+            this.queryRecruitPlan()
+            console.log("修改状态成功")
+          }).catch((error) => {
+            console.log('请求失败处理')
+          });
+       },
+       changeIsBack(item){
+          axios({
+            method: 'post',
+            url: this.url + '/zpglController/updateZpPlan',
+            headers: {
+              'Content-Type': this.contentType,
+              'Access-Token': this.accessToken
+            },
+            data: {
+              planId: item.planId,
+              isBack: '1'
+            },
+            dataType: 'json',
+          }).then((response) => {
+            this.queryRecruitPlan()
+            console.log("修改状态成功")
+          }).catch((error) => {
+            console.log('请求失败处理')
+          });
+       },
 
       // ---------------------------------------删除----------------------------------
+      
       getDelId(item){
         this.planId = item.planId
       },

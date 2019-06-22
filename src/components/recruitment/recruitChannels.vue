@@ -5,13 +5,16 @@
         <h2>招聘渠道管理</h2>
       </div>
     </div>
-    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-md-offset-9">
-      <button type="button" class="btn btn-info pull-right" data-toggle="modal" data-target="#channelAdd">添加</button>
-    </div>
+    <div class="row">
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-md-offset-9">
+        <button type="button" class="btn btn-info pull-right" data-toggle="modal" data-target="#channelAdd">添加</button>
+      </div>
+    </div><br>
+    <!-- 查询结果集 -->
     <div class="row">
       <div class="col-md-12 col-lg-12">
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover" id="datatable">
+        <div class="pre-scrollable">
+          <table class="table table-bordered table-hover text-nowrap" id="datatable">
             <thead>
             <tr>
               <th class="text-center">序号</th>

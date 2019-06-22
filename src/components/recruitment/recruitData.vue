@@ -8,31 +8,27 @@
     <div class="row">
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
         <div class="input-group">
-          <span class="input-group-addon">姓名</span>
-          <input type="text" class="form-control" placeholder="Username"  v-model="name">
+          <span class="input-group-addon">应聘部门</span>
+          <department :departId="departId" @departChange='departChange'></department>
         </div>
       </div>
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
         <div class="input-group">
-          <span class="input-group-addon">联系方式</span>
-          <input type="text" class="form-control" placeholder="电话\邮箱\QQ" v-model="phone">
+          <span class="input-group-addon">应聘职位</span>
+          <position :positionId="positionId" @positionChange="positionChange"></position>
         </div>
       </div>
-      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
         <div class="input-group">
-          <span class="input-group-addon">入职状态</span>
-          <select class="form-control" v-model="isEntry">
-            <option v-for="(item,index) in entryList" :key="index" :value="item.value">
-              {{item.label}}
-            </option>
-          </select>
+          <span class="input-group-addon">应聘渠道</span>
+          <channel :channel="channelId" @channelChange="channelChange"></channel>
         </div>
       </div>
       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
         <div class="input-group">
           <span class="input-group-addon">是否合格</span>
           <select class="form-control" v-model="isQualified">
-            <option v-for="(item,index) in qualifiedList" :key="index" :value="item.value">
+            <option v-for="(item,index) in status" :key="index" :value="item.value">
               {{item.label}}
             </option>
           </select>
@@ -63,17 +59,89 @@
           <input type="date" value="" id="secondTime" class="form-control" v-model="endDate" />
         </div>
       </div>
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <div class="input-group">
+          <span class="input-group-addon">入职状态</span>
+          <select class="form-control" v-model="isEntry">
+            <option v-for="(item,index) in entryStatus" :key="index" :value="item.value">
+              {{item.label}}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div><br>
+    <div class="row">
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="input-group">
+          <span class="input-group-addon">姓名</span>
+          <input type="text" class="form-control" placeholder="Username"  v-model="name">
+        </div>
+      </div>
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="input-group">
+          <span class="input-group-addon">联系方式</span>
+          <input type="text" class="form-control" placeholder="电话\邮箱\QQ" v-model="phone">
+        </div>
+      </div>
+       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <div class="input-group">
+          <span class="input-group-addon">性别</span>
+          <select class="form-control" v-model="sex">
+            <option v-for="(item,index) in sexStatus" :key="index" :value="item.value">
+              {{item.label}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="input-group">
+          <span class="input-group-addon">是否报销路费</span>
+          <select class="form-control" v-model="isPay">
+            <option v-for="(item,index) in status" :key="index" :value="item.value">
+              {{item.label}}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div><br>
+    <div class="row">
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="input-group">
+          <span class="input-group-addon">学历</span>
+          <select class="form-control" v-model="education">
+            <option v-for="(item,index) in educationState" :key="index" :value="item.value">
+              {{item.label}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="input-group">
+          <span class="input-group-addon">专业</span>
+          <input type="text" class="form-control" placeholder="Profession"  v-model="profession">
+        </div>
+      </div>
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="input-group">
+          <span class="input-group-addon">是否在学</span>
+          <select class="form-control" v-model="atSchool">
+            <option v-for="(item,index) in status" :key="index" :value="item.value">
+              {{item.label}}
+            </option>
+          </select>
+        </div>
+      </div>
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
         <button type="button" class="btn btn-warning pull-right m_r_10">导出</button>
         <button type="button" class="btn btn-info pull-right m_r_10" data-toggle="modal" data-target="#dataAdd">添加</button>
         <button type="button" class="btn btn-primary pull-right m_r_10" @click="queryRecruitData">查询</button>
       </div>
-    </div>
+    </div><br>
     <!-- 查询结果集 -->
-    <div class="row pre-scrollable">
+    <div class="row">
       <div class="col-md-12 col-lg-12">
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover" id="datatable">
+        <div class="pre-scrollable">
+          <table class="table table-bordered table-hover text-nowrap" id="datatable">
             <thead>
             <tr>
               <th class="text-center">姓名</th>
@@ -122,7 +190,7 @@
               <td class="text-center">{{dateFomate(item.recruitDate)}}</td>
               <td class="text-center">{{item.score}}</td>
               <td class="text-center">{{item.isQualified}}</td>
-              <td class="text-center">{{item.isPay  == 0 ? "否" : "是"}}</td>
+              <td class="text-center">{{item.isPay == 0 ? "否" : "是"}}</td>
               <td class="text-center">{{item.isEntry}}</td>
               <td><center><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#publishEdit" @click="getEditInfo(item)">编辑</button></center></td>
               <td><center><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#publishDelete" @click="getDelId(item)">删除</button></center></td>
@@ -136,15 +204,31 @@
 </template>
 <script>
   import axios from 'axios'
-  import { timeInit } from '../../assets/js/date';
-  import { jsGetAge } from '../../assets/js/date';
+  import position from '../vuecommon/position.vue'
+  import channel from '../vuecommon/channel.vue'
+  import department from '../vuecommon/department.vue'
+  import { timeInit } from '../../assets/js/date'
+  import { jsGetAge } from '../../assets/js/date'
 
   export default {
+    components: {
+      department,
+      position,
+      channel
+    },
     data(){
       return {
         // 查询
-        name: null,
-        phone: null,
+        departId: '0',
+        positionId: '',
+        channelId: '',
+        isQualified: null,
+        qualifiedStatus: [
+          {value:null,label:'全部'},
+          {value:'1',label:'是'},
+          {value:'0',label:'否'},
+          {value:'2',label:'待定'},
+        ],
         dateFlag: null,
         dateFlagList:[
           {value:null,label:'全部'},
@@ -154,18 +238,38 @@
         begDate: this.getCurrentDay,
         endDate: this.getCurrentDay,
         isEntry: null,
-        entryList: [
+        entryStatus: [
           {value:null,label:'全部'},
           {value:'0',label:'未入职'},
           {value:'1',label:'在职'},
           {value:'2',label:'离职'},
         ],
-        isQualified: null,
-        qualifiedList: [
+        name: null,
+        phone: null,
+        sex: null,
+        sexStatus:[
           {value:null,label:'全部'},
-          {value:'0',label:'是'},
-          {value:'1',label:'否'},
-          {value:'2',label:'待定'},
+          {value:'1',label:'男'},
+          {value:'0',label:'女'},
+        ],
+        isPay: null,
+        education: null,
+        educationState:[
+          {value:null,label:'全部'},
+          {value:'0',label:'初中及以下'},
+          {value:'1',label:'高中/中专'},
+          {value:'2',label:'专科'},
+          {value:'3',label:'本科'},
+          {value:'4',label:'硕士研究生'},
+          {value:'5',label:'博士研究生'},
+          {value:'6',label:'其他'}
+        ],
+        profession: null,
+        atSchool: null,
+        status: [
+          {value:null,label:'全部'},
+          {value:'1',label:'是'},
+          {value:'0',label:'否'},
         ],
         recruitDataList:[],
       }
@@ -177,22 +281,51 @@
       getAge(param){
         return jsGetAge(param)
       },
-      queryRecruitData(){      // 查询招聘发布信息
+
+      // ---------------------------------------编辑----------------------------------
+      departChange(departId){   // 渠道
+        this.departId = departId
+      },
+      positionChange(positionId){ // 职位
+        this.positionId = positionId
+      },
+       channelChange(channelId){   // 渠道
+        this.channelId = channelId
+      },
+      queryRecruitData(){      
+        if(this.departId == '0'){
+          this.departId = null
+        }
+        if(this.positionId == '0'){
+          this.positionId = null
+        }
+        if(this.channelId == '0'){
+          this.channelId = null
+        }
         if(this.isBlank(this.name)){
           this.name = null
         }
         if(this.isBlank(this.phone)){
           this.phone = null
         }
-
-        console.log("姓名：" + this.name)
-        console.log("电话：" + this.phone)
-        console.log("日期类型：" + this.dateFlag)
-        console.log("开始时间：" + this.begDate)
-        console.log("结束时间：" + this.endDate)
-        console.log("入职状态：" + this.isEntry)
-        console.log("是否合格：" + this.isQualified)
-
+         if(this.isBlank(this.profession)){
+          this.profession = null
+        }
+        // console.log("部门：" + this.departId);
+        // console.log("职务：" + this.positionId);
+        // console.log("渠道：" + this.channelId);
+        // console.log("是否合格：" + this.isQualified);
+        // console.log("日期类型：" + this.dateFlag);
+        // console.log("开始时间：" + this.begDate);
+        // console.log("结束时间：" + this.endDate);
+        // console.log("是否入职：" + this.isEntry);
+        // console.log("姓名：" + this.name);
+        // console.log("联系方式：" + this.phone);
+        // console.log("性别：" + this.sex);
+        // console.log("是否报销路费：" + this.isPay);
+        // console.log("学历：" + this.education);
+        // console.log("专业：" + this.profession);
+        // console.log("是否在学：" + this.atSchool);
         axios({
           method: 'post',
           url: this.url + '/zpglController/queryRecruitData',
@@ -201,17 +334,24 @@
             'Access-Token': this.accessToken
           },
           data: {
-            name: this.name,
-            phone: this.phone,
+            department: this.departId,
+            position: this.positionId,
+            channel: this.channelId,
+            isQualified: this.isQualified,
             dateFlag: this.dateFlag,
             begDate: this.begDate,
             endDate: this.endDate,
             isEntry: this.isEntry,
-            isQualified: this.isQualified
+            name: this.name,
+            phone: this.phone,
+            sex: this.sex,
+            isPay: this.isPay,
+            education: this.education,
+            profession: this.profession,
+            atSchool: this.atSchool
           },
           dataType: 'json',
         }).then((response) => {
-          console.log(response.data.retData)
           this.recruitDataList = response.data.retData
         }).catch((error) => {
           console.log('请求失败处理')
