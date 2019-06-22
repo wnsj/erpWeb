@@ -146,7 +146,7 @@
 			},
 		},
 		created(){
-			this.getDepartKqList()
+			// this.getDepartKqList()
 		}
 	}
 </script>

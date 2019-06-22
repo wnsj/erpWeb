@@ -198,7 +198,7 @@
 			}
 		},
 		created(){
-			this.getKqTableList()
+			// this.getKqTableList()
 		}
 	}
 </script>

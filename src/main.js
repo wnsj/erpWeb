@@ -58,11 +58,12 @@ Vue.prototype.getNowFormatDate = function() {
   return currentdate;
 };
 Vue.prototype.getCurrentDayAction = function(param){
-  return timeInit(param)
+	return timeInit(param)
 }
 Vue.prototype.isBlank = function(param){
-  return isBlank(param)
+	return isBlank(param)
 }
+
 Vue.prototype.jsGetAge = function(param){
   return jsGetAge(param)
 }

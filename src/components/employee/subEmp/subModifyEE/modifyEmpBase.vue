@@ -131,10 +131,10 @@
 				this.personalBase = param
 			},
 			positionShift:function (positionShiftInfo){
-				this.personalInfo.departName = positionShiftInfo.departName
-				this.personalInfo.departId = positionShiftInfo.departId
-				this.personalInfo.positionName = positionShiftInfo.positionName
-				this.personalInfo.positionId = positionShiftInfo.positionId
+				this.personalBase.departName = positionShiftInfo.departName
+				this.personalBase.departId = positionShiftInfo.departId
+				this.personalBase.positionName = positionShiftInfo.positionName
+				this.personalBase.positionId = positionShiftInfo.positionId
 			},
 			
 		},
