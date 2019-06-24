@@ -63,7 +63,6 @@ Vue.prototype.getCurrentDayAction = function(param){
 Vue.prototype.isBlank = function(param){
 	return isBlank(param)
 }
-
 Vue.prototype.jsGetAge = function(param){
   return jsGetAge(param)
 }
