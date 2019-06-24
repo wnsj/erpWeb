@@ -41,10 +41,10 @@
       </div>
     </div>
     <!-- 查询结果集 -->
-    <div class="row pre-scrollable">
+    <div class="row">
       <div class="col-md-12 col-lg-12">
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover" id="datatable">
+        <div class="pre-scrollable">
+          <table class="table table-bordered table-hover text-nowrap" id="datatable">
             <thead>
             <tr>
               <th class="text-center">渠道</th>
