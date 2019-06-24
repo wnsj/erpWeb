@@ -71,7 +71,7 @@
 					<div class="col-md-7 col-lg-7 clear-mp">
 						<select class="form-control" v-on:change="submitAdvacedParam('0')" v-model="birthday">
 							<option value="0">全部</option>
-							<option v-for="n in 12" v-bind:value="n">{{n}}</option>
+							<option v-for="n in 12" v-bind:value="n">{{n月}}</option>
 						</select>
 					</div>
 					<div class="col-md-2 col-lg-2 clear-mp" style="line-height: 34px; text-align: right">

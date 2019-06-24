@@ -25,10 +25,7 @@ Vue.prototype.$ajax = axios
 
 
 /*------本机路径----*/
-// Vue.prototype.url = 'http://172.16.2.248:8080/Erp'
-// Vue.prototype.url = 'http://172.16.213.210:8080/Erp'
-Vue.prototype.url = 'http://172.16.2.203:8080/Erp'
-// Vue.prototype.url = process.env.API_HOST
+Vue.prototype.url = process.env.API_HOST
 // Vue.prototype.url = '/api'
 
 /*------当月第一天、当天、最后一天----*/
@@ -58,10 +55,10 @@ Vue.prototype.getNowFormatDate = function() {
   return currentdate;
 };
 Vue.prototype.getCurrentDayAction = function(param){
-  return timeInit(param)
+	return timeInit(param)
 }
 Vue.prototype.isBlank = function(param){
-  return isBlank(param)
+	return isBlank(param)
 }
 Vue.prototype.jsGetAge = function(param){
   return jsGetAge(param)

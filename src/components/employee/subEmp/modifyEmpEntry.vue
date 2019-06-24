@@ -29,9 +29,9 @@
 			<div class="col-md-12">
 				<div class="col-md-8">
 					<button type="button" class="btn btn-info btn-sm int_pwd" v-on:click="initPassword()">初始化密码</button>
-					<button type="button" class="btn btn-info btn-sm reg_work">转正</button>
-					<button type="button" class="btn btn-info btn-sm recovery">离职</button>
-					<button type="button" class="btn btn-info btn-sm detl">删除</button>
+					<button type="button" class="btn btn-info btn-sm reg_work" id="shiftPositionBtn" v-if="isShiftPosition==true" v-on:click="shiftPosition()">转正</button>
+					<button type="button" class="btn btn-info btn-sm recovery" v-on:click="deleteEmployee()">离职</button>
+					<button type="button" class="btn btn-info btn-sm detl" v-on:click="employeeResgin()">删除</button>
 				</div>
 				<button type="button" class="btn btn-info" v-on:click="updataEmployeeInfo()">确认</button>
 				<button type="button" data-dismiss="modal" class="btn btn-info">返回</button>
@@ -64,6 +64,8 @@
 				
 				personalShift:[],
 				
+				isShiftPosition:true,
+				
 				accountId:'',
 				userId:'',
 			};
@@ -74,13 +76,131 @@
 				this.personalBase = param
 				this.accountId = param.accountId
 				this.userId = param.id
+				
+				//判断是否显示转正按钮
+				if(this.isBlank(this.personalBase.positiveDate)){
+					this.isShiftPosition=true
+				}else{
+					this.isShiftPosition=false
+				}
+				console.log('isShiftPosition'+this.isShiftPosition)
 				this.$refs.baseInfo.childrenBaseInfo(this.personalBase)
 				this.$refs.detailInfo.childrenDetailInfo(this.userId)
 				this.$refs.familyInfo.childrenFamilyInfo(this.accountId)
 				this.$refs.shiftInfo.childrenShiftInfo(this.accountId)
+				// if(this.personalBase.entryDate<)
 			},
+			//初始化密码
 			initPassword:function(){
-				alert('初始化密码')
+				
+				var url = this.url + '/search/updataAccountPwd'
+				axios({
+					method: 'post',
+					url: url,
+					headers: {
+						'Content-Type': this.contentType,
+						'Access-Token': this.accessToken
+					},
+					data: {
+						accountId: this.accountId,
+					},
+					dataType: 'json',
+				}).then((response) => {
+					var res = response.data
+					console.log(res)
+					if (res.retCode == '0000') {
+						alert('密码初始化成功')
+					} else {
+						alert(res.retMsg)
+					}
+				
+				}).catch((error) => {
+					console.log('请求失败处理')
+				});
+			},
+			//转正
+			shiftPosition:function(){
+				var url = this.url + '/search/shiftPositiveDate'
+				axios({
+					method: 'post',
+					url: url,
+					headers: {
+						'Content-Type': this.contentType,
+						'Access-Token': this.accessToken
+					},
+					data: {
+						id: this.userId,
+						positiveDate:this.personalBase.positiveDate
+					},
+					dataType: 'json',
+				}).then((response) => {
+					var res = response.data
+					console.log('转正:'+res)
+					if (res.retCode == '0000') {
+						this.submitBackUpPage()
+					} else {
+						alert(res.retMsg)
+					}
+				
+				}).catch((error) => {
+					console.log('请求失败处理')
+				});
+			},
+			//离职
+			employeeResgin:function(){
+				var url = this.url + '/search/employeeResginDate'
+				axios({
+					method: 'post',
+					url: url,
+					headers: {
+						'Content-Type': this.contentType,
+						'Access-Token': this.accessToken
+					},
+					data: {
+						id: this.userId,
+						resignDate:this.personalBase.resignDate
+					},
+					dataType: 'json',
+				}).then((response) => {
+					var res = response.data
+					console.log(res)
+					if (res.retCode == '0000') {
+						this.submitBackUpPage()
+					} else {
+						alert(res.retMsg)
+					}
+				}).catch((error) => {
+					console.log('请求失败处理')
+				});
+			},
+			//删除
+			deleteEmployee:function(){
+				
+				var url = this.url + '/search/deleteEmployee'
+				axios({
+					method: 'post',
+					url: url,
+					headers: {
+						'Content-Type': this.contentType,
+						'Access-Token': this.accessToken
+					},
+					data: {
+						id: this.userId,
+						idDelete:'1'
+					},
+					dataType: 'json',
+				}).then((response) => {
+					var res = response.data
+					console.log(res)
+					if (res.retCode == '0000') {
+						this.submitBackUpPage()
+					} else {
+						alert(res.retMsg)
+					}
+				
+				}).catch((error) => {
+					console.log('请求失败处理')
+				});
 			},
 			
 			// 提交修改的员工信息
@@ -118,7 +238,7 @@
 					console.log(res)
 					if (res.retCode == '0000') {
 						alert(res.resData.message)
-						this.$emit('updataEmployeeInfo')
+						this.submitBackUpPage()
 					} else {
 						alert(res.retMsg)
 					}
@@ -127,6 +247,9 @@
 					console.log('请求失败处理')
 				});
 			},
+			submitBackUpPage:function(){
+				this.$emit('submitBackUpPage')
+			}
 		}
 
 	}

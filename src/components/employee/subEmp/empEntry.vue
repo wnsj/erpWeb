@@ -68,6 +68,7 @@
 				
 				// 修改基本信息
 				this.personalBase = this.$refs.baseInfo.personalBase
+				this.personalBase.isDelete = '0'
 				this.personalDetail = this.$refs.detailInfo.personalDetail
 				this.personalFamily = this.$refs.familyInfo.personalFamily
 	

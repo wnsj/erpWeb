@@ -3,11 +3,11 @@
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 			<div class="table-responsive">
 				<div class="col-lg-10 mtr_a"> <span>
-						<input type="radio" name="xm"/>
+						<input type="radio" name="xm" v-on:change="conditionChangeAction('depart')"/>
 					</span> <span>部门：</span> <span class="com-sel">
-						<depart></depart>
+						<depart @departChange="departChange"></depart>
 					</span> <span>职位：</span> <span class="com-sel">
-						<position></position>
+						<position @positionChange="positionChange"></position>
 					</span> <span>姓名：</span> <span>
 						<input type="text" value="" id="" v-model="name"/>
 					</span> <span>工号：</span> <span>
@@ -20,9 +20,9 @@
 						<button class="btn btn-warning" v-on:click="searchKqTableList('1')">查询</button>
 					</span> </div>
 				<div class="col-lg-11 mtr_a"> <span>
-						<input type="radio" name="xm" />
+						<input type="radio" name="xm" v-on:change="conditionChangeAction('project')" />
 					</span> <span>项目：</span> <span class="com-sel">
-						<project></project>
+						<project @projectChange="projectChange"></project>
 					</span> <span>时间：</span> <span>
 						<input type="date" value="" v-model="beginDate" />
 					</span> <span>&nbsp;&nbsp;&nbsp;至：</span> <span>
@@ -89,35 +89,64 @@
 				kqTimeList:[],
 				kqTableList:[],
 				
+				conditionChange:'depart',
 			};
 		},
 		methods:{
+			//查询变化  部门和项目 
+			conditionChangeAction:function(param){
+				this.conditionChange=param
+			},
+			//获取部门名字和id
+			departChange: function(departId, departName) {
+				this.departId = departId
+				this.departName = departName
+			},
+			positionChange:function(positionId,positionName){
+				this.positionName = positionName
+			},
+			projectChange:function(projectId){
+				this.projectId=projectId
+			},
 			//搜索考勤报表
 			searchKqTableList: function(param) {
-				var departName,positionName,projectId
+				var dN,pN,pId,dId,pjId
 				if (param=='0'){
-					departName=''
-					positionName=''
-					name=''
-					jobNum=''
-					projectId = ''
-					projectId=''
-					endDate=''
+					dN=''
+					pN=''
+					this.name=''
+					this.jobNum=''
+					this.$children[0].departId='0'
+					this.departName=''
+					this.$children[1].positionId='0'
+					this.positionName=''
+					this.$children[2].projectId='0'
+					this.beginDate=timeInit('')
+					this.endDate=timeInit('')
 				}else{
+					if(this.conditionChange=='depart'){
+						pjId=''
+						if (this.departId=='0'){
+							dN=''
+						}else{
+							dN=this.departName
+						}
+					}else{
+						dN=''
+						if(this.projectId=='0'){
+							pjId = ''
+						}else{
+							pjId = this.projectId
+						}
+					}
 					if(this.positionName=='0'){
-						positionName=''
-					}
-					
-					if(this.kqTableProjectId=='0'){
-						projectId=''
-					}
-					
-					if (this.departId=='0'){
-						this.departName=''
+						pN=''
+					}else{
+						pN=this.positionName
 					}
 				}
 				var url = this.url + '/kqgl/kqTableList'
-				alert(this.kqTableBeginDate)
+				
 				axios({
 					method: 'post',
 					url: url,
@@ -126,13 +155,13 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
-						departName:this.departName,
-						positionName: positionName,
+						departName:dN,
+						positionName: pN,
 						name: this.name,
 						jobNum: this.jobNum,
-						projectId: projectId,
-						startDate: this.beginDate,
-						endDate: this.endDate,
+						projectId: pjId,
+						beginDate: this.beginDate,
+						endDate: this.getYYYYMMDDHHMMSS_24(this.endDate),
 					},
 					dataType: 'json',
 				}).then((response) => {
@@ -171,8 +200,8 @@
 						positionName: "",
 						name: "",
 						jobNum: "",
-						startDate: this.beginDate,
-						endDate: this.endDate,
+						beginDate: this.beginDate,
+						endDate: this.getYYYYMMDDHHMMSS_24(this.endDate),
 					},
 					dataType: 'json',
 				}).then((response) => {
@@ -183,7 +212,7 @@
 						if(res.resData.length>0){
 							this.kqTableList = res.resData
 							this.kqTimeList = this.kqTableList[0].punchTime
-							console.log('getKqTableList')
+							console.log('getKqTableList',this.kqTableList.length)
 							console.log(this.kqTableList[0].punchTime)
 							$("#myModalQuery").modal('hide');
 						}else{

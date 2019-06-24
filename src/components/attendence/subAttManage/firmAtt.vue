@@ -5,7 +5,7 @@
 					<div class="col-lg-9 mtr_a"> <span>部门：</span> <span class="com-sel">
 							<depart :departName="departName" :departId="departId" @departChange='departChange'></depart>
 						</span> <span>职位：</span> <span class="com-sel">
-							<position></position>
+							<position @positionChange='positionChange'></position>
 						</span> <span>姓名：</span> <span>
 							<input type="text" value="" class="form-control" v-model="kquName" />
 						</span> <span>工号：</span> <span>
@@ -43,7 +43,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="(item,index) in kquList" :key="index" v-if="(departId == '0' && positionName == '0') || (departId == '0' && item.positionName  == positionName) ||(item.departId == departId && positionName == '0') || (item.departId == departId && item.positionName  == positionName) ">
+							<tr v-for="(item,index) in kquList" :key="index">
 								<td>{{item.name}}</td>
 								<td>{{item.jobNum}}</td>
 								<td>{{item.departname}}</td>
@@ -92,6 +92,10 @@
 				this.departId = departId
 				this.departName = departName
 			},
+			positionChange:function(positionId,positionName){
+				
+				this.positionName = positionName
+			},
 			searchKQInfo:function() {
 			
 				var departName, pName
@@ -119,16 +123,23 @@
 						positionName: pName,
 						name: this.kquName,
 						jobNum: this.kquJobNum,
-						beginData: this.firmStartDate,
-						endData: this.firmEndDate,
+						beginDate: this.firmStartDate,
+						endDate: this.getYYYYMMDDHHMMSS_24(this.firmEndDate),
 					},
 					dataType: 'json',
 				}).then((response) => {
-					console.log('searchKQInfo')
-					console.log(response.data)
-					if (response.data.length > 0) {
-						alert(response.data.length)
-						this.kquList = response.data
+					var res = response.data
+					console.log('getKqList')
+					if (res.retCode == '0000') {
+						console.log('getKqList')
+						if (res.resData.length > 0) {
+							console.log('getKqList-length:'+res.resData.length)
+							this.kquList = res.resData
+						} else {
+							alert('没有查询到相关数据')
+						}
+					} else {
+						alert(res.retMsg)
 					}
 				}).catch((error) => {
 					console.log('请求失败')
@@ -151,14 +162,24 @@
 						positionName: "",
 						name: "",
 						jobNum: "",
-						beginData: this.firmStartDate,
-						endData: this.firmEndDate,
+						beginDate: this.firmStartDate,
+						endDate: this.firmEndDate,
 					},
 					dataType: 'json',
 				}).then((response) => {
+					var res = response.data
 					console.log('getKqList')
-					this.kquList = response.data
-					console.log(this.kquList)
+					if (res.retCode == '0000') {
+						console.log('getKqList')
+						if (res.resData.length > 0) {
+							console.log('getKqList-length:'+res.resData.length)
+							this.kquList = res.resData
+						} else {
+							alert('没有查询到相关数据')
+						}
+					} else {
+						alert(res.retMsg)
+					}
 				}).catch((error) => {
 					console.log('请求失败')
 				});

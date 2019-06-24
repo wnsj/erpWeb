@@ -82,6 +82,7 @@
 			
 				if (param == '0') {
 					this.departName = ""
+					this.$children[0].departId='0'
 				} else {
 					if (this.departId == '0') {
 						this.departName = ""
@@ -102,14 +103,24 @@
 						name: "",
 						jobNum: "",
 						departName: this.departName,
-						beginData: this.dpBeginDate,
-						endData: this.dpEndDate,
+						beginDate: this.dpBeginDate,
+						endDate: this.getYYYYMMDDHHMMSS_24(this.dpEndDate),
 					},
 					dataType: 'json',
 				}).then((response) => {
-					console.log('searchDepartKQInfo')
-					this.departKqList = response.data
-					
+					var res = response.data
+					console.log('departKqList')
+					if (res.retCode == '0000') {
+						console.log('departKqList')
+						if (res.resData.length > 0) {
+							console.log('departKqList-length:'+res.resData.length)
+							this.departKqList = res.resData
+						} else {
+							alert('没有查询到相关数据')
+						}
+					} else {
+						alert(res.retMsg)
+					}
 				}).catch((error) => {
 					console.log('请求失败')
 				});
@@ -131,15 +142,24 @@
 						positionName: "",
 						name: "",
 						jobNum: "",
-						beginData: this.dpBeginDate,
-						endData: this.dpEndDate,
+						beginDate: this.dpBeginDate,
+						endDate: this.getYYYYMMDDHHMMSS_24(this.dpEndDate),
 					},
 					dataType: 'json',
 				}).then((response) => {
-					console.log('getDepartKqList')
-					this.departKqList = response.data
-					//console.log(data.data)
-					// alert(employeeList)
+					var res = response.data
+					console.log('departKqList')
+					if (res.retCode == '0000') {
+						console.log('departKqList')
+						if (res.resData.length > 0) {
+							console.log('departKqList-length:'+res.resData.length)
+							this.departKqList = res.resData
+						} else {
+							alert('没有查询到相关数据')
+						}
+					} else {
+						alert(res.retMsg)
+					}
 				}).catch((error) => {
 					console.log('请求失败')
 				});
