@@ -25,10 +25,7 @@ Vue.prototype.$ajax = axios
 
 
 /*------本机路径----*/
-// Vue.prototype.url = 'http://172.16.2.248:8080/Erp'
-// Vue.prototype.url = 'http://172.16.213.210:8080/Erp'
-Vue.prototype.url = 'http://172.16.2.203:8080/Erp'
-// Vue.prototype.url = process.env.API_HOST
+Vue.prototype.url = process.env.API_HOST
 // Vue.prototype.url = '/api'
 
 /*------当月第一天、当天、最后一天----*/

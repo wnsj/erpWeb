@@ -95,6 +95,9 @@ background: #FFF;
 .staff_t {
     width: 760px !important;
 }
+.embed-responsive{
+	overflow: auto;
+}
 
 .attendanceModal .modal-header h4{padding: 10px;border-bottom: 1px solid #ddd;}
 .attendanceModal .modal-body .mb-2{width: 100%;overflow: hidden;margin-bottom:10px;}
