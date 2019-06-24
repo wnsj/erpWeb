@@ -55,7 +55,11 @@ export function timeInit(timestring) {
 		return currentdate;
 	}
 }
-
+//获取年月日时分秒毫秒 2016.01.01 23:59:59.000
+export function getYYYYMMDDHHMMSS_24(time) {
+	var date = new Date(time);
+	return formatDate(date, 'yyyy.MM.dd 23:59:59.000'); // 年月日 格式自己定义   'yyyy : MM : dd'  例 2018年12月5日的格式
+}
 /*根据出生日期算出年龄*/
 export function jsGetAge(strBirthday){
   var returnAge;
