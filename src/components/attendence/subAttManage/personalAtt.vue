@@ -113,9 +113,7 @@
 					dataType: 'json',
 				}).then((response) => {
 					var res = response.data
-					console.log('getSingleKqList')
 					if (res.retCode == '0000') {
-						console.log('getSingleKqList')
 						if (res.resData.length > 0) {
 							console.log('getSingleKqList-length:'+res.resData.length)
 							this.singleKqList = res.resData

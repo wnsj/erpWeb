@@ -93,7 +93,7 @@
 				this.departName = departName
 			},
 			positionChange:function(positionId,positionName){
-				alert('searchKQInfo',positionId)
+				
 				this.positionName = positionName
 			},
 			searchKQInfo:function() {
@@ -168,9 +168,7 @@
 					dataType: 'json',
 				}).then((response) => {
 					var res = response.data
-					console.log('getKqList')
 					if (res.retCode == '0000') {
-						console.log('getKqList')
 						if (res.resData.length > 0) {
 							console.log('getKqList-length:'+res.resData.length)
 							this.kquList = res.resData

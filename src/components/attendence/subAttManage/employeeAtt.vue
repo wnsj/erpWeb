@@ -184,9 +184,7 @@
 					dataType: 'json',
 				}).then((response) => {
 					var res = response.data
-					console.log('ryKqList')
 					if (res.retCode == '0000') {
-						console.log('ryKqList')
 						if (res.resData.length > 0) {
 							console.log('ryKqList-length:'+res.resData.length)
 							this.ryKqList = res.resData

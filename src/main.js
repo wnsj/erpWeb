@@ -63,6 +63,9 @@ Vue.prototype.isBlank = function(param){
 Vue.prototype.jsGetAge = function(param){
   return jsGetAge(param)
 }
+Vue.prototype.getYYYYMMDDHHMMSS_24 = function(param){
+	return getYYYYMMDDHHMMSS_24(param)
+}
 
 
 

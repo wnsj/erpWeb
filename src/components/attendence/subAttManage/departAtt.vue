@@ -148,9 +148,7 @@
 					dataType: 'json',
 				}).then((response) => {
 					var res = response.data
-					console.log('departKqList')
 					if (res.retCode == '0000') {
-						console.log('departKqList')
 						if (res.resData.length > 0) {
 							console.log('departKqList-length:'+res.resData.length)
 							this.departKqList = res.resData
