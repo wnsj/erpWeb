@@ -57,6 +57,7 @@
 				this.departName = departName
 			},
 			positionChange: function(positionId, positionName) {
+				console.log('positionName'+positionName)
 				this.positionId = positionId
 				this.positionName = positionName
 			},

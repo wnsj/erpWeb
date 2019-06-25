@@ -37,6 +37,7 @@
     methods:{
       //提交职位名称和ID
       positionChange: function() {
+				
         this.positionName = this.exchangePositionName(this.position)
         // alert(this.positionId+this.positionName)
         // this.$emit('positionChange',this.positionId,this.positionName)
@@ -47,7 +48,8 @@
 
         for (var i = 0; i < this.positionList.length; i++) {
           res = this.positionList[i]
-          if (res.position_Id == param) {
+          if (res.positionId == param) {
+						console.log('positionName-4'+res.positionName)
             return res.positionName
           }
         }
