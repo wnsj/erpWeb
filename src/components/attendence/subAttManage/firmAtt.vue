@@ -93,7 +93,7 @@
 				this.departName = departName
 			},
 			positionChange:function(positionId,positionName){
-				
+				alert('searchKQInfo',positionId)
 				this.positionName = positionName
 			},
 			searchKQInfo:function() {
