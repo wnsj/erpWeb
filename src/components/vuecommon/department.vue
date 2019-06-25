@@ -69,6 +69,8 @@
 					if (dp.id == param) {
 						this.deptObj = dp;
 						return dp.name
+					}else{
+						this.deptObj = {};
 					}
 				}
 			},
