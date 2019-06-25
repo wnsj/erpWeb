@@ -48,7 +48,7 @@
 				<div class="input-group">
 					<input type="text" class="form-control" placeholder="Search for..." v-model.lazy="searchContent">
 					<span class="input-group-btn">
-						<button class="btn btn-default" type="button" v-on:change="searchEmployee(searchContent)">搜索</button>
+						<button class="btn btn-default" type="button" v-on:click="getEmployee('search')">搜索</button>
 					</span> 
 				</div>
 			</div>
@@ -168,6 +168,7 @@
 		},
 		// props:['faasdfsdfsadfasdf'],
 		data() {
+			this.getEmployee()
 			return {
 				projectName: '0',
 				projectId: '0',
@@ -340,6 +341,7 @@
 			getEmployee: function(param) {
 				var copyProjectId=''
 				var copyDepartName=''
+				console.log(param)
 				if(param == 'all'){
 					this.state = '1'
 					this.projectId = '0'
@@ -353,6 +355,10 @@
 					copyDepartName=''
 				}else if(param == 'depart'){
 					copyProjectId=''
+				}else if(param == 'search'){
+						this.state = '1'
+						copyProjectId = ''
+						copyDepartName = ''
 				}else{
 					if(this.projectId !='0'){
 						copyProjectId = this.projectId
@@ -397,7 +403,7 @@
 			},
 		},
 		created() {
-			this.getEmployee()
+			// this.getEmployee('2')
 		}
 	}
 </script>
