@@ -66,8 +66,8 @@
 				var dp = {}
 				for (var i = 0; i < this.departmentList.length; i++) {
 					dp = this.departmentList[i];
-					this.deptObj = dp;
 					if (dp.id == param) {
+						this.deptObj = dp;
 						return dp.name
 					}
 				}
