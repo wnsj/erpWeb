@@ -19,7 +19,7 @@
 					<ul class="panel-condition">
 						<li>
 							<span class="countdate">部门：</span>
-							<department ref='department' @departChange='departChange'></department>
+							<department  @departChange='departChange'></department>
 						</li>
 
 						<li>
@@ -69,18 +69,19 @@
 											<td>未打开增加天数</td>
 										</tr>
 										<tr v-for="(item,index) in ziYuan" :key="index">
-											<td>{{item.name}}</td>
-											<td>{{item.total}}</td>
-											<td>{{item.dismiss}}</td>
-											<td>{{item.diaoRu}}</td>
-											<td>{{item.jinSheng}}</td>
-											<td>{{item.diaoChu}}</td>
-											<td>{{item.avgCount}}</td>
-											<td>{{item.change}}</td>
-											<td>{{item.sumCount}}</td>
-											<td>{{item.quitMix}}</td>
-											<td>{{item.count}}</td>
-											<td>{{item.changeMix}}</td>
+											<td v-html="item.preFixName">{{item.preFixName}}</td>
+											<td>{{item.jinSheng}}</td><!-- 总人数 -->
+											<td>{{item.dismiss}}</td><!-- 小计 -->
+											<td>{{item.change}}</td><!-- 系统打卡天数 -->
+											<td>{{item.jiangZhi}}</td><!-- 未打卡增加天数 -->
+											<td>{{item.resignation}}</td><!--本月天数 -->
+											<td>{{item.avgCount}}</td><!--月均出勤天数 -->
+											<td>{{item.diaoRu}}</td><!--合理缺勤天数 -->
+											<td>{{item.count}}</td><!--合理缺勤人数 -->
+											<td>{{item.sumCount}}</td><!--超出缺勤人数 -->
+											<td>{{item.quitMix}}</td><!-- 未利用人力资源 -->
+											<td v-if="item.jinSheng > 0 && item.changeMix < 90" style="color: red;">{{item.changeMix}}%</td><!-- 人力资源利用率 -->
+											<td v-else>{{item.changeMix}}%</td>
 										</tr>
 									</tbody>
 								</table>
@@ -103,43 +104,19 @@
 <script>
 	import axios from 'axios'
 	import department from '../vuecommon/department.vue'
-	import project from '../vuecommon/project.vue'
 
-
-	import {
-		timeInit
-	} from '../../assets/js/date.js'
-	/**
-	 * 这个导入路径没有提示。按照自己的路径写，按提示可能不能实现，具体原因不详
-	 */
 	export default {
 		name: 'uilization',
 		components: {
-			department,
-			project,
-
+			department
 		},
 		data() {
 			return {
-				// 部门列表
-				departmentList: [], //排序后添加级别前缀 
-				departmentListSource: [], //没有进行排序的源数据 
-
-				employeeList: [], //从服务器请求的个人信息
-
-				personalInfo: {}, //首页列表获取的一个人的基础信息
-				personalBase: {}, //服务器获取的一个人的基础信息
-				copyPersonalBase: {},
-				personalDetail: {}, //服务器获取的一个人的详细信息
-				personalFamily: [], //服务器获取的一个人的家庭信息
-				personalShift: [], //服务器获取的一个人的调动信息
-
 				begDate: this.getCurrentDay,
-				isEntry: 0,
-				isQuit: 0,
+				isEntry: 1,
+				isQuit: 1,
 				newRecruitDepartmentId: '',
-
-				ziYuan: [],
+				ziYuan: []
 			}
 		},
 		mounted() {
@@ -151,18 +128,9 @@
 		methods: {
 			//获取部门名字和id
 			departChange(departId) {
-				this.recruitDepartmentId = departId
-				this.newRecruitDepartmentId = departId
+				this.newRecruitDepartmentId = departId == 0 ? '' : departId;
 			},
-			getAddDepartId(departId) {
-				this.newRecruitDepartmentId = departId
-			},
-			getEditDepartId(departId) {
-				this.upRecruitDepartmentId = departId
-			},
-
 			queryUlilization() {
-
 				axios({
 					method: 'post',
 					url: this.url + '/ryxxlController/queryRlzylyReport',
@@ -175,18 +143,15 @@
 						isEntry: this.isEntry, //包括当月入职（必填）【0包括，1不包括】 
 						isQuit: this.isQuit, //包括当月离职（必填）【0包括，1不包括】 
 						deptId: this.newRecruitDepartmentId, //部门id
-
 					},
 					dataType: 'json',
 				}).then((response) => {
-					console.log(response.data.retMsg)
-					this.ziYuan = response.data.retData.ziYuan
-
+					// console.log(response.data.retMsg)
+					this.ziYuan = response.data.retData
 				}).catch((error) => {
 					console.log('请求失败处理')
 				});
 			},
-
 		},
 		created() {
 			this.queryUlilization()
