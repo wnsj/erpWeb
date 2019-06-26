@@ -1,3 +1,4 @@
+<!-- author:dingdong -->
 <template>
   <div class="container user-container" id="recruitchannels-app" v-cloak>
     <div class="row">
@@ -172,11 +173,11 @@
       //点击获取整条信息
       getRecruitChannelInfo(item){
         this.recruitmentChannelsId = item.recruitChannelId,
-          this.recruitmentChannelsName = item.recruitChannelName
+        this.recruitmentChannelsName = item.recruitChannelName
       },
       //修改该条招聘渠道信息
       changeChannelsInfo(item){
-        if (this.recruitmentChannelsName=='') {
+        if(this.recruitmentChannelsName=='') {
           alert('职位名称不能为空');
           return false;
         }

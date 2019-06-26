@@ -19,15 +19,15 @@
     props: ['channelId'],
     watch:{
       channelId:function(){
-        console.log("监听props域channelId的值："+ this.channelId)
+        // console.log("监听props域channelId的值："+ this.channelId)
         if(this.channelId == null) {
-          console.log("赋值为0")
+          // console.log("赋值为0")
           this.chanId = '0'
         }else{
-          console.log("开始给chanId赋值")
+          // console.log("开始给chanId赋值")
           this.chanId = this.channelId
         }
-        console.log("监听props域channel的值："+ this.chanId)
+        // console.log("监听props域channel的值："+ this.chanId)
       },
       chanId:function(val){
         this.$emit('channelChange',val,this.channelName)
@@ -64,7 +64,6 @@
           dataType: 'json',
         }).then((response) => {
           this.channelList = response.data.retData;
-          console.log(this.channelList)
         }).catch((error) => {
           console.log('请求失败处理')
         });
