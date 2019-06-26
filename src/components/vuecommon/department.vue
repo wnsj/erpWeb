@@ -50,7 +50,7 @@
         this.departName = this.exchangeDepartName(this.departId)
         // alert(this.departName + '-' + this.departId)
         this.$emit('departChange', this.departId, this.departName)
-        console.log("回传给父组件的部门id：" + this.departId)
+        // console.log("回传给父组件的部门id：" + this.departId)
       },
       /**
        * 请求数据通过接口请求数据
@@ -102,7 +102,7 @@
           .then((response) => {
             this.departSortList = this.departSort(response.data)
 
-            console.log(this.departSortList)
+            // console.log(this.departSortList)
           })
           .catch((error) => {
             console.log(error)

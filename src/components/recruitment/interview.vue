@@ -1,5 +1,6 @@
+<!-- author:dingdong -->
 <template>
-  <div class="container user-container" id="recruitdata-app" v-cloak>
+  <div class="container user-container" id="interview-app" v-cloak>
     <div class="row">
       <div class="col-md-12 col-lg-12 main-title">
         <h2>面试信息管理</h2>
@@ -28,7 +29,7 @@
         <div class="input-group">
           <span class="input-group-addon">是否合格</span>
           <select class="form-control" v-model="isQualified">
-            <option v-for="(item,index) in status" :key="index" :value="item.value">
+            <option v-for="(item,index) in qualifiedStatus" :key="index" :value="item.value">
               {{item.label}}
             </option>
           </select>
@@ -133,15 +134,15 @@
       </div>
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
         <button type="button" class="btn btn-warning pull-right m_r_10">导出</button>
-        <button type="button" class="btn btn-info pull-right m_r_10" data-toggle="modal" data-target="#dataAdd">添加</button>
-        <button type="button" class="btn btn-primary pull-right m_r_10" @click="queryRecruitData">查询</button>
+        <button type="button" class="btn btn-info pull-right m_r_10" data-toggle="modal" data-target="#interviewAdd">添加</button>
+        <button type="button" class="btn btn-primary pull-right m_r_10" @click="queryInterview">查询</button>
       </div>
     </div><br>
     <!-- 查询结果集 -->
     <div class="row">
       <div class="col-md-12 col-lg-12">
         <div class="pre-scrollable">
-          <table class="table table-bordered table-hover text-nowrap" id="datatable">
+          <table class="table table-bordered table-hover text-nowrap" id="interviewtable">
             <thead>
             <tr>
               <th class="text-center">姓名</th>
@@ -170,7 +171,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(item,index) in recruitDataList" :key="index">
+            <tr v-for="(item,index) in interviewList" :key="index">
               <td class="text-center">{{item.name}}</td>
               <td class="text-center">{{item.sex}}</td>
               <td class="text-center">{{getAge(item.birth)}}</td>
@@ -192,14 +193,21 @@
               <td class="text-center">{{item.isQualified}}</td>
               <td class="text-center">{{item.isPay == 0 ? "否" : "是"}}</td>
               <td class="text-center">{{item.isEntry}}</td>
-              <td><center><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#publishEdit" @click="getEditInfo(item)">编辑</button></center></td>
-              <td><center><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#publishDelete" @click="getDelId(item)">删除</button></center></td>
+              <td><center><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#interviewEdit" @click="getEditInfo(item)">编辑</button></center></td>
+              <td><center><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#interviewDelete" @click="getDelId(item)">删除</button></center></td>
             </tr>
             </tbody>
           </table>
         </div>
       </div>
     </div><!-- /.row 查询页面 -->
+    <div class="row row_edit">
+			<div class="modal fade" id="interviewAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<interviewEntry></interviewEntry>
+				</div>
+			</div>
+		</div>
   </div>
 </template>
 <script>
@@ -207,6 +215,7 @@
   import position from '../vuecommon/position.vue'
   import channel from '../vuecommon/channel.vue'
   import department from '../vuecommon/department.vue'
+  import interviewEntry from '../recruitment/subInterview/interviewEntry.vue'
   import { timeInit } from '../../assets/js/date'
   import { jsGetAge } from '../../assets/js/date'
 
@@ -214,7 +223,8 @@
     components: {
       department,
       position,
-      channel
+      channel,
+      interviewEntry
     },
     data(){
       return {
@@ -271,7 +281,7 @@
           {value:'1',label:'是'},
           {value:'0',label:'否'},
         ],
-        recruitDataList:[],
+        interviewList:[],
       }
     },
     methods: {
@@ -282,7 +292,7 @@
         return jsGetAge(param)
       },
 
-      // ---------------------------------------编辑----------------------------------
+      // ---------------------------------------查询----------------------------------
       departChange(departId){   // 渠道
         this.departId = departId
       },
@@ -292,7 +302,7 @@
        channelChange(channelId){   // 渠道
         this.channelId = channelId
       },
-      queryRecruitData(){      
+      queryInterview(){      
         if(this.departId == '0'){
           this.departId = null
         }
@@ -311,21 +321,6 @@
          if(this.isBlank(this.profession)){
           this.profession = null
         }
-        // console.log("部门：" + this.departId);
-        // console.log("职务：" + this.positionId);
-        // console.log("渠道：" + this.channelId);
-        // console.log("是否合格：" + this.isQualified);
-        // console.log("日期类型：" + this.dateFlag);
-        // console.log("开始时间：" + this.begDate);
-        // console.log("结束时间：" + this.endDate);
-        // console.log("是否入职：" + this.isEntry);
-        // console.log("姓名：" + this.name);
-        // console.log("联系方式：" + this.phone);
-        // console.log("性别：" + this.sex);
-        // console.log("是否报销路费：" + this.isPay);
-        // console.log("学历：" + this.education);
-        // console.log("专业：" + this.profession);
-        // console.log("是否在学：" + this.atSchool);
         axios({
           method: 'post',
           url: this.url + '/zpglController/queryRecruitData',
@@ -352,7 +347,7 @@
           },
           dataType: 'json',
         }).then((response) => {
-          this.recruitDataList = response.data.retData
+          this.interviewList = response.data.retData
         }).catch((error) => {
           console.log('请求失败处理')
         });

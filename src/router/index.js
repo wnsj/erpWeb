@@ -8,7 +8,7 @@ import recruitment from '../components/recruitment/recruitment.vue'
 import recruitChannels from '../components/recruitment/recruitChannels.vue'
 import recruitPlan from '../components/recruitment/recruitPlan.vue'
 import recruitPublish from '../components/recruitment/recruitPublish.vue'
-import recruitData from '../components/recruitment/recruitData.vue'
+import interview from '../components/recruitment/interview.vue'
 
 Vue.use(Router)
 
@@ -43,9 +43,9 @@ export default new Router({
           component: recruitPublish
         },
         {
-          path: '/recruitment/recruitData',
-          name: 'recruitData',
-          component : recruitData
+          path: '/recruitment/interview',
+          name: 'interview',
+          component : interview
 
         }
       ],

@@ -1,3 +1,4 @@
+<!-- author:dingdong -->
 <template>
   <div class="container user-container" id="recruitpublish-app" v-cloak>
     <div class="row">
@@ -336,11 +337,11 @@
           console.log('请求失败处理')
         });
         this.channelAddId = '0',
-          this.positionAddId = '0',
-          this.publishAddDate = this.getCurrentDay,
-          this.publishAddNum = 0,
-          this.phoneAddNum = 0,
-          $('#publishAdd').modal('hide');
+        this.positionAddId = '0',
+        this.publishAddDate = this.getCurrentDay,
+        this.publishAddNum = 0,
+        this.phoneAddNum = 0,
+        $('#publishAdd').modal('hide');
       },
 
       // ---------------------------------------编辑----------------------------------
