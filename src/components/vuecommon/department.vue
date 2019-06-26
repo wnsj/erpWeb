@@ -101,7 +101,6 @@
 		},
 		created() {
 			this.getDepartment()
-			//this.getDepartmentSort()
 		},
 	}
 </script>
