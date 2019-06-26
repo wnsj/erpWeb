@@ -23,7 +23,7 @@
 				</div>
 				<label for="birth" class="col-md-2 control-label text-right nopad">出生日期：</label>
 				<div class="col-md-3">
-          			<input type="date" class="form-control" value="" id="birth" v-model="interviewBase.birth" />
+          			<input type="date" class="form-control" id="birth" v-model="interviewBase.birth" />
 				</div>
 			</div>
 			<div class="form-group clearfix">

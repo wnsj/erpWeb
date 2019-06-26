@@ -87,9 +87,10 @@
 					alert('面试时间不能为空');
 					return false;
 				}
-				console.log(this.interviewBaseAdd)
-				console.log(this.educationExprienceAdd)
-				console.log(this.applyAdd)
+				// console.log(this.interviewBaseAdd)
+				// console.log(this.educationExprienceAdd)
+				// console.log(this.applyAdd)
+				// console.log(this.educationExprienceAdd.education)
 				axios({
 					method: 'post',
 					url: this.url + '/zpglController/addRecruitData',
@@ -137,7 +138,7 @@
 						position: this.applyAdd.positionAddId,
 						recruitDate: this.applyAdd.recruitDate,
 						remark: this.applyAdd.remark == null? '':this.applyAdd.remark,
-						score: this.applyAdd.score == null? '':this.this.applyAdd.score,
+						score: this.applyAdd.score == null? '':this.applyAdd.score,
 						wages: this.applyAdd.wages == null? '': this.applyAdd.wages
 					},
 					dataType: 'json',

@@ -91,13 +91,13 @@
 					departAddId: '0',
 					positionAddId: '',
 					channelAddId: '',
-					isQualified: '0',
+					isQualified: '2',
 					isPay: '0',
 				},
 				qualifiedStatus: [
-					{value:'0',label:'待定'},
+					{value:'2',label:'待定'},
 					{value:'1',label:'是'},
-					{value:'2',label:'否'},
+					{value:'0',label:'否'},
 				],
 				isPayStatus: [
 					{value:'0',label:'否'},
