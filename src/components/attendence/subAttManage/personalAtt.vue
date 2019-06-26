@@ -73,14 +73,24 @@
 					},
 					data: {
 						accountName: "王杰林",
-						beginData: this.singleBeginDate,
-						endData: this.singleEndDate,
+						beginDate: this.singleBeginDate,
+						endDate: this.getYYYYMMDDHHMMSS_24(this.singleEndDate),
 					},
 					dataType: 'json',
 				}).then((response) => {
-					console.log('getSingleKqList')
-					this.singleKqList = response.data
-					
+					var res = response.data
+					console.log('singleKqList')
+					if (res.retCode == '0000') {
+						console.log('getSingleKqList')
+						if (res.resData.length > 0) {
+							console.log('getSingleKqList-length:'+res.resData.length)
+							this.singleKqList = res.resData
+						} else {
+							alert('没有查询到相关数据')
+						}
+					} else {
+						alert(res.retMsg)
+					}
 				}).catch((error) => {
 					console.log('请求失败')
 				});
@@ -97,21 +107,29 @@
 					},
 					data: {
 						accountName: "王杰林",
-						beginData: this.singleBeginDate,
-						endData: this.singleEndDate,
+						beginDate: this.singleBeginDate,
+						endDate: this.getYYYYMMDDHHMMSS_24(this.singleEndDate),
 					},
 					dataType: 'json',
 				}).then((response) => {
-					console.log('getSingleKqList')
-					this.singleKqList = response.data
-					console.log(this.singleKqList)
+					var res = response.data
+					if (res.retCode == '0000') {
+						if (res.resData.length > 0) {
+							console.log('getSingleKqList-length:'+res.resData.length)
+							this.singleKqList = res.resData
+						} else {
+							alert('没有查询到相关数据')
+						}
+					} else {
+						alert(res.retMsg)
+					}
 				}).catch((error) => {
 					console.log('请求失败')
 				});
 			},
 		},
 		created(){
-			// this.getSingleKqList()
+			this.getSingleKqList()
 		}
 	}
 </script>

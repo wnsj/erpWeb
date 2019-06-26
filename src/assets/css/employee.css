@@ -59,7 +59,9 @@
 #Post_transfer{ background-color:#fff; display:none; z-index:99999999; position:fixed; left:0; right:0; top:30%; width:660px!important; box-shadow:0 5px 15px rgba(0, 0, 0, .5); padding:10px;}
 #updatefamily_add,#family_update{ background-color:#fff; display:none; z-index:99999999; position:fixed; left:0; right:0; top:10%; width:660px!important; box-shadow:0 5px 15px rgba(0, 0, 0, .5); padding:10px;}
 
-
+.embed-responsive{
+	overflow: auto;
+}
 
 #Cause_management{ height:614px; overflow-y:scroll;}
 .pt2{ padding-top:2%;}

@@ -10,6 +10,12 @@ import recruitPlan from '../components/recruitment/recruitPlan.vue'
 import recruitPublish from '../components/recruitment/recruitPublish.vue'
 import interview from '../components/recruitment/interview.vue'
 
+import poresonnel from '../components/perAnalysis/poresonnel.vue'
+import abnormal from '../components/perAnalysis/abnormal.vue'
+import separation from '../components/perAnalysis/separation.vue'
+import effectiveness from '../components/perAnalysis/effectiveness.vue'
+import uilization from '../components/perAnalysis/uilization.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -51,5 +57,26 @@ export default new Router({
       ],
       redirect:'/recruitment/recruitChannels'
     },
+		//人员分析
+		{
+		  path: '/perAnalysis/poresonnel',
+		  component: poresonnel
+		},
+		{
+		  path: '/perAnalysis/abnormal',
+		  component: abnormal
+		},
+		{
+		  path: '/perAnalysis/separation',
+		  component: separation
+		},
+		{
+		  path: '/perAnalysis/effectiveness',
+		  component: effectiveness
+		},
+		{
+		  path: '/perAnalysis/uilization',
+		  component: uilization
+		},
   ]
 })

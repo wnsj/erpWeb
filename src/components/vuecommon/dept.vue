@@ -1,7 +1,6 @@
 <template>
-	<select class="form-control" v-model="departId" v-on:change="departChange(),returnDeptObj()">
-		<option value="0">九博健康管理有限公司</option>
-		<!-- <option v-for="(item,index) in departmentList" :key="index" v-bind:value="item.id" v-html="item.name">{{item.name}}</option> -->
+	<select class="form-control" v-model="departId" v-on:change="departChange()">
+		<option value="0">└九博健康管理有限公司</option>
 		<option v-for="item in departmentList" :key="item.id" v-bind:value="item.id" v-html="item.preFixName">
 			{{item.preFixName}}
 		</option>
@@ -24,13 +23,17 @@
 				}
 			} 
 		 */
+		props: {
+			deptObj: {}
+		},
+
 		data() {
 			return {
 				departName: '',
 				departId: '0',
 				departmentList: [],
 				departSortList: [],
-				deptObj:{}
+				depart: ''
 			};
 		},
 		methods: {
@@ -46,34 +49,14 @@
 			 * 	departChange:function(departId,departName){
 					this.departName = departName
 					},
-
 			 * 
 			 */
 			//提交部门名称和ID
 			departChange: function() {
+				this.depart = this.departId;
 				this.departName = this.exchangeDepartName(this.departId)
 				// alert(this.departName + '-' + this.departId)
 				this.$emit('departChange', this.departId, this.departName)
-			},
-			//子组件返回dept对象
-			returnDeptObj(){
-				this.$emit('getDeptObj', this.deptObj);
-			},
-			setDpart:function(departId){
-				this.departId = departId
-			},
-			//添加前缀的部门名字兑换原来的名字
-			exchangeDepartName: function(param) {
-				var dp = {}
-				for (var i = 0; i < this.departmentList.length; i++) {
-					dp = this.departmentList[i];
-					if (dp.id == param) {
-						this.deptObj = dp;
-						return dp.name
-					}else{
-						this.deptObj = {};
-					}
-				}
 			},
 			/**
 			 * 请求数据通过接口请求数据
@@ -82,27 +65,51 @@
 			 * 		Vue.prototype.url = 'http://172.16.2.248:8080/Erp'
 			 * 	3、下面为请求方法，没有写带参数的请求，测试后在补充
 			 */
+			setDpart: function(departId) {
+				this.departId = departId
+			},
+			//添加前缀的部门名字兑换原来的名字
+			exchangeDepartName: function(param) {
+				var dp = {}
+				for (var i = 0; i < this.departSortList.length; i++) {
+					dp = this.departSortList[i]
+					if (dp.id == param) {
+						return dp.name
+					}
+				}
+			},
 			async getDepartment() {
+				// var url = "http://172.16.2.248:8080/Erp/search/nationList"
 				// var url = this.url + '/search/departList'
-				var url = this.url + '/kqParamSetContr/queryDeptTree'
+				// alert(url)
 				axios({
 						method: 'post',
-						url: url
+						url: 'http://172.16.56.1:8080/Erp/kqParamSetContr/queryDeptTree'
 					})
 					.then((response) => {
-						// this.departmentList = this.departSort(response.data)
-						// this.departmentList = this.addPrefix(this.departmentList)
-						 this.departmentList = response.data.retData;
+						this.departmentList = response.data.retData;
+						//this.departmentList = this.addPrefix(this.departmentList)
 					})
 					.catch((error) => {
 						console.log(error)
 					})
-			},
-	
+			}
 		},
 		created() {
 			this.getDepartment()
 		},
+		watch: {
+			departId: function(newValue, oldValue) {
+				console.log(newValue + "#" + oldValue);
+			},
+			deptObj: function(newValue, oldValue) {
+				console.log(newValue + "#" + oldValue);
+			},
+			deptId: function(newValue, oldValue) {
+				this.departId = newValue;
+				console.log(newValue + "#" + oldValue);
+			}
+		}
 	}
 </script>
 

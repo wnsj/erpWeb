@@ -3,7 +3,7 @@
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 			<div class="table-responsive">
 				<div class="col-lg-8 mtr_a"> <span>部门：</span> <span class="com-sel">
-						<depart></depart>
+						<depart @departChange='departChange'></depart>
 					</span> <span>时间：</span> <span>
 						<input type="date" value="" v-model="beginDate"/>
 					</span> <span>&nbsp;&nbsp;&nbsp;至：</span> <span>
@@ -11,7 +11,7 @@
 					</span> <span class="search">
 						<button class="btn btn-primary">导出</button>
 					</span> <span class="search">
-						<button class="btn btn-warning">查询</button>
+						<button class="btn btn-warning" v-on:click="getCountKqTableList()">查询</button>
 					</span> </div>
 				<div class="col-lg-11 mtr_a"> <span>姓名：</span> <span>
 						<input type="text" value="" id="" v-model="name"/>
@@ -62,6 +62,11 @@
 			};
 		},
 		methods:{
+			//获取部门名字和id
+			departChange: function(departId, departName) {
+				this.departId = departId
+				this.departName = departName
+			},
 			//考勤统计报表
 			async getCountKqTableList() {
 				// var url= 'http://172.16.2.40:8080/Erp1.1/search/testList'
@@ -79,8 +84,8 @@
 						departId:this.departId,
 						name: this.name,
 						jobNum: this.jobNum,
-						startDate: this.beginDate,
-						endDate: this.endDate,
+						beginDate: this.beginDate,
+						endDate: this.getYYYYMMDDHHMMSS_24(this.endDate),
 					},
 					dataType: 'json',
 				}).then((response) => {
@@ -103,7 +108,7 @@
 			},
 		},
 		created(){
-			// this.getCountKqTableList()
+			this.getCountKqTableList()
 		}
 	}
 </script>

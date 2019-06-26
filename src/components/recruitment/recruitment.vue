@@ -36,7 +36,7 @@
 
 </script>
 
-<style>
+<style scoped>
   @-moz-document url-prefix(){fieldset{display: table-cell;}}.user-container{background-color: #fff;width: 100%;padding: 0 20px;}
   .container_recruit{padding-bottom: 10px;border-bottom: 1px solid #ccc;}
   #myTab{float: left;margin-top: 20px;}

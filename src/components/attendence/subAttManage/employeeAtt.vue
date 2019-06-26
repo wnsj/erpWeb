@@ -3,9 +3,9 @@
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 			<div class="table-responsive">
 				<div class="col-lg-10 mtr_a"> <span>部门：</span> <span class="com-sel">
-						<depart></depart>
+						<depart @departChange='departChange'></depart>
 					</span> <span>职位：</span> <span class="com-sel">
-						<position></position>
+						<position @positionChange='positionChange'></position>
 					</span> <span>姓名：</span> <span>
 						<input type="text" value="" id="" v-model='name' />
 					</span> <span>工号：</span> <span>
@@ -47,13 +47,12 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="(item,index) in ryKqList" :key="index" v-if="(departId == '0' && positionName == '0') || (departId == '0' && item.positionName  == positionName) 
-				||(item.departId == departId && positionName == '0') || (item.departId == departId && item.positionName  == positionName) "
+						<tr v-for="(item,index) in ryKqList" :key="index"
 						 @dblclick="showSearchRYKQInfo(item)">
 							<td>{{item.ryKQName}}</td>
 							<td>{{item.ryJobNum}}</td>
 							<td>{{item.ryDepartKQName}}</td>
-							<td>{{item.positionName}}</td>
+							<td>{{item.ryPositionKQName}}</td>
 							<td>{{item.ryOnNomalPA}}</td>
 							<td>{{item.ryDownNomalPA}}</td>
 							<td>{{item.ryLaterTimes}}</td>
@@ -95,24 +94,36 @@
 			};
 		},
 		methods:{
+			//获取部门名字和id
+			departChange: function(departId, departName) {
+				this.departId = departId
+				this.departName = departName
+			},
+			positionChange:function(positionId,positionName){
+				this.positionName = positionName
+			},
 			//人员考勤汇总
 			searchRYKQInfo: function(param) {
 				var departName, pName
-				if (this.departId == 0) {
-					departName = ''
-				} else {
-					departName = this.exchangeDepartName(this.departId)
+				if(param=='0'){
+					this.$children[0].departId='0'
+					this.$children[1].positionId='0'
+					this.name=''
+					this.jobNum=''
+				}else{
+					if (this.departId == 0) {
+						departName = ''
+					} else {
+						departName = this.departName
+					}
+					
+					if (this.positionName == "0") {
+						pName = ''
+					}else{
+						pName=this.positionName
+					}
 				}
-				
-				if (this.positionName == "0") {
-					pName = ''
-				}
-				if (param == '0') {
-					departName = ''
-					pName = ''
-				}
-			
-			
+				console.log('searchRYKQInfo--departName:'+this.departName+'positionName:'+this.positionName)
 				var url = this.url + '/kqgl/ryKQList'
 			
 				axios({
@@ -127,17 +138,23 @@
 						positionName: pName,
 						name: this.name,
 						jobNum: this.jobNum,
-						beginData: this.beginDate + ' ' + '00:00:00.000',
-						endData: this.endData + ' ' + '23:59:59.000',
+						beginDate: this.beginDate,
+						endDate: this.getYYYYMMDDHHMMSS_24(this.endData),
 					},
 					dataType: 'json',
 				}).then((response) => {
-					console.log('searchKQInfo')
-					//console.log(data.data)
-					if (response.data.length > 0) {
-						alert(response.data.length)
-						this.ryKqList = response.data
-						console.log(this.ryKqList)
+					var res = response.data
+					console.log('ryKqList')
+					if (res.retCode == '0000') {
+						console.log('ryKqList')
+						if (res.resData.length > 0) {
+							console.log('ryKqList-length:'+res.resData.length)
+							this.ryKqList = res.resData
+						} else {
+							alert('没有查询到相关数据')
+						}
+					} else {
+						alert(res.retMsg)
 					}
 				}).catch((error) => {
 					console.log('请求失败')
@@ -161,22 +178,29 @@
 						positionName: "",
 						name: "",
 						jobNum: "",
-						beginData: this.beginDate,
-						endData: this.endData,
+						beginDate: this.beginDate,
+						endDate: this.getYYYYMMDDHHMMSS_24(this.endData),
 					},
 					dataType: 'json',
 				}).then((response) => {
-					console.log('getRyKqList')
-					this.ryKqList = response.data
-					//console.log(data.data)
-					// alert(employeeList)
+					var res = response.data
+					if (res.retCode == '0000') {
+						if (res.resData.length > 0) {
+							console.log('ryKqList-length:'+res.resData.length)
+							this.ryKqList = res.resData
+						} else {
+							alert('没有查询到相关数据')
+						}
+					} else {
+						alert(res.retMsg)
+					}
 				}).catch((error) => {
 					console.log('请求失败')
 				});
 			},
 		},
 		created(){
-			// this.getRyKqList()
+			this.getRyKqList()
 		}
 	}
 </script>

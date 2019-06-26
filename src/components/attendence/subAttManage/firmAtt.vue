@@ -5,7 +5,7 @@
 					<div class="col-lg-9 mtr_a"> <span>部门：</span> <span class="com-sel">
 							<depart :departName="departName" :departId="departId" @departChange='departChange'></depart>
 						</span> <span>职位：</span> <span class="com-sel">
-							<position></position>
+							<position @positionChange='positionChange'></position>
 						</span> <span>姓名：</span> <span>
 							<input type="text" value="" class="form-control" v-model="kquName" />
 						</span> <span>工号：</span> <span>
@@ -43,7 +43,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="(item,index) in kquList" :key="index" v-if="(departId == '0' && positionName == '0') || (departId == '0' && item.positionName  == positionName) ||(item.departId == departId && positionName == '0') || (item.departId == departId && item.positionName  == positionName) ">
+							<tr v-for="(item,index) in kquList" :key="index">
 								<td>{{item.name}}</td>
 								<td>{{item.jobNum}}</td>
 								<td>{{item.departname}}</td>
@@ -78,8 +78,8 @@
 			return {
 				departId:'0',
 				departName:'0',
-				firmStartDate:this.getCurrentDay,
-				firmEndDate:this.getCurrentDay,
+				firmStartDate:timeInit(''),
+				firmEndDate:timeInit(''),
 				positionName:'0',
 				kquName:'',
 				kquJobNum:'',
@@ -91,6 +91,10 @@
 			departChange: function(departId, departName) {
 				this.departId = departId
 				this.departName = departName
+			},
+			positionChange:function(positionId,positionName){
+				
+				this.positionName = positionName
 			},
 			searchKQInfo:function() {
 			
@@ -120,20 +124,30 @@
 						name: this.kquName,
 						jobNum: this.kquJobNum,
 						beginDate: this.firmStartDate,
-						endDate: this.firmEndDate,
+						endDate: this.getYYYYMMDDHHMMSS_24(this.firmEndDate),
 					},
 					dataType: 'json',
 				}).then((response) => {
-					console.log('searchKQInfo')
-					console.log(response.data)
-					
+					var res = response.data
+					console.log('getKqList')
+					if (res.retCode == '0000') {
+						console.log('getKqList')
+						if (res.resData.length > 0) {
+							console.log('getKqList-length:'+res.resData.length)
+							this.kquList = res.resData
+						} else {
+							alert('没有查询到相关数据')
+						}
+					} else {
+						alert(res.retMsg)
+					}
 				}).catch((error) => {
 					console.log('请求失败')
 				});
 			},
 			//获取公司全部考勤
 			async getKqList() {
-				
+			
 				var url = this.url + '/kqgl/allKQBaseInfo'
 				
 				axios({
@@ -153,9 +167,17 @@
 					},
 					dataType: 'json',
 				}).then((response) => {
-					console.log('getKqList')
-					this.kquList = response.data
-					console.log(this.kquList)
+					var res = response.data
+					if (res.retCode == '0000') {
+						if (res.resData.length > 0) {
+							console.log('getKqList-length:'+res.resData.length)
+							this.kquList = res.resData
+						} else {
+							alert('没有查询到相关数据')
+						}
+					} else {
+						alert(res.retMsg)
+					}
 				}).catch((error) => {
 					console.log('请求失败')
 				});
