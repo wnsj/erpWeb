@@ -15,15 +15,15 @@
 							离职人员分析表
 						</div>
 						<ul class="panel-condition">
-							<li>
+							<!-- 	<li>
 								<span class="countdate">部门：</span>
 								<department ref='department' @departChange='departChange'></department>
 							</li>
 							<li>
 								<span class="countdate">职位：</span>
 								<position :positionId="positionId" @positionChange='getEditPositionId'></position>
-							</li>
-
+							</li> -->
+							<departLinkPosition @departChange='departChange' @positionChange='getEditPositionId'></departLinkPosition>
 							<li>
 								<span class="countdate">统计日期：</span>
 								<input type="date" class="form-control" v-model="begDate">
@@ -43,6 +43,7 @@
 										<caption>工龄分析</caption>
 										<tbody>
 											<tr>
+												<td>未转正</td>
 												<td>1-3月</td>
 												<td>4-6月</td>
 												<td>7月-1年</td>
@@ -52,6 +53,7 @@
 												<td>平均工龄</td>
 											</tr>
 											<tr>
+												<td>{{separation.work.noCorrection}}</td>
 												<td>{{separation.work.oneThreeCount}}</td>
 												<td>{{separation.work.fourSixCount}}</td>
 												<td>{{separation.work.sevenCount}}</td>
@@ -61,6 +63,7 @@
 												<td>{{separation.work.avgWorkCount}}</td>
 											</tr>
 											<tr>
+												<td>{{separation.work.noCorrectionMix}}</td>
 												<td>{{separation.work.oneThreeMix}}</td>
 												<td>{{separation.work.fourSixMix}}</td>
 												<td>{{separation.work.sevenMix}}</td>
@@ -132,12 +135,11 @@
 												<td>离职类型</td>
 											</tr>
 											<tr v-for="(item,index) in separation.resignation" :key="index">
-												<td>{{item.positionName}}</td>
-												<td>{{item.resignation}}</td>
-												<td></td>
-												<td>{{item.resignType}}</td>
+												<td>{{item.POSITION_NAME}}</td>
+												<td>{{item.outEmpCount}}</td>
+												<td>{{item.RATE}}</td>
+												<td>{{item.outPosType}}</td>
 											</tr>
-
 										</tbody>
 									</table>
 								</div>
@@ -154,8 +156,11 @@
 												<td colspan="2">组长岗位</td>
 												<td colspan="2">主管岗位</td>
 												<td colspan="2">部长岗位</td>
+												<td colspan="2">主力岗位</td>
 											</tr>
 											<tr>
+												<td>人数</td>
+												<td>比例</td>
 												<td>人数</td>
 												<td>比例</td>
 												<td>人数</td>
@@ -183,6 +188,8 @@
 												<td>{{separation.zhuGuanGangWei.positionTypeMix}}</td>
 												<td>{{separation.buZhangZongJian.positionTypeCount}}</td>
 												<td>{{separation.buZhangZongJian.positionTypeMix}}</td>
+												<td>{{separation.zhuLiGangWei.positionTypeCount}}</td>
+												<td>{{separation.zhuLiGangWei.positionTypeMix}}</td>
 											</tr>
 										</tbody>
 									</table>
@@ -202,61 +209,56 @@
 
 <script>
 	import axios from 'axios'
-	import department from '../vuecommon/department.vue'
-	import position from '../vuecommon/position.vue'
-
+	import departLinkPosition from '../vuecommon/departLinkPosition.vue'
 
 	export default {
-		name: 'employee',
+		name: 'separation',
 		components: {
-			department,
-			position,
-
+			departLinkPosition
 		},
 		data() {
 			return {
 				// 员工职位列表
 				positionList: [],
-
-
 				begDate: this.getCurrentDay,
 				endDate: this.getCurrentDay,
 				newRecruitDepartmentId: '',
-				positionId: '',
 				upRecruitPositionId: '',
-
-
-				separation: {},
+				separation: {
+					sumCount: '', //总数
+					education: {}, //教育列表
+					work: {}, //工作
+					sex: {}, //性别
+					age: {}, //年龄
+					zhuGuanGangWei: {}, //主管岗位
+					teShuPuGang: {}, //特殊普岗
+					zuZhangGangWei: {}, //组长普岗
+					buZhangZongJian: {}, //部长总监
+					zhuLiGangWei: {}, //主力岗位
+					jiChuPuGang: {}, //基础普岗
+					ziShenGangWei: {} //资深岗位
+				},
 			}
 		},
 
 		mounted() {
 			const s = document.createElement('script');
 			s.type = 'text/javascript';
-			s.src = '../../static/js/copyexcel.js';
+			s.src = '@/../static/js/copyexcel.js';
 			document.body.appendChild(s);
 		},
 		methods: {
-
 			//获取部门名字和id
 			departChange(departId) {
-				this.recruitDepartmentId = departId
-				this.newRecruitDepartmentId = departId
-			},
-			getAddDepartId(departId) {
-				this.newRecruitDepartmentId = departId
-			},
-			getEditDepartId(departId) {
-				this.upRecruitDepartmentId = departId
+				this.newRecruitDepartmentId = departId == 0 ? '' : departId;
+				this.upRecruitPositionId = '';
 			},
 			// 职位
 			getEditPositionId(positionId) {
-				this.upRecruitPositionId = positionId
+				this.upRecruitPositionId = positionId == 0 ? '' : positionId; 
 			},
-
 			//查询在职分析
 			querySeparation() {
-
 				axios({
 					method: 'post',
 					url: this.url + '/ryxxlController/queryLzryReport',

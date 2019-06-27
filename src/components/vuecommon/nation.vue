@@ -18,7 +18,7 @@
 		methods:{
 			//提交民族名称和ID
 			nationChange: function() {
-				alert(this.nationName)
+				// alert(this.nationName)
 				this.$emit('nationChange',this.nationName)
 			},
 			
@@ -28,7 +28,7 @@
 			
 				axios.get(url).then((response) => {
 						this.nationList = response.data
-						console.log(response.data)
+						// console.log(response.data)
 					})
 					.catch((error) => {
 						console.log(error)

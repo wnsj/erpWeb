@@ -1,3 +1,4 @@
+<!-- author:dingdong -->
 <template>
   <div class="container user-container" id="recruitplan-app" v-cloak>
     <div class="row">
@@ -69,10 +70,10 @@
                 <th class="text-center">缺编人数</th>
                 <th class="text-center">计划招聘人数</th>
                 <th class="text-center">邀约人数</th>
+                <th class="text-center">编辑</th>
                 <th class="text-center">点击完成</th>
                 <th class="text-center">点击撤销</th>
-                <th class="text-center">编辑</th>
-                <th class="text-center">删除</th>
+                <!-- <th class="text-center">删除</th> -->
               </tr>
             </thead>
             <tbody>
@@ -83,6 +84,7 @@
                 <td class="text-center">{{item.lackNum}}</td>
                 <td class="text-center">{{item.planNum}}</td>
                 <td class="text-center">{{item.phoneNum}}</td>
+                <td><center><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#planEdit" @click="getEditInfo(item)">编辑</button></center></td>
                 <td class="text-center">
                   <button type="button" 
                     :class="item.isYes==1?'btn btn-sm btn-success':'btn btn-sm btn-info'" 
@@ -97,8 +99,6 @@
                     {{item.isBack==1?'已撤销':'点击撤销'}}
                   </button>
                 </td>
-                <td><center><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#planEdit" @click="getEditInfo(item)">编辑</button></center></td>
-                <td><center><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#planDelete" @click="getDelId(item)">删除</button></center></td>
               </tr>
             </tbody>
           </table>
@@ -223,26 +223,6 @@
           <div class="modal-footer">
             <div class="col-md-12">
               <button type="button" class="btn btn-warning" @click="editRecruitPlan">确认</button>
-              <button type="button" data-dismiss="modal" class="btn btn-info">返回</button>
-            </div>
-          </div> <!-- /.modal-footer -->
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    <!-- 删除 -->
-    <div class="modal fade bs-example-modal-sm" id="planDelete" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-      <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">提示</h4>
-          </div>
-          <div class="modal-body">
-            <div>确定删除这条招聘计划么？ID为：{{planId}}</div>
-          </div>
-          <div class="modal-footer">
-            <div class="col-md-12">
-              <button type="button" class="btn btn-danger" @click="deleteRecruitPlan">确认</button>
               <button type="button" data-dismiss="modal" class="btn btn-info">返回</button>
             </div>
           </div> <!-- /.modal-footer -->
@@ -393,12 +373,12 @@
           console.log('请求失败处理')
         });
         this.deptAddId = '0',
-          this.positionAddId = '0',
-          this.planAddDate = this.getCurrentDay,
-          this.lackAddNum = 0,
-          this.planAddNum = 0,
-          this.phoneAddNum = 0,
-          $('#planAdd').modal('hide');
+        this.positionAddId = '0',
+        this.planAddDate = this.getCurrentDay,
+        this.lackAddNum = 0,
+        this.planAddNum = 0,
+        this.phoneAddNum = 0,
+        $('#planAdd').modal('hide');
       },
 
       // ---------------------------------------编辑----------------------------------
@@ -475,76 +455,61 @@
         $('#planEdit').modal('hide');
       },
       changeIsYes(item){
-          console.log("planId:" + item.planId)
-          axios({
-            method: 'post',
-            url: this.url + '/zpglController/updateZpPlan',
-            headers: {
-              'Content-Type': this.contentType,
-              'Access-Token': this.accessToken
-            },
-            data: {
-              planId: item.planId,
-              isYes: '1'
-            },
-            dataType: 'json',
-          }).then((response) => {
-            this.queryRecruitPlan()
-            console.log("修改状态成功")
-          }).catch((error) => {
-            console.log('请求失败处理')
-          });
+          const msg = "您真的确定要完成吗?";
+          if (confirm(msg)==true){
+            axios({
+              method: 'post',
+              url: this.url + '/zpglController/updateZpPlan',
+              headers: {
+                'Content-Type': this.contentType,
+                'Access-Token': this.accessToken
+              },
+              data: {
+                planId: item.planId,
+                isYes: '1'
+              },
+              dataType: 'json',
+            }).then((response) => {
+              this.queryRecruitPlan()
+              return true;
+              console.log("修改状态成功")
+            }).catch((error) => {
+              return false;
+              console.log('请求失败处理')
+            });
+          }else{
+            return false;
+          }
        },
        changeIsBack(item){
-          axios({
-            method: 'post',
-            url: this.url + '/zpglController/updateZpPlan',
-            headers: {
-              'Content-Type': this.contentType,
-              'Access-Token': this.accessToken
-            },
-            data: {
-              planId: item.planId,
-              isBack: '1'
-            },
-            dataType: 'json',
-          }).then((response) => {
-            this.queryRecruitPlan()
-            console.log("修改状态成功")
-          }).catch((error) => {
-            console.log('请求失败处理')
-          });
+          const msg = "您真的确定要注销吗?一旦注销无法恢复!";
+          if (confirm(msg)==true){
+            axios({
+              method: 'post',
+              url: this.url + '/zpglController/updateZpPlan',
+              headers: {
+                'Content-Type': this.contentType,
+                'Access-Token': this.accessToken
+              },
+              data: {
+                planId: item.planId,
+                isBack: '1'
+              },
+              dataType: 'json',
+            }).then((response) => {
+              this.queryRecruitPlan()
+              return true;
+              console.log("修改状态成功")
+            }).catch((error) => {
+              return false;
+              console.log('请求失败处理')
+            });
+          }else{
+            return false;
+          }
        },
-
-      // ---------------------------------------删除----------------------------------
-      
-      getDelId(item){
-        this.planId = item.planId
-      },
-      deleteRecruitPlan(){    //删除招聘信息
-        axios({
-          method: 'post',
-          url:this.url+'/zpglController/deleteZpPlan',
-          headers:{
-            'Content-Type':this.contentType,
-            'Access-Token':this.accessToken
-          },
-          data:{
-            id:this.planId,
-          },
-          dataType:'json',
-        }).then((response) => {
-          this.queryRecruitPlan()
-          console.log('删除成功')
-        }).catch((error) => {
-          console.log('请求失败处理')
-        });
-        this.planId = ''
-        $('#planDelete').modal('hide');
-      },
     }
   }
-
 </script>
 
 <style>
