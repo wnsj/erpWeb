@@ -59,12 +59,56 @@
 </template>
 
 <script>
+	import axios from 'axios'
 	export default {
 		data() {
 			return {
 				departSingleKqList:[],
 			};
+		},
+		methods:{
+			//单个部门人员考勤信息
+			singleDepartAttend(param){
+				 console.log('param:'+param)
+				 $("#myDepartmentAttendance").modal('show')
+				 var url = this.url + '/kqgl/searchKQInfo'
+				 axios({
+				 	method: 'post',
+				 	url: url,
+				 	headers: {
+				 		'Content-Type': this.contentType,
+				 		'Access-Token': this.accessToken
+				 	},
+				 	data: {
+						departName: param.departName,
+						positionName: '',
+						name: '',
+						jobNum: '',
+						beginDate: param.beginDate,
+						endDate: this.getYYYYMMDDHHMMSS_24(param.endDate)
+				 	},
+				 	dataType: 'json',
+				 }).then((response) => {
+					 var res = response.data
+					 console.log('departSingleKqList')
+					 if (res.retCode == '0000') {
+					 	console.log('departSingleKqList')
+					 	if (res.resData.length > 0) {
+					 		console.log('departSingleKqList-length:'+res.resData.length)
+					 		this.departSingleKqList = res.resData
+							console.log('departSingleKqList'+this.departSingleKqList)
+					 	} else {
+					 		alert('没有查询到相关数据')
+					 	}
+					 } else {
+					 	alert(res.retMsg)
+					 }
+				 }).catch((error) => {
+				 	console.log('请求失败')
+				 });
+			},
 		}
+		
 	}
 </script>
 

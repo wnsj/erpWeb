@@ -20,7 +20,7 @@
 				<div class="col-lg-11 mtr_a"> <span>时间：</span> <span>
 						<input type="date" value="" v-model="beginDate" />
 					</span> <span>&nbsp;&nbsp;&nbsp;至：</span> <span>
-						<input type="date" value="" v-model="endData" />
+						<input type="date" value="" v-model="endDate" />
 					</span> </div>
 				<div class="col-lg-11 mtr_a"> <span>注：</span> <span style="color:#FF0000; margin-right:10px;">旷工</span> <span
 					 style="color:#CD853F; margin-right:10px;">迟到</span> <span style="color:#000000; margin-right:10px;">正常</span>
@@ -67,6 +67,7 @@
 				</table>
 			</div>
 		</div>
+		<singleEmp></singleEmp>
 	</div>
 	
 </template>
@@ -76,10 +77,12 @@
 	import {timeInit} from '../../../assets/js/date.js'
 	import depart from '../../vuecommon/department.vue'
 	import position from '../../vuecommon/position.vue'
+	import singleEmp from './singleEmployeeAtt.vue'
 	export default {
 		components:{
 			depart,
-			position
+			position,
+			singleEmp
 		},
 		data() {
 			return {
@@ -89,7 +92,7 @@
 				name:'',
 				jobNum:'',
 				beginDate:timeInit(''),
-				endData:timeInit(''),
+				endDate:timeInit(''),
 				ryKqList:[],
 			};
 		},
@@ -102,6 +105,15 @@
 			positionChange:function(positionId,positionName){
 				this.positionName = positionName
 			},
+			//展示人员列表中单个人员的考勤情况
+			showSearchRYKQInfo:function (param){
+				param.begDate=this.beginDate
+				param.endData=this.endDate
+				this.$children[2].showSearchRYKQInfo(param)
+				$("#myPersonalAttendance").modal('show')
+				
+			},
+			
 			//人员考勤汇总
 			searchRYKQInfo: function(param) {
 				var departName, pName
@@ -163,9 +175,7 @@
 			//获取人员考勤
 			async getRyKqList() {
 			
-				// var url= 'http://172.16.2.40:8080/Erp1.1/search/testList'
 				var url = this.url + '/kqgl/ryKQList'
-				// alert(url)
 				axios({
 					method: 'post',
 					url: url,
@@ -179,7 +189,7 @@
 						name: "",
 						jobNum: "",
 						beginDate: this.beginDate,
-						endDate: this.getYYYYMMDDHHMMSS_24(this.endData),
+						endDate: this.getYYYYMMDDHHMMSS_24(this.endDate),
 					},
 					dataType: 'json',
 				}).then((response) => {

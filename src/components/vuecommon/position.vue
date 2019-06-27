@@ -49,7 +49,6 @@
         for (var i = 0; i < this.positionList.length; i++) {
           res = this.positionList[i]
           if (res.positionId == param) {
-						console.log('positionName-4'+res.positionName)
             return res.positionName
           }
         }
@@ -59,9 +58,7 @@
         var url = this.url + '/search/positionList'
 
         axios.get(url).then((response) => {
-					console.log('getPosition')
           this.positionList = response.data
-          console.log(response.data)
         })
           .catch((error) => {
             console.log(error)
