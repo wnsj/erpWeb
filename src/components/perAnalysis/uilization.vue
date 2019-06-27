@@ -19,7 +19,7 @@
 					<ul class="panel-condition">
 						<li>
 							<span class="countdate">部门：</span>
-							<department  @departChange='departChange'></department>
+							<department @departChange='departChange'></department>
 						</li>
 
 						<li>
@@ -42,14 +42,13 @@
 						</li>
 
 						<button class="btn btn-default" @click="queryUlilization">查询</button>
-						<button class="btn btn-default">导出</button>
+						<button class="btn btn-default" @click="dowmelxe('人力资源利用率分析表')">导出</button>
 					</ul>
 
 					<div class="panel-body">
 						<div class="table-responsive">
 							<div class="col-md-12">
 								<table id="table_zz_01" class="table table-bordered context-menu-one">
-
 									<tbody>
 										<tr>
 											<td rowspan="2">部门</td>
@@ -70,16 +69,26 @@
 										</tr>
 										<tr v-for="(item,index) in ziYuan" :key="index">
 											<td v-html="item.preFixName">{{item.preFixName}}</td>
-											<td>{{item.jinSheng}}</td><!-- 总人数 -->
-											<td>{{item.dismiss}}</td><!-- 小计 -->
-											<td>{{item.change}}</td><!-- 系统打卡天数 -->
-											<td>{{item.jiangZhi}}</td><!-- 未打卡增加天数 -->
-											<td>{{item.resignation}}</td><!--本月天数 -->
-											<td>{{item.avgCount}}</td><!--月均出勤天数 -->
-											<td>{{item.diaoRu}}</td><!--合理缺勤天数 -->
-											<td>{{item.count}}</td><!--合理缺勤人数 -->
-											<td>{{item.sumCount}}</td><!--超出缺勤人数 -->
-											<td>{{item.quitMix}}</td><!-- 未利用人力资源 -->
+											<!-- 总人数 -->
+											<td>{{item.jinSheng}}</td>
+											<!-- 小计 -->
+											<td>{{item.dismiss}}</td>
+											<!-- 系统打卡天数 -->
+											<td>{{item.change}}</td>
+											<!-- 未打卡增加天数 -->
+											<td>{{item.jiangZhi}}</td>
+											<!--本月天数 -->
+											<td>{{item.resignation}}</td>
+											<!--月均出勤天数 -->
+											<td>{{item.avgCount}}</td>
+											<!--合理缺勤天数 -->
+											<td>{{item.diaoRu}}</td>
+											<!--合理缺勤人数 -->
+											<td>{{item.count}}</td>
+											<!--超出缺勤人数 -->
+											<td>{{item.sumCount}}</td>
+											<!-- 未利用人力资源 -->
+											<td>{{item.quitMix}}</td>
 											<td v-if="item.jinSheng > 0 && item.changeMix < 90" style="color: red;">{{item.changeMix}}%</td><!-- 人力资源利用率 -->
 											<td v-else>{{item.changeMix}}%</td>
 										</tr>
@@ -103,6 +112,7 @@
 
 <script>
 	import axios from 'axios'
+	import {export_table_to_excel} from '@/../static/excel/Export2Excel.js'
 	import department from '../vuecommon/department.vue'
 
 	export default {
@@ -152,6 +162,13 @@
 					console.log('请求失败处理')
 				});
 			},
+			dowmelxe: function(name) {
+				var myDate = new Date();
+				var year = myDate.getFullYear();
+				var month = myDate.getMonth() + 1;
+				var date = myDate.getDate();
+				export_table_to_excel('table_zz_01',name+'_'+year+'_'+month+'_'+date);
+			}
 		},
 		created() {
 			this.queryUlilization()
