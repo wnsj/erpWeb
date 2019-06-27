@@ -37,13 +37,13 @@
 			departChange: function(departId, departName) {
 				this.departLinkChange(departId)
 				this.$emit('departChange',departId,departName)
+				this.positionId='0'
 			},
 			positionChange:function(){
 				this.$emit('positionChange',this.positionId)
 			},
 			//岗位随部门ID联动
 			departLinkChange(departId) {
-				console.log('p-d-l-p:'+departId)
 				var url = this.url + "/kqParamSetContr/queryDepartmentPosition";
 				axios({
 						method:"post",

@@ -43,6 +43,9 @@ $(document).ready(function() {
 	$(menuArray[0]).on("click", function() {
 		$(secondMenuArray[0]).slideToggle();
 	})
+	$(menuArray[1]).on("click", function() {
+		$(secondMenuArray[1]).slideToggle();
+	})
 
 	$(secondMenuItems[0]).on("click", function() {
 		commonIframe.attr({

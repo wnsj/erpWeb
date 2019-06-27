@@ -12,6 +12,7 @@ import {getCurrentMonthLast} from '../src/assets/js/date.js'
 import {timeInit} from '../src/assets/js/date.js'
 import {isBlank} from '../src/assets/js/constant.js'
 import {jsGetAge} from '../src/assets/js/date.js'
+import {getYYYYMMDDHHMMSS_24} from '../src/assets/js/date.js'
 
 
 
