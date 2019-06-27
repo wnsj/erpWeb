@@ -136,7 +136,7 @@
 		mounted() {
 			const s = document.createElement('script');
 			s.type = 'text/javascript';
-			s.src = '../../static/js/copyexcel.js';
+			s.src = '@/../static/js/copyexcel.js';
 			document.body.appendChild(s);
 		},
 		methods: {
