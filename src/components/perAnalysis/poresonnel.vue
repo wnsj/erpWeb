@@ -231,9 +231,7 @@
 	import axios from 'axios'
 	import $ from 'jquery'
 	import department from '../vuecommon/department.vue'
-	import {
-		timeInit
-	} from '../../assets/js/date.js'
+
 	/**
 	 * 这个导入路径没有提示。按照自己的路径写，按提示可能不能实现，具体原因不详
 	 */

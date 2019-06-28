@@ -1,5 +1,4 @@
 <template>
-
 	<div id="page-inner">
 		<div class="row">
 			<div class="col-md-12 col-lg-12 main-title">
@@ -112,7 +111,9 @@
 
 <script>
 	import axios from 'axios'
-	import {export_table_to_excel} from '@/../static/excel/Export2Excel.js'
+	import {
+		exportTableToExcel
+	} from 'vendor/Export2Excel.js'
 	import department from '../vuecommon/department.vue'
 
 	export default {
@@ -167,7 +168,12 @@
 				var year = myDate.getFullYear();
 				var month = myDate.getMonth() + 1;
 				var date = myDate.getDate();
-				export_table_to_excel('table_zz_01',name+'_'+year+'_'+month+'_'+date);
+				exportTableToExcel('table_zz_01',name+'_'+year+'_'+month+'_'+date);
+			},
+			formatJson(filterVal, jsonData) {
+				return jsonData.map(v => filterVal.map(j => {
+					return v[j]
+				}))
 			}
 		},
 		created() {

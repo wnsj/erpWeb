@@ -9,9 +9,9 @@
 					</span> <span>&nbsp;&nbsp;&nbsp;至：</span> <span>
 						<input type="date" value="" v-model="endDate"/>
 					</span> <span class="search">
-						<button class="btn btn-primary">导出</button>
-					</span> <span class="search">
 						<button class="btn btn-warning" v-on:click="getCountKqTableList()">查询</button>
+					</span> <span class="search">
+						<button class="btn btn-primary" @click="exportTableToExcel('attCountTableTB','考勤统计报表')">导出</button>
 					</span> </div>
 				<div class="col-lg-11 mtr_a"> <span>姓名：</span> <span>
 						<input type="text" value="" id="" v-model="name"/>
@@ -20,7 +20,7 @@
 					</span> </div>
 				<div class="col-lg-11 mtr_a"> <span>注：</span> <span style="color:#000000; margin-right:10px;">正常</span> <span
 					 style="color:#00FFFF; margin-right:10px;">其他</span> </div>
-				<table class="table table-bordered table-hover">
+				<table class="table table-bordered table-hover" id="attCountTableTB">
 					<thead>
 						<tr>
 							<th class="text-center">部门</th>

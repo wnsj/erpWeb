@@ -35,6 +35,7 @@
 							</select>
 						</li>
 						<button class="btn btn-default" @click="queryAbnormalPlan()">查询</button>
+						<button class="btn btn-default" @click="dowmelxe('人力资源异动分析表')">导出</button>
 					</ul>
 
 					<div class="panel-body">
@@ -125,8 +126,8 @@
 	import axios from 'axios'
 	import department from '../vuecommon/department.vue'
 	import {
-		timeInit
-	} from '../../assets/js/date.js'
+		exportTableToExcel
+	} from 'vendor/Export2Excel.js'
 	/**
 	 * 这个导入路径没有提示。按照自己的路径写，按提示可能不能实现，具体原因不详
 	 */
@@ -141,7 +142,7 @@
 				level: 1,
 				datastatistics: this.getCurrentDay,
 				outEmp: [],
-				recruitDepartmentId:''
+				recruitDepartmentId: ''
 			}
 		},
 		mounted() {
@@ -155,7 +156,7 @@
 			getDeptObj(dept) {
 				if (this.isBlank(dept.level)) {
 					this.level = 1;
-				}else{
+				} else {
 					this.level = dept.level;
 				}
 				this.recruitDepartmentId = dept.id == '0' ? '' : dept.id;
@@ -170,7 +171,7 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
-						deptId:this.recruitDepartmentId,
+						deptId: this.recruitDepartmentId,
 						begDate: this.datastatistics,
 						level: this.level,
 					},
@@ -185,6 +186,13 @@
 					console.log('请求失败处理')
 				});
 			},
+			dowmelxe: function(name) {
+				var myDate = new Date();
+				var year = myDate.getFullYear();
+				var month = myDate.getMonth() + 1;
+				var date = myDate.getDate();
+				exportTableToExcel('table_yd_01', name + '_' + year + '_' + month + '_' + date);
+			}
 		},
 		created() {
 			this.queryAbnormalPlan()

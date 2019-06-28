@@ -1,5 +1,4 @@
 <template>
-
 	<div id="page-wrapper">
 		<div id="page-inner">
 			<div class="row">
@@ -23,7 +22,9 @@
 								<span class="countdate">职位：</span>
 								<position :positionId="positionId" @positionChange='getEditPositionId'></position>
 							</li> -->
+
 							<departLinkPosition @departChange='departChange' @positionChange='getEditPositionId'></departLinkPosition>
+
 							<li>
 								<span class="countdate">统计日期：</span>
 								<input type="date" class="form-control" v-model="begDate">
@@ -255,7 +256,7 @@
 			},
 			// 职位
 			getEditPositionId(positionId) {
-				this.upRecruitPositionId = positionId == 0 ? '' : positionId; 
+				this.upRecruitPositionId = positionId == 0 ? '' : positionId;
 			},
 			//查询在职分析
 			querySeparation() {
@@ -280,8 +281,7 @@
 				}).catch((error) => {
 					console.log('请求失败处理')
 				});
-			},
-
+			}
 		},
 		created() {
 			this.querySeparation()

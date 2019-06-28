@@ -53,7 +53,7 @@
 				</div>
 			</div>
 			<div style="padding-right:1.5%;">
-				<button type="button" class="btn btn-primary pull-right m_r_10" @click="dowmelxe('人员管理表')">导出</button>
+				<button type="button" class="btn btn-primary pull-right m_r_10" @click="exportTableToExcel('datatable','人员管理表')">导出</button>
 				<button type="button" class="btn btn-primary pull-right m_r_10" data-toggle="modal" data-target="#myModalJoin">员工入职</button>
 				<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" data-target="#myModalFamily">家庭成员</button>
 				<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" data-target="#myModalQuery">高级查询</button>

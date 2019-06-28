@@ -3,6 +3,66 @@ require('script-loader!file-saver');
 require('script-loader!./Blob.js');
 require('script-loader!xlsx/dist/xlsx.core.min');
 
+function Workbook() {
+	if (!(this instanceof Workbook)) return new Workbook();
+	this.SheetNames = [];
+	this.Sheets = {};
+}
+
+function s2ab(s) {
+	var buf = new ArrayBuffer(s.length);
+	var view = new Uint8Array(buf);
+	for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+	return buf;
+}
+
+//将html表格导出到excel（id:导出表格html的id）
+export function exportTableToExcel(id, fileName) {
+	var theTable = document.getElementById(id);
+	var wb = new Workbook();
+	//将表格转成sheet
+	var ws = XLSX.utils.table_to_sheet(theTable);
+
+	var ws_name = "SheetJS";
+	// add worksheet to workbook 
+	wb.SheetNames.push(ws_name);
+	wb.Sheets[ws_name] = ws;
+
+	var wbout = XLSX.write(wb, {
+		bookType: 'xlsx',
+		bookSST: false,
+		type: 'binary'
+	});
+	var title = fileName || 'test';
+	saveAs(new Blob([s2ab(wbout)], {
+		type: "application/octet-stream"
+	}), title + ".xlsx");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 
 function generateArray(table) {
 	var out = [];
 	var rows = table.querySelectorAll('tr');
@@ -101,19 +161,6 @@ function sheet_from_array_of_arrays(data, opts) {
 	return ws;
 }
 
-function Workbook() {
-	if (!(this instanceof Workbook)) return new Workbook();
-	this.SheetNames = [];
-	this.Sheets = {};
-}
-
-function s2ab(s) {
-	var buf = new ArrayBuffer(s.length);
-	var view = new Uint8Array(buf);
-	for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
-	return buf;
-}
-
 export function export_table_to_excel(id, fileName) {
 	if (fileName == null || fileName == '') fileName = 'test';
 	var theTable = document.getElementById(id);
@@ -121,20 +168,19 @@ export function export_table_to_excel(id, fileName) {
 	var oo = generateArray(theTable);
 	var ranges = oo[1];
 
-	/* original data */
+	//original data 
 	var data = oo[0];
 	var ws_name = "SheetJS";
 	console.log(data);
-
 	var wb = new Workbook(),
 		ws = sheet_from_array_of_arrays(data);
-		console.log("ws:"+ws)
+	console.log("ws:" + ws)
 
-	/* add ranges to worksheet */
+	// add ranges to worksheet 
 	// ws['!cols'] = ['apple', 'banan'];
 	ws['!merges'] = ranges;
 
-	/* add worksheet to workbook */
+	//add worksheet to workbook
 	wb.SheetNames.push(ws_name);
 	wb.Sheets[ws_name] = ws;
 
@@ -154,7 +200,7 @@ function formatJson(jsonData) {
 }
 export function export_json_to_excel(th, jsonData, defaultTitle) {
 
-	/* original data */
+	//original data 
 
 	var data = jsonData;
 	data.unshift(th);
@@ -164,7 +210,7 @@ export function export_json_to_excel(th, jsonData, defaultTitle) {
 		ws = sheet_from_array_of_arrays(data);
 
 
-	/* add worksheet to workbook */
+	// add worksheet to workbook
 	wb.SheetNames.push(ws_name);
 	wb.Sheets[ws_name] = ws;
 
@@ -177,4 +223,5 @@ export function export_json_to_excel(th, jsonData, defaultTitle) {
 	saveAs(new Blob([s2ab(wbout)], {
 		type: "application/octet-stream"
 	}), title + ".xlsx")
-}
+} 
+*/
