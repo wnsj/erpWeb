@@ -7,14 +7,17 @@ function generateArray(table) {
 	var out = [];
 	var rows = table.querySelectorAll('tr');
 	var ranges = [];
-	for (var R = 0; R < rows.length; ++R) {
+	for (var R = 0; R < 3; ++R) {
 		var outRow = [];
 		var row = rows[R];
 		var columns = row.querySelectorAll('td');
+		
+		console.log("R:"+R+"  columns:"+columns)
 		for (var C = 0; C < columns.length; ++C) {
 			var cell = columns[C];
 			var colspan = cell.getAttribute('colspan');
 			var rowspan = cell.getAttribute('rowspan');
+			console.log("colspan:"+C+"-"+colspan+"-"+rowspan)
 			var cellValue = cell.innerText;
 			if (cellValue !== "" && cellValue == +cellValue) cellValue = +cellValue;
 
@@ -120,11 +123,10 @@ export function export_table_to_excel(id, fileName) {
 	console.log('a')
 	var oo = generateArray(theTable);
 	var ranges = oo[1];
-
 	/* original data */
 	var data = oo[0];
 	var ws_name = "SheetJS";
-	console.log(data);
+	console.log("00-2:"+data);
 
 	var wb = new Workbook(),
 		ws = sheet_from_array_of_arrays(data);

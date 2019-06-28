@@ -51,21 +51,21 @@
 								<table id="table_zz_01" class="table table-bordered context-menu-one">
 									<tbody>
 										<tr>
-											<td rowspan="2">部门</td>
-											<td rowspan="2">总人数</td>
-											<td colspan="3">总出勤天数</td>
-											<td rowspan="2">本月天数</td>
-											<td rowspan="2">月平均出勤人数</td>
-											<td rowspan="2">排班休假天数</td>
-											<td rowspan="2">合理缺勤人数</td>
-											<td rowspan="2">超出缺勤人数</td>
-											<td rowspan="2">未利用人力咨询</td>
-											<td rowspan="2">人力咨询利用率</td>
+											<td rowspan="2" colspan="1">部门</td>
+											<td rowspan="2" colspan="1">总人数</td>
+											<td rowspan="1" colspan="3">总出勤天数</td>
+											<td rowspan="2" colspan="1">本月天数</td>
+											<td rowspan="2" colspan="1">月平均出勤人数</td>
+											<td rowspan="2" colspan="1">排班休假天数</td>
+											<td rowspan="2" colspan="1">合理缺勤人数</td>
+											<td rowspan="2" colspan="1">超出缺勤人数</td>
+											<td rowspan="2" colspan="1">未利用人力咨询</td>
+											<td rowspan="2" colspan="1">人力咨询利用率</td>
 										</tr>
 										<tr>
-											<td>小计</td>
-											<td>系统打卡天数</td>
-											<td>未打开增加天数</td>
+											<td rowspan="1" colspan="1">小计</td>
+											<td rowspan="1" colspan="1">系统打卡天数</td>
+											<td rowspan="1" colspan="1">未打开增加天数</td>
 										</tr>
 										<tr v-for="(item,index) in ziYuan" :key="index">
 											<td v-html="item.preFixName">{{item.preFixName}}</td>
