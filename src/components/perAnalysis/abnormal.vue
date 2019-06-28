@@ -187,6 +187,9 @@
 				});
 			},
 			dowmelxe: function(name) {
+				if (confirm("确定导出?") == false) {
+					return;
+				}
 				var myDate = new Date();
 				var year = myDate.getFullYear();
 				var month = myDate.getMonth() + 1;

@@ -164,16 +164,14 @@
 				});
 			},
 			dowmelxe: function(name) {
+				if (confirm("确定导出?") == false) {
+					return;
+				}
 				var myDate = new Date();
 				var year = myDate.getFullYear();
 				var month = myDate.getMonth() + 1;
 				var date = myDate.getDate();
-				exportTableToExcel('table_zz_01',name+'_'+year+'_'+month+'_'+date);
-			},
-			formatJson(filterVal, jsonData) {
-				return jsonData.map(v => filterVal.map(j => {
-					return v[j]
-				}))
+				exportTableToExcel('table_zz_01', name + '_' + year + '_' + month + '_' + date);
 			}
 		},
 		created() {
