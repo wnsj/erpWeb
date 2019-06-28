@@ -53,7 +53,7 @@
 				</div>
 			</div>
 			<div style="padding-right:1.5%;">
-				<button type="button" class="btn btn-primary pull-right m_r_10" @click="requireAllInfo('人员管理表')">导出</button>
+				<button type="button" class="btn btn-primary pull-right m_r_10" @click="dowmelxe('人员管理表')">导出</button>
 				<button type="button" class="btn btn-primary pull-right m_r_10" data-toggle="modal" data-target="#myModalJoin">员工入职</button>
 				<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" data-target="#myModalFamily">家庭成员</button>
 				<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" data-target="#myModalQuery">高级查询</button>
@@ -168,7 +168,7 @@
 		},
 		// props:['faasdfsdfsadfasdf'],
 		data() {
-			this.getEmployee()
+			// this.getEmployee()
 			return {
 				projectName: '0',
 				projectId: '0',
@@ -195,6 +195,21 @@
 			
 			requireAllInfo:function(){
 				alert(this.getMonthFirstDay)
+			},
+			//数据导出表格
+			dowmelxe: function(name) {
+				var myDate = new Date();
+				var year = myDate.getFullYear();
+				var month = myDate.getMonth() + 1;
+				var date = myDate.getDate();
+				$("#datatable").table2excel({
+					exclude: ".noExl",
+					name: "Excel Document Name",
+					filename: name + year + month + date,
+					exclude_img: true,
+					exclude_links: true,
+					exclude_inputs: true
+				})
 			},
 			//获取项目名字和id
 			projectChange: function(projectId, projectName) {
@@ -403,7 +418,7 @@
 			},
 		},
 		created() {
-			// this.getEmployee('2')
+			this.getEmployee()
 		}
 	}
 </script>

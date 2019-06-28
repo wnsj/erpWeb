@@ -49,6 +49,7 @@
 				</table>
 			</div>
 		</div>
+		<singleDepart></singleDepart>
 	</div>
 	
 </template>
@@ -57,10 +58,12 @@
 	import axios from 'axios'
 	import {timeInit} from '../../../assets/js/date.js'
 	import depart from '../../vuecommon/department.vue'
+	import singleDepart from './singleDepartAtt.vue'
 	
 	export default {
 		components:{
-			depart
+			depart,
+			singleDepart
 		},
 		data() {
 			return {
@@ -76,6 +79,15 @@
 			departChange: function(departId, departName) {
 				this.departId = departId
 				this.departName = departName
+			},
+			//单个部门人员考勤信息
+			showSingleDepartAttend(param){
+				param.departName=param.departKQName
+				param.beginDate=this.dpBeginDate
+				param.endDate = this.dpEndDate
+				 this.$children[1].singleDepartAttend(param)
+				 $("#myDepartmentAttendance").modal('show')
+				 
 			},
 			//部门考勤信息汇总
 			searchDepartKQInfo: function(param) {
