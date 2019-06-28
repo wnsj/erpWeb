@@ -21,7 +21,9 @@
 				// alert(this.nationName)
 				this.$emit('nationChange',this.nationName)
 			},
-			
+			setNation:function(nationName){
+				this.nationName = nationName
+			},
 			// 获取所有项目
 			getNation: function() {
 				var url = this.url + '/search/nationList'

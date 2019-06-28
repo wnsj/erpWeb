@@ -31,7 +31,7 @@
       },
       position:function(val){
         this.$emit('positionChange',val,this.positionName)
-        // console.log("监听data域position的值："+ val)
+        console.log("监听data域position的值："+ val)
       }
     },
     methods:{

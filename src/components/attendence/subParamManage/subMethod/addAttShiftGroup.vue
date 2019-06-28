@@ -1,39 +1,37 @@
 <template>
 	<!-- 新增班组 -->
-	<div class="modal fade" id="mybzgl">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<!-- 模态弹出窗内容 -->
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4></h4>
-				</div>
-				<div class="modal-body clearfix">
-					<div class="col-md-10 col-md-offset-1">
-						<div class="form-group">
-							<div class="col-md-3 texr">
-								<label for="">班组名称：</label>
-							</div>
-							<div class="col-md-9">
-								<input class="form-control" type="text" name="" placeholder="班组名称" v-model="newshiftGroupName" />
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-md-3 texr">
-								<label for="">备注：</label>
-							</div>
-							<div class="col-md-9">
-								<textarea cols="50" rows="3" placeholder="备注" v-model="newshiftGroupRemark"></textarea>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button class="btn btn-primary" @click="addShiftGroup">确认</button>
+	<div class="modal fade" id="mybzgl" tabindex="-1" role="dialog" aria-labelledby="myModalLabeltj" aria-hidden="true">
+      <div class="modal-dialog" >
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+              <span>×</span>
+            </button>
+          </div><!-- /.modal-header -->
+          <div class="modal-body">
+            <form action="">
+              <div class="form-group clearfix">
+                <label for="name" class="col-md-3 control-label text-right nopad">班组名称：</label>
+                <div class="col-md-5">
+                  <input type="text" class="form-control" id="name" placeholder="班组名称" v-model="newshiftGroupName">
+                </div>
+              </div>
+			 <div class="form-group clearfix">
+				<label for="remark" class="col-md-3 control-label text-right nopad">备注：</label>
+				<div class="col-md-5">
+					<textarea class="textarea" id="remark" placeholder="备注" v-model="newshiftGroupRemark"></textarea>
 				</div>
 			</div>
-		</div>
-	</div>
+            </form>
+          </div><!-- /.modal-body -->
+          <div class="modal-footer">
+            <div class="col-md-8 col-md-offset-3">
+              <button type="button" class="btn btn-warning" @click="addShiftGroup">确认</button>
+            </div>
+          </div> <!-- /.modal-footer -->
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 </template>
 
 <script>
@@ -83,6 +81,8 @@
 						console.log("请求失败处理");
 					}
 				);
+				this.newshiftGroupName = '',
+				this.newshiftGroupRemark = ''
 				$("#mybzgl").modal("hide");
 			}
 		}
@@ -90,4 +90,9 @@
 </script>
 
 <style>
+.textarea{
+	resize:none;
+	width: 100%;
+	height: 70px;
+}
 </style>
