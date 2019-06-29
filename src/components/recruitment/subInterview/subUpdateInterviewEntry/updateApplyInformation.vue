@@ -1,11 +1,11 @@
 <!-- author:dingdong -->
 <template>
-	<div class="tab-pane fade" id="apply">		
+	<div class="tab-pane fade" id="updateApply">		
 		<div class="apply_info clearfix">
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">应聘渠道：</label>
 				<div class="col-md-3">
-					<channel :channelId="apply.channelAddId" @channelChange='getChannelAddId'></channel>
+					<channel :channelId="apply.channel" @channelChange='getChannelEditId'></channel>
 				</div>
 				<label for="invitationDate" class="col-md-2 control-label text-right nopad">邀约时间：</label>
 				<div class="col-md-3">
@@ -15,11 +15,11 @@
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">应聘部门：</label>
 				<div class="col-md-3">
-					<department @departChange='getDepartAddId'></department>
+					<department ref="department" @departChange='getDepartEditId'></department>
 				</div>
 				<label class="col-md-2 control-label text-right nopad">应聘职位：</label>
 				<div class="col-md-3">
-					<position :positionId="apply.positionAddId" @positionChange='getPositionAddId'></position>
+					<position :positionId="apply.position" @positionChange='getPositionEditId'></position>
 				</div>
 			</div>
 			<div class="form-group clearfix">
@@ -47,7 +47,7 @@
 				<label for="recruitDate" class="col-md-2 control-label text-right nopad">是否合格：</label>
 				<div class="col-md-3">
           			<select class="form-control" v-model="apply.isQualified">
-						<option v-for="(item,index) in qualifiedStatus" :key="index" :value="item.value">
+						<option v-for="(item,index) in qualifiedStatus" :key="index" :value="item.label">
 						{{item.label}}
 						</option>
 					</select>
@@ -75,9 +75,8 @@
 </template>
 
 <script>
-
-	import position from '../../../vuecommon/position.vue'
 	import channel from '../../../vuecommon/channel.vue'
+	import position from '../../../vuecommon/position.vue'
 	import department from '../../../vuecommon/department.vue'
 
 	export default {
@@ -88,13 +87,7 @@
 		},
 		data() {
 			return {
-				apply:{
-					departAddId: '0',
-					positionAddId: '',
-					channelAddId: '',
-					isQualified: '2',
-					isPay: '0',
-				},
+				apply:{},
 				qualifiedStatus: [
 					{value:'2',label:'待定'},
 					{value:'1',label:'是'},
@@ -107,15 +100,22 @@
 			};
 		},
 		methods:{
-			getChannelAddId(channelId){   // 渠道
-				this.apply.channelAddId = channelId
+			childApply(val){
+				this.apply = val
+				console.log("渠道" + this.apply.channel)
+				this.$refs.department.setDpart(this.apply.department);
 			},
-			getDepartAddId(departId){   // 部门
-				this.apply.departAddId = departId
+			getChannelEditId(channelId){
+				this.apply.channel = channelId
+				console.log("渠道编辑时的数据:" + this.apply.channel)
 			},
-			getPositionAddId(positionId){ // 职位
-				this.apply.positionAddId = positionId
+			getDepartEditId(departId){   // 部门
+				this.apply.department = departId
 			},
+			getPositionEditId(positionId){ // 职位
+				this.apply.position = positionId
+			},
+			
 		}
 	}
 </script>

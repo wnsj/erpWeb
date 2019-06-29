@@ -18,11 +18,9 @@
 					</tbody>
 				</table>
 			</div>
+			<updateAttShiftGroup :shiftGroupObj="shiftGroupObj"></updateAttShiftGroup>
+					<addAttShiftGroup></addAttShiftGroup>
 			<button class="btn-primary btn" data-toggle='modal' data-target='#mybzgl'>新增</button>
-		</div>
-		<div>
-			<updateAttShiftGroup :shiftGroupObj="shiftGroupObj"/>
-			<addAttShiftGroup/>
 		</div>
 	</div>
 </template>

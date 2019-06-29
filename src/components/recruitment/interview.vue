@@ -167,7 +167,7 @@
               <th class="text-center">报销路费</th>
               <th class="text-center">入职状态</th>
               <th class="text-center">编辑</th>
-              <th class="text-center">删除</th>
+              <!-- <th class="text-center">删除</th> -->
             </tr>
             </thead>
             <tbody>
@@ -194,7 +194,7 @@
               <td class="text-center">{{item.isPay == 0 ? "否" : "是"}}</td>
               <td class="text-center">{{item.isEntry}}</td>
               <td><center><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#interviewEdit" @click="getEditInfo(item)">编辑</button></center></td>
-              <td><center><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#interviewDelete" @click="getDelId(item)">删除</button></center></td>
+              <!-- <td><center><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#interviewDelete" @click="getDelId(item)">删除</button></center></td> -->
             </tr>
             </tbody>
           </table>
@@ -207,6 +207,13 @@
 					<interviewEntry></interviewEntry>
 				</div>
 			</div>
+      <div class="modal fade" id="interviewEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<updateInterviewEntry :interviewBase="interviewBase" :educationExprience="educationExprience"
+             :apply="apply" ref="interviewInfo">
+          </updateInterviewEntry>
+				</div>
+			</div>
 		</div>
   </div>
 </template>
@@ -216,6 +223,7 @@
   import channel from '../vuecommon/channel.vue'
   import department from '../vuecommon/department.vue'
   import interviewEntry from '../recruitment/subInterview/interviewEntry.vue'
+  import updateInterviewEntry from '../recruitment/subInterview/updateInterviewEntry.vue'
   import { timeInit } from '../../assets/js/date'
   import { jsGetAge } from '../../assets/js/date'
 
@@ -224,7 +232,8 @@
       department,
       position,
       channel,
-      interviewEntry
+      interviewEntry,
+      updateInterviewEntry
     },
     data(){
       return {
@@ -282,6 +291,10 @@
           {value:'0',label:'否'},
         ],
         interviewList:[],
+
+        interviewBase: {},
+				educationExprience: {},
+        apply: {},
       }
     },
     methods: {
@@ -293,6 +306,7 @@
       },
 
       // ---------------------------------------查询----------------------------------
+
       departChange(departId){   // 渠道
         this.departId = departId
       },
@@ -343,15 +357,27 @@
             isPay: this.isPay,
             education: this.education,
             profession: this.profession,
-            atSchool: this.atSchool
+            atSchool: this.atSchool,
+
+            interviewInfo:{}  //首页列表获取的一个人的面试信息
           },
           dataType: 'json',
         }).then((response) => {
           this.interviewList = response.data.retData
+          console.log(response.data.retData)
         }).catch((error) => {
           console.log('请求失败处理')
         });
       },
+      
+      getEditInfo(item){
+        this.interviewInfo = Object.assign({},item)
+        this.$refs.interviewInfo.passParamToSubModule(this.interviewInfo)
+        this.interviewInfo.birth = timeInit(this.interviewInfo.birth)
+        this.interviewInfo.graduation = timeInit(this.interviewInfo.graduation)
+        this.interviewInfo.invitationDate = timeInit(this.interviewInfo.invitationDate)
+        this.interviewInfo.recruitDate = timeInit(this.interviewInfo.recruitDate)
+      }
     },
   }
 </script>

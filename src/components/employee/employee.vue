@@ -388,8 +388,18 @@
 					this.$refs.project.setProject('0')
 				} else if (param == 'project') {
 					copyDepartName = ''
+					if (this.projectId != '0') {
+						copyProjectId = this.projectId
+					}else{
+						copyProjectId=''
+					}
 				} else if (param == 'depart') {
 					copyProjectId = ''
+					if (this.departName != '0') {
+						copyDepartName = this.departName
+					}else{
+						copyDepartName=''
+					}
 				} else if (param == 'search') {
 					this.state = '1'
 					copyProjectId = ''
@@ -397,12 +407,16 @@
 				} else {
 					if (this.projectId != '0') {
 						copyProjectId = this.projectId
+					}else{
+						copyProjectId=''
 					}
 					if (this.departName != '0') {
 						copyDepartName = this.departName
+					}else{
+						copyDepartName=''
 					}
 				}
-				console.log('projectId:' + this.projectId + 'departName' + this.departName)
+				console.log('projectId:' + copyProjectId + 'departName' + this.departName)
 				var url = this.url + '/search/allList'
 				axios({
 					method: 'post',
