@@ -7,11 +7,11 @@
 					</span> <span>&nbsp;&nbsp;&nbsp;至：</span> <span>
 						<input type="date" value="" v-model="singleEndDate" />
 					</span> <span class="search">
-						<button class="btn btn-primary">导出</button>
-					</span> <span class="search">
 						<button class="btn btn-warning" v-on:click="searchSingleKqList()">查询</button>
+					</span> <span class="search">
+						<button class="btn btn-primary" @click="exportTableToExcel('personalAttTB','个人出勤明细')">导出</button>
 					</span> </div>
-				<table class="table table-bordered table-hover">
+				<table class="table table-bordered table-hover" id='personalAttTB'>
 					<thead>
 						<tr>
 							<th class="text-center">姓名</th>
@@ -46,21 +46,23 @@
 			</div>
 		</div>
 	</div>
-	
+
 </template>
 
 <script>
 	import axios from 'axios'
-	import {timeInit} from '../../../assets/js/date.js'
+	import {
+		timeInit
+	} from '../../../assets/js/date.js'
 	export default {
 		data() {
 			return {
-				singleBeginDate:timeInit(''),
-				singleEndDate:timeInit(''),
-				singleKqList:[],
+				singleBeginDate: timeInit(''),
+				singleEndDate: timeInit(''),
+				singleKqList: [],
 			};
 		},
-		methods:{
+		methods: {
 			//个人考勤信息汇总
 			searchSingleKqList: function() {
 				var url = this.url + '/kqgl/singleKQList'
@@ -83,7 +85,7 @@
 					if (res.retCode == '0000') {
 						console.log('getSingleKqList')
 						if (res.resData.length > 0) {
-							console.log('getSingleKqList-length:'+res.resData.length)
+							console.log('getSingleKqList-length:' + res.resData.length)
 							this.singleKqList = res.resData
 						} else {
 							alert('没有查询到相关数据')
@@ -115,7 +117,7 @@
 					var res = response.data
 					if (res.retCode == '0000') {
 						if (res.resData.length > 0) {
-							console.log('getSingleKqList-length:'+res.resData.length)
+							console.log('getSingleKqList-length:' + res.resData.length)
 							this.singleKqList = res.resData
 						} else {
 							alert('没有查询到相关数据')
@@ -128,7 +130,7 @@
 				});
 			},
 		},
-		created(){
+		created() {
 			this.getSingleKqList()
 		}
 	}

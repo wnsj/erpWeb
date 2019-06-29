@@ -13,6 +13,7 @@ import {timeInit} from '../src/assets/js/date.js'
 import {isBlank} from '../src/assets/js/constant.js'
 import {jsGetAge} from '../src/assets/js/date.js'
 import {getYYYYMMDDHHMMSS_24} from '../src/assets/js/date.js'
+import {exportTableToExcel} from 'vendor/Export2Excel.js'
 
 
 
@@ -66,6 +67,16 @@ Vue.prototype.jsGetAge = function(param){
 }
 Vue.prototype.getYYYYMMDDHHMMSS_24 = function(param){
 	return getYYYYMMDDHHMMSS_24(param)
+}
+Vue.prototype.exportTableToExcel = function(tbId,fileName){
+	if (confirm("确定导出?") == false){ 
+			return;
+	}
+	var myDate = new Date();
+	var year = myDate.getFullYear();
+	var month = myDate.getMonth() + 1;
+	var date = myDate.getDate();
+	exportTableToExcel(tbId,fileName+'_'+year+'_'+month+'_'+date);
 }
 
 
