@@ -41,9 +41,6 @@
 							<li>
 								<router-link to="/perAnalysis/uilization"><i class="fa fa-table" aria-hidden="false"></i>人力资源利用率分析表</router-link>
 							</li>
-							<li>
-								<router-link to="/login"><i class="fa fa-table" aria-hidden="false"></i>登录</router-link>
-							</li>
 						</ul>
 						<li><i class="fa fa-area-chart" aria-hidden="true"></i>item</li>
 					</ul>
