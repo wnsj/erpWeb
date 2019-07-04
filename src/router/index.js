@@ -19,6 +19,8 @@ import abnormal from '../components/perAnalysis/abnormal.vue'
 import separation from '../components/perAnalysis/separation.vue'
 import effectiveness from '../components/perAnalysis/effectiveness.vue'
 import uilization from '../components/perAnalysis/uilization.vue'
+import login from '@/components/userComponent/login.vue'
+import mainPage from '@/components/userComponent/mainPage.vue'
 
 
 import askForLeave from '../components/paperlessOffice/askForLeave.vue'
@@ -37,101 +39,78 @@ import empRequire from '../components/paperlessOffice/empRequire.vue'
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
-      path: '/employee',
-      component: employee
-    },
-    {
-      path: '/attendence',
-      component: attendence
-    },
-    //招聘管理
-    {
-      path: '/recruitment',
-      component: recruitment,
-      children:[
-        {
-          path: '/recruitment/recruitChannels',
-          name: 'recruitChannels',
-          component: recruitChannels,
-        },
-        {
-          path: '/recruitment/recruitPlan',
-          name: 'recruitPlan',
-          component: recruitPlan
-        },
-        {
-          path: '/recruitment/recruitPublish',
-          name: 'recruitPublish',
-          component: recruitPublish
-        },
-        {
-          path: '/recruitment/interview',
-          name: 'interview',
-          component : interview
 
-        }
-      ],
-      redirect:'/recruitment/recruitChannels'
-    },
-		//人员信息类
-		{
-		  path: '/perAnalysis/poresonnel',
-		  component: poresonnel
+	mode: 'history',
+	routes: [{
+			path: '/',
+			component: App,
+			children: [{
+					path: '/mainPage',
+					component: mainPage
+				},
+				{
+					path: '/login',
+					component: login
+				}
+			],
+			redirect: '/login'
 		},
 		{
-		  path: '/perAnalysis/abnormal',
-		  component: abnormal
+			path: '/employee',
+			component: employee
 		},
 		{
-		  path: '/perAnalysis/separation',
-		  component: separation
+			path: '/attendence',
+			component: attendence
+		},
+		//招聘
+		{
+			path: '/recruitment',
+			component: recruitment,
+			children: [{
+					path: '/recruitment/recruitChannels',
+					name: 'recruitChannels',
+					component: recruitChannels,
+				},
+				{
+					path: '/recruitment/recruitPlan',
+					name: 'recruitPlan',
+					component: recruitPlan
+				},
+				{
+					path: '/recruitment/recruitPublish',
+					name: 'recruitPublish',
+					component: recruitPublish
+				},
+				{
+					path: '/recruitment/interview',
+					name: 'interview',
+					component: interview
+				}
+			],
+			redirect: '/recruitment/recruitChannels'
+		},
+		//人员分析
+		{
+			path: '/perAnalysis/poresonnel',
+			component: poresonnel
 		},
 		{
-		  path: '/perAnalysis/effectiveness',
-		  component: effectiveness
+			path: '/perAnalysis/abnormal',
+			component: abnormal
 		},
 		{
-		  path: '/perAnalysis/uilization',
-		  component: uilization
-		},
-		//无纸化
-		{
-			path:'/paperlessOffice/askForLeave',
-			component:askForLeave
+			path: '/perAnalysis/separation',
+			component: separation
 		},
 		{
-		  path:'/paperlessOffice/restdown',
-		  component: restdown
+			path: '/perAnalysis/effectiveness',
+			component: effectiveness
 		},
 		{
-		  path:'/paperlessOffice/leaveFiling',
-		  component: leaveFiling
+			path: '/perAnalysis/uilization',
+			component: uilization
 		},
-		{
-		  path:'/paperlessOffice/forgetPunchProof',
-		  component: forgetPunchProof
-		},
-		{
-		  path:'/paperlessOffice/conferenceRoomManage',
-		  component: conferenceRoomManage
-		},
-		{
-		  path:'/paperlessOffice/officeSuppliesManage',
-		  component: officeSuppliesManage
-		},
-		{
-		  path:'/paperlessOffice/computerAdvanceApplication',
-		  component: computerAdvanceApplication
-		},
-		{
-		  path:'/paperlessOffice/computerSupplies',
-		  component: computerSupplies
-		},
-		{
-		  path:'/paperlessOffice/empRequire',
-		  component: empRequire
-		},
-  ]
+
+	]
 })

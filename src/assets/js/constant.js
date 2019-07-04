@@ -4,6 +4,7 @@
 	../:父级目录。
 	/:根目录
  */
+import Cookies from 'js-cookie'
 /*判断值是否为空，是空返回true*/
 export function isBlank(value) {
 	if (value == '' || value == null || value == undefined || (value.length >
@@ -41,8 +42,25 @@ var CallVueMethod = {
 	}
 }
 
+//权限判断方法（包含返回true，反之false）
+function has(param){
+	//未传值
+	if(isBlank(param)) return false;
+	var jsonString = Cookies.get("accountData");
+	//未登录
+	if(isBlank(jsonString))return false;
+	var accountData = JSON.parse(jsonString);
+	var permission = accountData.permission;
+	for (var i = 0; i < permission.length; i++) {
+		if(permission[i].rule_ID == param){
+			return true;
+		} 
+	}
+	return false;
+}
 
 export {
 	//isBlank,
-	CallVueMethod
+	CallVueMethod,
+	has
 }
