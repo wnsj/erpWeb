@@ -15,68 +15,82 @@ import abnormal from '../components/perAnalysis/abnormal.vue'
 import separation from '../components/perAnalysis/separation.vue'
 import effectiveness from '../components/perAnalysis/effectiveness.vue'
 import uilization from '../components/perAnalysis/uilization.vue'
+import login from '@/components/userComponent/login.vue'
+import mainPage from '@/components/userComponent/mainPage.vue'
 
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
-      path: '/employee',
-      component: employee
-    },
-    {
-      path: '/attendence',
-      component: attendence
-    },
-    //招聘
-    {
-      path: '/recruitment',
-      component: recruitment,
-      children:[
-        {
-          path: '/recruitment/recruitChannels',
-          name: 'recruitChannels',
-          component: recruitChannels,
-        },
-        {
-          path: '/recruitment/recruitPlan',
-          name: 'recruitPlan',
-          component: recruitPlan
-        },
-        {
-          path: '/recruitment/recruitPublish',
-          name: 'recruitPublish',
-          component: recruitPublish
-        },
-        {
-          path: '/recruitment/interview',
-          name: 'interview',
-          component : interview
-
-        }
-      ],
-      redirect:'/recruitment/recruitChannels'
-    },
+	mode: 'history',
+	routes: [{
+			path: '/',
+			component: App,
+			children: [{
+					path: '/mainPage',
+					component: mainPage
+				},
+				{
+					path: '/login',
+					component: login
+				}
+			],
+			redirect: '/login'
+		},
+		{
+			path: '/employee',
+			component: employee
+		},
+		{
+			path: '/attendence',
+			component: attendence
+		},
+		//招聘
+		{
+			path: '/recruitment',
+			component: recruitment,
+			children: [{
+					path: '/recruitment/recruitChannels',
+					name: 'recruitChannels',
+					component: recruitChannels,
+				},
+				{
+					path: '/recruitment/recruitPlan',
+					name: 'recruitPlan',
+					component: recruitPlan
+				},
+				{
+					path: '/recruitment/recruitPublish',
+					name: 'recruitPublish',
+					component: recruitPublish
+				},
+				{
+					path: '/recruitment/interview',
+					name: 'interview',
+					component: interview
+				}
+			],
+			redirect: '/recruitment/recruitChannels'
+		},
 		//人员分析
 		{
-		  path: '/perAnalysis/poresonnel',
-		  component: poresonnel
+			path: '/perAnalysis/poresonnel',
+			component: poresonnel
 		},
 		{
-		  path: '/perAnalysis/abnormal',
-		  component: abnormal
+			path: '/perAnalysis/abnormal',
+			component: abnormal
 		},
 		{
-		  path: '/perAnalysis/separation',
-		  component: separation
+			path: '/perAnalysis/separation',
+			component: separation
 		},
 		{
-		  path: '/perAnalysis/effectiveness',
-		  component: effectiveness
+			path: '/perAnalysis/effectiveness',
+			component: effectiveness
 		},
 		{
-		  path: '/perAnalysis/uilization',
-		  component: uilization
+			path: '/perAnalysis/uilization',
+			component: uilization
 		},
-  ]
+	]
 })
