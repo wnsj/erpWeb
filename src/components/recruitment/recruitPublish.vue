@@ -288,11 +288,11 @@
 
       getChannelAddId(channelId){
         this.channelAddId = channelId
-        console.log("add：" + channelId)
+        // console.log("add：" + channelId)
       },
       getPositionAddId(positionId){
         this.positionAddId = positionId
-        console.log("add：" + positionId)
+        // console.log("add：" + positionId)
       },
       addRecruitPublish(){     // 添加招聘发布信息
         if (this.channelAddId == '' || this.channelAddId == '0') {

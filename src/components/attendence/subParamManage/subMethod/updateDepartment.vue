@@ -6,7 +6,6 @@
 				<!-- 模态弹出窗内容 -->
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4></h4>
 				</div>
 				<div class="modal-body clearfix">
 					<div class="col-md-10 col-md-offset-1">
@@ -42,8 +41,12 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button class="btn btn-primary" @click="updateDepartment">确认</button>
-					<button class="btn btn-danger" @click="deleteDepartment">删除</button>
+					<div class="col-md-4">
+						<button class="btn btn-primary" @click="updateDepartment">确认</button>
+					</div>
+					<div class="col-md-4">
+						<button class="btn btn-danger" @click="deleteDepartment">删除</button>
+					</div>
 				</div>
 			</div>
 		</div>

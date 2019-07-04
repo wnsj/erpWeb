@@ -22,8 +22,13 @@
 					</div>
 				</div>
 			</div>
-			<button data-dismiss="modal" class="btn btn-primary mtbod">返回</button>
+			<div class="col-md-2">
 			<button data-dismiss="modal" class="btn btn-primary" @click="changeJobsType">确认</button>
+			</div>
+			<div class="col-md-4">
+			<button data-dismiss="modal" class="btn btn-primary mtbod">返回</button>
+			</div>
+			
 		</div>
 	</div>
 </template>

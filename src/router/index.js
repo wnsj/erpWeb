@@ -16,6 +16,8 @@ import separation from '../components/perAnalysis/separation.vue'
 import effectiveness from '../components/perAnalysis/effectiveness.vue'
 import uilization from '../components/perAnalysis/uilization.vue'
 
+import report from '../components/report/report.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -77,6 +79,13 @@ export default new Router({
 		{
 		  path: '/perAnalysis/uilization',
 		  component: uilization
-		},
+    },
+    // 无纸化办公
+
+    // 请假报备
+    {
+      path: '/report',
+      component: report
+    }, 
   ]
 })

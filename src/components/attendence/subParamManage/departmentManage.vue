@@ -20,12 +20,10 @@
 						</tr>
 					</tbody>
 				</table>
-			</div>
-			<button class="btn-primary btn" data-toggle='modal' data-target='#mybmgl'>新增</button>
-		</div>
-		<div>
+				</div>
 			<updateDepartment :deptObj = 'deptObj' ref="updateDepartment"></updateDepartment>
 			<addDepartment></addDepartment>
+			<button class="btn-primary btn" data-toggle='modal' data-target='#mybmgl'>新增</button>
 		</div>
 	</div>
 </template>

@@ -28,6 +28,12 @@
 							<li><router-link to="/perAnalysis/effectiveness"><i class="fa fa-table" aria-hidden="false"></i>招聘效果评估分析表</router-link></li>	
 							<li><router-link to="/perAnalysis/uilization"><i class="fa fa-table" aria-hidden="false"></i>人力资源利用率分析表</router-link></li>
 						</ul>
+						<li>
+							<i class="fa fa-university" aria-hidden="true"></i>无纸化办公<i class="fa fa-sort-desc item-down" aria-hidden="true"></i>
+						</li>
+						<ul class="second-menu">
+							<li><router-link to="/report"><i class="fa fa-table" aria-hidden="true"></i>请假报备</router-link></li>
+						</ul>
 						<li><i class="fa fa-area-chart" aria-hidden="true"></i>item</li>
 					</ul>
 				</div>
@@ -51,8 +57,6 @@
 							</div>
 						</div>
 					</nav>
-
-
 					<div class="embed-responsive embed-responsive-16by9 my-main">
 						<router-view/>
 					</div>
@@ -61,7 +65,6 @@
 			</div>
 		</div>
 	</div>
-    
   </div>
 </template>
 

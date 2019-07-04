@@ -52,7 +52,6 @@
 			//提交部门名称和ID
 			departChange: function() {
 				this.departName = this.exchangeDepartName(this.departId)
-				// alert(this.departName + '-' + this.departId)
 				this.$emit('departChange', this.departId, this.departName)
 			},
 			//子组件返回dept对象

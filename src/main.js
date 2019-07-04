@@ -12,7 +12,6 @@ import {getCurrentMonthLast} from '../src/assets/js/date.js'
 import {timeInit} from '../src/assets/js/date.js'
 import {isBlank} from '../src/assets/js/constant.js'
 import {jsGetAge} from '../src/assets/js/date.js'
-import {getYYYYMMDDHHMMSS_24} from '../src/assets/js/date.js'
 
 
 
@@ -33,6 +32,8 @@ Vue.prototype.url = process.env.API_HOST
 Vue.prototype.getMonthFirst = getCurrentMonthFirst()
 Vue.prototype.getMonthLast = getCurrentMonthLast()
 Vue.prototype.getCurrentDay = timeInit('')
+
+
 
 /*-----------------------------------------公共方法---------------------------------------------------*/
 
@@ -64,9 +65,7 @@ Vue.prototype.isBlank = function(param){
 Vue.prototype.jsGetAge = function(param){
   return jsGetAge(param)
 }
-Vue.prototype.getYYYYMMDDHHMMSS_24 = function(param){
-	return getYYYYMMDDHHMMSS_24(param)
-}
+
 
 
 

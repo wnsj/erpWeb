@@ -166,10 +166,16 @@ function getYYYY_MM_DD(time) {
 	return formatDate(date, 'yyyy-MM-dd');
 }
 
-//获取年月日 2016/01/01
+//获取年月日 2016/01/01	
 function getYYYY$MM$DD(time) {
 	var date = new Date(time);
 	return formatDate(date, 'yyyy/MM/dd');
+}
+
+//获取当前年月日时分秒 2016-01-01 00:00:00
+function getCurrentYYYY_MM_DD_HH_MM_SS() {
+	var date = new Date();
+	return formatDate(date, 'yyyy-MM-dd HH:mm:ss');
 }
 
 export {
@@ -180,5 +186,6 @@ export {
 	getYYYYMMDDHHMMSS,
 	getYYYY_MM_DD_HH_MM_SS,
 	getYYYY_MM_DD,
-	getYYYY$MM$DD
+	getYYYY$MM$DD,
+	getCurrentYYYY_MM_DD_HH_MM_SS
 }
