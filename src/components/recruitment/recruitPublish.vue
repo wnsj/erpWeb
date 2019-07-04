@@ -36,7 +36,7 @@
         </div>
       </div>
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-md-offset-5">
-        <button type="button" class="btn btn-warning pull-right m_r_10">导出</button>
+        <button type="button" class="btn btn-warning pull-right m_r_10" @click="exportTableToExcel('recruitPublishTB','招聘发布管理')">导出</button>
         <button type="button" class="btn btn-info pull-right m_r_10" data-toggle="modal" data-target="#publishAdd">添加</button>
         <button type="button" class="btn btn-primary pull-right m_r_10" @click="queryRecruitPublish">查询</button>
       </div>
@@ -45,7 +45,7 @@
     <div class="row">
       <div class="col-md-12 col-lg-12">
         <div class="pre-scrollable">
-          <table class="table table-bordered table-hover text-nowrap" id="datatable">
+          <table class="table table-bordered table-hover text-nowrap" id="recruitPublishTB">
             <thead>
             <tr>
               <th class="text-center">渠道</th>

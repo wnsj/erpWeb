@@ -13,11 +13,11 @@
 					</span> <span>工号：</span> <span>
 						<input type="text" value="" id="" v-model="jobNum"/>
 					</span> <span class="search">
-						<button class="btn btn-primary">导出</button>
-					</span> <span class="search">
 						<button class="btn btn-warning" v-on:click="searchKqTableList('0')">查询所有</button>
 					</span> <span class="search">
 						<button class="btn btn-warning" v-on:click="searchKqTableList('1')">查询</button>
+					</span> <span class="search">
+						<button class="btn btn-primary" @click="exportTableToExcel('attTableTB','考勤报表')">导出</button>
 					</span> </div>
 				<div class="col-lg-11 mtr_a"> <span>
 						<input type="radio" name="xm" v-on:change="conditionChangeAction('project')" />
@@ -34,7 +34,7 @@
 					<span style="color:#00679D; margin-right:10px;">倒休</span> <span style="color:#FF7F50; margin-right:10px;">打卡异常</span>
 					<span style="color:#87CEFA; margin-right:10px;">加班</span> <span style="color:#D2B48C; margin-right:10px;">漏打卡</span>
 				</div>
-				<table class="table table-bordered table-hover">
+				<table class="table table-bordered table-hover" id="attTableTB">
 					<thead>
 						<tr>
 							<th class="text-center">姓名</th>

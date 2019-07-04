@@ -3,21 +3,25 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import  VueResource  from 'vue-resource'
-
-
+import VueResource from 'vue-resource'
+import Cookies from 'js-cookie'
 import store from './store'
-import {getCurrentMonthFirst} from '../src/assets/js/date.js'
-import {getCurrentMonthLast} from '../src/assets/js/date.js'
-import {timeInit} from '../src/assets/js/date.js'
-import {isBlank} from '../src/assets/js/constant.js'
-import {jsGetAge} from '../src/assets/js/date.js'
+import axios from 'axios';
 
+import * as constant from '../src/assets/js/constant.js'
+import {
+	exportTableToExcel
+} from 'vendor/Export2Excel.js'
+
+import * as date from '../src/assets/js/date.js'
 
 
 Vue.config.productionTip = false
-import axios from 'axios';
+
 Vue.use(VueResource)
+
+// 允许携带cookie
+// axios.defaults.withCredentials=true
 
 /*------------------------------------------公共属性-----------------------------------------------------------*/
 
@@ -29,54 +33,99 @@ Vue.prototype.url = process.env.API_HOST
 // Vue.prototype.url = '/api'
 
 /*------当月第一天、当天、最后一天----*/
-Vue.prototype.getMonthFirst = getCurrentMonthFirst()
-Vue.prototype.getMonthLast = getCurrentMonthLast()
-Vue.prototype.getCurrentDay = timeInit('')
+Vue.prototype.getMonthFirst = date.getCurrentMonthFirst()
+Vue.prototype.getMonthLast = date.getCurrentMonthLast()
+Vue.prototype.getCurrentDay = date.timeInit('')
+Vue.prototype.contentType = 'application/json;charset=utf-8'
+Vue.prototype.accessToken = '66666666666666666666666';
+//token存储在cookie中的过期时间
+Vue.prototype.accessTokenLife = 7
+Vue.prototype.accountDataLife = 7
 
 
-
-/*-----------------------------------------公共方法---------------------------------------------------*/
-
-/**
- * 获取当前时间
- * 格式YYYY-MM-DD
- */
 Vue.prototype.getNowFormatDate = function() {
-  var date = new Date();
-  var seperator1 = "-";
-  var year = date.getFullYear();
-  var month = date.getMonth() + 1;
-  var strDate = date.getDate();
-  if (month >= 1 && month <= 9) {
-    month = "0" + month;
-  }
-  if (strDate >= 0 && strDate <= 9) {
-    strDate = "0" + strDate;
-  }
-  var currentdate = year + seperator1 + month + seperator1 + strDate;
-  return currentdate;
+	var date = new Date();
+	var seperator1 = "-";
+	var year = date.getFullYear();
+	var month = date.getMonth() + 1;
+	var strDate = date.getDate();
+	if (month >= 1 && month <= 9) {
+		month = "0" + month;
+	}
+	if (strDate >= 0 && strDate <= 9) {
+		strDate = "0" + strDate;
+	}
+	var currentdate = year + seperator1 + month + seperator1 + strDate;
+	return currentdate;
 };
-Vue.prototype.getCurrentDayAction = function(param){
-	return timeInit(param)
+Vue.prototype.getCurrentDayAction = function(param) {
+	return date.timeInit(param)
 }
-Vue.prototype.isBlank = function(param){
-	return isBlank(param)
+Vue.prototype.isBlank = function(param) {
+	return constant.isBlank(param)
 }
-Vue.prototype.jsGetAge = function(param){
-  return jsGetAge(param)
+Vue.prototype.jsGetAge = function(param) {
+	return date.jsGetAge(param)
+}
+Vue.prototype.getYYYYMMDDHHMMSS_24 = function(param) {
+	return date.getYYYYMMDDHHMMSS_24(param)
+}
+Vue.prototype.exportTableToExcel = function(tbId, fileName) {
+	if (confirm("确定导出?") == false) {
+		return;
+	}
+	var myDate = new Date();
+	var year = myDate.getFullYear();
+	var month = myDate.getMonth() + 1;
+	var date = myDate.getDate();
+	exportTableToExcel(tbId, fileName + '_' + year + '_' + month + '_' + date);
+}
+Vue.prototype.has = function(param){
+	return constant.has(param);
 }
 
+/*
+ **权限判断使用方法:
+ ** 1.<div v-has='1'> 测试内容1</div>
+ ** 2.<div v-if='has(25)'> 测试内容2</div>
+*/
+//自定义指令v-has(不包含则删除该标签)
+Vue.directive('has', {
+	inserted: function(el, binding) {
+		if (!constant.has(binding.value)) {
+			el.parentNode.removeChild(el);
+		}
+	}
+});
 
-
-
+//路由卫士
+router.beforeEach((to, from, next) => {
+	if (to.path === '/login') {
+		next();
+	} else {
+		let token = Cookies.get('accessToken');
+		if (constant.isBlank(token)) {
+			next('/login');
+		} else {
+			next();
+		}
+	}
+});
 
 /**
  * 创建VUE实例，其他实例注入
  */
 new Vue({
-  el: '#app',
-  store,
-  router,
-  components: { App },
-  template: '<App/>'
+	el: '#app',
+	store,
+	router,
+	data() {
+		return {
+			accessToken: constant.isBlank(Cookies.get('accessToken')) ? '' : Cookies.get('accessToken')
+		}
+	},
+	components: {
+		App
+	},
+	template: '<App/>'
 })

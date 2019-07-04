@@ -133,7 +133,7 @@
         </div>
       </div>
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <button type="button" class="btn btn-warning pull-right m_r_10">导出</button>
+        <button type="button" class="btn btn-warning pull-right m_r_10" @click="exportTableToExcel('interviewtable','面试信息管理')">导出</button>
         <button type="button" class="btn btn-info pull-right m_r_10" data-toggle="modal" data-target="#interviewAdd">添加</button>
         <button type="button" class="btn btn-primary pull-right m_r_10" @click="queryInterview">查询</button>
       </div>

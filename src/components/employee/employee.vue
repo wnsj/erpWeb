@@ -49,11 +49,11 @@
 					<input type="text" class="form-control" placeholder="Search for..." v-model.lazy="searchContent">
 					<span class="input-group-btn">
 						<button class="btn btn-default" type="button" v-on:click="getEmployee('search')">搜索</button>
-					</span> 
+					</span>
 				</div>
 			</div>
 			<div style="padding-right:1.5%;">
-				<button type="button" class="btn btn-primary pull-right m_r_10" @click="dowmelxe('人员管理表')">导出</button>
+				<button type="button" class="btn btn-primary pull-right m_r_10" @click="exportTableToExcel('datatable','人员管理表')">导出</button>
 				<button type="button" class="btn btn-primary pull-right m_r_10" data-toggle="modal" data-target="#myModalJoin">员工入职</button>
 				<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" data-target="#myModalFamily">家庭成员</button>
 				<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" data-target="#myModalQuery">高级查询</button>
@@ -91,7 +91,7 @@
 						   || (item.state == state 	&& departName == 0                && item.projectName  == projectName) 
 						   || (item.state == state 	&& item.departName == departName  && item.projectName == projectName)"
 							 v-on:dblclick="showEmployeeInfo(item)"> -->
-							 <tr v-for="(item,index) in employeeList" :key="index" v-on:dblclick="showEmployeeInfo(item)">
+							<tr v-for="(item,index) in employeeList" :key="index" v-on:dblclick="showEmployeeInfo(item)">
 								<td>{{index}}</td>
 								<td>{{item.jobNum}}</td>
 								<td>{{item.name}}</td>
@@ -151,8 +151,10 @@
 	import family from '../employee/subEmp/family.vue'
 	import empEntry from '../employee/subEmp/empEntry.vue'
 	import mEE from '../employee/subEmp/modifyEmpEntry.vue'
-	
-	import {timeInit} from '../../assets/js/date.js'
+
+	import {
+		timeInit
+	} from '../../assets/js/date.js'
 	/**
 	 * 这个导入路径没有提示。按照自己的路径写，按提示可能不能实现，具体原因不详
 	 */
@@ -177,7 +179,7 @@
 				state: '1',
 				searchContent: '',
 				employeeId: '',
-				accountId:'',
+				accountId: '',
 
 				employeeList: [], //从服务器请求的个人信息
 
@@ -190,10 +192,10 @@
 				personalShift: [], //服务器获取的一个人的调动信息
 			}
 		},
-		
+
 		methods: {
-			
-			requireAllInfo:function(){
+
+			requireAllInfo: function() {
 				alert(this.getMonthFirstDay)
 			},
 			//数据导出表格
@@ -211,6 +213,24 @@
 					exclude_inputs: true
 				})
 			},
+			exportToExcel() {
+				//excel数据导出
+				require.ensure([], () => {
+					const {
+						export_json_to_excel
+					} = require('../../assets/js/Export2Excel');
+					const tHeader = ['序号', '省份', '投资总额', '收益总额', '主要投资项目', '投资周期', '投资人数', '投资年变化率', '备注'];
+					const filterVal = ['index', 'provinces', 'orderMoney', 'incomeMoney', 'payType', 'orderPeriod',
+						'orderPersonConunt', 'orderYearRate', 'remarks'
+					];
+					const list = this.tableData;
+					const data = this.formatJson(filterVal, list);
+					export_json_to_excel(tHeader, data, '列表excel');
+				})
+			},
+			formatJson(filterVal, jsonData) {
+				return jsonData.map(v => filterVal.map(j => v[j]))
+			},
 			//获取项目名字和id
 			projectChange: function(projectId, projectName) {
 				this.projectId = projectId
@@ -224,17 +244,17 @@
 				this.getEmployee("depart")
 			},
 			//高级查询
-			advanceSelect:function(advanceParam){
+			advanceSelect: function(advanceParam) {
 				$("#myModalQuery").modal('hide');
-				if(advanceParam.selectType=='0'){
+				if (advanceParam.selectType == '0') {
 					this.birthdayScreen(advanceParam.birthday)
-				}else{
+				} else {
 					this.advancedQuery(advanceParam)
 				}
-				
+
 			},
 			//接收修改返回的基本信息
-			receivePersonalBase:function(){
+			receivePersonalBase: function() {
 				this.getEmployee('all')
 				$("#myModalupdata").modal('hide')
 			},
@@ -260,9 +280,9 @@
 			},
 			// 高级查询
 			advancedQuery: function(advanceParam) {
-				
+
 				var url = this.url + '/search/advanceAllList'
-				console.log(advanceParam.begin+advanceParam.end+advanceParam.category)
+				console.log(advanceParam.begin + advanceParam.end + advanceParam.category)
 				axios({
 					method: 'post',
 					url: url,
@@ -274,26 +294,26 @@
 						searchType: advanceParam.category,
 						startDate: advanceParam.begin,
 						endDate: advanceParam.end,
-						resignType:advanceParam.advanceResignType,
-						resignReasonId:advanceParam.advanceReasonId,
+						resignType: advanceParam.advanceResignType,
+						resignReasonId: advanceParam.advanceReasonId,
 					},
 					dataType: 'json',
 				}).then((response) => {
 					console.log('advancedQuery')
-					var res=response.data
+					var res = response.data
 					console.log(res)
-					if(res.retCode=='0000'){
+					if (res.retCode == '0000') {
 						// alert(res.resData.length)
-						if(res.resData.length>0){
+						if (res.resData.length > 0) {
 							this.employeeList = res.resData
 							$("#myModalQuery").modal('hide');
-						}else{
+						} else {
 							alert('没有查询到相关数据')
 						}
-					}else{
+					} else {
 						alert(res.retMsg)
 					}
-					
+
 				}).catch((error) => {
 					console.log('请求失败处理')
 				});
@@ -302,7 +322,7 @@
 			birthdayScreen: function(param) {
 				alert(param)
 				var url = this.url + '/search/advanceBirthQuery'
-				
+
 				axios({
 					method: 'post',
 					url: url,
@@ -316,48 +336,48 @@
 					dataType: 'json',
 				}).then((response) => {
 					console.log('birthdayScreen')
-					var res=response.data
+					var res = response.data
 					console.log(res)
-					if(res.retCode=='0000'){
+					if (res.retCode == '0000') {
 						alert(res.resData.length)
-						if(res.resData.length>0){
+						if (res.resData.length > 0) {
 							this.employeeList = res.resData
-							if(this.projectId != '0'){
+							if (this.projectId != '0') {
 								this.searchEmployee('')
 							}
 							$("#myModalQuery").modal('hide');
-						}else{
+						} else {
 							alert('没有查询到相关数据')
 						}
-					}else{
+					} else {
 						alert(res.retMsg)
 					}
-					
+
 				}).catch((error) => {
 					console.log('请求失败处理')
 				});
 			},
-			
+
 			// 双击弹出员工修改框
 			showEmployeeInfo: function(item) {
-				
+
 				$("#myModalupdata").modal('show')
 				this.accountId = item.accountId
-				this.personalInfo = Object.assign({},item)
+				this.personalInfo = Object.assign({}, item)
 				this.$refs.mEE.paramDevliverToSubModel(this.personalInfo)
 				this.personalInfo.entryDate = timeInit(this.personalInfo.entryDate)
 				this.personalInfo.positiveDate = timeInit(this.personalInfo.positiveDate)
 				this.personalInfo.resignDate = timeInit(this.personalInfo.resignDate)
-			
+
 				var uDetailUrl = this.url + '/search/singleUDInfo'
 				var ufmUrl = this.url + '/search/singlefamilyList'
 				var uPositionUrl = this.url + '/search/positionShifts'
 			},
 			getEmployee: function(param) {
-				var copyProjectId=''
-				var copyDepartName=''
+				var copyProjectId = ''
+				var copyDepartName = ''
 				console.log(param)
-				if(param == 'all'){
+				if (param == 'all') {
 					this.state = '1'
 					this.projectId = '0'
 					copyProjectId = ''
@@ -366,23 +386,37 @@
 					this.searchContent = ''
 					this.$refs.department.setDpart('0')
 					this.$refs.project.setProject('0')
-				}else if(param == 'project'){
-					copyDepartName=''
-				}else if(param == 'depart'){
-					copyProjectId=''
-				}else if(param == 'search'){
-						this.state = '1'
-						copyProjectId = ''
-						copyDepartName = ''
-				}else{
-					if(this.projectId !='0'){
+				} else if (param == 'project') {
+					copyDepartName = ''
+					if (this.projectId != '0') {
 						copyProjectId = this.projectId
+					}else{
+						copyProjectId=''
 					}
-					if(this.departName !='0'){
+				} else if (param == 'depart') {
+					copyProjectId = ''
+					if (this.departName != '0') {
 						copyDepartName = this.departName
+					}else{
+						copyDepartName=''
+					}
+				} else if (param == 'search') {
+					this.state = '1'
+					copyProjectId = ''
+					copyDepartName = ''
+				} else {
+					if (this.projectId != '0') {
+						copyProjectId = this.projectId
+					}else{
+						copyProjectId=''
+					}
+					if (this.departName != '0') {
+						copyDepartName = this.departName
+					}else{
+						copyDepartName=''
 					}
 				}
-				console.log('projectId:'+this.projectId+'departName'+this.departName)
+				console.log('projectId:' + copyProjectId + 'departName' + this.departName)
 				var url = this.url + '/search/allList'
 				axios({
 					method: 'post',
@@ -401,9 +435,9 @@
 				}).then((response) => {
 					var res = response.data
 					if (res.retCode == '0000') {
-						console.log('employeeList-length:'+res.resData.length)
+						console.log('employeeList-length:' + res.resData.length)
 						if (res.resData.length > 0) {
-							console.log('employeeList-length:'+res.resData.length)
+							console.log('employeeList-length:' + res.resData.length)
 							this.employeeList = res.resData
 							$("#myModalQuery").modal('hide');
 						} else {
