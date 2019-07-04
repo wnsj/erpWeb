@@ -60,11 +60,13 @@ export function getYYYYMMDDHHMMSS_24(time) {
 	var date = new Date(time);
 	return formatDate(date, 'yyyy.MM.dd 23:59:59.000'); // 年月日 格式自己定义   'yyyy : MM : dd'  例 2018年12月5日的格式
 }
+
 //获取年月日时分 2016.01.01 23:59
 export function getYYYYMMDDHHMM() {
 	var date = new Date();
 	return formatDate(date, 'yyyy-MM-dd hh:mm'); // 年月日 格式自己定义   'yyyy : MM : dd'  例 2018年12月5日的格式
 }
+
 /*根据出生日期算出年龄*/
 export function jsGetAge(strBirthday){
   var returnAge;
@@ -171,10 +173,16 @@ function getYYYY_MM_DD(time) {
 	return formatDate(date, 'yyyy-MM-dd');
 }
 
-//获取年月日 2016/01/01
+//获取年月日 2016/01/01	
 function getYYYY$MM$DD(time) {
 	var date = new Date(time);
 	return formatDate(date, 'yyyy/MM/dd');
+}
+
+//获取当前年月日时分秒 2016-01-01 00:00:00
+function getCurrentYYYY_MM_DD_HH_MM_SS() {
+	var date = new Date();
+	return formatDate(date, 'yyyy-MM-dd HH:mm:ss');
 }
 
 export {
@@ -185,5 +193,7 @@ export {
 	getYYYYMMDDHHMMSS,
 	getYYYY_MM_DD_HH_MM_SS,
 	getYYYY_MM_DD,
-	getYYYY$MM$DD
+	getYYYY$MM$DD,
+	getCurrentYYYY_MM_DD_HH_MM_SS
 }
+

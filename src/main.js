@@ -42,11 +42,8 @@ Vue.prototype.accessToken = '66666666666666666666666';
 //token存储在cookie中的过期时间
 Vue.prototype.accessTokenLife = 7
 Vue.prototype.accountDataLife = 7
-/*-----------------------------------------公共方法---------------------------------------------------*/
-/**
- * 获取当前时间
- * 格式YYYY-MM-DD
- */
+
+
 Vue.prototype.getNowFormatDate = function() {
 	var date = new Date();
 	var seperator1 = "-";
@@ -89,9 +86,9 @@ Vue.prototype.has = function(param){
 }
 
 /*
-*权限判断使用方法:
-* 1.<div v-has='1'> 测试内容1</div>
-* 2.<div v-if='has(25)'> 测试内容2</div>
+ **权限判断使用方法:
+ ** 1.<div v-has='1'> 测试内容1</div>
+ ** 2.<div v-if='has(25)'> 测试内容2</div>
 */
 //自定义指令v-has(不包含则删除该标签)
 Vue.directive('has', {

@@ -14,8 +14,12 @@
 					</div>
 				</div>
 				<div class="modal-footer">
+					<div class="col-md-4">
 					<button data-dismiss="modal" class="btn btn-danger" @click="deleteJobsType">确认</button>
+					</div>
+					<div class="col-md-4">
 					<button data-dismiss="modal" class="btn btn-primary mtbod">返回</button>
+					</div>
 				</div>
 			</div>
 		</div>

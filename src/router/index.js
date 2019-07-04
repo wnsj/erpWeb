@@ -23,6 +23,7 @@ import login from '@/components/userComponent/login.vue'
 import mainPage from '@/components/userComponent/mainPage.vue'
 
 
+//无纸化
 import askForLeave from '../components/paperlessOffice/askForLeave.vue'
 import restdown from '../components/paperlessOffice/restdown.vue'
 import leaveFiling from '../components/paperlessOffice/leaveFiling.vue'
@@ -34,7 +35,7 @@ import computerAdvanceApplication from '../components/paperlessOffice/computerAd
 import empRequire from '../components/paperlessOffice/empRequire.vue'
 
 
-
+import report from '../components/report/report.vue'
 
 Vue.use(Router)
 
@@ -113,5 +114,11 @@ export default new Router({
 			component: uilization
 		},
 
+		// 无纸化办公
+
+		{
+			path: '/report',
+			component: report
+		},
 	]
 })

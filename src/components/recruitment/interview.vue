@@ -307,7 +307,7 @@
 
       // ---------------------------------------查询----------------------------------
 
-      departChange(departId){   // 渠道
+      departChange(departId){   // 部门
         this.departId = departId
       },
       positionChange(positionId){ // 职位
