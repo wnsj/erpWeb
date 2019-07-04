@@ -14,7 +14,7 @@
 						</li>
 						<!-- 二级菜单 -->
 						<ul class="second-menu">
-							<li class="li-active"><router-link to="/employee"><i class="fa fa-circle" aria-hidden="true"></i>人员管理</router-link></li>
+							<li class="li-active"><router-link v-if="adfs==1" to="/employee"><i class="fa fa-circle" aria-hidden="true"></i>人员管理</router-link></li>
 							<li><router-link to="/attendence"><i class="fa fa-table" aria-hidden="false"></i>考勤管理</router-link></li>
 							<li><router-link to="/recruitment"><i class="fa fa-table" aria-hidden="false"></i>招聘管理</router-link></li>
 						</ul>
@@ -27,6 +27,20 @@
 							<li><router-link to="/perAnalysis/separation"><i class="fa fa-table" aria-hidden="false"></i>离职人员分析表</router-link></li>
 							<li><router-link to="/perAnalysis/effectiveness"><i class="fa fa-table" aria-hidden="false"></i>招聘效果评估分析表</router-link></li>	
 							<li><router-link to="/perAnalysis/uilization"><i class="fa fa-table" aria-hidden="false"></i>人力资源利用率分析表</router-link></li>
+						</ul>
+						<li>
+							<i class="fa fa-university" aria-hidden="true"></i>无纸化办公<i class="fa fa-sort-desc item-down" aria-hidden="true"></i>
+						</li>
+						<ul class="second-menu">
+							<li><router-link to="/paperlessOffice/askForLeave"><i class="fa fa-circle" aria-hidden="false"></i>请假</router-link></li>
+							<li><router-link to="/paperlessOffice/restdown"><i class="fa fa-table" aria-hidden="false"></i>倒休</router-link></li>
+							<li><router-link to="/paperlessOffice/leaveFiling"><i class="fa fa-table" aria-hidden="false"></i>请假报备</router-link></li>
+							<li><router-link to="/paperlessOffice/forgetPunchProof"><i class="fa fa-table" aria-hidden="false"></i>忘记打卡证明</router-link></li>	
+							<li><router-link to="/paperlessOffice/conferenceRoomManage"><i class="fa fa-table" aria-hidden="false"></i>会议室管理</router-link></li>
+							<li><router-link to="/paperlessOffice/officeSuppliesManage"><i class="fa fa-table" aria-hidden="false"></i>办公用品管理</router-link></li>
+							<li><router-link to="/paperlessOffice/computerSupplies"><i class="fa fa-table" aria-hidden="false"></i>电脑用品</router-link></li>
+							<li><router-link to="/paperlessOffice/computerAdvanceApplication"><i class="fa fa-table" aria-hidden="false"></i>电脑预申请</router-link></li>
+							 <li><router-link to="/paperlessOffice/empRequire"><i class="fa fa-table" aria-hidden="false"></i>人员需求</router-link></li>
 						</ul>
 						<li><i class="fa fa-area-chart" aria-hidden="true"></i>item</li>
 					</ul>
@@ -66,7 +80,13 @@
 </template>
 
 <script>
-	
+	export default{
+		data(){
+			return{
+				adfs:'2'
+			}
+		}
+	}
 	
 </script>
 	

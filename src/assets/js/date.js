@@ -60,6 +60,11 @@ export function getYYYYMMDDHHMMSS_24(time) {
 	var date = new Date(time);
 	return formatDate(date, 'yyyy.MM.dd 23:59:59.000'); // 年月日 格式自己定义   'yyyy : MM : dd'  例 2018年12月5日的格式
 }
+//获取年月日时分 2016.01.01 23:59
+export function getYYYYMMDDHHMM() {
+	var date = new Date();
+	return formatDate(date, 'yyyy-MM-dd hh:mm'); // 年月日 格式自己定义   'yyyy : MM : dd'  例 2018年12月5日的格式
+}
 /*根据出生日期算出年龄*/
 export function jsGetAge(strBirthday){
   var returnAge;

@@ -21,7 +21,7 @@
 					<p>状态：</p>
 				</div>
 				<div class="col-md-10 col-lg-10">
-					<select class="form-control" v-model="state" v-on:change="getEmployee('state')">
+					<select class="form-control" v-model="state" v-on:change="getEmployee()">
 						<option value="0">全部</option>
 						<option value="1">在职</option>
 						<option value="2">离职</option>
@@ -376,9 +376,13 @@
 			getEmployee: function(param) {
 				var copyProjectId = ''
 				var copyDepartName = ''
-				console.log(param)
+				var copyState='1'
+				if(this.state=='0'){
+					copyState=''
+				}else {
+					copyState=this.state
+				}
 				if (param == 'all') {
-					this.state = '1'
 					this.projectId = '0'
 					copyProjectId = ''
 					this.projectName = '0'
@@ -401,7 +405,6 @@
 						copyDepartName=''
 					}
 				} else if (param == 'search') {
-					this.state = '1'
 					copyProjectId = ''
 					copyDepartName = ''
 				} else {
@@ -426,7 +429,7 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
-						state: this.state,
+						state: copyState,
 						projectId: copyProjectId,
 						departName: copyDepartName,
 						searchContent: this.searchContent,

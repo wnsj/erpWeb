@@ -13,6 +13,7 @@ import {timeInit} from '../src/assets/js/date.js'
 import {isBlank} from '../src/assets/js/constant.js'
 import {jsGetAge} from '../src/assets/js/date.js'
 import {getYYYYMMDDHHMMSS_24} from '../src/assets/js/date.js'
+import {getYYYYMMDDHHMM} from '../src/assets/js/date.js'
 import {exportTableToExcel} from 'vendor/Export2Excel.js'
 
 
@@ -34,6 +35,8 @@ Vue.prototype.url = process.env.API_HOST
 Vue.prototype.getMonthFirst = getCurrentMonthFirst()
 Vue.prototype.getMonthLast = getCurrentMonthLast()
 Vue.prototype.getCurrentDay = timeInit('')
+//获取当前带有时分的时间
+Vue.prototype.getYYYYMMDDHHMM = getYYYYMMDDHHMM()
 
 /*-----------------------------------------公共方法---------------------------------------------------*/
 
