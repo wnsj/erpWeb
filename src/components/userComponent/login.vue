@@ -50,7 +50,7 @@
 						this.$parent.setRouter("/mainPage");
 					} else {
 						this.btnText = '登录';
-						alert(response.data.retMsg);
+						alert("retMsg:"+response.data.retMsg);
 					}
 				}).catch(
 					function(error) {

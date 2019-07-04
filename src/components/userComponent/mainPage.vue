@@ -100,7 +100,9 @@
 				//删除cookie
 				Cookies.remove("accountData");
 				Cookies.remove("accessToken");
-				window.location.href = "/login";
+				
+				
+				this.$parent.setRouter("/login");
 			}
 		},
 		created() {

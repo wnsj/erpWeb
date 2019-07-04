@@ -13,8 +13,8 @@
 		},
 		methods: {
 			setRouter(param) {
-				window.location.href = param;
-				//this.$router.push('/mainPage');//此方法会导致跳转2次
+				// window.location.href = param;
+				this.$router.push({ path:param });//此方法会导致跳转2次
 			}
 		},
 	}
