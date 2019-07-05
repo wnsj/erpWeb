@@ -37,8 +37,8 @@ Vue.prototype.url = process.env.API_HOST
 Vue.prototype.getMonthFirst = date.getCurrentMonthFirst()
 Vue.prototype.getMonthLast = date.getCurrentMonthLast()
 Vue.prototype.getCurrentDay = date.timeInit('')
+Vue.prototype.getCurrentYYYY_MM_DD_HH_MM_SS = date.getCurrentYYYY_MM_DD_HH_MM_SS()
 Vue.prototype.contentType = 'application/json;charset=utf-8'
-Vue.prototype.accessToken = '66666666666666666666666';
 //token存储在cookie中的过期时间
 Vue.prototype.accessTokenLife = 7
 Vue.prototype.accountDataLife = 7

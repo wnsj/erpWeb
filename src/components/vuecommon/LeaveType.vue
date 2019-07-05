@@ -1,7 +1,6 @@
 <template>
   <select class="form-control" v-model="typeId"  v-on:change="leaveTypeChange">
-    <option value="0">---请选择---</option>
-    <option v-for="(item,index) in leaveTypeList" :key="index" v-bind:value="item.id">{{item.name}}</option>
+    <option v-for="(item,index) in leaveTypeList" :key="index" v-bind:value="item.value">{{item.label}}</option>
   </select>
 </template>
 
@@ -13,7 +12,18 @@
       return {
         typeId: '0',
         leaveTypeName:'',
-        leaveTypeList:[]
+        leaveTypeList:[
+          {value:'0',label:'---请选择---'},
+          {value:'1',label:'病假'},
+					{value:'2',label:'事假'},
+          {value:'3',label:'婚假'},
+          {value:'4',label:'产检'},
+          {value:'5',label:'产假'},
+          {value:'6',label:'哺乳假'},
+          {value:'7',label:'丧假'},
+          {value:'8',label:'倒休'},
+          {value:'9',label:'其他'},
+        ]
       };
     },
     props: ['leaveTypeId'],
@@ -43,29 +53,7 @@
             return res.name
           }
         }
-      },
-      // 查询假期类型信息
-      getLeaveType: function() {
-        var url = this.url + '/kqParamSetContr/queryVacation'
-        axios({
-          method: 'post',
-          url: url,
-          headers: {
-            'Content-Type': this.contentType,
-            'Access-Token': this.accessToken
-          },
-          data: {
-          },
-          dataType: 'json',
-        }).then((response) => {
-          this.leaveTypeList = response.data.retData;
-        }).catch((error) => {
-          console.log('请求失败处理')
-        });
-      },
-    },
-    created() {
-      this.getLeaveType();
+      }
     }
   }
 </script>

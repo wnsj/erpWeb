@@ -1,6 +1,6 @@
 <template>
   <select class="form-control" v-model="accId"  v-on:change="approvalChange">
-    <!-- <option value="0">---请选择---</option> -->
+    <option value="">---请选择---</option>
     <option v-for="(item,index) in accountList" :key="index" v-bind:value="item.accountID">{{item.accountName}}</option>
   </select>
 </template>
@@ -19,11 +19,7 @@
     props: ['accountID'],
     watch:{
       accountID:function(){
-        if(this.accountID == null) {
-          this.accId = '0'
-        }else{
-          this.accId = this.accountID
-        }
+        this.accId = this.accountID
       },
       accId:function(val){
         this.$emit('approvalChange',val,this.accountName)
