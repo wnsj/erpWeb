@@ -10,10 +10,10 @@
     name:'leaveType',
     data() {
       return {
-        typeId: '0',
+        typeId: '',
         leaveTypeName:'',
         leaveTypeList:[
-          {value:'0',label:'---请选择---'},
+          {value:'',label:'---请选择---'},
           {value:'1',label:'病假'},
 					{value:'2',label:'事假'},
           {value:'3',label:'婚假'},
@@ -29,11 +29,7 @@
     props: ['leaveTypeId'],
     watch:{
       leaveTypeId:function(){
-        if(this.leaveTypeId == null) {
-          this.typeId = '0'
-        }else{
-          this.typeId = this.leaveTypeId
-        }
+        this.typeId = this.leaveTypeId
       },
       typeId:function(val){
         this.$emit('leaveTypeChange',val,this.leaveTypeName)

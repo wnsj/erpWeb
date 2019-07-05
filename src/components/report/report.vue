@@ -73,7 +73,6 @@
             </thead>
             <tbody>
             <tr v-for="(item,index) in reportList" :key="index"
-            
                :style="item.state == 1? {'color':'blue'}:(item.state == 2? {'color':'green'}:{'color':''})                     "
             >
               <td class="text-center">{{item.type}}</td>
@@ -122,7 +121,7 @@
               <div class="form-group clearfix">
                 <label class="col-md-2 control-label text-right nopad">部门：</label>
                 <div class="col-md-3">
-                  <department @departChange='departChange'></department>
+                  <department ref="depart" @departChange='departChange'></department>
                 </div>
                 <label class="col-md-2 control-label text-right nopad">请假人：</label>
                 <div class="col-md-3">
@@ -206,7 +205,7 @@
 
         // 添加
         leaveTypeId:'',
-        departId:'0',
+        departId:'',
         deptEmpId:'',
         startTime: '',
         endTime: '',
@@ -267,7 +266,7 @@
           alert('请选择请假类型');
           return false;
         }
-        if(this.departId == 0 || this.departId == '') {
+        if(this.isBlank(this.leaveTypeId) || this.departId == 0) {
           alert('请选择部门');
           return false;
         }
@@ -292,15 +291,6 @@
           alert('请选择审批人');
           return false;
         }
-        console.log("type" + this.leaveTypeId)
-        console.log("fillAccount" + "239")
-        console.log("fillTime" + this.getCurrentDay)
-        console.log("leaveAccount" + this.deptEmpId)
-        console.log("startTime" + this.startTime)
-        console.log("endTime" + this.endTime)
-        console.log("leaveRemark" + this.leaveRemark)
-        console.log("checkAccount" + this.accountID)
-        console.log("updateTime" + this.getCurrentDay)
         axios({
           method: 'post',
           url: this.url + '/wzbgController/addLeavePrepare',
@@ -326,6 +316,16 @@
           console.log('请求失败处理')
           console.log(response.data.retData)
         });
+        this.leaveTypeId = '',
+        this.departId = this.$refs.depart.setDpart("0"),
+        this.deptEmpId = '',
+        this.startTime = '',
+        this.endTime = '',
+        this.leaveRemark = '',
+        this.accountID = '',
+        this.checkRemark = '',
+        this.fillTime = '',
+        this.updateTime = ''
         $('#reportAdd').modal('hide');
       },
     },
