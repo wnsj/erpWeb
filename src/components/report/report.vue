@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
         <div class="col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">
           <p>填写日期：</p>
         </div>
@@ -72,7 +72,9 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(item,index) in reportList" :key="index">
+            <tr v-for="(item,index) in reportList" :key="index"
+               :style="item.state == 1? {'color':'blue'}:(item.state == 2? {'color':'green'}:{'color':''})                     "
+            >
               <td class="text-center">{{item.type}}</td>
               <td class="text-center">{{item.leaveEmpName}}</td>
               <td class="text-center">{{item.leaveDepartmentName}}</td>
@@ -80,13 +82,17 @@
               <td class="text-center">{{item.endTime}}</td>
               <td class="text-center">{{item.leaveRemark}}</td>
               <td class="text-center">{{item.fillEmpName}}</td>
-               <td class="text-center">{{item.fillDepartmentName}}</td>
+              <td class="text-center">{{item.fillDepartmentName}}</td>
               <td class="text-center">{{item.fillTime}}</td>
               <td class="text-center">{{item.checkEmpName}}</td>
               <td class="text-center">{{item.checkTime}}</td>
-              <td class="text-center">{{item.checkResult}}</td>
-              <td class="text-center">{{item.checkRemark}}</td>
-              <td class="text-center">{{item.state}}</td>
+              <td class="text-center">
+                {{item.checkResult == 0? '不同意':(item.checkResult == 1? '同意':'')}}
+              </td>
+              <th class="text-center">{{item.checkRemark}}</th> 
+              <td class="text-center">
+                 {{item.state == 1? '已销假':(item.state == 2? '已取消':'')}}
+              </td>
             </tr>
             </tbody>
           </table>
@@ -115,7 +121,7 @@
               <div class="form-group clearfix">
                 <label class="col-md-2 control-label text-right nopad">部门：</label>
                 <div class="col-md-3">
-                  <department @departChange='departChange'></department>
+                  <department ref="depart" @departChange='departChange'></department>
                 </div>
                 <label class="col-md-2 control-label text-right nopad">请假人：</label>
                 <div class="col-md-3">
@@ -125,7 +131,6 @@
               <div class="form-group clearfix">
                 <label for="startTime" class="col-md-2 control-label text-right nopad">开始日期：</label>
 				        <div class="col-md-3">
-          			  <!-- <input type="datetime-local" class="form-control" id="startTime" v-model="startTime"/> -->
                   <input type="datetime-local" class="form-control" id="startTime" v-model="startTime"/>
 				        </div>
                 <label for="endTime" class="col-md-2 control-label text-right nopad">结束日期：</label>
@@ -166,11 +171,12 @@
 </template>
 <script>
   import axios from 'axios'
+  import Cookies from 'js-cookie'
   import department from '../vuecommon/department.vue'
   import leaveType from '../vuecommon/leaveType.vue'
   import deptEmp from '../vuecommon/deptEmp.vue'
   import approvalLeaveAcc from '../report/subReport/approvalLeaveAcc.vue'
-
+  
   export default {
     components: {
       department,
@@ -199,13 +205,15 @@
 
         // 添加
         leaveTypeId:'',
-        departId:'0',
+        departId:'',
         deptEmpId:'',
-        startTime: '2019-06-01T10:00',
+        startTime: '',
         endTime: '',
         leaveRemark:'',
         accountID:'',
-        checkRemark:''
+        checkRemark:'',
+        fillTime: this.getCurrentYYYY_MM_DD_HH_MM_SS,
+        updateTime: this.getCurrentYYYY_MM_DD_HH_MM_SS
       }
     },
     methods: {
@@ -258,7 +266,7 @@
           alert('请选择请假类型');
           return false;
         }
-        if(this.departId == 0 || this.departId == '') {
+        if(this.isBlank(this.leaveTypeId) || this.departId == 0) {
           alert('请选择部门');
           return false;
         }
@@ -266,6 +274,15 @@
           alert('请选择请假人');
           return false;
         }
+        if(this.isBlank(this.startTime)) {
+          alert('请假开始时间不能为空,或格式不正确');
+          return false;
+        }
+        if(this.isBlank(this.endTime)) {
+          alert('请假结束时间不能为空,或格式不正确');
+          return false;
+        }
+
         if(this.isBlank(this.leaveRemark)) {
           alert('请选择请假原因');
           return false;
@@ -274,15 +291,6 @@
           alert('请选择审批人');
           return false;
         }
-        console.log("type" + this.leaveTypeId)
-        console.log("fillAccount" + "239")
-        console.log("fillTime" + this.getCurrentDay)
-        console.log("leaveAccount" + this.deptEmpId)
-        console.log("startTime" + this.startTime)
-        console.log("endTime" + this.endTime)
-        console.log("leaveRemark" + this.leaveRemark)
-        console.log("checkAccount" + this.accountID)
-        console.log("updateTime" + this.getCurrentDay)
         axios({
           method: 'post',
           url: this.url + '/wzbgController/addLeavePrepare',
@@ -292,14 +300,14 @@
           },
           data: {
             type: this.leaveTypeId,
-            fillAccount: '239',
-            fillTime: this.getCurrentDay,
+            fillAccount:  JSON.parse(Cookies.get("accountData")).account.account_ID,
+            fillTime: this.fillTime,
             leaveAccount: this.deptEmpId,
             startTime: this.startTime,
             endTime: this.endTime,
             leaveRemark: this.leaveRemark,
             checkAccount: this.accountID,
-            updateTime: this.getCurrentDay
+            updateTime: this.updateTime
           },
           dataType: 'json',
         }).then((response) => {
@@ -308,6 +316,16 @@
           console.log('请求失败处理')
           console.log(response.data.retData)
         });
+        this.leaveTypeId = '',
+        this.departId = this.$refs.depart.setDpart("0"),
+        this.deptEmpId = '',
+        this.startTime = '',
+        this.endTime = '',
+        this.leaveRemark = '',
+        this.accountID = '',
+        this.checkRemark = '',
+        this.fillTime = '',
+        this.updateTime = ''
         $('#reportAdd').modal('hide');
       },
     },

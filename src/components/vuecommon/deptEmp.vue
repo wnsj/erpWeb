@@ -1,7 +1,7 @@
 <template>
-  <select class="form-control" v-model="empId"  v-on:change="deptEmpChange">
-    <option value="0">---请选择---</option>
-    <option v-for="(item,index) in deptEmpList" :key="index" v-bind:value="item.id">{{item.name}}</option>
+  <select class="form-control" v-model="empAccountId"  v-on:change="deptEmpChange">
+    <option value="">---请选择---</option>
+    <option v-for="(item,index) in deptEmpList" :key="index" v-bind:value="item.account">{{item.name}}</option>
   </select>
 </template>
 
@@ -11,7 +11,7 @@
     name:'deptEmp',
     data() {
       return {
-        empId: '0',
+        empAccountId: '',
         deptId: '',
         empName:'',
         deptEmpList:[],
@@ -20,19 +20,15 @@
     props: ['deptEmpId'],
     watch:{
       deptEmpId:function(){
-        if(this.deptEmpId == null) {
-          this.empId = '0'
-        }else{
-          this.empId = this.deptEmpId
-        }
+          this.empAccountId = this.deptEmpId
       },
-      empId:function(val){
+      empAccountId:function(val){
         this.$emit('deptEmpChange',val,this.empName)
       }
     },
     methods:{
       deptEmpChange: function(event) {
-        this.empName = this.exchangeDeptEmpName(this.empId)
+        this.empName = this.exchangeDeptEmpName(this.empAccountId)
       },
       exchangeDeptEmpName: function(param) {
         var res = {}
@@ -48,9 +44,9 @@
         console.log("val:"+val);
         this.getDeptEmp();
       },
-      // 查询假期类型信息
+      // 查询部门下的员工信息
       getDeptEmp: function() {
-        var url = this.url + '/search/selectDeptEmpByDept'
+        var url = this.url + '/wzbgController/queryEmpInfoByDept'
         axios({
           method: 'post',
           url: url,

@@ -187,7 +187,7 @@ function getYYYY$MM$DD(time) {
 //获取当前年月日时分秒 2016-01-01 00:00:00
 function getCurrentYYYY_MM_DD_HH_MM_SS() {
 	var date = new Date();
-	return formatDate(date, 'yyyy-MM-dd HH:mm:ss');
+	return formatDate(date, 'yyyy-MM-dd hh:mm:ss');
 }
 
 export {

@@ -27,7 +27,6 @@ Vue.use(VueResource)
 
 Vue.prototype.$ajax = axios
 
-
 /*------本机路径----*/
 Vue.prototype.url = process.env.API_HOST
 // Vue.prototype.url = '/api'
@@ -37,8 +36,8 @@ Vue.prototype.url = process.env.API_HOST
 Vue.prototype.getMonthFirst = date.getCurrentMonthFirst()
 Vue.prototype.getMonthLast = date.getCurrentMonthLast()
 Vue.prototype.getCurrentDay = date.timeInit('')
+Vue.prototype.getCurrentYYYY_MM_DD_HH_MM_SS = date.getCurrentYYYY_MM_DD_HH_MM_SS()
 Vue.prototype.contentType = 'application/json;charset=utf-8'
-Vue.prototype.accessToken = '66666666666666666666666';
 //token存储在cookie中的过期时间
 Vue.prototype.accessTokenLife = 7
 Vue.prototype.accountDataLife = 7
@@ -84,7 +83,7 @@ Vue.prototype.exportTableToExcel = function(tbId, fileName) {
 	var date = myDate.getDate();
 	exportTableToExcel(tbId, fileName + '_' + year + '_' + month + '_' + date);
 }
-Vue.prototype.has = function(param){
+Vue.prototype.has = function(param) {
 	return constant.has(param);
 }
 
@@ -92,7 +91,7 @@ Vue.prototype.has = function(param){
  **权限判断使用方法:
  ** 1.<div v-has='1'> 测试内容1</div>
  ** 2.<div v-if='has(25)'> 测试内容2</div>
-*/
+ */
 //自定义指令v-has(不包含则删除该标签)
 Vue.directive('has', {
 	inserted: function(el, binding) {
@@ -110,6 +109,8 @@ router.beforeEach((to, from, next) => {
 		let token = Cookies.get('accessToken');
 		if (constant.isBlank(token)) {
 			next('/login');
+		} else if (to.path === '/ERP/dist/index.html') {
+			next('/mainPage');
 		} else {
 			next('/');
 		}
