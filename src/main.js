@@ -116,10 +116,12 @@ router.beforeEach((to, from, next) => {
 		let token = Cookies.get('accessToken');
 		if (constant.isBlank(token)) {
 			next('/login');
-		} else if (to.path === '/ERP/dist/index.html') {
+		} else if (to.path == '/login') {
+			next('/mainPage');
+		} else if (to.path == '/ERP/dist/index.html') {
 			next('/mainPage');
 		} else {
-			next('/');
+			next();
 		}
 	}
 });

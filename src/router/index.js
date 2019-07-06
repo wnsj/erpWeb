@@ -35,8 +35,10 @@ import computerAdvanceApplication from '../components/paperlessOffice/computerAd
 import empRequire from '../components/paperlessOffice/empRequire.vue'
 import report from '../components/report/report.vue'
 
+Vue.use(Router);
+
 export default new Router({
-	mode: 'history',
+	mode: 'hash',
 	linkActiveClass: 'open active',
 	scrollBehavior: () => ({
 		y: 0
@@ -134,7 +136,7 @@ export default new Router({
 					path: '/paperlessOffice/conferenceRoomManage',
 					component: conferenceRoomManage
 				},
-				
+
 				{
 					path: '/paperlessOffice/officeSuppliesManage',
 					component: officeSuppliesManage
@@ -155,4 +157,3 @@ export default new Router({
 		}
 	]
 });
-
