@@ -35,7 +35,7 @@ import computerAdvanceApplication from '../components/paperlessOffice/computerAd
 import empRequire from '../components/paperlessOffice/empRequire.vue'
 import report from '../components/report/report.vue'
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
 	mode: 'hash',
@@ -115,6 +115,43 @@ export default new Router({
 				{
 					path: '/report',
 					component: report
+				},
+				{
+					path: '/paperlessOffice/askForLeave',
+					component: askForLeave
+				},
+				{
+					path: '/paperlessOffice/restdown',
+					component: restdown
+				},
+				{
+					path: '/paperlessOffice/leaveFiling',
+					component: leaveFiling
+				},
+				{
+					path: '/paperlessOffice/forgetPunchProof',
+					component: forgetPunchProof
+				},
+				{
+					path: '/paperlessOffice/conferenceRoomManage',
+					component: conferenceRoomManage
+				},
+
+				{
+					path: '/paperlessOffice/officeSuppliesManage',
+					component: officeSuppliesManage
+				},
+				{
+					path: '/paperlessOffice/computerSupplies',
+					component: computerSupplies
+				},
+				{
+					path: '/paperlessOffice/computerAdvanceApplication',
+					component: computerAdvanceApplication
+				},
+				{
+					path: '/paperlessOffice/empRequire',
+					component: empRequire
 				},
 			]
 		}
