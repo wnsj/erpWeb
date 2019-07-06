@@ -81,7 +81,7 @@ Vue.prototype.exportTableToExcel = function(tbId, fileName) {
 	var date = myDate.getDate();
 	exportTableToExcel(tbId, fileName + '_' + year + '_' + month + '_' + date);
 }
-Vue.prototype.has = function(param){
+Vue.prototype.has = function(param) {
 	return constant.has(param);
 }
 
@@ -89,7 +89,7 @@ Vue.prototype.has = function(param){
  **权限判断使用方法:
  ** 1.<div v-has='1'> 测试内容1</div>
  ** 2.<div v-if='has(25)'> 测试内容2</div>
-*/
+ */
 //自定义指令v-has(不包含则删除该标签)
 Vue.directive('has', {
 	inserted: function(el, binding) {
@@ -107,6 +107,8 @@ router.beforeEach((to, from, next) => {
 		let token = Cookies.get('accessToken');
 		if (constant.isBlank(token)) {
 			next('/login');
+		} else if (to.path === '/ERP/dist/index.html') {
+			next('/mainPage');
 		} else {
 			next();
 		}
