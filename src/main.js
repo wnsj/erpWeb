@@ -27,7 +27,6 @@ Vue.use(VueResource)
 
 Vue.prototype.$ajax = axios
 
-
 /*------本机路径----*/
 Vue.prototype.url = process.env.API_HOST
 // Vue.prototype.url = '/api'
