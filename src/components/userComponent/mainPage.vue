@@ -46,6 +46,7 @@
 							<i class="fa fa-university" aria-hidden="true"></i>无纸化办公<i class="fa fa-sort-desc item-down" aria-hidden="true"></i>
 						</li>
 						<ul class="second-menu">
+							<li><router-link to="/paperlessOffice/askForLeave"><i class="fa fa-table" aria-hidden="true"></i>请假</router-link></li>
 							<li><router-link to="/report"><i class="fa fa-table" aria-hidden="true"></i>请假报备</router-link></li>
 						</ul>
 						<li><i class="fa fa-area-chart" aria-hidden="true"></i>item</li>

@@ -5,9 +5,9 @@
 			<h1 class="modal-title">请假</h1>
 		</div>
 		<div class="modal-header">
-			<h4 id="myModalLabel" class="modal-title"><span>申请人姓名：<i>测试1</i></span>
-			<span>部门：<i>成都运营</i></span>
-			<span>职位：<i>无职位</i></span></h4>
+			<h4 id="myModalLabel" class="modal-title"><span>申请人姓名：<i>{{lInfo.leaveAccountName}}</i></span>
+			<span>部门：<i>{{lInfo.departName}}</i></span>
+			<span>职位：<i>{{lInfo.positionName}}</i></span></h4>
 		</div>
 		<div class="modal-header modal_header_leave">
 			<h6>请假</h6>
@@ -228,7 +228,7 @@
 		},
 		data() {
 			return {
-				lInfo:{},//离职信息
+				lInfo:{},//請假信息
 				delgateEMP:[],//代理人
 				
 				beginDate:this.getCurrentDay,

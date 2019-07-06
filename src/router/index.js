@@ -33,92 +33,126 @@ import officeSuppliesManage from '../components/paperlessOffice/officeSuppliesMa
 import computerSupplies from '../components/paperlessOffice/computerSupplies.vue'
 import computerAdvanceApplication from '../components/paperlessOffice/computerAdvanceApplication.vue'
 import empRequire from '../components/paperlessOffice/empRequire.vue'
-
-
 import report from '../components/report/report.vue'
 
-Vue.use(Router)
-
 export default new Router({
-
 	mode: 'history',
-	base: __dirname,
+	linkActiveClass: 'open active',
+	scrollBehavior: () => ({
+		y: 0
+	}),
 	routes: [{
-			path: '/',
-			component: App,
+			path: '/login',
+			component: login,
+			hidden: true
+		},
+		{
+			path: '/mainPage',
+			name: '首页',
+			component: mainPage,
+			hidden: false,
 			children: [{
-					path: '/mainPage',
-					component: mainPage
+					path: '/employee',
+					component: employee
 				},
 				{
-					path: '/login',
-					component: login
-				}
-			],
-			redirect: '/login'
-		},
-		{
-			path: '/employee',
-			component: employee
-		},
-		{
-			path: '/attendence',
-			component: attendence
-		},
-		//招聘
-		{
-			path: '/recruitment',
-			component: recruitment,
-			children: [{
-					path: '/recruitment/recruitChannels',
-					name: 'recruitChannels',
-					component: recruitChannels,
+					path: '/attendence',
+					component: attendence
+				},
+				//招聘
+				{
+					path: '/recruitment',
+					component: recruitment,
+					children: [{
+							path: '/recruitment/recruitChannels',
+							name: 'recruitChannels',
+							component: recruitChannels,
+						},
+						{
+							path: '/recruitment/recruitPlan',
+							name: 'recruitPlan',
+							component: recruitPlan
+						},
+						{
+							path: '/recruitment/recruitPublish',
+							name: 'recruitPublish',
+							component: recruitPublish
+						},
+						{
+							path: '/recruitment/interview',
+							name: 'interview',
+							component: interview
+						}
+					],
+					redirect: '/recruitment/recruitChannels'
+				},
+				//人员分析
+				{
+					path: '/perAnalysis/poresonnel',
+					component: poresonnel
 				},
 				{
-					path: '/recruitment/recruitPlan',
-					name: 'recruitPlan',
-					component: recruitPlan
+					path: '/perAnalysis/abnormal',
+					component: abnormal
 				},
 				{
-					path: '/recruitment/recruitPublish',
-					name: 'recruitPublish',
-					component: recruitPublish
+					path: '/perAnalysis/separation',
+					component: separation
 				},
 				{
-					path: '/recruitment/interview',
-					name: 'interview',
-					component: interview
-				}
-			],
-			redirect: '/recruitment/recruitChannels'
-		},
-		//人员分析
-		{
-			path: '/perAnalysis/poresonnel',
-			component: poresonnel
-		},
-		{
-			path: '/perAnalysis/abnormal',
-			component: abnormal
-		},
-		{
-			path: '/perAnalysis/separation',
-			component: separation
-		},
-		{
-			path: '/perAnalysis/effectiveness',
-			component: effectiveness
-		},
-		{
-			path: '/perAnalysis/uilization',
-			component: uilization
-		},
+					path: '/perAnalysis/effectiveness',
+					component: effectiveness
+				},
+				{
+					path: '/perAnalysis/uilization',
+					component: uilization
+				},
 
-		// 无纸化办公
+				// 无纸化办公
 
-		{
-			path: '/report',
-			component: report
-		},
+				{
+					path: '/report',
+					component: report
+				},
+				{
+					path: '/paperlessOffice/askForLeave',
+					component: askForLeave
+				},
+				{
+					path: '/paperlessOffice/restdown',
+					component: restdown
+				},
+				{
+					path: '/paperlessOffice/leaveFiling',
+					component: leaveFiling
+				},
+				{
+					path: '/paperlessOffice/forgetPunchProof',
+					component: forgetPunchProof
+				},
+				{
+					path: '/paperlessOffice/conferenceRoomManage',
+					component: conferenceRoomManage
+				},
+				
+				{
+					path: '/paperlessOffice/officeSuppliesManage',
+					component: officeSuppliesManage
+				},
+				{
+					path: '/paperlessOffice/computerSupplies',
+					component: computerSupplies
+				},
+				{
+					path: '/paperlessOffice/computerAdvanceApplication',
+					component: computerAdvanceApplication
+				},
+				{
+					path: '/paperlessOffice/empRequire',
+					component: empRequire
+				},
+			]
+		}
 	]
-})
+});
+
