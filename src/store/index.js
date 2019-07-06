@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { asyncRouterMap, constantRouterMap } from '@/router';
 
 Vue.use(Vuex)
 /*
