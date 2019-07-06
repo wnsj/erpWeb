@@ -71,6 +71,9 @@ Vue.prototype.jsGetAge = function(param) {
 Vue.prototype.getYYYYMMDDHHMMSS_24 = function(param) {
 	return date.getYYYYMMDDHHMMSS_24(param)
 }
+Vue.prototype.getYYYYMMDDHHMMSS_00 = function(param) {
+	return date.getYYYYMMDDHHMMSS_00(param)
+}
 Vue.prototype.exportTableToExcel = function(tbId, fileName) {
 	if (confirm("确定导出?") == false) {
 		return;
@@ -108,7 +111,7 @@ router.beforeEach((to, from, next) => {
 		if (constant.isBlank(token)) {
 			next('/login');
 		} else {
-			next();
+			next('/');
 		}
 	}
 });
@@ -122,7 +125,8 @@ new Vue({
 	router,
 	data() {
 		return {
-			accessToken: constant.isBlank(Cookies.get('accessToken')) ? '' : Cookies.get('accessToken')
+			accountAccessToken: constant.isBlank(Cookies.get('accessToken')) ? '' : Cookies.get('accessToken'),
+			accountAccountData: constant.isBlank(Cookies.get('accountData')) ? '' : Cookies.get('accountData'),
 		}
 	},
 	components: {

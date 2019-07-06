@@ -12,9 +12,9 @@ function boxheight() {
 		winHeight = document.documentElement.clientHeight;
 
 	//DIV高度为浏览器窗口高度
-	document.getElementById("Odiv").style.height = winHeight + "px";
-	document.getElementById("Adiv").style.height = winHeight + "px";
-	document.getElementById("Cdiv").style.height = winHeight + "px";
+// 	document.getElementById("Odiv").style.height = winHeight + "px";
+// 	document.getElementById("Adiv").style.height = winHeight + "px";
+// 	document.getElementById("Cdiv").style.height = winHeight + "px";
 }
 
 $(function() {
