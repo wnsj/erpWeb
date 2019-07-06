@@ -20,6 +20,13 @@ Vue.config.productionTip = false
 
 Vue.use(VueResource)
 
+
+
+
+
+
+
+
 // 允许携带cookie
 // axios.defaults.withCredentials=true
 
