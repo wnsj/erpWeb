@@ -48,6 +48,8 @@ Vue.prototype.contentType = 'application/json;charset=utf-8'
 //token存储在cookie中的过期时间
 Vue.prototype.accessTokenLife = 7
 Vue.prototype.accountDataLife = 7
+//是否使用前端设置cookie
+Vue.prototype.isUseSetCookie = true
 
 
 Vue.prototype.getNowFormatDate = function() {
@@ -110,12 +112,19 @@ Vue.directive('has', {
 
 //路由卫士
 router.beforeEach((to, from, next) => {
-	if (to.path === '/login') {
+	consolelog(to, from);
+	if (to.path == '/login' && from.path == '/mainPage') {
+		next();
+	} else if (to.path == '/login') {
 		next();
 	} else {
 		let token = Cookies.get('accessToken');
-		if (constant.isBlank(token)) {
+		let accountData = Cookies.get('accountData');
+		//consoleLogCookie(token,accountData);
+		if (constant.isBlank(token) || constant.isBlank(accountData)) {
 			next('/login');
+		}else if (to.path == '/') {
+			next('/mainPage');
 		} else if (to.path == '/login') {
 			next('/mainPage');
 		} else if (to.path == '/ERP/dist/index.html') {
@@ -125,6 +134,14 @@ router.beforeEach((to, from, next) => {
 		}
 	}
 });
+
+function consolelog(to, from) {
+	console.log("to:" + to.path + ",from:" + from.path);
+}
+
+function consoleLogCookie(token, accoutData) {
+	console.log("token:" + token + ",accoutData:" + accoutData)
+}
 
 /**
  * 创建VUE实例，其他实例注入

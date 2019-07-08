@@ -12,54 +12,60 @@ function boxheight() {
 		winHeight = document.documentElement.clientHeight;
 
 	//DIV高度为浏览器窗口高度
-// 	document.getElementById("Odiv").style.height = winHeight + "px";
-// 	document.getElementById("Adiv").style.height = winHeight + "px";
-// 	document.getElementById("Cdiv").style.height = winHeight + "px";
+	document.getElementById("Odiv").style.height = winHeight + "px";
+	document.getElementById("Adiv").style.height = winHeight + "px";
+	document.getElementById("Cdiv").style.height = winHeight + "px";
 }
 
-$(function() {
-	boxheight(); //执行函数
-	window.onresize = boxheight; //窗口或框架被调整大小时执行
-});
+function setClick() {
+	$(document).ready(function() {
+		var menuArray = $("#aside-menu>li")
+		var secondMenuArray = $(".second-menu")
+		var secondMenuItems = $(".second-menu>li")
+		var commonIframe = $("#common-iframe")
 
-$(document).ready(function() {
-	var menuArray = $("#aside-menu>li")
-	var secondMenuArray = $(".second-menu")
-	var secondMenuItems = $(".second-menu>li")
-	var commonIframe = $("#common-iframe")
+		for (var i = 0; i < secondMenuItems.length; i++) {
+			$(secondMenuItems[i]).on("click", function() {
+				console.log(2)
+				clearClass()
+				$(this).addClass("li-active")
+			})
+		}
 
-	for (var i = 0; i < secondMenuItems.length; i++) {
-		$(secondMenuItems[i]).on("click", function() {
-			console.log(2)
-			clearClass()
-			$(this).addClass("li-active")
+		function clearClass() {
+			$("#aside-menu .li-active").removeClass("li-active")
+		}
+
+		$(menuArray[0]).on("click", function() {
+			$(secondMenuArray[0]).slideToggle();
 		})
-	}
-
-	function clearClass() {
-		$("#aside-menu .li-active").removeClass("li-active")
-	}
-
-	$(menuArray[0]).on("click", function() {
-		$(secondMenuArray[0]).slideToggle();
-	})
-	$(menuArray[1]).on("click", function() {
-		$(secondMenuArray[1]).slideToggle();
-	})
-
-	$(secondMenuItems[0]).on("click", function() {
-		commonIframe.attr({
-			src: "./employee.html"
+		$(menuArray[1]).on("click", function() {
+			$(secondMenuArray[1]).slideToggle();
 		})
-	})
-	$(secondMenuItems[1]).on("click", function() {
-		commonIframe.attr({
-			src: "./attendance.html"
+
+		$(secondMenuItems[0]).on("click", function() {
+			commonIframe.attr({
+				src: "./employee.html"
+			})
 		})
-	})
-	$(secondMenuItems[2]).on("click", function() {
-		commonIframe.attr({
-			src: "./recruitment.html"
+		$(secondMenuItems[1]).on("click", function() {
+			commonIframe.attr({
+				src: "./attendance.html"
+			})
+		})
+		$(secondMenuItems[2]).on("click", function() {
+			commonIframe.attr({
+				src: "./recruitment.html"
+			})
 		})
 	})
-})
+}
+
+
+export function init() {
+	$(function() {
+		boxheight(); //执行函数
+		window.onresize = boxheight; //窗口或框架被调整大小时执行
+	});
+	setClick();
+}

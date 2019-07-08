@@ -89,10 +89,12 @@
 <script>
 	import axios from 'axios'
 	import Cookies from 'js-cookie'
+	import {
+		init
+	} from '@/../static/js/common.js'
 
 	export default {
-		components: {
-		},
+		components: {},
 		data() {
 			return {
 				accountInfo: this.$store.state.accountInfo,
@@ -116,14 +118,18 @@
 			}
 		},
 		created() {
+			
+		},
+		mounted() {
 			this.accountData = JSON.parse(Cookies.get("accountData"));
 			this.account = this.accountData.account_Name;
+			init();
 		},
 		computed: {
 			// accountInfo() {
 			// 	return 
 			// }
-		},
+		}
 	}
 </script>
 
