@@ -52,7 +52,7 @@ function has(param){
 	var accountData = JSON.parse(jsonString);
 	var permission = accountData.permission;
 	for (var i = 0; i < permission.length; i++) {
-		if(permission[i].rule_ID == param){
+		if(permission[i] == param){
 			return true;
 		} 
 	}

@@ -128,30 +128,7 @@ export default new Router({
 					component: restdown
 				},
 				
-				{
-					path: '/report',
-					component: report
-				},
 				
-				{
-					path: '/report',
-					component: report
-				},
-				
-				{
-					path: '/report',
-					component: report
-				},
-				
-				{
-					path: '/report',
-					component: report
-				},
-				
-				{
-					path: '/report',
-					component: report
-				},
 				
 			]
 		}

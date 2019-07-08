@@ -49,7 +49,6 @@
 							Cookies.set('accessToken', this.accountData.accessToken, { expires: this.accessTokenLife });
 							Cookies.set('accountData', this.accountData, { expires: this.accountDataLife });
 						}
-						console.log("accountData"+this.accountData)
 						this.$parent.setRouter("/mainPage");
 					} else {
 						this.btnText = '登录';
