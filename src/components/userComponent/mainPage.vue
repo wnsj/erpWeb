@@ -105,6 +105,7 @@
 			//用户退出
 			loginOut() {
 				if (confirm("确定退出?") == false) {
+					this.$parent.setRouter("/mainPage");
 					return;
 				} else {
 					//删除cookie

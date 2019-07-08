@@ -35,9 +35,10 @@ import computerAdvanceApplication from '../components/paperlessOffice/computerAd
 import empRequire from '../components/paperlessOffice/empRequire.vue'
 import report from '../components/report/report.vue'
 
-Vue.use(Router);
+Vue.use(Router)
 
 export default new Router({
+	// mode: 'history', //在生产环境下生成虚拟路径，再次刷新，路径将会改变，导致404错误
 	mode: 'hash',
 	linkActiveClass: 'open active',
 	scrollBehavior: () => ({
@@ -115,43 +116,6 @@ export default new Router({
 				{
 					path: '/report',
 					component: report
-				},
-				{
-					path: '/paperlessOffice/askForLeave',
-					component: askForLeave
-				},
-				{
-					path: '/paperlessOffice/restdown',
-					component: restdown
-				},
-				{
-					path: '/paperlessOffice/leaveFiling',
-					component: leaveFiling
-				},
-				{
-					path: '/paperlessOffice/forgetPunchProof',
-					component: forgetPunchProof
-				},
-				{
-					path: '/paperlessOffice/conferenceRoomManage',
-					component: conferenceRoomManage
-				},
-
-				{
-					path: '/paperlessOffice/officeSuppliesManage',
-					component: officeSuppliesManage
-				},
-				{
-					path: '/paperlessOffice/computerSupplies',
-					component: computerSupplies
-				},
-				{
-					path: '/paperlessOffice/computerAdvanceApplication',
-					component: computerAdvanceApplication
-				},
-				{
-					path: '/paperlessOffice/empRequire',
-					component: empRequire
 				},
 			]
 		}
