@@ -45,12 +45,14 @@
 						this.accountData = response.data.retData;
 						alert("登录成功！");
 						//后台写入cookie不成功，先由前端代替
-						Cookies.set('accessToken', this.accountData.accessToken, { expires: this.accessTokenLife });
-						Cookies.set('accountData', this.accountData, { expires: this.accountDataLife });
+						if(this.isUseSetCookie){
+							Cookies.set('accessToken', this.accountData.accessToken, { expires: this.accessTokenLife });
+							Cookies.set('accountData', this.accountData, { expires: this.accountDataLife });
+						}
 						this.$parent.setRouter("/mainPage");
 					} else {
 						this.btnText = '登录';
-						alert("retMsg:"+response.data.retMsg);
+						alert(response.data.retMsg);
 					}
 				}).catch(
 					function(error) {
