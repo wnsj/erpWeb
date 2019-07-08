@@ -116,8 +116,7 @@ router.beforeEach((to, from, next) => {
 		//consoleLogCookie(token,accountData);
 		if (constant.isBlank(token) || constant.isBlank(accountData)) {
 			next('/login');
-		}
-		if (to.path == '/') {
+		}else if (to.path == '/') {
 			next('/mainPage');
 		} else if (to.path == '/login') {
 			next('/mainPage');
