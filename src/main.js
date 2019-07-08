@@ -105,18 +105,19 @@ Vue.directive('has', {
 
 //路由卫士
 router.beforeEach((to, from, next) => {
-	//consolelog(to,from);
-	 if(to.path == '/login' && from.path == '/mainPage'){
-		next('/login');
-	}else if (to.path == '/login') {
+	consolelog(to, from);
+	if (to.path == '/login' && from.path == '/mainPage') {
 		next();
-	}else {
+	} else if (to.path == '/login') {
+		next();
+	} else {
 		let token = Cookies.get('accessToken');
 		let accountData = Cookies.get('accountData');
 		//consoleLogCookie(token,accountData);
 		if (constant.isBlank(token) || constant.isBlank(accountData)) {
 			next('/login');
-		} if(to.path == '/'){
+		}
+		if (to.path == '/') {
 			next('/mainPage');
 		} else if (to.path == '/login') {
 			next('/mainPage');
@@ -128,11 +129,12 @@ router.beforeEach((to, from, next) => {
 	}
 });
 
-function consolelog(to,from){
-	console.log("to:"+to.path+",from:"+from.path);
+function consolelog(to, from) {
+	console.log("to:" + to.path + ",from:" + from.path);
 }
-function consoleLogCookie(token,accoutData){
-	console.log("token:"+token+",accoutData:"+accoutData)
+
+function consoleLogCookie(token, accoutData) {
+	console.log("token:" + token + ",accoutData:" + accoutData)
 }
 
 /**
