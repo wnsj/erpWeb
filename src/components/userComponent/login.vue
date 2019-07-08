@@ -49,7 +49,7 @@
 							Cookies.set('accessToken', this.accountData.accessToken, { expires: this.accessTokenLife });
 							Cookies.set('accountData', response.data.retData.smallAccountData, { expires: this.accountDataLife });
 						}
-						alert("登录成功！");
+						alert("登录成功！");//添加成功
 						this.$parent.setRouter("/mainPage");
 					} else {
 						this.btnText = '登录';
