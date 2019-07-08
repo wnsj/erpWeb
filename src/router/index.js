@@ -117,6 +117,42 @@ export default new Router({
 					path: '/report',
 					component: report
 				},
+				
+				{
+					path: '/paperlessOffice/askForLeave',
+					component: askForLeave
+				},
+				
+				{
+					path: '/paperlessOffice/restdown',
+					component: restdown
+				},
+				
+				{
+					path: '/report',
+					component: report
+				},
+				
+				{
+					path: '/report',
+					component: report
+				},
+				
+				{
+					path: '/report',
+					component: report
+				},
+				
+				{
+					path: '/report',
+					component: report
+				},
+				
+				{
+					path: '/report',
+					component: report
+				},
+				
 			]
 		}
 	]

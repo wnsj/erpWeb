@@ -50,6 +50,9 @@
 								<router-link to="/paperlessOffice/askForLeave"><i class="fa fa-table" aria-hidden="true"></i>请假</router-link>
 							</li>
 							<li>
+								<router-link to="/paperlessOffice/restdown"><i class="fa fa-table" aria-hidden="true"></i>倒休</router-link>
+							</li>
+							<li>
 								<router-link to="/report"><i class="fa fa-table" aria-hidden="true"></i>请假报备</router-link>
 							</li>
 						</ul>

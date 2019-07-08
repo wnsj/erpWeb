@@ -60,9 +60,9 @@
 			</div>
 
 			<button type="button" class="btn btn-primary pull-right" @click="dowmelxe('请假表')">导出</button>
-			<button type="button" class="btn btn-primary pull-right m_r_10" data-toggle="modal" v-on:click="showLeaveInfo('apply')">申请</button>
+			<button type="button" class="btn btn-primary pull-right m_r_10" data-toggle="modal" v-on:click="showLeaveInfo('','apply')">申请</button>
 
-			<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" v-on:click="askOfLeaveList('')">查询</button>
+			<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" v-on:click="askOfLeaveList()">查询</button>
 
 		</div>
 		<div class="row">
@@ -187,6 +187,7 @@
 				}
 				
 				var url = this.url + '/wzbg/askOfLeaveList'
+				console.log(url)
 				axios({
 					method: 'post',
 					url: url,

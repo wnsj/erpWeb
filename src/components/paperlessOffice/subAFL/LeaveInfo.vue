@@ -239,6 +239,7 @@
 		},
 		methods:{
 			showLInfo:function(lInfo,param){
+				alert(param)
 				this.lInfo=lInfo
 				this.isModify=param
 			}
