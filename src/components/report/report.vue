@@ -69,12 +69,16 @@
                 <th class="text-center">审批结果</th> 
                 <th class="text-center">审批意见</th> 
                 <th class="text-center">状态</th> 
+                <th class="text-center">申请销假</th>
+                <!-- <th class="text-center" v-if='has(51)'>审批</th> 
+                <th class="text-center" v-if='has(51)'>修改</th> 
+                <th class="text-center" v-if='has(51)'>销假</th> 
+                <th class="text-center" v-if='has(51)'>取消</th> -->
             </tr>
             </thead>
             <tbody>
             <tr v-for="(item,index) in reportList" :key="index"
-               :style="item.state == 1? {'color':'blue'}:(item.state == 2? {'color':'green'}:{'color':''})                     "
-            >
+               :style="item.state == 1? {'color':'#0033ff'}:(item.state == 2? {'color':'#00ff00'}:{'color':''})">
               <td class="text-center">{{item.type}}</td>
               <td class="text-center">{{item.leaveEmpName}}</td>
               <td class="text-center">{{item.leaveDepartmentName}}</td>
@@ -87,12 +91,23 @@
               <td class="text-center">{{item.checkEmpName}}</td>
               <td class="text-center">{{item.checkTime}}</td>
               <td class="text-center">
-                {{item.checkResult == 0? '不同意':(item.checkResult == 1? '同意':'')}}
+                  {{item.checkResult == 0? '不同意':(item.checkResult == 1? '同意':'')}}
               </td>
-              <th class="text-center">{{item.checkRemark}}</th> 
+              <td class="text-center">{{item.checkRemark}}</td> 
               <td class="text-center">
-                 {{item.state == 1? '已销假':(item.state == 2? '已取消':'')}}
+                  {{item.state == 1? '已销假':(item.state == 2? '已取消':'')}}
               </td>
+              <td class="text-center">
+                  <button type="button" :class="item.state==1? 
+                    'btn btn-sm btn-primary':(item.state == 2? 'btn btn-sm btn-success':'btn btn-sm btn-default')" 
+                    :disabled="item.state==1? true:false"
+                    @click="applyReportBack(item)">申请销假
+                  </button>
+              </td>
+              <!-- <td class="text-center" v-if='has(51)'><button>审批</button></td> 
+              <td class="text-center" v-if='has(51)'><button>修改</button></td> 
+              <td class="text-center" v-if='has(51)'><button>销假</button></td> 
+              <td class="text-center"><button>取消</button></td> -->
             </tr>
             </tbody>
           </table>
@@ -115,7 +130,7 @@
               <div class="form-group clearfix">
                 <label class="col-md-2 control-label text-right nopad">类型：</label>
                 <div class="col-md-3">
-                  <leaveType :leaveTypeId="leaveTypeId" @leaveTypeChange='leaveTypeChange'></leaveType>
+                  <leaveType :leaveTypeName="leaveTypeName" @leaveTypeChange='leaveTypeChange'></leaveType>
                 </div>
               </div>
               <div class="form-group clearfix">
@@ -161,12 +176,74 @@
           <div class="modal-footer">
             <div class="col-md-12">
               <button type="button" class="btn btn-warning" @click="addReport">确认</button>
+              <button type="button" data-dismiss="modal" class="btn btn-info" @click="addModelClear">返回</button>
+            </div>
+          </div> <!-- /.modal-footer -->
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!-- 申请销假 -->
+    <div class="modal fade" id="reportBackApply" tabindex="-1" role="dialog" aria-labelledby="myModalLabeltj" aria-hidden="true">
+      <div class="modal-dialog modal-lg" >
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+              <span>×</span>
+            </button>
+            <h4 class="modal-title">申请销假</h4>
+          </div><!-- /.modal-header -->
+          <div class="modal-body">
+            <div class="form-group clearfix">
+                <label for="leaveEmpBackName" class="col-md-2 control-label text-right nopad">申请人姓名：</label>
+                <div class="col-md-2">
+                  <input type="text" class="form-control" disabled="disabled" v-model="leaveEmpBackName"/>
+                </div>
+                <label for="leaveDepartmentBackName" class="col-md-2 control-label text-right nopad">部门：</label>
+                <div class="col-md-2">
+                  <input type="text" class="form-control" disabled="disabled" v-model="leaveDepartmentBackName"/>
+                </div>
+                <label for="leavePositionBackName" class="col-md-2 control-label text-right nopad">职位：</label>
+                <div class="col-md-2">
+                  <input type="text" class="form-control" disabled="disabled" v-model="leavePositionBackName"/>
+                </div>
+            </div>
+          </div>
+          <div class="modal-body">
+            <form action="">
+                <legend><h5>请假</h5></legend>
+                <div class="form-group clearfix">
+                  <label class="col-md-2 control-label text-right nopad">类型：</label>
+                  <div class="col-md-3">
+                    <leaveType :leaveTypeName="leaveTypeBackName" ref="leaveType" @leaveTypeChange='leaveTypeBackChange'></leaveType>
+                  </div>
+                  <label class="col-md-2 control-label text-right nopad">代理人：</label>
+                  <div class="col-md-3">
+                    <agent :agentAccount="agentAccount" ref="agent" @agentChange="changeAgent"></agent>
+                  </div>
+                  <button><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="startBackTime" class="col-md-2 control-label text-right nopad">开始日期：</label>
+                  <div class="col-md-3">
+                    <input type="datetime-local" class="form-control" id="startBackTime" v-model="startBackTime" disabled="disabled"/>
+                  </div>
+                  <label for="endBackTime" class="col-md-2 control-label text-right nopad">结束日期：</label>
+                  <div class="col-md-3">
+                    <input type="datetime-local" class="form-control" id="endBackTime" v-model="endBackTime" disabled="disabled"/>
+                  </div>
+                </div>
+            </form>
+          </div><!-- /.modal-body -->
+          <div class="modal-footer">
+            <div class="col-md-12">
+              <button type="button" class="btn btn-warning" @click="addReport">确认</button>
               <button type="button" data-dismiss="modal" class="btn btn-info">返回</button>
             </div>
           </div> <!-- /.modal-footer -->
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
   </div>
 </template>
 <script>
@@ -175,6 +252,7 @@
   import department from '../vuecommon/department.vue'
   import leaveType from '../vuecommon/leaveType.vue'
   import deptEmp from '../vuecommon/deptEmp.vue'
+  import agent from '../report/subReportBack/agent.vue'
   import approvalLeaveAcc from '../report/subReport/approvalLeaveAcc.vue'
   
   export default {
@@ -182,7 +260,8 @@
       department,
       leaveType,
       deptEmp,
-      approvalLeaveAcc
+      approvalLeaveAcc,
+      agent
     },
     data(){
       return {
@@ -204,16 +283,25 @@
 				],
 
         // 添加
-        leaveTypeId:'',
-        departId:'',
-        deptEmpId:'',
+        leaveTypeName: '',
+        departId: '',
+        deptEmpId: '',
         startTime: '',
         endTime: '',
         leaveRemark:'',
-        accountID:'',
-        checkRemark:'',
-        fillTime: this.getCurrentYYYY_MM_DD_HH_MM_SS,
-        updateTime: this.getCurrentYYYY_MM_DD_HH_MM_SS
+        accountID: '',
+        checkRemark: '',
+
+        // 申请销假
+        leaveEmpBackName: '',
+        leaveDepartmentBackName: '',
+        leavePositionBackName: '',
+        leaveTypeBackName: '',
+        startBackTime:'',
+        endBackTime:'',
+
+        leaveAccount:'',
+        agentAccount:'',
       }
     },
     methods: {
@@ -221,11 +309,10 @@
       departSelChange(departId){
         this.departSelId = departId
       },
-      queryReport(){      // 查询招聘发布信息
-        console.log(this.departSelId)
+      queryReport(){      // 查询请假报备信息
         axios({
           method: 'post',
-          url: this.url + '/wzbgController/queryLeavePrepare',
+          url: this.url + '/leavePrepareController/queryLeavePrepare',
           headers: {
             'Content-Type': this.contentType,
             'Access-Token': this.accessToken
@@ -235,23 +322,22 @@
             endTime: this.endDate,
             leaveDeptId: this.departSelId,
             leaveEmpName: this.leaveName,
+            accountId: this.has(51) ? '' : JSON.parse(Cookies.get("accountData")).account.account_ID,
             state: this.state
           },
           dataType: 'json',
         }).then((response) => {
           this.reportList = response.data.retData
-          console.log(this.reportList)
         }).catch((error) => {
           console.log('请求失败处理')
         });
       },
 
       // ---------------------------------------添加----------------------------------
-      leaveTypeChange(leaveTypeId){ // 假期类型
-        this.leaveTypeId = leaveTypeId
+      leaveTypeChange(val){ // 假期类型
+        this.leaveTypeName =  val
       },
       departChange(departId){   // 部门
-        console.log("更改后的id" + departId)
         this.departId = departId
         this.$refs.deptEmp.getDeptId(departId)
       },
@@ -261,12 +347,22 @@
       approvalChange(accountID){   // 审批人
         this.accountID = accountID
       },
+      addModelClear(){ // 清空添加模态框
+        $('#reportAdd').modal('hide');
+        this.leaveTypeName =  '',
+        this.departId = this.$refs.depart.setDpart("0"),
+        this.deptEmpId = '',
+        this.startTime = '',
+        this.endTime = '',
+        this.leaveRemark = '',
+        this.accountID = ''
+      },
       addReport(){     // 添加请假报备信息
-        if(this.isBlank(this.leaveTypeId)) {
+        if(this.isBlank(this.leaveTypeName)) {
           alert('请选择请假类型');
           return false;
         }
-        if(this.isBlank(this.leaveTypeId) || this.departId == 0) {
+        if(this.isBlank(this.departId) || this.departId == 0) {
           alert('请选择部门');
           return false;
         }
@@ -293,21 +389,21 @@
         }
         axios({
           method: 'post',
-          url: this.url + '/wzbgController/addLeavePrepare',
+          url: this.url + '/leavePrepareController/addLeavePrepare',
           headers: {
             'Content-Type': this.contentType,
             'Access-Token': this.accessToken
           },
           data: {
-            type: this.leaveTypeId,
+            type: this.leaveTypeName,
             fillAccount:  JSON.parse(Cookies.get("accountData")).account.account_ID,
-            fillTime: this.fillTime,
+            fillTime: this.getCurrentYYYY_MM_DD_HH_MM_SS,
             leaveAccount: this.deptEmpId,
             startTime: this.startTime,
             endTime: this.endTime,
             leaveRemark: this.leaveRemark,
             checkAccount: this.accountID,
-            updateTime: this.updateTime
+            updateTime: this.getCurrentYYYY_MM_DD_HH_MM_SS
           },
           dataType: 'json',
         }).then((response) => {
@@ -316,18 +412,43 @@
           console.log('请求失败处理')
           console.log(response.data.retData)
         });
-        this.leaveTypeId = '',
-        this.departId = this.$refs.depart.setDpart("0"),
-        this.deptEmpId = '',
-        this.startTime = '',
-        this.endTime = '',
-        this.leaveRemark = '',
-        this.accountID = '',
-        this.checkRemark = '',
-        this.fillTime = '',
-        this.updateTime = ''
-        $('#reportAdd').modal('hide');
+        this.addModelClear();
+        this.queryReport();
       },
+
+      // ---------------------------------------销假----------------------------------
+      
+      leaveTypeBackChange(val){ // 假期类型
+        this.leaveTypeBackName = val
+      },
+      changeAgent(val){
+        this.agentAccount = val //外层调用组件方注册变更方法，将组件内的数据变更，同步到组件外的数据状态中
+      },
+      applyReportBack(item){
+        if(JSON.parse(Cookies.get("accountData")).account.account_ID !=  item.leaveAccount) {
+          alert("不能为他人申请销假")
+        } else {
+            if(item.type == '倒休'){
+              alert("倒休不能申请销假,需要人工手动销假")
+            } else {
+                if(item.checkResult != 1){
+                  alert("该报备未审批或未通过,不能申请销假")
+                } else{
+                  console.log(item)
+                  this.leaveEmpBackName = item.leaveEmpName,
+                  this.leaveDepartmentBackName = item.leaveDepartmentName
+                  this.leavePositionBackName = item.leavePositionName
+                  this.leaveTypeBackName = item.type
+                  this.startBackTime = this.getYYYY_MM_DD_T_HH_MM(item.startTime)
+                  this.endBackTime = this.getYYYY_MM_DD_T_HH_MM(item.endTime)
+                  this.leaveAccount = item.leaveAccount
+                  this.$refs.agent.getLeaveAccount([item.leaveAccount,item.leaveDeptId])
+                  $('#reportBackApply').modal('show');
+                }
+            }
+        }
+      },
+
     },
   }
 </script>
@@ -335,7 +456,6 @@
   @-moz-document url-prefix(){fieldset{display: table-cell;}}
   .nopad{padding-left:0;padding-right:0;line-height:34px;}
   .user-container{background-color: #fff; width: 100%; padding: 0 20px;}
-  .user-btn-group>button{margin: 0 2px;}
   .main-title h2{line-height: 50px;}
   .m_r_10{margin-right:10px;}
   .textarea{

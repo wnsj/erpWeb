@@ -42,7 +42,7 @@
       },
       // 查询审批人类型信息
       getApprovalAccount: function() {
-        var url = this.url + '/wzbgController/queryApprovalLeaveAccount'
+        var url = this.url + '/leavePrepareController/queryApprovalLeaveAccount'
         axios({
           method: 'post',
           url: url,

@@ -184,6 +184,11 @@ function getCurrentYYYY_MM_DD_HH_MM_SS() {
 	var date = new Date();
 	return formatDate(date, 'yyyy-MM-dd hh:mm:ss');
 }
+//获取年月日时分 2016-01-01T00:00
+function getYYYY_MM_DD_T_HH_MM(time) {
+	var date = new Date(time);
+	return formatDate(date, 'yyyy-MM-ddThh:mm');
+}
 
 export {
 	formatDate,
@@ -194,6 +199,7 @@ export {
 	getYYYY_MM_DD_HH_MM_SS,
 	getYYYY_MM_DD,
 	getYYYY$MM$DD,
-	getCurrentYYYY_MM_DD_HH_MM_SS
+	getCurrentYYYY_MM_DD_HH_MM_SS,
+	getYYYY_MM_DD_T_HH_MM
 }
 

@@ -40,85 +40,86 @@ import report from '../components/report/report.vue'
 Vue.use(Router)
 
 export default new Router({
+    mode: 'history',
+    base: __dirname,
+    routes: [
+        {
+            path: '/',
+            component: App,
+            children: [{
+                    path: '/mainPage',
+                    component: mainPage
+                },
+                {
+                    path: '/login',
+                    component: login
+                }
+            ],
+            redirect: '/login'
+        },
+        {
+            path: '/employee',
+            component: employee
+        },	
+        {
+            path: '/attendence',
+            component: attendence
+		},
+		
+        //招聘
+        {
+            path: '/recruitment',
+            component: recruitment,
+            children: [{
+                    path: '/recruitment/recruitChannels',
+                    name: 'recruitChannels',
+                    component: recruitChannels,
+                },
+                {
+                    path: '/recruitment/recruitPlan',
+                    name: 'recruitPlan',
+                    component: recruitPlan
+                },
+                {
+                    path: '/recruitment/recruitPublish',
+                    name: 'recruitPublish',
+                    component: recruitPublish
+                },
+                {
+                    path: '/recruitment/interview',
+                    name: 'interview',
+                    component: interview
+                }
+            ],
+            redirect: '/recruitment/recruitChannels'
+		},
+		
+        //人员分析
+        {
+            path: '/perAnalysis/poresonnel',
+            component: poresonnel
+        },
+        {
+            path: '/perAnalysis/abnormal',
+            component: abnormal
+        },
+        {
+            path: '/perAnalysis/separation',
+            component: separation
+        },
+        {
+            path: '/perAnalysis/effectiveness',
+            component: effectiveness
+        },
+        {
+            path: '/perAnalysis/uilization',
+            component: uilization
+        },
 
-	mode: 'history',
-	base: __dirname,
-	routes: [{
-			path: '/',
-			component: App,
-			children: [{
-					path: '/mainPage',
-					component: mainPage
-				},
-				{
-					path: '/login',
-					component: login
-				}
-			],
-			redirect: '/login'
-		},
-		{
-			path: '/employee',
-			component: employee
-		},
-		{
-			path: '/attendence',
-			component: attendence
-		},
-		//招聘
-		{
-			path: '/recruitment',
-			component: recruitment,
-			children: [{
-					path: '/recruitment/recruitChannels',
-					name: 'recruitChannels',
-					component: recruitChannels,
-				},
-				{
-					path: '/recruitment/recruitPlan',
-					name: 'recruitPlan',
-					component: recruitPlan
-				},
-				{
-					path: '/recruitment/recruitPublish',
-					name: 'recruitPublish',
-					component: recruitPublish
-				},
-				{
-					path: '/recruitment/interview',
-					name: 'interview',
-					component: interview
-				}
-			],
-			redirect: '/recruitment/recruitChannels'
-		},
-		//人员分析
-		{
-			path: '/perAnalysis/poresonnel',
-			component: poresonnel
-		},
-		{
-			path: '/perAnalysis/abnormal',
-			component: abnormal
-		},
-		{
-			path: '/perAnalysis/separation',
-			component: separation
-		},
-		{
-			path: '/perAnalysis/effectiveness',
-			component: effectiveness
-		},
-		{
-			path: '/perAnalysis/uilization',
-			component: uilization
-		},
-
-		// 无纸化办公
-
-		{
-			path: '/report',
+        // 无纸化办公
+        {
+            path: '/report',
 			component: report
-		},
-	]
+        }
+    ]
 })

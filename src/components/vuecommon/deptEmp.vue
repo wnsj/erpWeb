@@ -21,9 +21,10 @@
     watch:{
       deptEmpId:function(){
           this.empAccountId = this.deptEmpId
+          console.log("empAccountId" + this.empAccountId)
       },
       empAccountId:function(val){
-        this.$emit('deptEmpChange',val,this.empName)
+        this.$emit('deptEmpChange',val, this.empName)
       }
     },
     methods:{
@@ -34,19 +35,19 @@
         var res = {}
         for (var i = 0; i < this.deptEmpList.length; i++) {
           res = this.deptEmpList[i]
-          if (res.id == param) {
+          if (res.account == param) {
             return res.name
           }
         }
       },
       getDeptId(val){
         this.deptId = val;
-        console.log("val:"+val);
+        console.log("deptId" + this.deptId)
         this.getDeptEmp();
       },
       // 查询部门下的员工信息
       getDeptEmp: function() {
-        var url = this.url + '/wzbgController/queryEmpInfoByDept'
+        var url = this.url + '/leavePrepareController/queryEmpInfoByDept'
         axios({
           method: 'post',
           url: url,
