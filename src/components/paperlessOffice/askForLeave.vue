@@ -12,13 +12,12 @@
 					<p>申请日期：</p>
 				</div>
 				<div class="col-md-11 col-lg-11">
-					<!-- <span class="leavespan">
-						<input type="date" value="" class="form-control" v-model="beginDate"/>
+					<span class="leavespan">
+						<input type="input-group date datetimePicker" value="" class="form-control" v-model="beginDate"/>
 					</span> <span class="leavespan01">&nbsp;&nbsp;&nbsp;至：</span>
 					<span class="leavespan">
 						<input type="date" value="" class="form-control" v-model="endDate" />
-					</span> -->
-					<test></test>
+					</span>
 				</div>
 			</div>
 			<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -161,15 +160,13 @@
 	import lioh from '../paperlessOffice/subAFL/LeaveInfoOfHandle.vue'
 	import liom from '../paperlessOffice/subAFL/LeaveInfoOfModify.vue'
 	import depart from '../vuecommon/department.vue'
-	import test from '../vuecommon/test.vue'
 	export default {
 		components:{
 			lioa,
 			lioc,
 			lioh,
 			liom,
-			depart,
-			test
+			depart
 		},
 		data() {
 			return {

@@ -222,6 +222,9 @@
 	
 	import depart from '../../vuecommon/department.vue'
 	import leave from '../../vuecommon/leaveTypes.vue'
+	
+	import moment from 'moment'
+	
 	export default {
 		components: {
 			depart,
@@ -240,7 +243,13 @@
 		},
 		methods: {
 			showLInfo: function(lInfo, param) {
-				alert(param)
+				alert(
+				"1:" + this.moment()+
+				"2:" + this.moment('2019')+
+				"3:" + this.moment('2019-07-06 20:06:07','')+
+				"4:" + this.moment('2019-07-06 20:06:07','YYYY/MM/DD')+
+				"5:" + this.moment('2019-07-06 20:06:07','YYYY/MM/DD HH:mm:ss')
+				)
 				this.lInfo = lInfo
 				this.isModify = param
 			},

@@ -7,11 +7,6 @@ import VueResource from 'vue-resource'
 import Cookies from 'js-cookie'
 import store from './store'
 import axios from 'axios';
-
-
-import moment from 'moment'
-import datePicker from '../static/js/bootstrap-datetimepicker.js'
-
 import * as constant from '../src/assets/js/constant.js'
 import {
 	exportTableToExcel
@@ -23,8 +18,9 @@ import * as date from '../src/assets/js/date.js'
 Vue.config.productionTip = false
 
 Vue.use(VueResource)
-Vue.use(moment)
-Vue.use(datePicker)
+
+
+import moment from 'moment'
 
 
 
@@ -56,7 +52,7 @@ Vue.prototype.accountDataLife = 7
 //是否使用前端设置cookie
 Vue.prototype.isUseSetCookie = true
 //用户accountId
-Vue.prototype.accountId=0
+Vue.prototype.accountId = 0
 
 
 
@@ -105,6 +101,16 @@ Vue.prototype.exportTableToExcel = function(tbId, fileName) {
 Vue.prototype.has = function(param) {
 	return constant.has(param);
 }
+Vue.prototype.moment = function(targetDate, format) {
+	var formatStr = "YYYY-MM-DD HH:mm:ss"
+	var momentObj = moment();
+	if (!constant.isBlank(targetDate)) {
+		momentObj = moment(targetDate);
+	}
+	if (!constant.isBlank(format)) formatStr = format;
+	return momentObj.format(formatStr);
+}
+
 
 /*
  **权限判断使用方法:
@@ -133,7 +139,7 @@ router.beforeEach((to, from, next) => {
 		//consoleLogCookie(token,accountData);
 		if (constant.isBlank(token) || constant.isBlank(accountData)) {
 			next('/login');
-		}else if (to.path == '/') {
+		} else if (to.path == '/') {
 			next('/mainPage');
 		} else if (to.path == '/login') {
 			next('/mainPage');
@@ -160,7 +166,6 @@ new Vue({
 	el: '#app',
 	store,
 	router,
-	moment,
 	data() {
 		return {
 			accountAccessToken: constant.isBlank(Cookies.get('accessToken')) ? '' : Cookies.get('accessToken'),
