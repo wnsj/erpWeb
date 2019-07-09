@@ -8,6 +8,10 @@ import Cookies from 'js-cookie'
 import store from './store'
 import axios from 'axios';
 
+
+import moment from 'moment'
+import datePicker from '../static/js/bootstrap-datetimepicker.js'
+
 import * as constant from '../src/assets/js/constant.js'
 import {
 	exportTableToExcel
@@ -19,7 +23,8 @@ import * as date from '../src/assets/js/date.js'
 Vue.config.productionTip = false
 
 Vue.use(VueResource)
-
+Vue.use(moment)
+Vue.use(datePicker)
 
 
 
@@ -50,8 +55,13 @@ Vue.prototype.accessTokenLife = 7
 Vue.prototype.accountDataLife = 7
 //是否使用前端设置cookie
 Vue.prototype.isUseSetCookie = true
+//用户accountId
+Vue.prototype.accountId=0
 
 
+
+
+/*------------------------------------------公共方法-----------------------------------------------------------*/
 Vue.prototype.getNowFormatDate = function() {
 	var date = new Date();
 	var seperator1 = "-";
@@ -150,6 +160,7 @@ new Vue({
 	el: '#app',
 	store,
 	router,
+	moment,
 	data() {
 		return {
 			accountAccessToken: constant.isBlank(Cookies.get('accessToken')) ? '' : Cookies.get('accessToken'),

@@ -43,12 +43,13 @@
 				}).then((response) => {
 					if (response.data.retCode == '0000') {
 						this.accountData = response.data.retData;
-						alert("登录成功！");
 						//后台写入cookie不成功，先由前端代替
 						if(this.isUseSetCookie){
+							//cookie存储大小为4k左右，进行cookie瘦身
 							Cookies.set('accessToken', this.accountData.accessToken, { expires: this.accessTokenLife });
-							Cookies.set('accountData', this.accountData, { expires: this.accountDataLife });
+							Cookies.set('accountData', response.data.retData.smallAccountData, { expires: this.accountDataLife });
 						}
+						alert("登录成功！");//添加成功
 						this.$parent.setRouter("/mainPage");
 					} else {
 						this.btnText = '登录';

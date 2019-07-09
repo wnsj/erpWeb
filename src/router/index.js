@@ -54,7 +54,8 @@ export default new Router({
 			name: '首页',
 			component: mainPage,
 			hidden: false,
-			children: [{
+			children: [
+				{
 					path: '/employee',
 					component: employee
 				},
@@ -128,9 +129,8 @@ export default new Router({
 					component: restdown
 				},
 				
-				
-				
-			]
+			],
+			redirect: '/employee'
 		}
 	]
 });
