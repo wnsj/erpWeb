@@ -46,7 +46,15 @@
 							<i class="fa fa-university" aria-hidden="true"></i>无纸化办公<i class="fa fa-sort-desc item-down" aria-hidden="true"></i>
 						</li>
 						<ul class="second-menu">
-							<li><router-link to="/report"><i class="fa fa-table" aria-hidden="true"></i>请假报备</router-link></li>
+							<li>
+								<router-link to="/paperlessOffice/askForLeave"><i class="fa fa-table" aria-hidden="true"></i>请假</router-link>
+							</li>
+							<li>
+								<router-link to="/paperlessOffice/restdown"><i class="fa fa-table" aria-hidden="true"></i>倒休</router-link>
+							</li>
+							<li>
+								<router-link to="/report"><i class="fa fa-table" aria-hidden="true"></i>请假报备</router-link>
+							</li>
 						</ul>
 						<li><i class="fa fa-area-chart" aria-hidden="true"></i>item</li>
 					</ul>
@@ -84,11 +92,12 @@
 <script>
 	import axios from 'axios'
 	import Cookies from 'js-cookie'
+	import {
+		init
+	} from '@/../static/js/common.js'
 
 	export default {
-		components: {
-
-		},
+		components: {},
 		data() {
 			return {
 				accountInfo: this.$store.state.accountInfo,
@@ -99,27 +108,31 @@
 		},
 		methods: {
 			//用户退出
-			loginOut(){
+			loginOut() {
 				if (confirm("确定退出?") == false) {
+					this.$parent.setRouter("/mainPage");
 					return;
+				} else {
+					//删除cookie
+					Cookies.remove("accountData");
+					Cookies.remove("accessToken");
+					this.$parent.setRouter("/login");
 				}
-				//删除cookie
-				Cookies.remove("accountData");
-				Cookies.remove("accessToken");
-				
-				
-				this.$parent.setRouter("/login");
 			}
 		},
 		created() {
+			
+		},
+		mounted() {
 			this.accountData = JSON.parse(Cookies.get("accountData"));
 			this.account = this.accountData.account_Name;
+			init();
 		},
 		computed: {
 			// accountInfo() {
 			// 	return 
 			// }
-		},
+		}
 	}
 </script>
 

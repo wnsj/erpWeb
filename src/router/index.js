@@ -33,93 +33,104 @@ import officeSuppliesManage from '../components/paperlessOffice/officeSuppliesMa
 import computerSupplies from '../components/paperlessOffice/computerSupplies.vue'
 import computerAdvanceApplication from '../components/paperlessOffice/computerAdvanceApplication.vue'
 import empRequire from '../components/paperlessOffice/empRequire.vue'
-
-
 import report from '../components/report/report.vue'
 
 Vue.use(Router)
 
 export default new Router({
-    mode: 'history',
-    base: __dirname,
-    routes: [
-        {
-            path: '/',
-            component: App,
-            children: [{
-                    path: '/mainPage',
-                    component: mainPage
-                },
-                {
-                    path: '/login',
-                    component: login
-                }
-            ],
-            redirect: '/login'
-        },
-        {
-            path: '/employee',
-            component: employee
-        },	
-        {
-            path: '/attendence',
-            component: attendence
+	// mode: 'history', //在生产环境下生成虚拟路径，再次刷新，路径将会改变，导致404错误
+	mode: 'hash',
+	linkActiveClass: 'open active',
+	scrollBehavior: () => ({
+		y: 0
+	}),
+	routes: [{
+			path: '/login',
+			component: login,
+			hidden: true
 		},
-		
-        //招聘
-        {
-            path: '/recruitment',
-            component: recruitment,
-            children: [{
-                    path: '/recruitment/recruitChannels',
-                    name: 'recruitChannels',
-                    component: recruitChannels,
-                },
-                {
-                    path: '/recruitment/recruitPlan',
-                    name: 'recruitPlan',
-                    component: recruitPlan
-                },
-                {
-                    path: '/recruitment/recruitPublish',
-                    name: 'recruitPublish',
-                    component: recruitPublish
-                },
-                {
-                    path: '/recruitment/interview',
-                    name: 'interview',
-                    component: interview
-                }
-            ],
-            redirect: '/recruitment/recruitChannels'
-		},
-		
-        //人员分析
-        {
-            path: '/perAnalysis/poresonnel',
-            component: poresonnel
-        },
-        {
-            path: '/perAnalysis/abnormal',
-            component: abnormal
-        },
-        {
-            path: '/perAnalysis/separation',
-            component: separation
-        },
-        {
-            path: '/perAnalysis/effectiveness',
-            component: effectiveness
-        },
-        {
-            path: '/perAnalysis/uilization',
-            component: uilization
-        },
+		{
+			path: '/mainPage',
+			name: '首页',
+			component: mainPage,
+			hidden: false,
+			children: [
+				{
+					path: '/employee',
+					component: employee
+				},
+				{
+					path: '/attendence',
+					component: attendence
+				},
+				//招聘
+				{
+					path: '/recruitment',
+					component: recruitment,
+					children: [{
+							path: '/recruitment/recruitChannels',
+							name: 'recruitChannels',
+							component: recruitChannels,
+						},
+						{
+							path: '/recruitment/recruitPlan',
+							name: 'recruitPlan',
+							component: recruitPlan
+						},
+						{
+							path: '/recruitment/recruitPublish',
+							name: 'recruitPublish',
+							component: recruitPublish
+						},
+						{
+							path: '/recruitment/interview',
+							name: 'interview',
+							component: interview
+						}
+					],
+					redirect: '/recruitment/recruitChannels'
+				},
+				//人员分析
+				{
+					path: '/perAnalysis/poresonnel',
+					component: poresonnel
+				},
+				{
+					path: '/perAnalysis/abnormal',
+					component: abnormal
+				},
+				{
+					path: '/perAnalysis/separation',
+					component: separation
+				},
+				{
+					path: '/perAnalysis/effectiveness',
+					component: effectiveness
+				},
+				{
+					path: '/perAnalysis/uilization',
+					component: uilization
+				},
 
-        // 无纸化办公
-        {
-            path: '/report',
-			component: report
-        }
-    ]
-})
+				// 无纸化办公
+
+				{
+					path: '/report',
+					component: report
+				},
+				
+				{
+					path: '/paperlessOffice/askForLeave',
+					component: askForLeave
+				},
+				
+				{
+					path: '/paperlessOffice/restdown',
+					component: restdown
+				},
+				
+			],
+			redirect: '/employee'
+		}
+	]
+});

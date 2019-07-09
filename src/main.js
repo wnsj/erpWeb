@@ -7,7 +7,6 @@ import VueResource from 'vue-resource'
 import Cookies from 'js-cookie'
 import store from './store'
 import axios from 'axios';
-
 import * as constant from '../src/assets/js/constant.js'
 import {
 	exportTableToExcel
@@ -20,13 +19,21 @@ Vue.config.productionTip = false
 
 Vue.use(VueResource)
 
+
+import moment from 'moment'
+
+
+
+
+
+
+
 // 允许携带cookie
 // axios.defaults.withCredentials=true
 
 /*------------------------------------------公共属性-----------------------------------------------------------*/
 
 Vue.prototype.$ajax = axios
-
 
 /*------本机路径----*/
 Vue.prototype.url = process.env.API_HOST
@@ -42,8 +49,15 @@ Vue.prototype.contentType = 'application/json;charset=utf-8'
 //token存储在cookie中的过期时间
 Vue.prototype.accessTokenLife = 7
 Vue.prototype.accountDataLife = 7
+//是否使用前端设置cookie
+Vue.prototype.isUseSetCookie = true
+//用户accountId
+Vue.prototype.accountId = 0
 
 
+
+
+/*------------------------------------------公共方法-----------------------------------------------------------*/
 Vue.prototype.getNowFormatDate = function() {
 	var date = new Date();
 	var seperator1 = "-";
@@ -71,6 +85,9 @@ Vue.prototype.jsGetAge = function(param) {
 Vue.prototype.getYYYYMMDDHHMMSS_24 = function(param) {
 	return date.getYYYYMMDDHHMMSS_24(param)
 }
+Vue.prototype.getYYYYMMDDHHMMSS_00 = function(param) {
+	return date.getYYYYMMDDHHMMSS_00(param)
+}
 Vue.prototype.exportTableToExcel = function(tbId, fileName) {
 	if (confirm("确定导出?") == false) {
 		return;
@@ -81,7 +98,7 @@ Vue.prototype.exportTableToExcel = function(tbId, fileName) {
 	var date = myDate.getDate();
 	exportTableToExcel(tbId, fileName + '_' + year + '_' + month + '_' + date);
 }
-Vue.prototype.has = function(param){
+Vue.prototype.has = function(param) {
 	return constant.has(param);
 }
 Vue.prototype.getYYYY_MM_DD_T_HH_MM = function(param){
@@ -90,11 +107,22 @@ Vue.prototype.getYYYY_MM_DD_T_HH_MM = function(param){
 Vue.prototype.getCurrentYYYY_MM_DD_HH_MM_SS = function(){
 	return date.getCurrentYYYY_MM_DD_HH_MM_SS();
 } 
+Vue.prototype.moment = function(targetDate, format) {
+	var formatStr = "YYYY-MM-DD HH:mm:ss"
+	var momentObj = moment();
+	if (!constant.isBlank(targetDate)) {
+		momentObj = moment(targetDate);
+	}
+	if (!constant.isBlank(format)) formatStr = format;
+	return momentObj.format(formatStr);
+}
+
+
 /*
  **权限判断使用方法:
  ** 1.<div v-has='1'> 测试内容1</div>
  ** 2.<div v-if='has(25)'> 测试内容2</div>
-*/
+ */
 //自定义指令v-has(不包含则删除该标签)
 Vue.directive('has', {
 	inserted: function(el, binding) {
@@ -106,17 +134,36 @@ Vue.directive('has', {
 
 //路由卫士
 router.beforeEach((to, from, next) => {
-	if (to.path === '/login') {
+	consolelog(to, from);
+	if (to.path == '/login' && from.path == '/mainPage') {
+		next();
+	} else if (to.path == '/login') {
 		next();
 	} else {
 		let token = Cookies.get('accessToken');
-		if (constant.isBlank(token)) {
+		let accountData = Cookies.get('accountData');
+		//consoleLogCookie(token,accountData);
+		if (constant.isBlank(token) || constant.isBlank(accountData)) {
 			next('/login');
+		} else if (to.path == '/') {
+			next('/mainPage');
+		} else if (to.path == '/login') {
+			next('/mainPage');
+		} else if (to.path == '/ERP/dist/index.html') {
+			next('/mainPage');
 		} else {
 			next();
 		}
 	}
 });
+
+function consolelog(to, from) {
+	console.log("to:" + to.path + ",from:" + from.path);
+}
+
+function consoleLogCookie(token, accoutData) {
+	console.log("token:" + token + ",accoutData:" + accoutData)
+}
 
 /**
  * 创建VUE实例，其他实例注入
@@ -127,7 +174,8 @@ new Vue({
 	router,
 	data() {
 		return {
-			accessToken: constant.isBlank(Cookies.get('accessToken')) ? '' : Cookies.get('accessToken')
+			accountAccessToken: constant.isBlank(Cookies.get('accessToken')) ? '' : Cookies.get('accessToken'),
+			accountAccountData: constant.isBlank(Cookies.get('accountData')) ? '' : Cookies.get('accountData'),
 		}
 	},
 	components: {
