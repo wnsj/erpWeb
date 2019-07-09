@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+      <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
         <div class="col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">
           <p>填写日期：</p>
         </div>
@@ -42,8 +42,8 @@
     </div><br>
     <div class="row">
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-md-offset-9">
-        <button type="button" class="btn btn-warning pull-right m_r_10">导出</button>
-        <button type="button" class="btn btn-info pull-right m_r_10" data-toggle="modal" data-target="#reportAdd">申请</button>
+        <button type="button" class="btn btn-warning pull-right m_r_10" v-if='has(51)'>导出</button>
+        <button type="button" class="btn btn-info pull-right m_r_10" data-toggle="modal" data-target="#reportAdd" v-if='has(51)'>申请</button>
         <button type="button" class="btn btn-primary pull-right m_r_10" @click="queryReport">查询</button>
       </div>
     </div>
@@ -70,10 +70,10 @@
                 <th class="text-center">审批意见</th> 
                 <th class="text-center">状态</th> 
                 <th class="text-center">申请销假</th>
-                <!-- <th class="text-center" v-if='has(51)'>审批</th> 
+                <th class="text-center" v-if='has(51)'>审批</th> 
                 <th class="text-center" v-if='has(51)'>修改</th> 
                 <th class="text-center" v-if='has(51)'>销假</th> 
-                <th class="text-center" v-if='has(51)'>取消</th> -->
+                <th class="text-center" v-if='has(51)'>取消</th>
             </tr>
             </thead>
             <tbody>
@@ -104,10 +104,10 @@
                     @click="applyReportBack(item)">申请销假
                   </button>
               </td>
-              <!-- <td class="text-center" v-if='has(51)'><button>审批</button></td> 
+              <td class="text-center" v-if='has(51)'><button>审批</button></td> 
               <td class="text-center" v-if='has(51)'><button>修改</button></td> 
               <td class="text-center" v-if='has(51)'><button>销假</button></td> 
-              <td class="text-center"><button>取消</button></td> -->
+              <td class="text-center" v-if='has(51)'><button>取消</button></td>
             </tr>
             </tbody>
           </table>
