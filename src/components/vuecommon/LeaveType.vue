@@ -1,6 +1,6 @@
 <template>
-  <select class="form-control" v-model="leaveTypeLabel">
-    <option v-for="(item,index) in leaveTypeList" :key="index" v-bind:value="item.label">{{item.label}}</option>
+  <select class="form-control" v-model="leaveTypeLabel" :disabled="isAble">
+    <option v-for="(item,index) in leaveTypeList" :key="index" :value="item.label">{{item.label}}</option>
   </select>
 </template>
 <script>
@@ -9,6 +9,7 @@
     name:'leaveType',
     data() {
       return {
+        isAble: false,
         leaveTypeLabel: '',
         leaveTypeList:[
           {label:'病假'},
@@ -33,7 +34,9 @@
       }
     },
     methods:{
-      
+      changeAble(){
+        this.isAble = "disabled"
+      }
     }
   }
 </script>

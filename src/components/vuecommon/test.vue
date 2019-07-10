@@ -6,7 +6,7 @@
 			<input class="form-control select-box-input" v-model="time" type="text" id="messageSendTime">
 		</div>
 		<div class="form-group">
-			<%--<label>选择日期+时间：</label>--%>
+			<!--<label>选择日期+时间：</label>-->
 			<!--指定 date标记-->
 			<div class='input-group date datetimePicker' id='datetimepicker2' >
 				
@@ -16,7 +16,6 @@
 				</span>
 			</div>
 		</div>
-	</div>
 	</div>
 
 </template>

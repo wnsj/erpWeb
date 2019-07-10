@@ -21,7 +21,6 @@
     watch:{
       deptEmpId:function(){
           this.empAccountId = this.deptEmpId
-          console.log("empAccountId" + this.empAccountId)
       },
       empAccountId:function(val){
         this.$emit('deptEmpChange',val, this.empName)
