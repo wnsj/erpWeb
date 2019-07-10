@@ -70,12 +70,14 @@
       return{
         name: '',
         deptId: '',
+        leaveAccount: '',
         empList:[]
       }
     },
 		methods: {
-      getDeptId(val){
-        this.deptId = val
+      getLeaveAccount(val){
+          this.leaveAccount = val[0];
+          this.deptId = val[1];
       },
       departChange(departId){   // 部门
         this.deptId = departId
@@ -107,6 +109,10 @@
         });
       },
       insertAgentList(item){
+        if(item.account == this.leaveAccount) {
+          alert("不能选择自己")
+          return false
+        }
         this.$emit("getAgentInfo",item)
         $("#agentChooseModel").modal('hide')
       }

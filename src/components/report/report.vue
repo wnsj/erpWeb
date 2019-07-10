@@ -447,7 +447,7 @@
                   this.endBackTime = this.getYYYY_MM_DD_T_HH_MM(item.endTime)
                   this.leaveAccount = item.leaveAccount
                   this.$refs.agent.getLeaveAccount([item.leaveAccount,item.leaveDeptId])
-                  this.$refs.agentChoose.getDeptId(item.leaveDeptId)
+                  this.$refs.agentChoose.getLeaveAccount([item.leaveAccount,item.leaveDeptId])
                   $('#reportBackApply').modal('show');
                 }
             }
