@@ -220,7 +220,7 @@
                   <div class="col-md-3">
                     <agent :agentAccount="agentAccount" ref="agent" @agentChange="changeAgent"></agent>
                   </div>
-                  <button><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                  <button type="button" data-toggle="modal" data-target="#agentChooseModel" @click="queryEmpByDept"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>                
                 </div>
                 <div class="form-group clearfix">
                   <label for="startBackTime" class="col-md-2 control-label text-right nopad">开始日期：</label>
@@ -233,6 +233,7 @@
                   </div>
                 </div>
             </form>
+            <agentChoose ref="agentChoose" @getAgentInfo="getAgentInfo"></agentChoose>
           </div><!-- /.modal-body -->
           <div class="modal-footer">
             <div class="col-md-12">
@@ -243,7 +244,6 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-
   </div>
 </template>
 <script>
@@ -254,6 +254,7 @@
   import deptEmp from '../vuecommon/deptEmp.vue'
   import agent from '../report/subReportBack/agent.vue'
   import approvalLeaveAcc from '../report/subReport/approvalLeaveAcc.vue'
+  import agentChoose from '../report/subReportBack/subReportBackChild/agentChoose.vue'
   
   export default {
     components: {
@@ -261,7 +262,8 @@
       leaveType,
       deptEmp,
       approvalLeaveAcc,
-      agent
+      agent,
+      agentChoose
     },
     data(){
       return {
@@ -302,6 +304,8 @@
 
         leaveAccount:'',
         agentAccount:'',
+
+        departmentId: ''
       }
     },
     methods: {
@@ -443,11 +447,18 @@
                   this.endBackTime = this.getYYYY_MM_DD_T_HH_MM(item.endTime)
                   this.leaveAccount = item.leaveAccount
                   this.$refs.agent.getLeaveAccount([item.leaveAccount,item.leaveDeptId])
+                  this.$refs.agentChoose.getDeptId(item.leaveDeptId)
                   $('#reportBackApply').modal('show');
                 }
             }
         }
       },
+      queryEmpByDept(){
+        this.$refs.agentChoose.queryEmpByDept()
+      },
+      getAgentInfo(item){
+        this.$refs.agent.insertAgentInfo(item)
+      }
 
     },
   }

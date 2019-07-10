@@ -30,6 +30,9 @@
             this.deptId = val[1];
             this.getAgentList();
         },
+        insertAgentInfo(val){
+          this.agentList.push(val)
+        },
         // 查询审批人信息
         getAgentList: function() {
             var url = this.url + '/leavePrepareController/queryAgentList'
@@ -50,7 +53,7 @@
             }).catch((error) => {
                 console.log('请求失败处理')
             });
-        },
+        }
     }
 }
 </script>
