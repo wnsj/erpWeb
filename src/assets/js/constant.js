@@ -59,21 +59,17 @@ function has(param){
 	return false;
 }
 
-
-// function (param){
-// 	
-// 	var jsonString = Cookies.get("accountData");
-// 	//未登录
-// 	if(isBlank(jsonString))return false;
-// 	var accountData = JSON.parse(jsonString);
-// 	var permission = accountData.permission;
-// 	for (var i = 0; i < permission.length; i++) {
-// 		if(permission[i] == param){
-// 			return true;
-// 		} 
-// 	}
-// 	return false;
-// }
+//用户的基本信息
+export function accountInfo(){
+	
+	var jsonString = Cookies.get("accountData");
+	//未登录
+	if(isBlank(jsonString))return false;
+	var accountData = JSON.parse(jsonString);
+	var accountInfo = accountData.account;
+	console.log('accountInfo:'+jsonString)
+	return accountInfo;
+}
 
 export {
 	//isBlank,

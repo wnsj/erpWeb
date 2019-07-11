@@ -13,7 +13,7 @@
 				</div>
 				<div class="col-md-11 col-lg-11">
 					<span class="leavespan">
-						<input type="input-group date datetimePicker" value="" class="form-control" v-model="beginDate"/>
+						<input type="date" value="" class="form-control" v-model="beginDate"/>
 					</span> <span class="leavespan01">&nbsp;&nbsp;&nbsp;至：</span>
 					<span class="leavespan">
 						<input type="date" value="" class="form-control" v-model="endDate" />
@@ -155,6 +155,7 @@
 
 <script>
 	import axios from 'axios'
+	
 	import lioa from '../paperlessOffice/subAFL/LeaveInfoOfApply.vue'
 	import lioc from '../paperlessOffice/subAFL/LeaveInfoOfCheck.vue'
 	import lioh from '../paperlessOffice/subAFL/LeaveInfoOfHandle.vue'
@@ -177,7 +178,7 @@
 				departId:'0',
 				departName:'',
 				name:'',
-				
+				accountId:this.accountInfo.account_ID,
 				
 				lInfo:{},
 			};
@@ -189,15 +190,27 @@
 			},
 			showLeaveInfo:function(lInfo,param){
 				this.$children[param].showLInfo(lInfo,param)
-				if(param=='1'){
+// 				if(param=='1'){
 					$("#lioa").modal('show')
-				}else if(param=='2'){
-					$("#lioc").modal('show')
-				}else if(param=='3'){
-					$("#lioh").modal('show')
-				}else if(param=='4'){
-					$("#liom").modal('show')
-				}
+// 				}else if(param=='2'){
+// 					$("#lioc").modal('show')
+// 				}else if(param=='3'){
+// 					if(this.accountId==lInfo.account1 
+// 					|| this.accountId==lInfo.account2
+// 					|| this.accountId==lInfo.account3
+// 					|| this.accountId==lInfo.account4){
+// 						$("#lioh").modal('show')
+// 					}else{
+// 						alert(this.notHaveRule)
+// 					}
+// 					
+// 				}else if(param=='4'){
+// 					if(lInfo.leaveAccount == this.accountId()){
+// 						$("#liom").modal('show')
+// 					}else{
+// 						alert(this.notHaveRule)
+// 					}
+// 				}
 			},
 			timeChange:function(){
 				console.log('begin:'+this.beginDate)
@@ -208,7 +221,7 @@
 				var dpId,hState,aId
 				//权限判断 account=='' 没有值查询所有，有值查询当前用户
 				if(this.has(51)){
-					aId==''
+					aId=''
 				}else{
 					aId=this.accountId
 				}
@@ -224,7 +237,6 @@
 				}
 				
 				var url = this.url + '/wzbg/askOfLeaveList'
-				console.log(url)
 				axios({
 					method: 'post',
 					url: url,
@@ -242,7 +254,6 @@
 					},
 					dataType: 'json',
 				}).then((response) => {
-					console.log('askOfLeaveList')
 					var res = response.data
 					console.log(res)
 					if (res.retCode == '0000') {

@@ -8,6 +8,7 @@
 <!-- 		<div v-has='1'> 测试内容1</div>
 		<div v-if='has(25)'> 测试内容2</div>
 		<button @click="consoleLog()" v-has="28">测试Btn</button> -->
+		
 	</div>
 </template>
 

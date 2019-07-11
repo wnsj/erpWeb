@@ -44,12 +44,24 @@
 					<p>请假时间：</p>
 				</div>
 				<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-					<span class="leavespan">
-						<input type="date" value="" class="form-control" v-model="beginDate" />
-					</span> <span class="leavespan01">&nbsp;&nbsp;&nbsp;至：</span>
-					<span class="leavespan">
-						<input type="date" value="" class="form-control" v-model="endDate" />
-					</span>
+					<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+						<span class="leavespan">
+							<div class='input-group date datetimePicker' id='datetimepicker2' >
+								<input name="endTimeStr" type='text' class="form-control" v-model="beginDate"/>
+								<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+								</span>
+							</div>
+						</span> <span class="leavespan01">&nbsp;&nbsp;&nbsp;至：</span>
+						<span class="leavespan">
+							<div class='input-group date datetimePicker' id='datetimepicker2' >
+								<input name="endTimeStr" type='text' class="form-control" v-model="endDate"/>
+								<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+								</span>
+							</div>
+						</span>
+					</div>
 				</div>
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

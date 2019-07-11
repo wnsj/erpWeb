@@ -56,10 +56,20 @@
 				</div>
 				<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
 					<span class="leavespan">
-						<input type="date" value="" class="form-control" v-model="beginDate" disabled=＂true＂/>
+						<div class='input-group date datetimePicker' id='datetimepicker2' >
+							<input name="endTimeStr" type='text' class="form-control" v-model="beginDate"/>
+							<span class="input-group-addon">
+								<span class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
 					</span> <span class="leavespan01">&nbsp;&nbsp;&nbsp;至：</span>
 					<span class="leavespan">
-						<input type="date" value="" class="form-control" v-model="endDate" disabled=＂true＂/>
+						<div class='input-group date datetimePicker' id='datetimepicker2' >
+							<input name="endTimeStr" type='text' class="form-control" v-model="endDate"/>
+							<span class="input-group-addon">
+								<span class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
 					</span>
 				</div>
 			</div>
@@ -125,7 +135,7 @@
 				</div>
 				<div class="col-md-1">
 	
-					<button type="button" class="btn btn-warning pull-left m_r_10">+</button>
+					<button type="button" class="btn btn-warning pull-left m_r_10" disabled=＂true＂>+</button>
 	
 				</div>
 			</div>
@@ -158,7 +168,7 @@
 				</div>
 				<div class="col-md-1">
 	
-					<button type="button" class="btn btn-warning pull-left m_r_10">+</button>
+					<button type="button" class="btn btn-warning pull-left m_r_10" disabled=＂true＂>+</button>
 	
 				</div>
 			</div>
@@ -250,9 +260,8 @@
 		},
 		methods:{
 			showLInfo:function(lInfo,param){
-				alert(param)
+				this.beginDate = 
 				this.lInfo=lInfo
-				this.isModify=param
 			}
 		}
 	}

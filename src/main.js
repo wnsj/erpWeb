@@ -51,8 +51,11 @@ Vue.prototype.accessTokenLife = 7
 Vue.prototype.accountDataLife = 7
 //是否使用前端设置cookie
 Vue.prototype.isUseSetCookie = true
-//用户accountId
-Vue.prototype.accountId = 0
+Vue.prototype.accountInfo =constant.accountInfo()
+
+
+
+Vue.prototype.notHaveRule='您没有此项功能操作的权限'
 
 
 

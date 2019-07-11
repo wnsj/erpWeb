@@ -5,7 +5,7 @@
 			<h1 class="modal-title">请假</h1>
 		</div>
 		<div class="modal-header">
-			<h4 id="myModalLabel" class="modal-title"><span>申请人姓名：<i>{{lInfo.leaveAccountName}}</i></span>
+			<h4 id="myModalLabel" class="modal-title"><span>申请人姓名：<i>{{lInfo.account_Name}}</i></span>
 				<span>部门：<i>{{lInfo.departName}}</i></span>
 				<span>职位：<i>{{lInfo.positionName}}</i></span></h4>
 		</div>
@@ -16,7 +16,7 @@
 					<p>类型：</p>
 				</div>
 				<div class="col-xs-8  col-sm-8 col-md-8 col-lg-8">
-					<leave></leave>
+					<leave @leaveChange='leaveChange'></leave>
 				</div>
 			</div>
 			<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
@@ -24,9 +24,8 @@
 					<p>代理人：</p>
 				</div>
 				<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-					<select class="form-control">
-						<option value="0">崔艳红</option>
-						<option value="1">冯恺</option>
+					<select class="form-control" v-model="lInfo.agentAccountName">
+						<option v-for="(item , index) in emps" :key="index">{{item.employeeName}}</option>
 					</select>
 				</div>
 
@@ -39,16 +38,26 @@
 
 			</div>
 
-			<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+			<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
 				<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">
 					<p>请假时间：</p>
 				</div>
 				<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
 					<span class="leavespan">
-						<input type="date" value="" class="form-control" v-model="beginDate" />
+						<div class='input-group date datetimePicker'>
+							<input id="inputDate" type='text' class="form-control" ref="result" v-model="beginDate"/>
+							<span class="input-group-addon">
+								<span class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
 					</span> <span class="leavespan01">&nbsp;&nbsp;&nbsp;至：</span>
 					<span class="leavespan">
-						<input type="date" value="" class="form-control" v-model="endDate" />
+						<div class='input-group date datetimePicker' id='datetimepicker2' >
+							<input type='text' class="form-control" v-model="endDate"/>
+							<span class="input-group-addon">
+								<span class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
 					</span>
 				</div>
 			</div>
@@ -63,7 +72,7 @@
 				<div class="col-md-5">
 					<br />
 					<button type="button" class="btn btn-warning pull-right m_r_10">取消</button>
-					<button type="button" class="btn btn-warning pull-right m_r_10">确定</button>
+					<button type="button" class="btn btn-warning pull-right m_r_10" v-on:click="">确定</button>
 				</div>
 			</div>
 		</div>
@@ -81,7 +90,7 @@
 				</div>
 				<div class="col-xs-1 col-sm-1 col-md-1">
 
-					<button type="button" class="btn btn-warning pull-left m_r_10">+</button>
+					<button type="button" class="btn btn-warning pull-left m_r_10" v-on:click="checkEmpList()">+</button>
 
 				</div>
 			</div>
@@ -95,8 +104,8 @@
 			</div>
 			<div class="col-md-3">
 
-				<button type="button" class="btn btn-info">同意</button>
-				<button type="button" class="btn btn-info">不同意</button>
+				<button type="button" class="btn btn-info" :disabled="isModify_1">同意</button>
+				<button type="button" class="btn btn-info" :disabled="isModify_1">不同意</button>
 			</div>
 		</div>
 
@@ -107,14 +116,13 @@
 					<p>审核人：</p>
 				</div>
 				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-					<select class="form-control">
-						<option value="0">王艳杰</option>
-						<option value="1">宋子龙</option>
+					<select class="form-control" v-model="lInfo.account2">
+						<option v-for="(item , index) in emps" :key="index">{{}}</option>
 					</select>
 				</div>
 				<div class="col-md-1">
 
-					<button type="button" class="btn btn-warning pull-left m_r_10">+</button>
+					<button type="button" class="btn btn-warning pull-left m_r_10" v-on:click="checkEmpList()">+</button>
 
 				</div>
 			</div>
@@ -128,8 +136,8 @@
 			</div>
 			<div class="col-md-3">
 
-				<button type="button" class="btn btn-info">同意</button>
-				<button type="button" class="btn btn-info">不同意</button>
+				<button type="button" class="btn btn-info" :disabled="isModify_2">同意</button>
+				<button type="button" class="btn btn-info" :disabled="isModify_2">不同意</button>
 			</div>
 		</div>
 
@@ -161,11 +169,10 @@
 			</div>
 			<div class="col-md-3">
 
-				<button type="button" class="btn btn-info">同意</button>
-				<button type="button" class="btn btn-info">不同意</button>
+				<button type="button" class="btn btn-info" :disabled="isModify_3">同意</button>
+				<button type="button" class="btn btn-info" :disabled="isModify_3">不同意</button>
 			</div>
 		</div>
-
 
 		<div class="modal-header modal_header_leave">
 			<h6>报备</h6>
@@ -189,18 +196,16 @@
 			</div>
 			<div class="col-md-4">
 
-				<button type="button" class="btn btn-info">同意</button>
-				<button type="button" class="btn btn-info">不同意</button>
+				<button type="button" class="btn btn-info" :disabled="isModify_4">同意</button>
+				<button type="button" class="btn btn-info" :disabled="isModify_4">不同意</button>
 			</div>
 		</div>
-
-
 
 		<div class="modal-footer">
 			<!--按钮-->
 			<div class="col-md-12">
 
-				<button type="button" class="btn btn-info" v-on:click="submitEmployeeInfo()">确认</button>
+				<button type="button" class="btn btn-info" >确认</button>
 				<button type="button" data-dismiss="modal" class="btn btn-info">返回</button>
 			</div>
 
@@ -219,7 +224,7 @@
 </template>
 
 <script>
-	
+	import axios from 'axios'
 	import depart from '../../vuecommon/department.vue'
 	import leave from '../../vuecommon/leaveTypes.vue'
 	
@@ -232,28 +237,107 @@
 		},
 		data() {
 			return {
-				lInfo: {}, //請假信息
+				lInfo: this.accountInfo, //請假信息
 				delgateEMP: [], //代理人
+				dateList:[],
+				emps:[],//人员列表
 
-				beginDate: this.getCurrentDay,
-				endDate: this.getCurrentDay,
+				beginDate: this.moment('','YYYY/MM/DD 08:30'),
+				endDate: this.moment('','YYYY/MM/DD 17:30'),
 
-				isModify: '' //操作类型，查询，修改，申请
+				isModify: '' ,
+				isModify_1: true ,
+				isModify_2: true ,
+				isModify_3: true ,
+				isModify_4: true ,
 			};
 		},
 		methods: {
-			showLInfo: function(lInfo, param) {
-				alert(
-				"1:" + this.moment()+
-				"2:" + this.moment('2019')+
-				"3:" + this.moment('2019-07-06 20:06:07','')+
-				"4:" + this.moment('2019-07-06 20:06:07','YYYY/MM/DD')+
-				"5:" + this.moment('2019-07-06 20:06:07','YYYY/MM/DD HH:mm:ss')
-				)
-				this.lInfo = lInfo
-				this.isModify = param
+			leaveChange: function(leaveName) {
+				this.lInfo.leaveType=leaveName
+				alert(this.lInfo.leaveType)
 			},
+			showLInfo: function(param1, param2) {
+				this.isModify = param2
+			},
+			checkEmpList:function(){
+				var url = this.url + '/wzbg/checkOfEmpList'
+				console.log('checkEmpList:'+url)
+				axios({
+					method: 'post',
+					url: url,
+					headers: {
+						'Content-Type': this.contentType,
+						'Access-Token': this.accessToken
+					},
+					data: {
+						level:'4' 
+					},
+					dataType: 'json',
+				}).then((response) => {
+					var res = response.data
+					console.log(res)
+					if (res.retCode == '0000') {
+						if (res.resData.length > 0) {
+							this.checkEmpList = res.resData
+							$("#myModalQuery").modal('hide');
+						} else {
+							alert('没有查询到相关数据')
+						}
+					} else {
+						alert(res.retMsg)
+					}
+							
+				}).catch((error) => {
+					console.log('请求失败处理')
+				});
+			},
+			empList:function(){
+				var url = this.url + '/wzbg/departOfEmpList'
+				console.log('checkEmpList:'+url)
+				axios({
+					method: 'post',
+					url: url,
+					headers: {
+						'Content-Type': this.contentType,
+						'Access-Token': this.accessToken
+					},
+					data: {
+						departId:this.lInfo.departId ,
+						accountId:this.accountInfo.account_ID
+					},
+					dataType: 'json',
+				}).then((response) => {
+					var res = response.data
+					if (res.retCode == '0000') {
+						alert(res.resData.length)
+						console.log(res.resData)
+						if (res.resData.length > 0) {
+							this.emps = res.resData
+							$("#myModalQuery").modal('hide');
+						} else {
+							alert('没有查询到相关数据')
+						}
+					} else {
+						alert(res.retMsg)
+					}
+							
+				}).catch((error) => {
+					console.log('请求失败处理')
+				});
+			}
 
+		},
+		created(){
+			this.empList()
+		},
+		mounted: function() {
+			$(function() {
+				$('.datetimePicker').datetimepicker({
+					format: 'yyyy-mm-dd hh:ii',
+					language: 'cn',
+				});
+			})
 		}
 	}
 </script>
