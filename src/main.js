@@ -44,7 +44,7 @@ Vue.prototype.url = process.env.API_HOST
 Vue.prototype.getMonthFirst = date.getCurrentMonthFirst()
 Vue.prototype.getMonthLast = date.getCurrentMonthLast()
 Vue.prototype.getCurrentDay = date.timeInit('')
-Vue.prototype.getCurrentYYYY_MM_DD_HH_MM_SS = date.getCurrentYYYY_MM_DD_HH_MM_SS()
+
 Vue.prototype.contentType = 'application/json;charset=utf-8'
 //token存储在cookie中的过期时间
 Vue.prototype.accessTokenLife = 7
@@ -104,6 +104,12 @@ Vue.prototype.exportTableToExcel = function(tbId, fileName) {
 Vue.prototype.has = function(param) {
 	return constant.has(param);
 }
+Vue.prototype.getYYYY_MM_DD_T_HH_MM = function(param){
+	return date.getYYYY_MM_DD_T_HH_MM(param)
+}
+Vue.prototype.getCurrentYYYY_MM_DD_HH_MM_SS = function(){
+	return date.getCurrentYYYY_MM_DD_HH_MM_SS();
+} 
 Vue.prototype.moment = function(targetDate, format) {
 	var formatStr = "YYYY-MM-DD HH:mm:ss"
 	var momentObj = moment();
@@ -125,7 +131,7 @@ Vue.directive('has', {
 	inserted: function(el, binding) {
 		if (!constant.has(binding.value)) {
 			el.parentNode.removeChild(el);
-		}
+		}	
 	}
 });
 

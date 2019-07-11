@@ -1,7 +1,7 @@
 <template>
 
 	<div class='col-sm-8'>
-		test页面
+
 	</div>
 
 </template>
