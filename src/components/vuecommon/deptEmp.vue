@@ -41,7 +41,6 @@
       },
       getDeptId(val){
         this.deptId = val;
-        console.log("deptId" + this.deptId)
         this.getDeptEmp();
       },
       // 查询部门下的员工信息
