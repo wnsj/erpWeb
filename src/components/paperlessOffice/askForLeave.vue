@@ -190,27 +190,27 @@
 			},
 			showLeaveInfo:function(lInfo,param){
 				this.$children[param].showLInfo(lInfo,param)
-// 				if(param=='1'){
+				if(param=='1'){
 					$("#lioa").modal('show')
-// 				}else if(param=='2'){
-// 					$("#lioc").modal('show')
-// 				}else if(param=='3'){
-// 					if(this.accountId==lInfo.account1 
-// 					|| this.accountId==lInfo.account2
-// 					|| this.accountId==lInfo.account3
-// 					|| this.accountId==lInfo.account4){
-// 						$("#lioh").modal('show')
-// 					}else{
-// 						alert(this.notHaveRule)
-// 					}
-// 					
-// 				}else if(param=='4'){
-// 					if(lInfo.leaveAccount == this.accountId()){
-// 						$("#liom").modal('show')
-// 					}else{
-// 						alert(this.notHaveRule)
-// 					}
-// 				}
+				}else if(param=='2'){
+					$("#lioc").modal('show')
+				}else if(param=='3'){
+					if(this.accountId==lInfo.account1 
+					|| this.accountId==lInfo.account2
+					|| this.accountId==lInfo.account3
+					|| this.accountId==lInfo.account4){
+						$("#lioh").modal('show')
+					}else{
+						alert(this.notHaveRule)
+					}
+					
+				}else if(param=='4'){
+					if(lInfo.leaveAccount == this.accountId()){
+						$("#liom").modal('show')
+					}else{
+						alert(this.notHaveRule)
+					}
+				}
 			},
 			timeChange:function(){
 				console.log('begin:'+this.beginDate)
@@ -255,9 +255,7 @@
 					dataType: 'json',
 				}).then((response) => {
 					var res = response.data
-					console.log(res)
 					if (res.retCode == '0000') {
-						// alert(res.resData.length)
 						if (res.resData.length > 0) {
 							this.aflList = res.resData
 							$("#myModalQuery").modal('hide');

@@ -24,8 +24,8 @@
 					<p>代理人：</p>
 				</div>
 				<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-					<select class="form-control" v-model="lInfo.agentAccountName">
-						<option v-for="(item , index) in emps" :key="index">{{item.employeeName}}</option>
+					<select class="form-control" v-model="lInfo.agentAccount">
+						<option v-for="(item , index) in emps" :key="index" v-bind:value="item.employeeId">{{item.employeeName}}</option>
 					</select>
 				</div>
 
@@ -90,7 +90,7 @@
 				</div>
 				<div class="col-xs-1 col-sm-1 col-md-1">
 
-					<button type="button" class="btn btn-warning pull-left m_r_10" v-on:click="checkEmpList()">+</button>
+					<button type="button" class="btn btn-warning pull-left m_r_10" v-on:click="addEmp('check')">+</button>
 
 				</div>
 			</div>
@@ -122,7 +122,7 @@
 				</div>
 				<div class="col-md-1">
 
-					<button type="button" class="btn btn-warning pull-left m_r_10" v-on:click="checkEmpList()">+</button>
+					<button type="button" class="btn btn-warning pull-left m_r_10" v-on:click="addEmp('verify')">+</button>
 
 				</div>
 			</div>
@@ -155,7 +155,7 @@
 				</div>
 				<div class="col-md-1">
 
-					<button type="button" class="btn btn-warning pull-left m_r_10">+</button>
+					<button type="button" class="btn btn-warning pull-left m_r_10" v-on:click="addEmp('approval')">+</button>
 
 				</div>
 			</div>
@@ -219,21 +219,20 @@
 				</div>
 			</div>
 		</div>
-
+		<aod @backAciton='receivedAction'></aod>
 	</div>
 </template>
 
 <script>
 	import axios from 'axios'
-	import depart from '../../vuecommon/department.vue'
 	import leave from '../../vuecommon/leaveTypes.vue'
-	
+	import aod from '../subAFL/agentOfDepart.vue'
 	import moment from 'moment'
 	
 	export default {
 		components: {
-			depart,
-			leave
+			leave,
+			aod
 		},
 		data() {
 			return {
@@ -241,15 +240,26 @@
 				delgateEMP: [], //代理人
 				dateList:[],
 				emps:[],//人员列表
+				
+				empList_check:[],
+				empListCheckTimes:0,
+				empList_verify:[],
+				empListVerifyTimes:0,
+				empList_approval:[],
+				empListApprovalTimes:0,
+				level:'0',
+				
 
 				beginDate: this.moment('','YYYY/MM/DD 08:30'),
 				endDate: this.moment('','YYYY/MM/DD 17:30'),
 
 				isModify: '' ,
-				isModify_1: true ,
+				isModify_1: true,
 				isModify_2: true ,
 				isModify_3: true ,
 				isModify_4: true ,
+				
+				
 			};
 		},
 		methods: {
@@ -257,9 +267,53 @@
 				this.lInfo.leaveType=leaveName
 				alert(this.lInfo.leaveType)
 			},
-			showLInfo: function(param1, param2) {
-				this.isModify = param2
+			showLInfo:function(lInfo,param){
+				
 			},
+			//返回代理人
+			receivedAction:function(item){
+				this.emps.push(item)
+				this.lInfo.agentAccount=item.employeeId
+				$("#myModalJoin_add").modal('hide')
+			},
+			//代理人弹窗
+			showSelectEmp:function(){
+				$("#myModalJoin_add").modal('show')
+			},
+			//'+'被点击的方法
+			addEmp:function(param){
+				if(param=='check'){
+					this.empListCheckTimes++
+					if(this.empListCheckTimes==3){
+						this.empListCheckTimes=0
+						this.level='456'
+					}else if(this.empListCheckTimes==2){
+						this.level='45'
+					}else if(this.empListCheckTimes==1){
+						this.level='4'
+					}
+				}else if(param=='verify'){
+					this.empListVerifyTimes++
+					if(this.empListVerifyTimes==3){
+						this.empListVerifyTimes=0
+						this.level='456'
+					}else if(this.empListVerifyTimes==2){
+						this.level='45'
+					}else if(this.empListVerifyTimes==1){
+						this.level='4'
+					}
+				}else if(param=='approval'){
+					this.empListApprovalTimes++
+					if(this.empListApprovalTimes==2){
+						this.empListApprovalTimes=0
+						this.level='56'
+					}else if(this.empListApprovalTimes==1){
+						this.level='5'
+					}
+				}
+				this.checkEmpList()
+			},
+			//查询不同类型审核人员
 			checkEmpList:function(){
 				var url = this.url + '/wzbg/checkOfEmpList'
 				console.log('checkEmpList:'+url)
@@ -271,12 +325,13 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
-						level:'4' 
+						level:this.level,
+						positionId:'5'
 					},
 					dataType: 'json',
 				}).then((response) => {
 					var res = response.data
-					console.log(res)
+					console.log('checkEmpList:'+res)
 					if (res.retCode == '0000') {
 						if (res.resData.length > 0) {
 							this.checkEmpList = res.resData
@@ -310,8 +365,8 @@
 				}).then((response) => {
 					var res = response.data
 					if (res.retCode == '0000') {
-						alert(res.resData.length)
-						console.log(res.resData)
+						alert('LeaveInfoOfApply:'+res.resData.length)
+						console.log('LeaveInfoOfApply:'+res.resData)
 						if (res.resData.length > 0) {
 							this.emps = res.resData
 							$("#myModalQuery").modal('hide');
