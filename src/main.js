@@ -8,23 +8,14 @@ import Cookies from 'js-cookie'
 import store from './store'
 import axios from 'axios';
 
-
-import moment from 'moment'
-import datePicker from '../static/js/bootstrap-datetimepicker.js'
-
 import * as constant from '../src/assets/js/constant.js'
-import {
-	exportTableToExcel
-} from 'vendor/Export2Excel.js'
-
+import {exportTableToExcel} from 'vendor/Export2Excel.js'
 import * as date from '../src/assets/js/date.js'
 
 
 Vue.config.productionTip = false
-
 Vue.use(VueResource)
-Vue.use(moment)
-Vue.use(datePicker)
+
 
 
 
@@ -160,7 +151,6 @@ new Vue({
 	el: '#app',
 	store,
 	router,
-	moment,
 	data() {
 		return {
 			accountAccessToken: constant.isBlank(Cookies.get('accessToken')) ? '' : Cookies.get('accessToken'),
