@@ -14,5 +14,4 @@
 			suffix: [],
 			meridiem: ["上午", "下午"]
 	};
-	
 }(jQuery));

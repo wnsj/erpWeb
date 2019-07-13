@@ -45,10 +45,20 @@
 				</div>
 				<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
 					<span class="leavespan">
-						<input type="date" value="" class="form-control" v-model="beginDate" />
+						<div class='input-group date datetimePicker' id='datetimepicker2' >
+							<input name="endTimeStr" type='text' class="form-control" v-model="beginDate"/>
+							<span class="input-group-addon">
+								<span class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
 					</span> <span class="leavespan01">&nbsp;&nbsp;&nbsp;至：</span>
 					<span class="leavespan">
-						<input type="date" value="" class="form-control" v-model="endDate" />
+						<div class='input-group date datetimePicker' id='datetimepicker2' >
+							<input name="endTimeStr" type='text' class="form-control" v-model="endDate"/>
+							<span class="input-group-addon">
+								<span class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
 					</span>
 				</div>
 			</div>
@@ -75,13 +85,13 @@
 					<p>审查人：</p>
 				</div>
 				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
-					<select class="form-control">
+					<select class="form-control" disabled=＂true＂>
 						<option value="0">王斌</option>
 					</select>
 				</div>
 				<div class="col-xs-1 col-sm-1 col-md-1">
 	
-					<button type="button" class="btn btn-warning pull-left m_r_10">+</button>
+					<button type="button" class="btn btn-warning pull-left m_r_10" v-on:click="checkEmpList()">+</button>
 	
 				</div>
 			</div>
@@ -94,9 +104,8 @@
 				</div>
 			</div>
 			<div class="col-md-3">
-	
-				<button type="button" class="btn btn-info">同意</button>
-				<button type="button" class="btn btn-info">不同意</button>
+				<button type="button" class="btn btn-info" disabled=＂true＂>同意</button>
+				<button type="button" class="btn btn-info" disabled=＂true＂>不同意</button>
 			</div>
 		</div>
 	
@@ -107,14 +116,14 @@
 					<p>审核人：</p>
 				</div>
 				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-					<select class="form-control">
+					<select class="form-control" disabled=＂true＂>
 						<option value="0">王艳杰</option>
 						<option value="1">宋子龙</option>
 					</select>
 				</div>
 				<div class="col-md-1">
 	
-					<button type="button" class="btn btn-warning pull-left m_r_10">+</button>
+					<button type="button" class="btn btn-warning pull-left m_r_10" v-on:click="checkEmpList()">+</button>
 	
 				</div>
 			</div>
@@ -128,8 +137,8 @@
 			</div>
 			<div class="col-md-3">
 	
-				<button type="button" class="btn btn-info">同意</button>
-				<button type="button" class="btn btn-info">不同意</button>
+				<button type="button" class="btn btn-info" disabled=＂true＂>同意</button>
+				<button type="button" class="btn btn-info" disabled=＂true＂>不同意</button>
 			</div>
 		</div>
 	
@@ -140,14 +149,14 @@
 					<p>批准人：</p>
 				</div>
 				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-					<select class="form-control">
+					<select class="form-control" disabled=＂true＂>
 						<option value="0">王艳杰</option>
 						<option value="1">宋子龙</option>
 					</select>
 				</div>
 				<div class="col-md-1">
 	
-					<button type="button" class="btn btn-warning pull-left m_r_10">+</button>
+					<button type="button" class="btn btn-warning pull-left m_r_10" v-on:click="checkEmpList()">+</button>
 	
 				</div>
 			</div>
@@ -161,8 +170,8 @@
 			</div>
 			<div class="col-md-3">
 	
-				<button type="button" class="btn btn-info">同意</button>
-				<button type="button" class="btn btn-info">不同意</button>
+				<button type="button" class="btn btn-info" disabled=＂true＂>同意</button>
+				<button type="button" class="btn btn-info" disabled=＂true＂>不同意</button>
 			</div>
 		</div>
 	
@@ -174,7 +183,7 @@
 					<p>报备人：</p>
 				</div>
 				<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-					<select class="form-control">
+					<select class="form-control" disabled=＂true＂>
 						<option value="0">李珊珊</option>
 					</select>
 				</div>
@@ -187,10 +196,14 @@
 					<input type="text" class="form-control">
 				</div>
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-4" v-if="isModify==true">
 	
-				<button type="button" class="btn btn-info">同意</button>
-				<button type="button" class="btn btn-info">不同意</button>
+				<button type="button" class="btn btn-info" disabled=＂true＂>同意</button>
+				<button type="button" class="btn btn-info" disabled=＂true＂>不同意</button>
+			</div>
+			<div class="col-md-4" v-else="isModify==">
+				<button type="button" class="btn btn-info" >同意</button>
+				<button type="button" class="btn btn-info" >不同意</button>
 			</div>
 		</div>
 	
@@ -209,7 +222,7 @@
 				<i>按钮用来扩大选择其他人员</i>
 				<div class="col-md-1">
 	
-					<button type="button" class="btn btn-warning pull-left m_r_10">+</button>
+					<button type="button" class="btn btn-warning pull-left m_r_10" v-on:click="checkEmpList()">+</button>
 	
 				</div>
 			</div>
@@ -234,14 +247,50 @@
 				beginDate:this.getCurrentDay,
 				endDate:this.getCurrentDay,
 				
+				checkList:[],
+				
 				isModify:''//操作类型，查询，修改，申请
 			};
 		},
 		methods:{
 			showLInfo:function(lInfo,param){
-				alert(param)
+				
 				this.lInfo=lInfo
 				this.isModify=param
+			
+			},
+			checkEmpList:function(){
+				var url = this.url + '/wzbg/checkOfEmpList'
+				console.log('checkEmpList:'+url)
+				axios({
+					method: 'post',
+					url: url,
+					headers: {
+						'Content-Type': this.contentType,
+						'Access-Token': this.accessToken
+					},
+					data: {
+						level:'4' 
+					},
+					dataType: 'json',
+				}).then((response) => {
+					var res = response.data
+					console.log(res)
+					if (res.retCode == '0000') {
+						alert(res.resData.length)
+						if (res.resData.length > 0) {
+							this.checkList = res.resData
+							$("#myModalQuery").modal('hide');
+						} else {
+							alert('没有查询到相关数据')
+						}
+					} else {
+						alert(res.retMsg)
+					}
+							
+				}).catch((error) => {
+					console.log('请求失败处理')
+				});
 			}
 		}
 	}

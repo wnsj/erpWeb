@@ -7,6 +7,7 @@ import VueResource from 'vue-resource'
 import Cookies from 'js-cookie'
 import store from './store'
 import axios from 'axios';
+import moment from 'moment'
 
 import * as constant from '../src/assets/js/constant.js'
 import {exportTableToExcel} from 'vendor/Export2Excel.js'
@@ -15,12 +16,6 @@ import * as date from '../src/assets/js/date.js'
 
 Vue.config.productionTip = false
 Vue.use(VueResource)
-
-
-
-
-
-
 
 
 // 允许携带cookie
@@ -39,15 +34,18 @@ Vue.prototype.url = process.env.API_HOST
 Vue.prototype.getMonthFirst = date.getCurrentMonthFirst()
 Vue.prototype.getMonthLast = date.getCurrentMonthLast()
 Vue.prototype.getCurrentDay = date.timeInit('')
-Vue.prototype.getCurrentYYYY_MM_DD_HH_MM_SS = date.getCurrentYYYY_MM_DD_HH_MM_SS()
+
 Vue.prototype.contentType = 'application/json;charset=utf-8'
 //token存储在cookie中的过期时间
 Vue.prototype.accessTokenLife = 7
 Vue.prototype.accountDataLife = 7
 //是否使用前端设置cookie
 Vue.prototype.isUseSetCookie = true
-//用户accountId
-Vue.prototype.accountId=0
+Vue.prototype.accountInfo =constant.accountInfo()
+
+
+
+Vue.prototype.notHaveRule='您没有此项功能操作的权限'
 
 
 
@@ -96,6 +94,22 @@ Vue.prototype.exportTableToExcel = function(tbId, fileName) {
 Vue.prototype.has = function(param) {
 	return constant.has(param);
 }
+Vue.prototype.getYYYY_MM_DD_T_HH_MM = function(param){
+	return date.getYYYY_MM_DD_T_HH_MM(param)
+}
+Vue.prototype.getCurrentYYYY_MM_DD_HH_MM_SS = function(){
+	return date.getCurrentYYYY_MM_DD_HH_MM_SS();
+} 
+Vue.prototype.moment = function(targetDate, format) {
+	var formatStr = "YYYY-MM-DD HH:mm:ss"
+	var momentObj = moment();
+	if (!constant.isBlank(targetDate)) {
+		momentObj = moment(targetDate);
+	}
+	if (!constant.isBlank(format)) formatStr = format;
+	return momentObj.format(formatStr);
+}
+
 
 /*
  **权限判断使用方法:
@@ -107,7 +121,7 @@ Vue.directive('has', {
 	inserted: function(el, binding) {
 		if (!constant.has(binding.value)) {
 			el.parentNode.removeChild(el);
-		}
+		}	
 	}
 });
 
@@ -124,7 +138,7 @@ router.beforeEach((to, from, next) => {
 		//consoleLogCookie(token,accountData);
 		if (constant.isBlank(token) || constant.isBlank(accountData)) {
 			next('/login');
-		}else if (to.path == '/') {
+		} else if (to.path == '/') {
 			next('/mainPage');
 		} else if (to.path == '/login') {
 			next('/mainPage');

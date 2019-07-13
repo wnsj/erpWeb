@@ -1,5 +1,5 @@
 <template>
-	<select class="form-control" v-model="departId" v-on:change="departChange(),returnDeptObj()">
+	<select class="form-control" v-model="departId" v-on:change="departChange(),returnDeptObj()" :disabled="isAble">
 		<option value="0">九博健康管理有限公司</option>
 		<!-- <option v-for="(item,index) in departmentList" :key="index" v-bind:value="item.id" v-html="item.name">{{item.name}}</option> -->
 		<option v-for="item in departmentList" :key="item.id" v-bind:value="item.id" v-html="item.preFixName">
@@ -26,6 +26,7 @@
 		 */
 		data() {
 			return {
+				isAble: false,
 				departName: '',
 				departId: '0',
 				departmentList: [],
@@ -49,6 +50,10 @@
 
 			 * 
 			 */
+			// 设置组件禁用属性
+			changeAble(){
+				this.isAble = true
+			},
 			//提交部门名称和ID
 			departChange: function() {
 				this.departName = this.exchangeDepartName(this.departId)
