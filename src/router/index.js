@@ -34,6 +34,7 @@ import computerSupplies from '../components/paperlessOffice/computerSupplies.vue
 import computerAdvanceApplication from '../components/paperlessOffice/computerAdvanceApplication.vue'
 import empRequire from '../components/paperlessOffice/empRequire.vue'
 import report from '../components/report/report.vue'
+import clock from '../components/clock/clock.vue'
 
 Vue.use(Router)
 
@@ -117,6 +118,10 @@ export default new Router({
 				{
 					path: '/report',
 					component: report
+				},
+				{
+					path: '/clock',
+					component: clock
 				},
 				
 				{
