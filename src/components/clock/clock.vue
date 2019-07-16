@@ -75,6 +75,7 @@
               <th class="text-center">报备人</th>
               <th class="text-center">报备结果</th>
               <th class="text-center">查看</th>
+              <th class="text-center">修改</th>
             </tr>
             </thead>
             <tbody>
@@ -97,8 +98,11 @@
               <td class="text-center">{{item.result4}}</td>
               <td class="text-center">
                 <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#clockShowModel"
-                        @click="showClock(item)">查看
+                        @click="showClock(item)"><b>查看</b>
                 </button>
+              </td>
+              <td class="text-center">
+                <button type="button" class="btn btn-sm btn-default" @click="editClock(item)"><b>修改</b></button>
               </td>
             </tr>
             </tbody>
@@ -107,7 +111,7 @@
       </div>
     </div><!-- /.row 查询页面-->
     <!-- 新增打卡证明-->
-    <div class="modal fade" id="clockAddModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabeltj" aria-hidden="true">
+    <div class="modal fade" id="clockAddModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
@@ -164,15 +168,15 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-    <!-- 新增打卡证明-->
-    <div class="modal fade" id="clockShowModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabeltj" aria-hidden="true">
+    <!-- 查看打卡证明-->
+    <div class="modal fade" id="clockShowModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">
               <span>×</span>
             </button>
-            <h4 class="modal-title">新增打卡证明</h4>
+            <h4 class="modal-title">查看打卡证明</h4>
           </div><!-- /.modal-header -->
           <div class="modal-body">
             <div class="form-group clearfix">
@@ -220,6 +224,64 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+    <!-- 修改打卡证明-->
+    <div class="modal fade" id="clockModifyModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+              <span>×</span>
+            </button>
+            <h4 class="modal-title">修改打卡证明</h4>
+          </div><!-- /.modal-header -->
+          <div class="modal-body">
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">申请人姓名：</label>
+              <div class="col-md-2">
+                <input type="text" class="form-control" disabled="disabled" v-model="leaveUpdateAccountName"/>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">部门：</label>
+              <div class="col-md-2">
+                <input type="text" class="form-control" disabled="disabled" v-model="leaveUpdateDeptName"/>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">职位：</label>
+              <div class="col-md-2">
+                <input type="text" class="form-control" disabled="disabled" v-model="leaveUpdatePositionName"/>
+              </div>
+            </div>
+          </div><!-- /.modal-body -->
+          <div class="modal-body">
+            <legend><h5>打卡</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">原因：</label>
+              <div class="col-md-2">
+                <select class="form-control" v-model="reasonUpdate">
+                  <option v-for="(item,index) in reasons" :key="index" :value="item.label">
+                    {{item.label}}
+                  </option>
+                </select>
+              </div>
+              <label class="control-label text-right nopad col-md-2 col-lg-offset-1">未打卡时间：</label>
+              <div class="col-md-3">
+                <input type="datetime-local" class="form-control" v-model="notClockUpdateTime"/>
+              </div>
+            </div>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">说明：</label>
+              <div class="col-md-10">
+                <textarea class="textarea" placeholder="未打卡说明：" v-model="leaveUpdateRemark"></textarea>
+              </div>
+            </div>
+          </div><!-- /.modal-body -->
+          <div class="modal-footer">
+            <div class="col-md-12">
+              <button type="button" class="btn btn-warning">确认</button>
+              <button type="button" data-dismiss="modal" class="btn btn-info">取消</button>
+            </div>
+          </div> <!-- /.modal-footer -->
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
   </div><!-- /.container -->
 </template>
 <script>
@@ -248,7 +310,7 @@
         ],
         clockList: [],
 
-        //新增
+        //  新增
         leaveAccount: '',
         leaveAccountName: '',
         leaveDeptName: '',
@@ -269,6 +331,15 @@
         showReason: '',
         showNotClockTime: '',
         showLeaveRemark: '',
+
+        //  修改
+        leaveUpdateAccount: '',
+        leaveUpdateAccountName: '',
+        leaveUpdateDeptName: '',
+        leaveUpdatePositionName: '',
+        reasonUpdate: '',
+        notClockUpdateTime: '',
+        leaveUpdateRemark: '',
 
       }
     },
@@ -331,6 +402,21 @@
         this.showReason = item.reason
         this.showNotClockTime = this.getYYYY_MM_DD_T_HH_MM(item.startTime)
         this.showLeaveRemark = item.leaveRemark
+      },
+
+      // ---------------------------------------修改----------------------------------
+      editClock(item){
+        if(item.leaveAccount != JSON.parse(Cookies.get("accountData")).account.account_ID){
+          alert("不能修改他人的报备")
+        }else{
+          this.leaveUpdateAccountName = item.leaveAccountName
+          this.leaveUpdateDeptName = item.leaveDeptName
+          this.leaveUpdatePositionName = item.leavePositionName
+          this.reasonUpdate = item.reason
+          this.notClockUpdateTime = this.getYYYY_MM_DD_T_HH_MM(item.startTime)
+          this.leaveUpdateRemark = item.leaveRemark
+          $('#clockModifyModel').modal('show');
+        }
       }
     }
   }
