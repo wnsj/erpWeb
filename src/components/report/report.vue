@@ -73,6 +73,7 @@
               <th class="text-center">审批意见</th>
               <th class="text-center">状态</th>
               <th class="text-center">申请销假</th>
+              
               <th class="text-center" v-if='has(51)'>审批</th>
               <th class="text-center" v-if='has(51)'>修改</th>
               <th class="text-center" v-if='has(51)'>销假</th>
