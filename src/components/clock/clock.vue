@@ -45,11 +45,12 @@
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-md-offset-9">
         <button type="button" class="btn btn-warning pull-right m_r_10" v-if='has(51)'>导出</button>
         <button type="button" class="btn btn-info pull-right m_r_10" data-toggle="modal" data-target="#clockAddModel"
-                v-if='has(51)'>申请
+                v-if='has(51)' @click="addClock">申请
         </button>
         <button type="button" class="btn btn-primary pull-right m_r_10" @click="queryClock">查询</button>
       </div>
     </div>
+    <br>
     <!-- 查询结果集 -->
     <div class="row">
       <div class="col-md-12 col-lg-12">
@@ -73,6 +74,7 @@
               <th class="text-center">批准结果</th>
               <th class="text-center">报备人</th>
               <th class="text-center">报备结果</th>
+              <th class="text-center">查看</th>
             </tr>
             </thead>
             <tbody>
@@ -93,13 +95,132 @@
               <td class="text-center">{{item.result3}}</td>
               <td class="text-center">{{item.reportAccountName}}</td>
               <td class="text-center">{{item.result4}}</td>
+              <td class="text-center">
+                <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#clockShowModel"
+                        @click="showClock(item)">查看
+                </button>
+              </td>
             </tr>
             </tbody>
           </table>
         </div>
       </div>
     </div><!-- /.row 查询页面-->
-  </div>
+    <!-- 新增打卡证明-->
+    <div class="modal fade" id="clockAddModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabeltj" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+              <span>×</span>
+            </button>
+            <h4 class="modal-title">新增打卡证明</h4>
+          </div><!-- /.modal-header -->
+          <div class="modal-body">
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">申请人姓名：</label>
+              <div class="col-md-2">
+                <input type="text" class="form-control" disabled="disabled" v-model="leaveAccountName"/>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">部门：</label>
+              <div class="col-md-2">
+                <input type="text" class="form-control" disabled="disabled" v-model="leaveDeptName"/>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">职位：</label>
+              <div class="col-md-2">
+                <input type="text" class="form-control" disabled="disabled" v-model="leavePositionName"/>
+              </div>
+            </div>
+          </div><!-- /.modal-body -->
+          <div class="modal-body">
+            <legend><h5>打卡</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">原因：</label>
+              <div class="col-md-2">
+                <select class="form-control" v-model="reason">
+                  <option v-for="(item,index) in reasons" :key="index" :value="item.label">
+                    {{item.label}}
+                  </option>
+                </select>
+              </div>
+              <label class="control-label text-right nopad col-md-2 col-lg-offset-1">未打卡时间：</label>
+              <div class="col-md-3">
+                <input type="datetime-local" class="form-control" v-model="notClockTime"/>
+              </div>
+            </div>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">说明：</label>
+              <div class="col-md-10">
+                  <textarea class="textarea" placeholder="未打卡说明：" v-model="leaveRemark"></textarea>
+              </div>
+            </div>
+          </div><!-- /.modal-body -->
+          <div class="modal-footer">
+            <div class="col-md-12">
+              <button type="button" class="btn btn-warning">确认</button>
+              <button type="button" data-dismiss="modal" class="btn btn-info">取消</button>
+            </div>
+          </div> <!-- /.modal-footer -->
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!-- 新增打卡证明-->
+    <div class="modal fade" id="clockShowModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabeltj" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+              <span>×</span>
+            </button>
+            <h4 class="modal-title">新增打卡证明</h4>
+          </div><!-- /.modal-header -->
+          <div class="modal-body">
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">申请人姓名：</label>
+              <div class="col-md-2">
+                <input type="text" class="form-control" disabled="disabled" v-model="showLeaveAccountName"/>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">部门：</label>
+              <div class="col-md-2">
+                <input type="text" class="form-control" disabled="disabled" v-model="showLeaveDeptName"/>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">职位：</label>
+              <div class="col-md-2">
+                <input type="text" class="form-control" disabled="disabled" v-model="showLeavePositionName"/>
+              </div>
+            </div>
+          </div><!-- /.modal-body -->
+          <div class="modal-body">
+            <legend><h5>打卡</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">原因：</label>
+              <div class="col-md-2">
+                <input type="text" class="form-control" disabled="disabled" v-model="showReason"/>
+              </div>
+              <label class="control-label text-right nopad col-md-2 col-lg-offset-1">未打卡时间：</label>
+              <div class="col-md-3">
+                <input type="datetime-local" class="form-control" disabled="disabled" v-model="showNotClockTime"/>
+              </div>
+            </div>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">说明：</label>
+              <div class="col-md-10">
+                <textarea class="textarea" placeholder="未打卡说明：" disabled="disabled" v-model="showLeaveRemark"></textarea>
+              </div>
+            </div>
+          </div><!-- /.modal-body -->
+          <div class="modal-footer">
+            <div class="col-md-6">
+              <button type="button" class="btn btn-sm btn-warning" disabled="disabled">确认</button>
+            </div>
+            <div class="col-md-1">
+              <button type="button" class="btn btn-sm btn-info" disabled="disabled">取消</button>
+            </div>
+          </div> <!-- /.modal-footer -->
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+  </div><!-- /.container -->
 </template>
 <script>
   import axios from 'axios'
@@ -125,7 +246,30 @@
           {value: '3', label: '已通过'},
           {value: '4', label: '未通过'},
         ],
-        clockList: []
+        clockList: [],
+
+        //新增
+        leaveAccount: '',
+        leaveAccountName: '',
+        leaveDeptName: '',
+        leavePositionName: '',
+        reason: '',
+        reasons: [
+          {label: '因公外出'},
+          {label: '忘记打卡'},
+          {label: '其他'}
+        ],
+        notClockTime: '',
+        leaveRemark: '',
+
+        //  查看
+        showLeaveAccountName: '',
+        showLeaveDeptName: '',
+        showLeavePositionName: '',
+        showReason: '',
+        showNotClockTime: '',
+        showLeaveRemark: '',
+
       }
     },
     methods: {
@@ -155,11 +299,43 @@
         }).catch((error) => {
           console.log('查询请求失败')
         });
+      },
+      // ---------------------------------------新增----------------------------------
+      queryEmpInfo() {
+        this.leaveAccount = JSON.parse(Cookies.get("accountData")).account.account_ID;
+        axios({
+          method: 'post',
+          url: this.url + '/leaveForgetController/queryEmpInfoByAccount',
+          headers: {
+            'Content-Type': this.contentType,
+            'Access-Token': this.accessToken
+          },
+          data: {
+            account: this.leaveAccount
+          },
+          dataType: 'json',
+        }).then((response) => {
+          this.leaveAccountName = response.data.retData.name
+          this.leaveDeptName = response.data.retData.deptName
+          this.leavePositionName = response.data.retData.positionName
+        })
+      },
+      addClock() {
+        this.queryEmpInfo();
+      },
+      // ---------------------------------------查看----------------------------------
+      showClock(item){
+        this.showLeaveAccountName = item.leaveAccountName
+        this.showLeaveDeptName = item.leaveDeptName
+        this.showLeavePositionName = item.leavePositionName
+        this.showReason = item.reason
+        this.showNotClockTime = this.getYYYY_MM_DD_T_HH_MM(item.startTime)
+        this.showLeaveRemark = item.leaveRemark
       }
     }
   }
 </script>
-<style>
+<style scoped>
   @-moz-document url-prefix() {
     fieldset {
       display: table-cell;

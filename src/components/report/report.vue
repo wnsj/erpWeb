@@ -629,7 +629,7 @@
               alert("该报备未审批或未通过,不能申请销假")
             } else {
               this.leaveEmpBackName = item.leaveEmpName,
-                this.leaveDepartmentBackName = item.leaveDepartmentName
+              this.leaveDepartmentBackName = item.leaveDepartmentName
               this.leavePositionBackName = item.leavePositionName
               this.leaveTypeBackName = item.type
               this.startBackTime = this.getYYYY_MM_DD_T_HH_MM(item.startTime)
