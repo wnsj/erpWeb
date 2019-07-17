@@ -79,7 +79,14 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(item,index) in clockList" :key="index">
+            <tr v-for="(item,index) in clockList" :key="index"
+                :style="item.result4 == 1? {'color':'#00ff00'}:
+                        item.resultR == 0? {'color':'#ff0000'}:
+                        item.result1 == 0? {'color':'#ff0000'}:
+                        item.result2 == 0? {'color':'#ff0000'}:
+                        item.result3 == 0? {'color':'#ff0000'}:
+                        item.result4 == 0? {'color':'#ff0000'}:
+                        {'color':''}">
               <td class="text-center">{{item.leaveAccountName}}</td>
               <td class="text-center">{{item.leaveDeptName}}</td>
               <td class="text-center">{{item.addTime}}</td>
@@ -87,15 +94,15 @@
               <td class="text-center">{{item.reason}}</td>
               <td class="text-center">{{item.leaveRemark}}</td>
               <td class="text-center">{{item.witnessAccountName}}</td>
-              <td class="text-center">{{item.resultR}}</td>
+              <td class="text-center">{{item.resultR == 0? '不同意':item.resultR == 1? '同意':''}}</td>
               <td class="text-center">{{item.examineAccountName}}</td>
-              <td class="text-center">{{item.result1}}</td>
+              <td class="text-center">{{item.result1 == 0? '不同意':item.result1 == 1? '同意':''}}</td>
               <td class="text-center">{{item.checkAccountName}}</td>
-              <td class="text-center">{{item.result2}}</td>
+              <td class="text-center">{{item.result2 == 0? '不同意':item.result2 == 1? '同意':''}}</td>
               <td class="text-center">{{item.approveAccountName}}</td>
-              <td class="text-center">{{item.result3}}</td>
+              <td class="text-center">{{item.result3 == 0? '不同意':item.result3 == 1? '同意':''}}</td>
               <td class="text-center">{{item.reportAccountName}}</td>
-              <td class="text-center">{{item.result4}}</td>
+              <td class="text-center">{{item.result4 == 0? '不同意':item.result4 == 1? '同意':''}}</td>
               <td class="text-center">
                 <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#clockShowModel"
                         @click="showClock(item)"><b>查看</b>
@@ -155,7 +162,7 @@
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">说明：</label>
               <div class="col-md-10">
-                  <textarea class="textarea" placeholder="未打卡说明：" v-model="leaveRemark"></textarea>
+                <textarea class="textarea" placeholder="未打卡说明：" v-model="leaveRemark"></textarea>
               </div>
             </div>
           </div><!-- /.modal-body -->
@@ -395,7 +402,7 @@
         this.queryEmpInfo();
       },
       // ---------------------------------------查看----------------------------------
-      showClock(item){
+      showClock(item) {
         this.showLeaveAccountName = item.leaveAccountName
         this.showLeaveDeptName = item.leaveDeptName
         this.showLeavePositionName = item.leavePositionName
@@ -405,10 +412,10 @@
       },
 
       // ---------------------------------------修改----------------------------------
-      editClock(item){
-        if(item.leaveAccount != JSON.parse(Cookies.get("accountData")).account.account_ID){
+      editClock(item) {
+        if (item.leaveAccount != JSON.parse(Cookies.get("accountData")).account.account_ID) {
           alert("不能修改他人的报备")
-        }else{
+        } else {
           this.leaveUpdateAccountName = item.leaveAccountName
           this.leaveUpdateDeptName = item.leaveDeptName
           this.leaveUpdatePositionName = item.leavePositionName
