@@ -17,19 +17,19 @@
           <span><input type="date" value="" id="endDate" v-model="endDate"/></span>
         </div>
       </div>
-      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+      <div class="col-md-3">
         <div class="input-group">
           <span class="input-group-addon">请假人部门</span>
           <department ref="deptQuery" @departChange='deptChangeForQuery'></department>
         </div>
       </div>
-      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+      <div class="col-md-2">
         <div class="input-group">
           <span class="input-group-addon">姓名</span>
-          <input type="text" class="form-control" placeholder="Username" v-model="leaveAccountName">
+          <input type="text" class="form-control" placeholder="Username" v-model="accountName">
         </div>
       </div>
-      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+      <div class="col-md-2 col-lg-2">
         <div class="input-group">
           <span class="input-group-addon">状态</span>
           <select class="form-control" v-model="state">
@@ -45,7 +45,7 @@
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-md-offset-9">
         <button type="button" class="btn btn-warning pull-right m_r_10" v-if='has(51)'>导出</button>
         <button type="button" class="btn btn-info pull-right m_r_10" data-toggle="modal" data-target="#clockAddModel"
-                v-if='has(51)' @click="addClock">申请
+                v-if='has(51)' @click="applyClock">申请
         </button>
         <button type="button" class="btn btn-primary pull-right m_r_10" @click="queryClock">查询</button>
       </div>
@@ -142,8 +142,6 @@
                 <input type="text" class="form-control" disabled="disabled" v-model="leavePositionName"/>
               </div>
             </div>
-          </div><!-- /.modal-body -->
-          <div class="modal-body">
             <legend><h5>打卡</h5></legend>
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">原因：</label>
@@ -154,7 +152,7 @@
                   </option>
                 </select>
               </div>
-              <label class="control-label text-right nopad col-md-2 col-lg-offset-1">未打卡时间：</label>
+              <label class="col-md-2 control-label text-right nopadcol-lg-offset-1">未打卡时间：</label>
               <div class="col-md-3">
                 <input type="datetime-local" class="form-control" v-model="notClockTime"/>
               </div>
@@ -167,11 +165,115 @@
             </div>
           </div><!-- /.modal-body -->
           <div class="modal-footer">
-            <div class="col-md-12">
-              <button type="button" class="btn btn-warning">确认</button>
-              <button type="button" data-dismiss="modal" class="btn btn-info">取消</button>
+            <div class="col-md-6">
+              <button type="button" class="btn btn-sm btn-warning" @click="addClock">确认</button>
+            </div>
+            <div class="col-md-1">
+              <button type="button" class="btn btn-sm btn-info">取消</button>
             </div>
           </div> <!-- /.modal-footer -->
+          <div class="modal-body">
+            <legend><h5>证明</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">证明人：</label>
+              <div class="col-md-2">
+                <select class="form-control" id="accountR" v-model="accountR" @change="selectAccount">
+                  <option value="239">王杰林</option>
+                  <option value="2272">丁冬</option>
+                </select>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">备注：</label>
+              <div class="col-md-3">
+                <input type="text" class="form-control" disabled="disabled"/>
+              </div>
+              <div class="col-md-1 col-md-offset-1">
+                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">不同意</button>
+              </div>
+            </div>
+            <legend><h5>审查</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">审查人：</label>
+              <div class="col-md-2">
+                <select class="form-control" id="account1" v-model="account1" @change="selectAccount">
+                  <option value="239">王杰林</option>
+                  <option value="2272">丁冬</option>
+                </select>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">备注：</label>
+              <div class="col-md-3">
+                <input type="text" class="form-control" disabled="disabled"/>
+              </div>
+              <div class="col-md-1 col-md-offset-1">
+                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">不同意</button>
+              </div>
+            </div>
+            <legend><h5>审核</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">审核人：</label>
+              <div class="col-md-2">
+                <select class="form-control" id="account2" v-model="account2" @change="selectAccount">
+                  <option value="239">王杰林</option>
+                  <option value="2272">丁冬</option>
+                </select>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">备注：</label>
+              <div class="col-md-3">
+                <input type="text" class="form-control" disabled="disabled"/>
+              </div>
+              <div class="col-md-1 col-md-offset-1">
+                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">不同意</button>
+              </div>
+            </div>
+            <legend><h5>批准</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">批准人：</label>
+              <div class="col-md-2">
+                <select class="form-control" id="account3" v-model="account3" @change="selectAccount">
+                  <option value="239">王杰林</option>
+                  <option value="2272">丁冬</option>
+                </select>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">备注：</label>
+              <div class="col-md-3">
+                <input type="text" class="form-control" disabled="disabled"/>
+              </div>
+              <div class="col-md-1 col-md-offset-1">
+                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">不同意</button>
+              </div>
+            </div>
+            <legend><h5>报备</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">报备人：</label>
+              <div class="col-md-2">
+                <select class="form-control" id="account4" v-model="account4" @change="selectAccount">
+                  <option value="239">王杰林</option>
+                  <option value="2272">丁冬</option>
+                </select>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">备注：</label>
+              <div class="col-md-3">
+                <input type="text" class="form-control" disabled="disabled"/>
+              </div>
+              <div class="col-md-1 col-md-offset-1">
+                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">不同意</button>
+              </div>
+            </div>
+          </div><!-- /.modal-body -->
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
@@ -200,8 +302,6 @@
                 <input type="text" class="form-control" disabled="disabled" v-model="showLeavePositionName"/>
               </div>
             </div>
-          </div><!-- /.modal-body -->
-          <div class="modal-body">
             <legend><h5>打卡</h5></legend>
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">原因：</label>
@@ -256,8 +356,6 @@
                 <input type="text" class="form-control" disabled="disabled" v-model="leaveUpdatePositionName"/>
               </div>
             </div>
-          </div><!-- /.modal-body -->
-          <div class="modal-body">
             <legend><h5>打卡</h5></legend>
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">原因：</label>
@@ -286,6 +384,108 @@
               <button type="button" data-dismiss="modal" class="btn btn-info">取消</button>
             </div>
           </div> <!-- /.modal-footer -->
+          <div class="modal-body">
+            <legend><h5>证明</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">证明人：</label>
+              <div class="col-md-2">
+                <select class="form-control">
+                  <option value="239">王杰林</option>
+                  <option value="2272">丁冬</option>
+                </select>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">备注：</label>
+              <div class="col-md-3">
+                <input type="text" class="form-control" v-model="updateRemarkR"/>
+              </div>
+              <div class="col-md-1 col-md-offset-1">
+                <button type="button" class="btn btn-sm btn-warning">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning">不同意</button>
+              </div>
+            </div>
+            <legend><h5>审查</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">审查人：</label>
+              <div class="col-md-2">
+                <select class="form-control">
+                  <option value="239">王杰林</option>
+                  <option value="2272">丁冬</option>
+                </select>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">备注：</label>
+              <div class="col-md-3">
+                <input type="text" class="form-control" v-model="updateRemark1"/>
+              </div>
+              <div class="col-md-1 col-md-offset-1">
+                <button type="button" class="btn btn-sm btn-warning">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning">不同意</button>
+              </div>
+            </div>
+            <legend><h5>审核</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">审核人：</label>
+              <div class="col-md-2">
+                <select class="form-control">
+                  <option value="239">王杰林</option>
+                  <option value="2272">丁冬</option>
+                </select>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">备注：</label>
+              <div class="col-md-3">
+                <input type="text" class="form-control" v-model="updateRemark2"/>
+              </div>
+              <div class="col-md-1 col-md-offset-1">
+                <button type="button" class="btn btn-sm btn-warning">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning">不同意</button>
+              </div>
+            </div>
+            <legend><h5>批准</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">批准人：</label>
+              <div class="col-md-2">
+                <select class="form-control">
+                  <option value="239">王杰林</option>
+                  <option value="2272">丁冬</option>
+                </select>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">备注：</label>
+              <div class="col-md-3">
+                <input type="text" class="form-control" v-model="updateRemark3"/>
+              </div>
+              <div class="col-md-1 col-md-offset-1">
+                <button type="button" class="btn btn-sm btn-warning">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning">不同意</button>
+              </div>
+            </div>
+            <legend><h5>报备</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">报备人：</label>
+              <div class="col-md-2">
+                <select class="form-control">
+                  <option value="239">王杰林</option>
+                  <option value="2272">丁冬</option>
+                </select>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">备注：</label>
+              <div class="col-md-3">
+                <input type="text" class="form-control" v-model="updateRemark4"/>
+              </div>
+              <div class="col-md-1 col-md-offset-1">
+                <button type="button" class="btn btn-sm btn-warning">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning">不同意</button>
+              </div>
+            </div>
+          </div><!-- /.modal-body -->
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
@@ -305,7 +505,7 @@
         // 查询
         beginDate: this.getCurrentDay,
         endDate: this.getCurrentDay,
-        leaveAccountName: '',
+        accountName: '',
         deptQueryId: '',
         state: '',
         stateList: [
@@ -330,6 +530,11 @@
         ],
         notClockTime: '',
         leaveRemark: '',
+        accountR: '',
+        account1: '',
+        account2: '',
+        account3: '',
+        account4: '',
 
         //  查看
         showLeaveAccountName: '',
@@ -347,7 +552,11 @@
         reasonUpdate: '',
         notClockUpdateTime: '',
         leaveUpdateRemark: '',
-
+        updateRemarkR: '',
+        updateRemark1: '',
+        updateRemark2: '',
+        updateRemark3: '',
+        updateRemark4: '',
       }
     },
     methods: {
@@ -368,7 +577,7 @@
             beginDate: this.beginDate,
             endDate: this.endDate,
             leaveDeptId: this.deptQueryId,
-            leaveAccountName: this.leaveAccountName,
+            leaveAccountName: this.accountName,
             state: this.state
           },
           dataType: 'json',
@@ -380,7 +589,6 @@
       },
       // ---------------------------------------新增----------------------------------
       queryEmpInfo() {
-        this.leaveAccount = JSON.parse(Cookies.get("accountData")).account.account_ID;
         axios({
           method: 'post',
           url: this.url + '/leaveForgetController/queryEmpInfoByAccount',
@@ -398,9 +606,80 @@
           this.leavePositionName = response.data.retData.positionName
         })
       },
-      addClock() {
+      applyClock() {  // 申请按钮
+        this.leaveAccount = JSON.parse(Cookies.get("accountData")).account.account_ID;
         this.queryEmpInfo();
       },
+      selectAccount(){ // 获取select->option值
+        this.accountR = $('#accountR option:selected').val()
+        this.account1 = $('#account1 option:selected').val()
+        this.account2 = $('#account2 option:selected').val()
+        this.account3 = $('#account3 option:selected').val()
+        this.account4 = $('#account4 option:selected').val()
+      },
+      addClock(){ // 确认申请
+        if(this.isBlank(this.reason)){
+          alert("请选择未打卡原因!")
+          return false;
+        }
+        if(this.isBlank(this.leaveRemark)){
+          alert("请输入说明!")
+          return false;
+        }
+        if(this.isBlank(this.leaveRemark)){
+          alert("请输入说明!")
+          return false;
+        }
+        if(this.isBlank(this.accountR)){
+          alert("请选择证明人!")
+          return false;
+        }
+        if(this.isBlank(this.account1)){
+          alert("请选择审查人!")
+          return false;
+        }
+        if(this.isBlank(this.account2)){
+          alert("请选择审核人!")
+          return false;
+        }
+        if(this.isBlank(this.account3)){
+          alert("请选择批准人!")
+          return false;
+        }
+        if(this.isBlank(this.account4)){
+          alert("请选择报备人!")
+          return false;
+        }
+        axios({
+          method: 'post',
+          url: this.url + '/leaveForgetController/addLeaveForget',
+          headers: {
+            'Content-Type': this.contentType,
+            'Access-Token': this.accessToken
+          },
+          data: {
+            reason: this.reason,
+            leaveAccount: this.leaveAccount,
+            addTime: this.getCurrentYYYY_MM_DD_HH_MM_SS(),
+            startTime: this.notClockTime,
+            leaveRemark: this.leaveRemark,
+            accountR: this.leaveAccount,
+            account1: this.account1,
+            account2: this.account2,
+            account3: this.account3,
+            account4: this.account4,
+            updateTime: this.getCurrentYYYY_MM_DD_HH_MM_SS()
+          },
+          dataType: 'json',
+        }).then((response) => {
+          console.log(response.data.retData)
+        }).catch((error) => {
+          console.log('忘记打卡证明申请失败')
+          console.log(response.data.retData)
+        });
+        $('#clockAddModel').modal('hide');
+      },
+
       // ---------------------------------------查看----------------------------------
       showClock(item) {
         this.showLeaveAccountName = item.leaveAccountName
