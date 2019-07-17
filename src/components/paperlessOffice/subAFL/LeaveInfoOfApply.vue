@@ -85,7 +85,7 @@
 				</div>
 				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
 					<select class="form-control">
-						<option value="0">王斌</option>
+						<option v-for="(item,index) in empList_check" :key="index" >{{item.accountName}}</option>
 					</select>
 				</div>
 				<div class="col-xs-1 col-sm-1 col-md-1">
@@ -117,7 +117,7 @@
 				</div>
 				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 					<select class="form-control" v-model="lInfo.account2">
-						<option v-for="(item , index) in emps" :key="index">{{}}</option>
+						<option v-for="(item , index) in empList_verify" :key="index">{{item.accountName}}</option>
 					</select>
 				</div>
 				<div class="col-md-1">
@@ -149,8 +149,7 @@
 				</div>
 				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 					<select class="form-control">
-						<option value="0">王艳杰</option>
-						<option value="1">宋子龙</option>
+						<option value="0" v-for="(item , index) in empList_approval" :key="index">{{item.accountName}}</option>
 					</select>
 				</div>
 				<div class="col-md-1">
@@ -238,7 +237,7 @@
 			return {
 				lInfo: this.accountInfo, //請假信息
 				delgateEMP: [], //代理人
-				dateList:[],
+				cEmpList:[],
 				emps:[],//人员列表
 				
 				empList_check:[],
@@ -311,10 +310,10 @@
 						this.level='5'
 					}
 				}
-				this.checkEmpList()
+				this.checkEmpList(param)
 			},
 			//查询不同类型审核人员
-			checkEmpList:function(){
+			checkEmpList:function(param){
 				var url = this.url + '/wzbg/checkOfEmpList'
 				console.log('checkEmpList:'+url)
 				axios({
@@ -325,16 +324,26 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
-						level:this.level,
-						positionId:'5'
+						level:'0',
+						positionId:'100',
+						departId:'55',
 					},
 					dataType: 'json',
 				}).then((response) => {
 					var res = response.data
-					console.log('checkEmpList:'+res)
 					if (res.retCode == '0000') {
 						if (res.resData.length > 0) {
-							this.checkEmpList = res.resData
+							if(param=='check'){
+								this.empList_check={}
+								this.empList_check = res.resData
+							}else if(param=='verify'){
+								this.empList_verify={}
+								this.empList_verify = res.resData
+							}else if(param=='approval'){
+								this.empList_approval={}
+								this.empList_approval = res.resData
+							}
+							
 							$("#myModalQuery").modal('hide');
 						} else {
 							alert('没有查询到相关数据')
