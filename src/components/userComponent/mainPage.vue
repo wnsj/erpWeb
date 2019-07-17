@@ -55,8 +55,11 @@
 							<li>
 								<router-link to="/report"><i class="fa fa-table" aria-hidden="true"></i>请假报备</router-link>
 							</li>
+							<li>
+								<router-link to="/clock"><i class="fa fa-table" aria-hidden="true"></i>忘打卡证明</router-link>
+							</li>
 						</ul>
-						<li><i class="fa fa-area-chart" aria-hidden="true"></i>item</li>
+						<!-- <li><i class="fa fa-area-chart" aria-hidden="true"></i>item</li> -->
 					</ul>
 				</div>
 				<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 my-content clear-mp" id="Cdiv">
