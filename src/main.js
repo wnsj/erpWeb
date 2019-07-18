@@ -7,25 +7,15 @@ import VueResource from 'vue-resource'
 import Cookies from 'js-cookie'
 import store from './store'
 import axios from 'axios';
-import * as constant from '../src/assets/js/constant.js'
-import {
-	exportTableToExcel
-} from 'vendor/Export2Excel.js'
+import moment from 'moment'
 
+import * as constant from '../src/assets/js/constant.js'
+import {exportTableToExcel} from 'vendor/Export2Excel.js'
 import * as date from '../src/assets/js/date.js'
 
 
 Vue.config.productionTip = false
-
 Vue.use(VueResource)
-
-
-import moment from 'moment'
-
-
-
-
-
 
 
 // 允许携带cookie
@@ -51,7 +41,7 @@ Vue.prototype.accessTokenLife = 7
 Vue.prototype.accountDataLife = 7
 //是否使用前端设置cookie
 Vue.prototype.isUseSetCookie = true
-Vue.prototype.accountInfo =constant.accountInfo()
+
 
 
 
@@ -61,6 +51,9 @@ Vue.prototype.notHaveRule='您没有此项功能操作的权限'
 
 
 /*------------------------------------------公共方法-----------------------------------------------------------*/
+Vue.prototype.accountInfo = function(){
+	return constant.accountInfo()
+}
 Vue.prototype.getNowFormatDate = function() {
 	var date = new Date();
 	var seperator1 = "-";

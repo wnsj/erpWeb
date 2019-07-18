@@ -189,6 +189,7 @@
 				this.departName=departName
 			},
 			showLeaveInfo:function(lInfo,param){
+				
 				this.$children[param].showLInfo(lInfo,param)
 				if(param=='1'){
 					$("#lioa").modal('show')

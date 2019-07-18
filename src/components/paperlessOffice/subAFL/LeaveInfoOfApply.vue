@@ -5,7 +5,7 @@
 			<h1 class="modal-title">请假</h1>
 		</div>
 		<div class="modal-header">
-			<h4 id="myModalLabel" class="modal-title"><span>申请人姓名：<i>{{lInfo.account_Name}}</i></span>
+			<h4 id="myModalLabel" class="modal-title"><span>申请人姓名：<i>{{lInfo.leaveAccountName}}</i></span>
 				<span>部门：<i>{{lInfo.departName}}</i></span>
 				<span>职位：<i>{{lInfo.positionName}}</i></span></h4>
 		</div>
@@ -16,7 +16,7 @@
 					<p>类型：</p>
 				</div>
 				<div class="col-xs-8  col-sm-8 col-md-8 col-lg-8">
-					<leave @leaveChange='leaveChange'></leave>
+					<leave></leave>
 				</div>
 			</div>
 			<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
@@ -24,8 +24,9 @@
 					<p>代理人：</p>
 				</div>
 				<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-					<select class="form-control" v-model="lInfo.agentAccount">
-						<option v-for="(item , index) in emps" :key="index" v-bind:value="item.employeeId">{{item.employeeName}}</option>
+					<select class="form-control">
+						<option value="0">崔艳红</option>
+						<option value="1">冯恺</option>
 					</select>
 				</div>
 
@@ -38,26 +39,16 @@
 
 			</div>
 
-			<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+			<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
 				<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">
 					<p>请假时间：</p>
 				</div>
 				<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
 					<span class="leavespan">
-						<div class='input-group date datetimePicker'>
-							<input id="inputDate" type='text' class="form-control" ref="result" v-model="beginDate"/>
-							<span class="input-group-addon">
-								<span class="glyphicon glyphicon-calendar"></span>
-							</span>
-						</div>
+						<input type="date" value="" class="form-control" v-model="beginDate" />
 					</span> <span class="leavespan01">&nbsp;&nbsp;&nbsp;至：</span>
 					<span class="leavespan">
-						<div class='input-group date datetimePicker' id='datetimepicker2' >
-							<input type='text' class="form-control" v-model="endDate"/>
-							<span class="input-group-addon">
-								<span class="glyphicon glyphicon-calendar"></span>
-							</span>
-						</div>
+						<input type="date" value="" class="form-control" v-model="endDate" />
 					</span>
 				</div>
 			</div>
@@ -72,7 +63,7 @@
 				<div class="col-md-5">
 					<br />
 					<button type="button" class="btn btn-warning pull-right m_r_10">取消</button>
-					<button type="button" class="btn btn-warning pull-right m_r_10" v-on:click="">确定</button>
+					<button type="button" class="btn btn-warning pull-right m_r_10">确定</button>
 				</div>
 			</div>
 		</div>
@@ -85,12 +76,12 @@
 				</div>
 				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
 					<select class="form-control">
-						<option value="0">王斌</option>
+						<option v-for="(item,index) in empList_check" :key="index" >{{item.accountName}}</option>
 					</select>
 				</div>
 				<div class="col-xs-1 col-sm-1 col-md-1">
 
-					<button type="button" class="btn btn-warning pull-left m_r_10" v-on:click="addEmp('check')">+</button>
+					<button type="button" class="btn btn-warning pull-left m_r_10">+</button>
 
 				</div>
 			</div>
@@ -104,8 +95,8 @@
 			</div>
 			<div class="col-md-3">
 
-				<button type="button" class="btn btn-info" :disabled="isModify_1">同意</button>
-				<button type="button" class="btn btn-info" :disabled="isModify_1">不同意</button>
+				<button type="button" class="btn btn-info">同意</button>
+				<button type="button" class="btn btn-info">不同意</button>
 			</div>
 		</div>
 
@@ -116,13 +107,13 @@
 					<p>审核人：</p>
 				</div>
 				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-					<select class="form-control" v-model="lInfo.account2">
-						<option v-for="(item , index) in emps" :key="index">{{}}</option>
+					<select class="form-control">
+						<option v-for="(item , index) in empList_verify" :key="index">{{item.accountName}}</option>
 					</select>
 				</div>
 				<div class="col-md-1">
 
-					<button type="button" class="btn btn-warning pull-left m_r_10" v-on:click="addEmp('verify')">+</button>
+					<button type="button" class="btn btn-warning pull-left m_r_10">+</button>
 
 				</div>
 			</div>
@@ -136,8 +127,8 @@
 			</div>
 			<div class="col-md-3">
 
-				<button type="button" class="btn btn-info" :disabled="isModify_2">同意</button>
-				<button type="button" class="btn btn-info" :disabled="isModify_2">不同意</button>
+				<button type="button" class="btn btn-info">同意</button>
+				<button type="button" class="btn btn-info">不同意</button>
 			</div>
 		</div>
 
@@ -149,13 +140,12 @@
 				</div>
 				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 					<select class="form-control">
-						<option value="0">王艳杰</option>
-						<option value="1">宋子龙</option>
+						<option value="0" v-for="(item , index) in empList_approval" :key="index">{{item.accountName}}</option>
 					</select>
 				</div>
 				<div class="col-md-1">
 
-					<button type="button" class="btn btn-warning pull-left m_r_10" v-on:click="addEmp('approval')">+</button>
+					<button type="button" class="btn btn-warning pull-left m_r_10">+</button>
 
 				</div>
 			</div>
@@ -169,10 +159,11 @@
 			</div>
 			<div class="col-md-3">
 
-				<button type="button" class="btn btn-info" :disabled="isModify_3">同意</button>
-				<button type="button" class="btn btn-info" :disabled="isModify_3">不同意</button>
+				<button type="button" class="btn btn-info">同意</button>
+				<button type="button" class="btn btn-info">不同意</button>
 			</div>
 		</div>
+
 
 		<div class="modal-header modal_header_leave">
 			<h6>报备</h6>
@@ -196,16 +187,18 @@
 			</div>
 			<div class="col-md-4">
 
-				<button type="button" class="btn btn-info" :disabled="isModify_4">同意</button>
-				<button type="button" class="btn btn-info" :disabled="isModify_4">不同意</button>
+				<button type="button" class="btn btn-info">同意</button>
+				<button type="button" class="btn btn-info">不同意</button>
 			</div>
 		</div>
+
+
 
 		<div class="modal-footer">
 			<!--按钮-->
 			<div class="col-md-12">
 
-				<button type="button" class="btn btn-info" >确认</button>
+				<button type="button" class="btn btn-info" v-on:click="submitEmployeeInfo()">确认</button>
 				<button type="button" data-dismiss="modal" class="btn btn-info">返回</button>
 			</div>
 
@@ -219,35 +212,37 @@
 				</div>
 			</div>
 		</div>
-		<aod @backAciton='receivedAction'></aod>
+
 	</div>
 </template>
 
 <script>
-	import axios from 'axios'
-	import leave from '../../vuecommon/leaveTypes.vue'
-	import aod from '../subAFL/agentOfDepart.vue'
-	import moment from 'moment'
 	
+	import depart from '../../vuecommon/department.vue'
+	import leave from '../../vuecommon/leaveTypes.vue'
 	export default {
 		components: {
-			leave,
-			aod
+			depart,
+			leave
 		},
 		data() {
 			return {
-				lInfo: this.accountInfo, //請假信息
+				lInfo: this.accountInfo(), //請假信息
+				departId:this.accountInfo().departId,//请假人的部门ID
+				positionId:this.accountInfo().position_ID,//请假人岗位ID
 				delgateEMP: [], //代理人
-				dateList:[],
+				cEmpList:[],
 				emps:[],//人员列表
 				
 				empList_check:[],
 				empListCheckTimes:0,
+				levelCheck:'0',
 				empList_verify:[],
 				empListVerifyTimes:0,
+				levelVerify:'0',
 				empList_approval:[],
 				empListApprovalTimes:0,
-				level:'0',
+				levelApproval:'0',
 				
 
 				beginDate: this.moment('','YYYY/MM/DD 08:30'),
@@ -258,23 +253,13 @@
 				isModify_2: true ,
 				isModify_3: true ,
 				isModify_4: true ,
-				
-				
 			};
 		},
 		methods: {
-			leaveChange: function(leaveName) {
-				this.lInfo.leaveType=leaveName
-				alert(this.lInfo.leaveType)
-			},
-			showLInfo:function(lInfo,param){
-				
-			},
-			//返回代理人
-			receivedAction:function(item){
-				this.emps.push(item)
-				this.lInfo.agentAccount=item.employeeId
-				$("#myModalJoin_add").modal('hide')
+			showLInfo: function(lInfo, param) {
+				alert(param)
+				this.lInfo = lInfo
+				this.isModify = param
 			},
 			//代理人弹窗
 			showSelectEmp:function(){
@@ -283,40 +268,52 @@
 			//'+'被点击的方法
 			addEmp:function(param){
 				if(param=='check'){
-					this.empListCheckTimes++
-					if(this.empListCheckTimes==3){
+					if(this.empListCheckTimes==9){
 						this.empListCheckTimes=0
-						this.level='456'
-					}else if(this.empListCheckTimes==2){
-						this.level='45'
-					}else if(this.empListCheckTimes==1){
-						this.level='4'
 					}
+					if(this.empListCheckTimes==0){
+						this.levelCheck='0'
+					}else if(this.empListCheckTimes==3){
+						this.levelCheck='1'
+					}else if(this.empListCheckTimes==6){
+						this.levelCheck='2'
+					}
+					this.checkEmpList(param,this.levelCheck,this.empListCheckTimes)
+					this.empListCheckTimes++
 				}else if(param=='verify'){
-					this.empListVerifyTimes++
-					if(this.empListVerifyTimes==3){
+					if(this.empListVerifyTimes==6){
 						this.empListVerifyTimes=0
-						this.level='456'
-					}else if(this.empListVerifyTimes==2){
-						this.level='45'
-					}else if(this.empListVerifyTimes==1){
-						this.level='4'
 					}
+					if(this.empListVerifyTimes==0){
+						this.levelVerify='1'
+					}else if(this.empListVerifyTimes==3){
+						this.levelVerify='2'
+					}
+					this.checkEmpList(param,this.levelVerify,this.empListVerifyTimes)
+					this.empListVerifyTimes++
 				}else if(param=='approval'){
-					this.empListApprovalTimes++
-					if(this.empListApprovalTimes==2){
+					if(this.empListApprovalTimes==6){
 						this.empListApprovalTimes=0
-						this.level='56'
-					}else if(this.empListApprovalTimes==1){
-						this.level='5'
 					}
+					if(this.empListApprovalTimes==0){
+						this.levelApproval='1'
+					}else if(this.empListApprovalTimes==1){
+						this.levelApproval='2'
+					}
+					this.checkEmpList(param,this.levelApproval,this.empListApprovalTimes)
+					this.empListApprovalTimes++
 				}
-				this.checkEmpList()
 			},
 			//查询不同类型审核人员
-			checkEmpList:function(){
+			checkEmpList:function(param,level,clickTimes){
 				var url = this.url + '/wzbg/checkOfEmpList'
 				console.log('checkEmpList:'+url)
+				console.log('positionId:'+this.positionId)
+				if(this.isBlank(this.positionId)){
+					this.positionId='1'
+				}
+				var clickTimes = clickTimes.toString()
+				
 				axios({
 					method: 'post',
 					url: url,
@@ -325,19 +322,30 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
-						level:this.level,
-						positionId:'5'
+						clickTimes:clickTimes,
+						level:level,
+						positionId:this.positionId,
+						departId:this.departId,
 					},
 					dataType: 'json',
 				}).then((response) => {
 					var res = response.data
-					console.log('checkEmpList:'+res)
 					if (res.retCode == '0000') {
 						if (res.resData.length > 0) {
-							this.checkEmpList = res.resData
+							if(param=='check'){
+								this.empList_check={}
+								this.empList_check = res.resData
+							}else if(param=='verify'){
+								this.empList_verify={}
+								this.empList_verify = res.resData
+							}else if(param=='approval'){
+								this.empList_approval={}
+								this.empList_approval = res.resData
+							}
+							
 							$("#myModalQuery").modal('hide');
 						} else {
-							alert('没有查询到相关数据')
+							alert('已经没有更多的数据了')
 						}
 					} else {
 						alert(res.retMsg)
@@ -371,7 +379,7 @@
 							this.emps = res.resData
 							$("#myModalQuery").modal('hide');
 						} else {
-							alert('没有查询到相关数据')
+							alert('已经没有更多的数据了')
 						}
 					} else {
 						alert(res.retMsg)
@@ -385,6 +393,9 @@
 		},
 		created(){
 			this.empList()
+			this.addEmp('check')
+			this.addEmp('verify')
+			this.addEmp('approval')
 		},
 		mounted: function() {
 			$(function() {
