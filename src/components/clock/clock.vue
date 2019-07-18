@@ -7,16 +7,14 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-        <div class="col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">
-          <p>填写日期：</p>
-        </div>
-        <div class="col-md-10 col-lg-10">
-          <span><input type="date" value="" id="beginDate" v-model="beginDate"/></span>
-          <span>&nbsp;~&nbsp;</span>
-          <span><input type="date" value="" id="endDate" v-model="endDate"/></span>
-        </div>
+      <div class="col-md-6">
+        <span class="select-box-title">申请日期：</span>
+        <date-picker v-model="beginDate" type="date" format="YYYY-MM-DD" confirm></date-picker>
+        <span class="select-box-title">~</span>
+        <date-picker v-model="endDate" type="date" format="YYYY-MM-DD" confirm></date-picker>
       </div>
+    </div><br>
+    <div class="row">
       <div class="col-md-3">
         <div class="input-group">
           <span class="input-group-addon">请假人部门</span>
@@ -29,7 +27,7 @@
           <input type="text" class="form-control" placeholder="Username" v-model="accountName">
         </div>
       </div>
-      <div class="col-md-2 col-lg-2">
+      <div class="col-md-2">
         <div class="input-group">
           <span class="input-group-addon">状态</span>
           <select class="form-control" v-model="state">
@@ -40,7 +38,6 @@
         </div>
       </div>
     </div>
-    <br>
     <div class="row">
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-md-offset-9">
         <button type="button" class="btn btn-warning pull-right m_r_10" v-if='has(51)'>导出</button>
@@ -89,8 +86,8 @@
                         {'color':''}">
               <td class="text-center">{{item.leaveAccountName}}</td>
               <td class="text-center">{{item.leaveDeptName}}</td>
-              <td class="text-center">{{item.addTime}}</td>
-              <td class="text-center">{{item.startTime}}</td>
+              <td class="text-center">{{dateFormat(item.addTime)}}</td>
+              <td class="text-center">{{dateFormat(item.startTime)}}</td>
               <td class="text-center">{{item.reason}}</td>
               <td class="text-center">{{item.leaveRemark}}</td>
               <td class="text-center">{{item.witnessAccountName}}</td>
@@ -152,9 +149,9 @@
                   </option>
                 </select>
               </div>
-              <label class="col-md-2 control-label text-right nopadcol-lg-offset-1">未打卡时间：</label>
-              <div class="col-md-3">
-                <input type="datetime-local" class="form-control" v-model="notClockTime"/>
+              <div class="col-md-6">
+                <span class="select-box-title">未打卡时间：</span>
+                <date-picker v-model="notClockTime" type="date" format="YYYY-MM-DD 17:30" confirm></date-picker>
               </div>
             </div>
             <div class="form-group clearfix">
@@ -492,19 +489,22 @@
   </div><!-- /.container -->
 </template>
 <script>
+  import DatePicker from 'vue2-datepicker'
   import axios from 'axios'
   import Cookies from 'js-cookie'
   import department from '../vuecommon/department.vue'
+  import moment from 'moment'
 
   export default {
     components: {
       department,
+      DatePicker
     },
     data() {
       return {
         // 查询
-        beginDate: this.getCurrentDay,
-        endDate: this.getCurrentDay,
+        beginDate: moment(),
+        endDate: moment(),
         accountName: '',
         deptQueryId: '',
         state: '',
@@ -528,7 +528,7 @@
           {label: '忘记打卡'},
           {label: '其他'}
         ],
-        notClockTime: '',
+        notClockTime: moment().subtract(1,'days').format("YYYY-MM-DD 17:30"),
         leaveRemark: '',
         accountR: '',
         account1: '',
@@ -556,15 +556,19 @@
         updateRemark1: '',
         updateRemark2: '',
         updateRemark3: '',
-        updateRemark4: '',
+        updateRemark4: ''
       }
     },
     methods: {
+      // ---------------------------------------公用----------------------------------
+      dateFormat(time){ // 回显时间格式化
+        return moment(time).format("YYYY-MM-DD HH:mm")
+      },
       // ---------------------------------------查询----------------------------------
       deptChangeForQuery(val) {
         this.deptQueryId = val
       },
-      queryClock() {
+      queryClock() { // 查询忘记打卡证明
         axios({
           method: 'post',
           url: this.url + '/leaveForgetController/queryLeaveForget',
@@ -574,8 +578,8 @@
           },
           data: {
             accountId: this.has(51) ? '' : JSON.parse(Cookies.get("accountData")).account.account_ID,
-            beginDate: this.beginDate,
-            endDate: this.endDate,
+            beginDate:  moment(this.beginDate).format("YYYY-MM-DD 00:00:00"),
+            endDate: moment(this.endDate).format("YYYY-MM-DD 23:59:59"),
             leaveDeptId: this.deptQueryId,
             leaveAccountName: this.accountName,
             state: this.state
@@ -588,7 +592,7 @@
         });
       },
       // ---------------------------------------新增----------------------------------
-      queryEmpInfo() {
+      queryEmpInfo() { // 查询申请人基本信息
         axios({
           method: 'post',
           url: this.url + '/leaveForgetController/queryEmpInfoByAccount',
@@ -617,7 +621,21 @@
         this.account3 = $('#account3 option:selected').val()
         this.account4 = $('#account4 option:selected').val()
       },
-      addClock(){ // 确认申请
+      clearAddModel(){ // 清空添加模态框
+        this.leaveAccount ='',
+        this.leaveAccountName = '',
+        this.leaveDeptName = '',
+        this.leavePositionName = '',
+        this.reason = '',
+        this.notClockTime = moment().subtract(1,'days').format("YYYY-MM-DD 17:30"),
+        this.leaveRemark = '',
+        this.accountR = '',
+        this.account1 = '',
+        this.account2 = '',
+        this.account3 = '',
+        this.account4 = ''
+      },
+      addClock(){ // 申请确认按钮
         if(this.isBlank(this.reason)){
           alert("请选择未打卡原因!")
           return false;
@@ -660,7 +678,7 @@
           data: {
             reason: this.reason,
             leaveAccount: this.leaveAccount,
-            addTime: this.getCurrentYYYY_MM_DD_HH_MM_SS(),
+            addTime: this.dateFormat(),
             startTime: this.notClockTime,
             leaveRemark: this.leaveRemark,
             accountR: this.leaveAccount,
@@ -668,7 +686,7 @@
             account2: this.account2,
             account3: this.account3,
             account4: this.account4,
-            updateTime: this.getCurrentYYYY_MM_DD_HH_MM_SS()
+            updateTime: this.dateFormat(),
           },
           dataType: 'json',
         }).then((response) => {
@@ -678,6 +696,8 @@
           console.log(response.data.retData)
         });
         $('#clockAddModel').modal('hide');
+        this.clearAddModel();
+        this.queryClock();
       },
 
       // ---------------------------------------查看----------------------------------
