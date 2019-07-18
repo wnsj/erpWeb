@@ -116,7 +116,7 @@
 					<p>审核人：</p>
 				</div>
 				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-					<select class="form-control" v-model="lInfo.account2">
+					<select class="form-control">
 						<option v-for="(item , index) in empList_verify" :key="index">{{item.accountName}}</option>
 					</select>
 				</div>
@@ -235,18 +235,22 @@
 		},
 		data() {
 			return {
-				lInfo: this.accountInfo, //請假信息
+				lInfo: this.accountInfo(), //請假信息
+				departId:this.accountInfo().departId,//请假人的部门ID
+				positionId:this.accountInfo().position_ID,//请假人岗位ID
 				delgateEMP: [], //代理人
 				cEmpList:[],
 				emps:[],//人员列表
 				
 				empList_check:[],
 				empListCheckTimes:0,
+				levelCheck:'0',
 				empList_verify:[],
 				empListVerifyTimes:0,
+				levelVerify:'0',
 				empList_approval:[],
 				empListApprovalTimes:0,
-				level:'0',
+				levelApproval:'0',
 				
 
 				beginDate: this.moment('','YYYY/MM/DD 08:30'),
@@ -282,40 +286,52 @@
 			//'+'被点击的方法
 			addEmp:function(param){
 				if(param=='check'){
-					this.empListCheckTimes++
-					if(this.empListCheckTimes==3){
+					if(this.empListCheckTimes==9){
 						this.empListCheckTimes=0
-						this.level='456'
-					}else if(this.empListCheckTimes==2){
-						this.level='45'
-					}else if(this.empListCheckTimes==1){
-						this.level='4'
 					}
+					if(this.empListCheckTimes==0){
+						this.levelCheck='0'
+					}else if(this.empListCheckTimes==3){
+						this.levelCheck='1'
+					}else if(this.empListCheckTimes==6){
+						this.levelCheck='2'
+					}
+					this.checkEmpList(param,this.levelCheck,this.empListCheckTimes)
+					this.empListCheckTimes++
 				}else if(param=='verify'){
-					this.empListVerifyTimes++
-					if(this.empListVerifyTimes==3){
+					if(this.empListVerifyTimes==6){
 						this.empListVerifyTimes=0
-						this.level='456'
-					}else if(this.empListVerifyTimes==2){
-						this.level='45'
-					}else if(this.empListVerifyTimes==1){
-						this.level='4'
 					}
+					if(this.empListVerifyTimes==0){
+						this.levelVerify='1'
+					}else if(this.empListVerifyTimes==3){
+						this.levelVerify='2'
+					}
+					this.checkEmpList(param,this.levelVerify,this.empListVerifyTimes)
+					this.empListVerifyTimes++
 				}else if(param=='approval'){
-					this.empListApprovalTimes++
-					if(this.empListApprovalTimes==2){
+					if(this.empListApprovalTimes==6){
 						this.empListApprovalTimes=0
-						this.level='56'
-					}else if(this.empListApprovalTimes==1){
-						this.level='5'
 					}
+					if(this.empListApprovalTimes==0){
+						this.levelApproval='1'
+					}else if(this.empListApprovalTimes==1){
+						this.levelApproval='2'
+					}
+					this.checkEmpList(param,this.levelApproval,this.empListApprovalTimes)
+					this.empListApprovalTimes++
 				}
-				this.checkEmpList(param)
 			},
 			//查询不同类型审核人员
-			checkEmpList:function(param){
+			checkEmpList:function(param,level,clickTimes){
 				var url = this.url + '/wzbg/checkOfEmpList'
 				console.log('checkEmpList:'+url)
+				console.log('positionId:'+this.positionId)
+				if(this.isBlank(this.positionId)){
+					this.positionId='1'
+				}
+				var clickTimes = clickTimes.toString()
+				
 				axios({
 					method: 'post',
 					url: url,
@@ -324,9 +340,10 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
-						level:'0',
-						positionId:'100',
-						departId:'55',
+						clickTimes:clickTimes,
+						level:level,
+						positionId:this.positionId,
+						departId:this.departId,
 					},
 					dataType: 'json',
 				}).then((response) => {
@@ -346,7 +363,7 @@
 							
 							$("#myModalQuery").modal('hide');
 						} else {
-							alert('没有查询到相关数据')
+							alert('已经没有更多的数据了')
 						}
 					} else {
 						alert(res.retMsg)
@@ -380,7 +397,7 @@
 							this.emps = res.resData
 							$("#myModalQuery").modal('hide');
 						} else {
-							alert('没有查询到相关数据')
+							alert('已经没有更多的数据了')
 						}
 					} else {
 						alert(res.retMsg)
@@ -394,6 +411,9 @@
 		},
 		created(){
 			this.empList()
+			this.addEmp('check')
+			this.addEmp('verify')
+			this.addEmp('approval')
 		},
 		mounted: function() {
 			$(function() {
