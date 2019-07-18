@@ -133,7 +133,10 @@ export default new Router({
 					path: '/paperlessOffice/restdown',
 					component: restdown
 				},
-				
+				{
+					path:'/paperlessOffice/officeSuppliesManage',
+					component:officeSuppliesManage
+				}
 			],
 			redirect: '/employee'
 		}

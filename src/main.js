@@ -7,25 +7,15 @@ import VueResource from 'vue-resource'
 import Cookies from 'js-cookie'
 import store from './store'
 import axios from 'axios';
-import * as constant from '../src/assets/js/constant.js'
-import {
-	exportTableToExcel
-} from 'vendor/Export2Excel.js'
+import moment from 'moment'
 
+import * as constant from '../src/assets/js/constant.js'
+import {exportTableToExcel} from 'vendor/Export2Excel.js'
 import * as date from '../src/assets/js/date.js'
 
 
 Vue.config.productionTip = false
-
 Vue.use(VueResource)
-
-
-import moment from 'moment'
-
-
-
-
-
 
 
 // 允许携带cookie
