@@ -91,7 +91,7 @@
               <td class="text-center">{{item.fillDepartmentName}}</td>
               <td class="text-center">{{dateFormat(item.fillTime)}}</td>
               <td class="text-center">{{item.checkEmpName}}</td>
-              <td class="text-center">{{dateFormat(item.checkTime)}}</td>
+              <td class="text-center">{{item.checkTime == null? '':dateFormat(item.checkTime)}}</td>
               <td class="text-center">
                 {{item.checkResult == 0? '不同意':(item.checkResult == 1? '同意':'')}}
               </td>
