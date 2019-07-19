@@ -7,29 +7,27 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-        <div class="col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">
-          <p>填写日期：</p>
-        </div>
-        <div class="col-md-10 col-lg-10">
-          <span><input type="date" value="" id="firstTime" v-model="beginDate"/></span>
-          <span>&nbsp;~&nbsp;</span>
-          <span><input type="date" value="" id="secondTime" v-model="endDate"/></span>
-        </div>
+      <div class="col-md-6">
+        <span class="select-box-title">填写日期：</span>
+        <date-picker v-model="beginDate" type="date" format="YYYY-MM-DD" confirm></date-picker>
+        <span class="select-box-title">~</span>
+        <date-picker v-model="endDate" type="date" format="YYYY-MM-DD" confirm></date-picker>
       </div>
-      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+    </div><br>
+    <div class="row">
+      <div class="col-md-3">
         <div class="input-group">
           <span class="input-group-addon">请假人部门</span>
           <department ref="departSel" @departChange='departSelChange'></department>
         </div>
       </div>
-      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+      <div class="col-md-2">
         <div class="input-group">
           <span class="input-group-addon">姓名</span>
           <input type="text" class="form-control" placeholder="Username" v-model="leaveName">
         </div>
       </div>
-      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+      <div class="col-md-2">
         <div class="input-group">
           <span class="input-group-addon">状态</span>
           <select class="form-control" v-model="state">
@@ -42,7 +40,7 @@
     </div>
     <br>
     <div class="row">
-      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-md-offset-9">
+      <div class="col-md-3 col-md-offset-9">
         <button type="button" class="btn btn-warning pull-right m_r_10" v-if='has(51)'>导出</button>
         <button type="button" class="btn btn-info pull-right m_r_10" data-toggle="modal" data-target="#reportAddModel"
                 v-if='has(51)'>申请
@@ -53,7 +51,7 @@
     <br>
     <!-- 查询结果集 -->
     <div class="row">
-      <div class="col-md-12 col-lg-12">
+      <div class="col-md-12">
         <div class="pre-scrollable">
           <table class="table table-bordered table-hover text-nowrap" id="reporttable">
             <thead>
@@ -86,14 +84,14 @@
               <td class="text-center">{{item.type}}</td>
               <td class="text-center">{{item.leaveEmpName}}</td>
               <td class="text-center">{{item.leaveDepartmentName}}</td>
-              <td class="text-center">{{item.startTime}}</td>
-              <td class="text-center">{{item.endTime}}</td>
+              <td class="text-center">{{dateFormat(item.startTime)}}</td>
+              <td class="text-center">{{dateFormat(item.endTime)}}</td>
               <td class="text-center">{{item.leaveRemark}}</td>
               <td class="text-center">{{item.fillEmpName}}</td>
               <td class="text-center">{{item.fillDepartmentName}}</td>
-              <td class="text-center">{{item.fillTime}}</td>
+              <td class="text-center">{{dateFormat(item.fillTime)}}</td>
               <td class="text-center">{{item.checkEmpName}}</td>
-              <td class="text-center">{{item.checkTime}}</td>
+              <td class="text-center">{{dateFormat(item.checkTime)}}</td>
               <td class="text-center">
                 {{item.checkResult == 0? '不同意':(item.checkResult == 1? '同意':'')}}
               </td>
@@ -141,7 +139,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">
+            <button type="button" class="close" data-dismiss="modal" @click="addModelClear">
               <span>×</span>
             </button>
             <h4 class="modal-title">请假报备申请</h4>
@@ -165,13 +163,11 @@
                 </div>
               </div>
               <div class="form-group clearfix">
-                <label for="startTime" class="col-md-2 control-label text-right nopad">开始日期：</label>
-                <div class="col-md-3">
-                  <input type="datetime-local" class="form-control" id="startTime" v-model="startTime"/>
-                </div>
-                <label for="endTime" class="col-md-2 control-label text-right nopad">结束日期：</label>
-                <div class="col-md-3">
-                  <input type="datetime-local" class="form-control" id="endTime" v-model="endTime"/>
+                <label class="col-md-2 control-label text-right nopad">请假时间：</label>
+                <div class="col-md-8">
+                  <date-picker v-model="startTime" type="datetime" format="YYYY-MM-DD HH:mm" :minute-step="10" confirm></date-picker>
+                  <span class="select-box-title">~</span>
+                  <date-picker v-model="endTime" type="datetime" format="YYYY-MM-DD HH:mm" :minute-step="10" confirm></date-picker>
                 </div>
               </div>
               <div class="form-group clearfix">
@@ -420,17 +416,20 @@
   </div>
 </template>
 <script>
+  import DatePicker from 'vue2-datepicker'
   import axios from 'axios'
   import Cookies from 'js-cookie'
-  import department from '../vuecommon/department.vue'
-  import leaveType from '../vuecommon/leaveType.vue'
-  import deptEmp from '../vuecommon/deptEmp.vue'
-  import agent from '../report/subReportBack/agent.vue'
-  import approvalLeaveAcc from '../report/subReport/approvalLeaveAcc.vue'
-  import agentChoose from '../report/subReportBack/subReportBackChild/agentChoose.vue'
+  import moment from 'moment'
+  import department from '../../vuecommon/department.vue'
+  import leaveType from '../../vuecommon/leaveType.vue'
+  import deptEmp from '../../vuecommon/deptEmp.vue'
+  import agent from '../../vuecommon/agent.vue'
+  import approvalLeaveAcc from '../../vuecommon/approvalLeaveAcc.vue'
+  import agentChoose from './subReport/agentChoose.vue'
 
   export default {
     components: {
+      DatePicker,
       department,
       leaveType,
       deptEmp,
@@ -441,8 +440,8 @@
     data() {
       return {
         // 查询
-        beginDate: this.getCurrentDay,
-        endDate: this.getCurrentDay,
+        beginDate: moment(),
+        endDate: moment(),
         departSelId: '',
         reportList: [],
         leaveName: '',
@@ -461,8 +460,8 @@
         leaveTypeName: '',
         departId: '',
         deptEmpId: '',
-        startTime: '',
-        endTime: '',
+        startTime: moment().format("YYYY-MM-DD 08:30"),
+        endTime: moment().format("YYYY-MM-DD 17:30"),
         leaveRemark: '',
         accountID: '',
 
@@ -500,6 +499,10 @@
       }
     },
     methods: {
+      // ---------------------------------------公用----------------------------------
+      dateFormat(time){ // 回显时间格式化
+        return moment(time).format("YYYY-MM-DD HH:mm")
+      },
       // ---------------------------------------查询----------------------------------
       departSelChange(departId) {
         this.departSelId = departId
@@ -513,8 +516,8 @@
             'Access-Token': this.accessToken
           },
           data: {
-            startTime: this.beginDate,
-            endTime: this.endDate,
+            startTime: moment(this.beginDate).format("YYYY-MM-DD 00:00:00"),
+            endTime: moment(this.endDate).format("YYYY-MM-DD 23:59:59"),
             leaveDeptId: this.departSelId,
             leaveEmpName: this.leaveName,
             accountId: this.has(51) ? '' : JSON.parse(Cookies.get("accountData")).account.account_ID,
@@ -540,16 +543,16 @@
       deptEmpChange(deptEmpId) {   // 部门员工
         this.deptEmpId = deptEmpId
       },
-      approvalChange(accountID) {   // 审批人
-        this.accountID = accountID
+      approvalChange(val) {   // 审批人
+        this.accountID = val
       },
       addModelClear() { // 清空添加模态框
         $('#reportAddModel').modal('hide');
-        this.leaveTypeName = '',
+          this.leaveTypeName = '',
           this.departId = this.$refs.departAdd.setDpart("0"),
           this.deptEmpId = '',
-          this.startTime = '',
-          this.endTime = '',
+          this.startTime = moment().format("YYYY-MM-DD 08:30"),
+          this.endTime = moment().format("YYYY-MM-DD 17:30"),
           this.leaveRemark = '',
           this.accountID = ''
       },
@@ -593,13 +596,13 @@
           data: {
             type: this.leaveTypeName,
             fillAccount: JSON.parse(Cookies.get("accountData")).account.account_ID,
-            fillTime: this.getCurrentYYYY_MM_DD_HH_MM_SS(),
+            fillTime: this.dateFormat(),
             leaveAccount: this.deptEmpId,
-            startTime: this.startTime,
-            endTime: this.endTime,
+            startTime: moment(this.startTime).format("YYYY-MM-DD HH:mm"),
+            endTime: moment(this.endTime).format("YYYY-MM-DD HH:mm"),
             leaveRemark: this.leaveRemark,
             checkAccount: this.accountID,
-            updateTime: this.getCurrentYYYY_MM_DD_HH_MM_SS(),
+            updateTime: this.dateFormat()
           },
           dataType: 'json',
         }).then((response) => {

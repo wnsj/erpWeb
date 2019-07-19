@@ -53,13 +53,13 @@
                 <router-link to="/paperlessOffice/restdown"><i class="fa fa-table" aria-hidden="true"></i>倒休</router-link>
               </li>
               <li>
-                <router-link to="/report"><i class="fa fa-table" aria-hidden="true"></i>请假报备</router-link>
+                <router-link to="/paperlessOffice/report"><i class="fa fa-table" aria-hidden="true"></i>请假报备</router-link>
               </li>
               <li>
                 <router-link to="/paperlessOffice/officeSuppliesManage"><i class="fa fa-table" aria-hidden="true"></i>办公用品管理</router-link>
               </li>
               <li>
-                <router-link to="/clock"><i class="fa fa-table" aria-hidden="true"></i>忘打卡证明</router-link>
+                <router-link to="/paperlessOffice/clock"><i class="fa fa-table" aria-hidden="true"></i>忘打卡证明</router-link>
               </li>
             </ul>
             <!-- <li><i class="fa fa-area-chart" aria-hidden="true"></i>item</li> -->

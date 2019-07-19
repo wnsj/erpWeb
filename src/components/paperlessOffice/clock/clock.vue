@@ -40,9 +40,8 @@
     </div>
     <div class="row">
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-md-offset-9">
-        <button type="button" class="btn btn-warning pull-right m_r_10" v-if='has(51)'>导出</button>
-        <button type="button" class="btn btn-info pull-right m_r_10" data-toggle="modal" data-target="#clockAddModel"
-                v-if='has(51)' @click="applyClock">申请
+        <button type="button" class="btn btn-warning pull-right m_r_10">导出</button>
+        <button type="button" class="btn btn-info pull-right m_r_10" data-toggle="modal" data-target="#clockAddModel" @click="applyClock">申请
         </button>
         <button type="button" class="btn btn-primary pull-right m_r_10" @click="queryClock">查询</button>
       </div>
@@ -149,7 +148,7 @@
                   </option>
                 </select>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-6 col-md-offset-1">
                 <span class="select-box-title">未打卡时间：</span>
                 <date-picker v-model="notClockTime" type="date" format="YYYY-MM-DD 17:30" confirm></date-picker>
               </div>
@@ -172,12 +171,13 @@
           <div class="modal-body">
             <legend><h5>证明</h5></legend>
             <div class="form-group clearfix">
-              <label class="col-md-2 control-label text-right nopad">证明人：</label>
+              <label class="col-md-1 control-label text-right nopad">证明人：</label>
               <div class="col-md-2">
-                <select class="form-control" id="accountR" v-model="accountR" @change="selectAccount">
-                  <option value="239">王杰林</option>
-                  <option value="2272">丁冬</option>
-                </select>
+                <agent :agentAccount="accountR" ref="agent" @agentChange="changeAccountR"></agent>
+              </div>
+              <div class="col-md-1">
+              <button type="button" data-toggle="modal" data-target="#agentChooseModel" @click="queryEmpByDept"><span
+                class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
@@ -190,6 +190,7 @@
                 <button type="button" class="btn btn-sm btn-warning" disabled="disabled">不同意</button>
               </div>
             </div>
+            <agentChoose ref="agentChoose" @getAgentInfo="getAccountRInfo"></agentChoose>
             <legend><h5>审查</h5></legend>
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">审查人：</label>
@@ -492,13 +493,17 @@
   import DatePicker from 'vue2-datepicker'
   import axios from 'axios'
   import Cookies from 'js-cookie'
-  import department from '../vuecommon/department.vue'
   import moment from 'moment'
+  import agent from '../../vuecommon/agent.vue'
+  import agentChoose from '../report/subReport/agentChoose.vue'
+  import department from '../../vuecommon/department.vue'
 
   export default {
     components: {
       department,
-      DatePicker
+      DatePicker,
+      agent,
+      agentChoose
     },
     data() {
       return {
@@ -518,8 +523,10 @@
         clockList: [],
 
         //  新增
+
         leaveAccount: '',
         leaveAccountName: '',
+        leaveDeptId: '',
         leaveDeptName: '',
         leavePositionName: '',
         reason: '',
@@ -530,7 +537,7 @@
         ],
         notClockTime: moment().subtract(1,'days').format("YYYY-MM-DD 17:30"),
         leaveRemark: '',
-        accountR: '',
+        accountR: '', // 证明人账户
         account1: '',
         account2: '',
         account3: '',
@@ -592,6 +599,15 @@
         });
       },
       // ---------------------------------------新增----------------------------------
+      changeAccountR(val) {
+        this.accountR = val //外层调用组件方注册变更方法，将组件内的数据变更，同步到组件外的数据状态中
+      },
+      queryEmpByDept() {
+        this.$refs.agentChoose.queryEmpByDept()
+      },
+      getAccountRInfo(item) {
+        this.$refs.agent.insertAgentInfo(item)
+      },
       queryEmpInfo() { // 查询申请人基本信息
         axios({
           method: 'post',
@@ -605,9 +621,13 @@
           },
           dataType: 'json',
         }).then((response) => {
+          this.leaveAccount = response.data.retData.account
           this.leaveAccountName = response.data.retData.name
+          this.leaveDeptId = response.data.retData.departmentId
           this.leaveDeptName = response.data.retData.deptName
           this.leavePositionName = response.data.retData.positionName
+          this.$refs.agent.getLeaveAccount([this.leaveAccount, this.leaveDeptId])
+          this.$refs.agentChoose.getLeaveAccount([this.leaveAccount, this.leaveDeptId])
         })
       },
       applyClock() {  // 申请按钮
@@ -615,7 +635,7 @@
         this.queryEmpInfo();
       },
       selectAccount(){ // 获取select->option值
-        this.accountR = $('#accountR option:selected').val()
+        // this.accountR = $('#accountR option:selected').val()
         this.account1 = $('#account1 option:selected').val()
         this.account2 = $('#account2 option:selected').val()
         this.account3 = $('#account3 option:selected').val()
@@ -681,7 +701,7 @@
             addTime: this.dateFormat(),
             startTime: this.notClockTime,
             leaveRemark: this.leaveRemark,
-            accountR: this.leaveAccount,
+            accountR: this.accountR,
             account1: this.account1,
             account2: this.account2,
             account3: this.account3,
