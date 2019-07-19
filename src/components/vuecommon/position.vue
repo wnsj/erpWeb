@@ -53,6 +53,9 @@
           }
         }
       },
+			setPosition:function(param){
+				this.position=param
+			},
       // 获取所有项目
       getPosition: function() {
         var url = this.url + '/search/positionList'

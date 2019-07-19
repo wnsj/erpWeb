@@ -111,6 +111,12 @@
 			};
 		},
 		methods:{
+			//清空数据
+			cleanData:function(){
+				this.personalBase={}
+				this.$children[0].setDpart('0')
+				this.$children[1].setPosition('0')
+			},
 			//获取部门名字和id
 			departChange: function(departId, departName) {
 				

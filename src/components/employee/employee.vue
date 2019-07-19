@@ -126,11 +126,9 @@
 					<family></family>
 				</div>
 			</div>
-			<div class="modal fade" id="myModalJoin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog staff_t">
-					<empEntry></empEntry>
-				</div>
-			</div>
+			
+					<empEntry  @addEmployeeInfo='addEmployeeInfo'></empEntry>
+				
 			<div class="modal fade" id="myModalupdata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog staff_t">
 					<mEE ref='mEE' :personalBase='personalBase' :personalDetail='personalDetail' :personalFamily='personalFamily'
@@ -200,35 +198,9 @@
 			requireAllInfo: function() {
 				alert(this.getMonthFirstDay)
 			},
-			//数据导出表格
-			dowmelxe: function(name) {
-				var myDate = new Date();
-				var year = myDate.getFullYear();
-				var month = myDate.getMonth() + 1;
-				var date = myDate.getDate();
-				$("#datatable").table2excel({
-					exclude: ".noExl",
-					name: "Excel Document Name",
-					filename: name + year + month + date,
-					exclude_img: true,
-					exclude_links: true,
-					exclude_inputs: true
-				})
-			},
-			exportToExcel() {
-				//excel数据导出
-				require.ensure([], () => {
-					const {
-						export_json_to_excel
-					} = require('../../assets/js/Export2Excel');
-					const tHeader = ['序号', '省份', '投资总额', '收益总额', '主要投资项目', '投资周期', '投资人数', '投资年变化率', '备注'];
-					const filterVal = ['index', 'provinces', 'orderMoney', 'incomeMoney', 'payType', 'orderPeriod',
-						'orderPersonConunt', 'orderYearRate', 'remarks'
-					];
-					const list = this.tableData;
-					const data = this.formatJson(filterVal, list);
-					export_json_to_excel(tHeader, data, '列表excel');
-				})
+			//人员添加成功，刷新界面
+			addEmployeeInfo: function() {
+				this.getEmployee()
 			},
 			formatJson(filterVal, jsonData) {
 				return jsonData.map(v => filterVal.map(j => v[j]))
@@ -442,7 +414,7 @@
 					if (res.retCode == '0000') {
 						console.log('employeeList-length:' + res.resData.length)
 						if (res.resData.length > 0) {
-							console.log('employeeList-length:' + res.resData.length)
+							console.log('employeeList-length:' + res.resData[0].resignDate)
 							this.employeeList = res.resData
 							$("#myModalQuery").modal('hide');
 						} else {

@@ -1,9 +1,10 @@
 <template>
 	<!--员工入职弹出-->
-
+<div class="modal fade" id="myModalJoin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog staff_t">
 	<div class="modal-content">
 		<div class="modal-header">
-			<button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
+			<button type="button" aria-hidden="true" class="close" v-on:click="closeCurrentPage()">×</button>
 			<h4 id="myModalLabel" class="modal-title">员工入职</h4>
 		</div>
 		<div class="modal-body  pos_r">
@@ -34,9 +35,11 @@
 					<button type="button" class="btn btn-info btn-sm recovery">离职</button>
 					<button type="button" class="btn btn-info btn-sm detl">删除</button>
 				</div>
-				<button type="button" class="btn btn-info" v-on:click="updataEmployeeInfo()">确认</button>
+				<button type="button" class="btn btn-info" v-on:click="addEmployeeInfo()">确认</button>
 				<button type="button" data-dismiss="modal" class="btn btn-info">返回</button>
 			</div>
+		</div>
+		</div>
 		</div>
 	</div>
 
@@ -64,17 +67,53 @@
 			};
 		},
 		methods:{
-			updataEmployeeInfo: function() {
+			closeCurrentPage:function(){
+				$("#myModalJoin").modal('hide')
+				this.cleanData()
+			},
+			cleanData:function(){
+				this.$refs.baseInfo.cleanData()
+				this.$refs.detailInfo.cleanData()
+				this.$refs.familyInfo.cleanData()
+			},
+			addEmployeeInfo: function() {
 				
 				// 修改基本信息
 				this.personalBase = this.$refs.baseInfo.personalBase
 				this.personalBase.isDelete = '0'
+				this.personalBase.state = '1'
+				this.personalBase.createUser = this.accountInfo().account_ID
+				
 				this.personalDetail = this.$refs.detailInfo.personalDetail
 				this.personalFamily = this.$refs.familyInfo.personalFamily
 	
-				alert(this.personalFamily.length)
 				var url = this.url + '/search/insertUserInfo'
 			
+				if(this.isBlank(this.personalBase.name)){
+					alert("添加人员的姓名不能为空")
+					return
+				}
+				if(this.isBlank(this.personalBase.sex)){
+					alert("添加人员的性别不能为空")
+					return
+				}
+				if(this.isBlank(this.personalBase.jobNum)){
+					alert("添加人员的工号不能为空")
+					return
+				}
+				if(this.isBlank(this.personalBase.erpaaccount)){
+					alert("添加人员的ERP账号不能为空")
+					return
+				}
+				if(this.isBlank(this.personalBase.departId) || this.personalBase.departId == '0'){
+					alert("必须选择部门")
+					return
+				}
+				if(this.isBlank(this.personalBase.positionId)||this.personalBase.positionId == '0'){
+					alert("必须选择岗位")
+					return
+				}
+				
 				axios({
 					method: 'post',
 					url: url,
@@ -94,11 +133,13 @@
 					dataType: 'json',
 				}).then((response) => {
 					var res = response.data
-					console.log('updataEmployeeInfo')
+					console.log('addEmployeeInfo')
 					console.log(res)
 					if (res.retCode == '0000') {
 						alert(res.resData.message)
-						this.$emit('updataEmployeeInfo')
+						this.$emit('addEmployeeInfo')
+						$("#myModalJoin").modal('hide')
+						this.cleanData()
 					} else {
 						alert(res.retMsg)
 					}
