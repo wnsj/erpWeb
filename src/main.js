@@ -12,6 +12,7 @@ import moment from 'moment'
 import * as constant from '../src/assets/js/constant.js'
 import {exportTableToExcel} from 'vendor/Export2Excel.js'
 import * as date from '../src/assets/js/date.js'
+require('@/../static/js/bootstrap-datetimepicker.js')
 
 
 Vue.config.productionTip = false
@@ -85,7 +86,7 @@ Vue.prototype.getYYYYMMDDHHMMSS_00 = function(param) {
 	return date.getYYYYMMDDHHMMSS_00(param)
 }
 Vue.prototype.exportTableToExcel = function(tbId, fileName) {
-	if (confirm("确定导出?") == false) {
+	if (!confirm("确定导出?")) {
 		return;
 	}
 	var myDate = new Date();
@@ -102,7 +103,7 @@ Vue.prototype.getYYYY_MM_DD_T_HH_MM = function(param){
 }
 Vue.prototype.getCurrentYYYY_MM_DD_HH_MM_SS = function(){
 	return date.getCurrentYYYY_MM_DD_HH_MM_SS();
-} 
+}
 Vue.prototype.moment = function(targetDate, format) {
 	var formatStr = "YYYY-MM-DD HH:mm:ss"
 	var momentObj = moment();
@@ -124,7 +125,7 @@ Vue.directive('has', {
 	inserted: function(el, binding) {
 		if (!constant.has(binding.value)) {
 			el.parentNode.removeChild(el);
-		}	
+		}
 	}
 });
 
