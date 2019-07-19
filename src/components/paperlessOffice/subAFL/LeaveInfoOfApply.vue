@@ -76,7 +76,7 @@
 				</div>
 				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
 					<select class="form-control">
-						<option value="0">王斌</option>
+						<option v-for="(item,index) in empList_check" :key="index" >{{item.accountName}}</option>
 					</select>
 				</div>
 				<div class="col-xs-1 col-sm-1 col-md-1">
@@ -108,8 +108,7 @@
 				</div>
 				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 					<select class="form-control">
-						<option value="0">王艳杰</option>
-						<option value="1">宋子龙</option>
+						<option v-for="(item , index) in empList_verify" :key="index">{{item.accountName}}</option>
 					</select>
 				</div>
 				<div class="col-md-1">
@@ -141,8 +140,7 @@
 				</div>
 				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 					<select class="form-control">
-						<option value="0">王艳杰</option>
-						<option value="1">宋子龙</option>
+						<option value="0" v-for="(item , index) in empList_approval" :key="index">{{item.accountName}}</option>
 					</select>
 				</div>
 				<div class="col-md-1">
@@ -229,13 +227,32 @@
 		},
 		data() {
 			return {
-				lInfo: {}, //請假信息
+				lInfo: this.accountInfo(), //請假信息
+				departId:this.accountInfo().departId,//请假人的部门ID
+				positionId:this.accountInfo().position_ID,//请假人岗位ID
 				delgateEMP: [], //代理人
+				cEmpList:[],
+				emps:[],//人员列表
+				
+				empList_check:[],
+				empListCheckTimes:0,
+				levelCheck:'0',
+				empList_verify:[],
+				empListVerifyTimes:0,
+				levelVerify:'0',
+				empList_approval:[],
+				empListApprovalTimes:0,
+				levelApproval:'0',
+				
 
-				beginDate: this.getCurrentDay,
-				endDate: this.getCurrentDay,
+				beginDate: this.moment('','YYYY/MM/DD 08:30'),
+				endDate: this.moment('','YYYY/MM/DD 17:30'),
 
-				isModify: '' //操作类型，查询，修改，申请
+				isModify: '' ,
+				isModify_1: true,
+				isModify_2: true ,
+				isModify_3: true ,
+				isModify_4: true ,
 			};
 		},
 		methods: {
@@ -244,7 +261,149 @@
 				this.lInfo = lInfo
 				this.isModify = param
 			},
+			//代理人弹窗
+			showSelectEmp:function(){
+				$("#myModalJoin_add").modal('show')
+			},
+			//'+'被点击的方法
+			addEmp:function(param){
+				if(param=='check'){
+					if(this.empListCheckTimes==9){
+						this.empListCheckTimes=0
+					}
+					if(this.empListCheckTimes==0){
+						this.levelCheck='0'
+					}else if(this.empListCheckTimes==3){
+						this.levelCheck='1'
+					}else if(this.empListCheckTimes==6){
+						this.levelCheck='2'
+					}
+					this.checkEmpList(param,this.levelCheck,this.empListCheckTimes)
+					this.empListCheckTimes++
+				}else if(param=='verify'){
+					if(this.empListVerifyTimes==6){
+						this.empListVerifyTimes=0
+					}
+					if(this.empListVerifyTimes==0){
+						this.levelVerify='1'
+					}else if(this.empListVerifyTimes==3){
+						this.levelVerify='2'
+					}
+					this.checkEmpList(param,this.levelVerify,this.empListVerifyTimes)
+					this.empListVerifyTimes++
+				}else if(param=='approval'){
+					if(this.empListApprovalTimes==6){
+						this.empListApprovalTimes=0
+					}
+					if(this.empListApprovalTimes==0){
+						this.levelApproval='1'
+					}else if(this.empListApprovalTimes==1){
+						this.levelApproval='2'
+					}
+					this.checkEmpList(param,this.levelApproval,this.empListApprovalTimes)
+					this.empListApprovalTimes++
+				}
+			},
+			//查询不同类型审核人员
+			checkEmpList:function(param,level,clickTimes){
+				var url = this.url + '/wzbg/checkOfEmpList'
+				console.log('checkEmpList:'+url)
+				console.log('positionId:'+this.positionId)
+				if(this.isBlank(this.positionId)){
+					this.positionId='1'
+				}
+				var clickTimes = clickTimes.toString()
+				
+				axios({
+					method: 'post',
+					url: url,
+					headers: {
+						'Content-Type': this.contentType,
+						'Access-Token': this.accessToken
+					},
+					data: {
+						clickTimes:clickTimes,
+						level:level,
+						positionId:this.positionId,
+						departId:this.departId,
+					},
+					dataType: 'json',
+				}).then((response) => {
+					var res = response.data
+					if (res.retCode == '0000') {
+						if (res.resData.length > 0) {
+							if(param=='check'){
+								this.empList_check={}
+								this.empList_check = res.resData
+							}else if(param=='verify'){
+								this.empList_verify={}
+								this.empList_verify = res.resData
+							}else if(param=='approval'){
+								this.empList_approval={}
+								this.empList_approval = res.resData
+							}
+							
+							$("#myModalQuery").modal('hide');
+						} else {
+							alert('已经没有更多的数据了')
+						}
+					} else {
+						alert(res.retMsg)
+					}
+							
+				}).catch((error) => {
+					console.log('请求失败处理')
+				});
+			},
+			empList:function(){
+				var url = this.url + '/wzbg/departOfEmpList'
+				console.log('checkEmpList:'+url)
+				axios({
+					method: 'post',
+					url: url,
+					headers: {
+						'Content-Type': this.contentType,
+						'Access-Token': this.accessToken
+					},
+					data: {
+						departId:this.lInfo.departId ,
+						accountId:this.accountInfo.account_ID
+					},
+					dataType: 'json',
+				}).then((response) => {
+					var res = response.data
+					if (res.retCode == '0000') {
+						alert('LeaveInfoOfApply:'+res.resData.length)
+						console.log('LeaveInfoOfApply:'+res.resData)
+						if (res.resData.length > 0) {
+							this.emps = res.resData
+							$("#myModalQuery").modal('hide');
+						} else {
+							alert('已经没有更多的数据了')
+						}
+					} else {
+						alert(res.retMsg)
+					}
+							
+				}).catch((error) => {
+					console.log('请求失败处理')
+				});
+			}
 
+		},
+		created(){
+			this.empList()
+			this.addEmp('check')
+			this.addEmp('verify')
+			this.addEmp('approval')
+		},
+		mounted: function() {
+			$(function() {
+				$('.datetimePicker').datetimepicker({
+					format: 'yyyy-mm-dd hh:ii',
+					language: 'cn',
+				});
+			})
 		}
 	}
 </script>

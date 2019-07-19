@@ -497,7 +497,7 @@
   import axios from 'axios'
   import moment from 'moment'
   import Cookies from 'js-cookie'
-  require('@/../static/js/bootstrap-datetimepicker.js')
+  //require('@/../static/js/bootstrap-datetimepicker.js')
   import department from '@/components/vuecommon/department.vue'
 
   export default {
