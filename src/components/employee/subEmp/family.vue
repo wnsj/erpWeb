@@ -39,7 +39,7 @@
 					</div>
 					<div class="col-md-2 col-md-offset-1">
 						<button type="button" class="btn btn-primary" v-on:click="getFamilyAll()">查询</button>
-						<button type="button" class="btn btn-primary" @click="dowmelxe('家庭成员表')">导出</button>
+						<button type="button" class="btn btn-primary" @click="exportTableToExcel('datatable','家庭成员表')">导出</button>
 					</div>
 				</div>
 			</div>
@@ -142,7 +142,7 @@
 							console.log(this.familyList)
 							$("#myModalQuery").modal('hide');
 						}else{
-							alert('没有查询到相关数据')
+							alert('没有查询到家庭成员相关数据')
 						}
 					}else{
 						alert(res.retMsg)

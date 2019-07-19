@@ -24,7 +24,7 @@
 						<td>{{item.appellation}}</td>
 						<td>{{item.chname}}</td>
 						<td>{{item.birth}}</td>
-						<td>{{item.workadress}}</td>
+						<td>{{item.workAdress}}</td>
 						<td>{{item.position}}</td>
 						<td>{{item.phone}}</td>
 						<td>{{item.wechat}}</td>
@@ -57,7 +57,10 @@
 			};
 		},
 		methods:{
-			
+			//清空数据
+			cleanData:function(){
+				this.personalFamily=[]
+			},
 			//添加家庭成员
 			popupFamilyInfo:function(){
 				this.familyInfo = {}
@@ -71,13 +74,11 @@
 				
 				// alert(this.personalFamily.length)
 				if(this.familyInfo.type=='modify'){
-					alert(this.familyInfo.type+'---'+familyInfo.chname)
 					this.cancelRFInfo(this.modifyFIIndex)
 					
 					this.personalFamily.push(familyInfo)
 				}
 				if(this.familyInfo.type=='add'){
-					alert(this.familyInfo.type+'---'+familyInfo.chname)
 					this.personalFamily.push(familyInfo)
 				}
 			},

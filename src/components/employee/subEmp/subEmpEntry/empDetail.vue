@@ -155,6 +155,10 @@
 			};
 		},
 		methods:{
+			//清空数据
+			cleanData:function(){
+				this.personalDetail={}
+			},
 			nationChange:function(nationName){
 				this.personalDetail.uNationName = nationName
 			}

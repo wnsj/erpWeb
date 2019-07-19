@@ -319,7 +319,7 @@
 
             <div class="col-md-3">
               <button type="button" class="btn btn-info" @click="addUpDelOffice()" :disabled="isAdvance">确定</button>
-              <button type="button" class="btn btn-info">取消</button>
+              <button type="button" class="btn btn-info" onClick="$('#myModalJoinInfo').modal('hide')">取消</button>
             </div>
           </div>
 
@@ -482,8 +482,8 @@
                 </div>
               </div>
               <div class="col-xs-3 col-sm-3 col-md-3col-md-3">
-                <button type="button" class="btn btn-info" @click=" hZShenHe('caiWuAdv', 1)">同意</button>
-                <button type="button" class="btn btn-warning" @click=" hZShenHe('caiWuAdv', 2)">不同意</button>
+                <button type="button" class="btn btn-info" @click="hZShenHe('caiWuAdv', 1)">同意</button>
+                <button type="button" class="btn btn-warning" @click="hZShenHe('caiWuAdv', 2)">不同意</button>
               </div>
             </div>
           </div>
@@ -497,7 +497,7 @@
   import axios from 'axios'
   import moment from 'moment'
   import Cookies from 'js-cookie'
-  require('@/../static/js/bootstrap-datetimepicker.js')
+  //require('@/../static/js/bootstrap-datetimepicker.js')
   import department from '@/components/vuecommon/department.vue'
 
   export default {
@@ -511,7 +511,6 @@
         employeeList: [],
         departId: '',
         deptId: '',
-        state: '',
         officeNames: [],
         specificationList: [],
         addOffice: [{
@@ -754,7 +753,7 @@
           console.log("请求失败处理");
         });
       },
-      //将申请表清空
+      //申请按钮
       requestOffice() {
         //查询当月是否已经汇总
         var rquestParam = {
@@ -914,6 +913,10 @@
                 } else {
                   if (this.isBlank(this.conscientPeoId)) {
                     alert("审核人不能为空!")
+                    return;
+                  }
+                  if(!confirm("确定提交吗?")){
+                     $("#myModalJoinInfo").modal("hide");
                     return;
                   }
                   this.officeInfoList.forEach(item => {
