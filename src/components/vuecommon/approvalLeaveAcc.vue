@@ -2,7 +2,8 @@
 <!--审批人集合-->
 <template>
   <select class="form-control" v-model="accId" :disabled="isAble">
-    <option v-for="(item,index) in accountList" :key="index" :value="item.accountID">{{item.accountName}}</option>
+    <option value="">---请选择---</option>
+    <option v-for="(item,index) in accountList" :key="index" v-bind:value="item.accountID">{{item.accountName}}</option>
   </select>
 </template>
 
@@ -14,20 +15,16 @@
       return {
         isAble: false,
         accId: '',
+        accountName:'',
         accountList:[] // 审批人集合
       };
     },
     props: ['accountID'],
     watch:{
-      accountID:{
-        handler(val){
-          this.accId = val
-        },
-        immediate: true
-      },
       accId:{
-        handler(val){
-          this.$emit('approvalChange',val)
+        handler(newVal,oldVal){
+          this.accId = newVal
+          this.$emit('approvalChange',newVal)
         },
         immediate: true
       }
@@ -61,8 +58,9 @@
       },
     },
     created() {
+      this.accId = this.accountID
       this.getApprovalAccount();
-    },
+    }
   }
 </script>
 

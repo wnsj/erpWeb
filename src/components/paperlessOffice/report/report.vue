@@ -9,9 +9,9 @@
     <div class="row">
       <div class="col-md-6">
         <span class="select-box-title">填写日期：</span>
-        <date-picker v-model="beginDate" type="date" confirm></date-picker>
+        <date-picker v-model="beginDate" type="date" format="YYYY-MM-DD" confirm></date-picker>
         <span class="select-box-title">~</span>
-        <date-picker v-model="endDate" type="date" confirm></date-picker>
+        <date-picker v-model="endDate" type="date" format="YYYY-MM-DD" confirm></date-picker>
       </div>
     </div><br>
     <div class="row">
@@ -84,14 +84,14 @@
               <td class="text-center">{{item.type}}</td>
               <td class="text-center">{{item.leaveEmpName}}</td>
               <td class="text-center">{{item.leaveDepartmentName}}</td>
-              <td class="text-center">{{item.startTime|dateFormat}}</td>
-              <td class="text-center">{{item.endTime|dateFormat}}</td>
+              <td class="text-center">{{dateFormat(item.startTime)}}</td>
+              <td class="text-center">{{dateFormat(item.endTime)}}</td>
               <td class="text-center">{{item.leaveRemark}}</td>
               <td class="text-center">{{item.fillEmpName}}</td>
               <td class="text-center">{{item.fillDepartmentName}}</td>
-              <td class="text-center">{{item.fillTime|dateFormat}}</td>
+              <td class="text-center">{{dateFormat(item.fillTime)}}</td>
               <td class="text-center">{{item.checkEmpName}}</td>
-              <td class="text-center">{{item.checkTime|dateFormat}}</td>
+              <td class="text-center">{{item.checkTime == null? '':dateFormat(item.checkTime)}}</td>
               <td class="text-center">
                 {{item.checkResult == 0? '不同意':(item.checkResult == 1? '同意':'')}}
               </td>
@@ -301,11 +301,15 @@
                 </div>
               </div>
               <div class="form-group clearfix">
-                <label class="col-md-2 control-label text-right nopad">请假时间：</label>
-                <div class="col-md-8">
-                  <date-picker v-model="startReviewTime" type="datetime" format="YYYY-MM-DD HH:mm" disabled="disabled"></date-picker>
-                  <span class="select-box-title">~</span>
-                  <date-picker v-model="endReviewTime" type="datetime" format="YYYY-MM-DD HH:mm" disabled="disabled"></date-picker>
+                <label for="startReviewTime" class="col-md-2 control-label text-right nopad">开始时间：</label>
+                <div class="col-md-3">
+                  <input disabled="disabled" type="datetime-local" class="form-control" id="startReviewTime"
+                         v-model="startReviewTime"/>
+                </div>
+                <label for="endReviewTime" class="col-md-2 control-label text-right nopad">结束时间：</label>
+                <div class="col-md-3">
+                  <input disabled="disabled" type="datetime-local" class="form-control" id="endReviewTime"
+                         v-model="endReviewTime"/>
                 </div>
               </div>
               <div class="form-group clearfix">
@@ -369,11 +373,13 @@
                 </div>
               </div>
               <div class="form-group clearfix">
-                <label class="col-md-2 control-label text-right nopad">请假时间：</label>
-                <div class="col-md-8">
-                  <date-picker v-model="startUpdateTime" type="datetime" format="YYYY-MM-DD HH:mm" :minute-step="10" confirm></date-picker>
-                  <span class="select-box-title">~</span>
-                  <date-picker v-model="endUpdateTime" type="datetime" format="YYYY-MM-DD HH:mm" :minute-step="10" confirm></date-picker>
+                <label for="startUpdateTime" class="col-md-2 control-label text-right nopad">开始日期：</label>
+                <div class="col-md-3">
+                  <input type="datetime-local" class="form-control" id="startUpdateTime" v-model="startUpdateTime"/>
+                </div>
+                <label for="endUpdateTime" class="col-md-2 control-label text-right nopad">结束日期：</label>
+                <div class="col-md-3">
+                  <input type="datetime-local" class="form-control" id="endUpdateTime" v-model="endUpdateTime"/>
                 </div>
               </div>
               <div class="form-group clearfix">
@@ -434,8 +440,8 @@
     data() {
       return {
         // 查询
-        beginDate: this.$currentDate(),
-        endDate: this.$currentDate(),
+        beginDate: moment(),
+        endDate: moment(),
         departSelId: '',
         reportList: [],
         leaveName: '',
@@ -454,8 +460,8 @@
         leaveTypeName: '',
         departId: '',
         deptEmpId: '',
-        startTime: this.$addStartTime(),
-        endTime: this.$addEndTime(),
+        startTime: moment().format("YYYY-MM-DD 08:30"),
+        endTime: moment().format("YYYY-MM-DD 17:30"),
         leaveRemark: '',
         accountID: '',
 
@@ -493,20 +499,9 @@
       }
     },
     methods: {
-      //---------------------------------------清空操作----------------------------------
-      addModelClear() { // 清空添加模态框
-        $('#reportAddModel').modal('hide');
-        this.leaveTypeName = '',
-        this.departId = this.$refs.departAdd.setDpart("0"),
-        this.deptEmpId = '',
-        this.startTime = this.$addStartTime(),
-        this.endTime = this.$addEndTime(),
-        this.leaveRemark = '',
-        this.accountID = ''
-      },
-      reviewReportClear() { // 清空审批模态框
-        $('#reviewReportModel').modal('hide');
-        this.checkRemark = ''
+      // ---------------------------------------公用----------------------------------
+      dateFormat(time){ // 回显时间格式化
+        return moment(time).format("YYYY-MM-DD HH:mm")
       },
       // ---------------------------------------查询----------------------------------
       departSelChange(departId) {
@@ -521,8 +516,8 @@
             'Access-Token': this.accessToken
           },
           data: {
-            startTime: this.$queryStartTime(this.beginDate),
-            endTime: this.$queryEndTime(this.endDate),
+            startTime: moment(this.beginDate).format("YYYY-MM-DD 00:00:00"),
+            endTime: moment(this.endDate).format("YYYY-MM-DD 23:59:59"),
             leaveDeptId: this.departSelId,
             leaveEmpName: this.leaveName,
             accountId: this.has(51) ? '' : JSON.parse(Cookies.get("accountData")).account.account_ID,
@@ -536,7 +531,7 @@
         });
       },
 
-      // ---------------------------------------添加----------------------------------
+      // ---------------------------------------申请请假报备----------------------------------
       leaveTypeChange(val) { // 假期类型
         this.leaveTypeName = val
       },
@@ -550,6 +545,16 @@
       },
       approvalChange(val) {   // 审批人
         this.accountID = val
+      },
+      addModelClear() { // 清空添加模态框
+        $('#reportAddModel').modal('hide');
+          this.leaveTypeName = '',
+          this.departId = this.$refs.departAdd.setDpart("0"),
+          this.deptEmpId = '',
+          this.startTime = moment().format("YYYY-MM-DD 08:30"),
+          this.endTime = moment().format("YYYY-MM-DD 17:30"),
+          this.leaveRemark = '',
+          this.accountID = ''
       },
       addReport() {     // 添加请假报备信息
         if (this.isBlank(this.leaveTypeName)) {
@@ -591,13 +596,13 @@
           data: {
             type: this.leaveTypeName,
             fillAccount: JSON.parse(Cookies.get("accountData")).account.account_ID,
-            fillTime: this.$currentTime(),
+            fillTime: this.dateFormat(),
             leaveAccount: this.deptEmpId,
-            startTime: this.$YYYY_MM_DD_HH_mm(this.startTime),
-            endTime: this.$YYYY_MM_DD_HH_mm(this.endTime),
+            startTime: moment(this.startTime).format("YYYY-MM-DD HH:mm"),
+            endTime: moment(this.endTime).format("YYYY-MM-DD HH:mm"),
             leaveRemark: this.leaveRemark,
             checkAccount: this.accountID,
-            updateTime: this.$currentTime()
+            updateTime: this.dateFormat()
           },
           dataType: 'json',
         }).then((response) => {
@@ -657,13 +662,12 @@
             alert("该报备已取消,无需进行审批")
           } else {
             // 数据回显
-            console.log(item)
             this.id = item.id
             this.leaveTypeReviewName = item.type
             this.$refs.departReview.setDpart(item.leaveDeptId)
             this.deptReviewEmpName = item.leaveEmpName
-            this.startReviewTime = item.startTime
-            this.endReviewTime = item.endTime
+            this.startReviewTime = this.getYYYY_MM_DD_T_HH_MM(item.startTime)
+            this.endReviewTime = this.getYYYY_MM_DD_T_HH_MM(item.endTime)
             this.leaveReviewRemark = item.leaveRemark
             this.$refs.approvalLeaveAccReview.setAccountId(item.checkAccount)
             // 组件禁用方法
@@ -675,7 +679,11 @@
           }
         }
       },
-      agree() { // 同意审批
+      reviewReportClear() {
+        $('#reviewReportModel').modal('hide');
+        this.checkRemark = ''
+      },
+      agree() {
         axios({
           method: 'post',
           url: this.url + '/leavePrepareController/updateLeavePrepare',
@@ -687,8 +695,8 @@
             id: this.id,
             checkRemark: this.checkRemark,
             checkResult: '1',
-            checkTime: this.$currentTime(),
-            updateTime: this.$currentTime()
+            checkTime: this.getCurrentYYYY_MM_DD_HH_MM_SS(),
+            updateTime: this.getCurrentYYYY_MM_DD_HH_MM_SS(),
           },
           dataType: 'json',
         }).then((response) => {
@@ -703,7 +711,7 @@
         this.reviewReportClear();
         this.queryReport();
       },
-      disagree() {  // 拒绝审批
+      disagree() {
         axios({
           method: 'post',
           url: this.url + '/leavePrepareController/updateLeavePrepare',
@@ -715,8 +723,8 @@
             id: this.id,
             checkRemark: this.checkRemark,
             checkResult: '0',
-            checkTime: this.$currentTime(),
-            updateTime: this.$currentTime(),
+            checkTime: this.getCurrentYYYY_MM_DD_HH_MM_SS(),
+            updateTime: this.getCurrentYYYY_MM_DD_HH_MM_SS(),
           },
           dataType: 'json',
         }).then((response) => {
@@ -760,8 +768,8 @@
           this.$refs.departUpdate.setDpart(item.leaveDeptId)
           this.$refs.deptEmpUpdate.getDeptId(item.leaveDeptId)
           this.deptEmpUpdateId = item.leaveAccount
-          // this.startUpdateTime = this.dateFormat(item.startTime)
-          // this.endUpdateTime = this.dateFormat(item.endTime)
+          this.startUpdateTime = this.getYYYY_MM_DD_T_HH_MM(item.startTime)
+          this.endUpdateTime = this.getYYYY_MM_DD_T_HH_MM(item.endTime)
           this.leaveUpdateRemark = item.leaveRemark
           this.accountUpdateID = item.checkAccount
           // 弹框

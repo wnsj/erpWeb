@@ -12,9 +12,8 @@ import moment from 'moment'
 import * as constant from '../src/assets/js/constant.js'
 import {exportTableToExcel} from 'vendor/Export2Excel.js'
 import * as date from '../src/assets/js/date.js'
-// import * as global_date from '../src/assets/js/global_date.js'
 require('@/../static/js/bootstrap-datetimepicker.js')
-import global_date from '../src/assets/js/global_date'
+
 
 Vue.config.productionTip = false
 Vue.use(VueResource)
@@ -162,31 +161,6 @@ function consolelog(to, from) {
 function consoleLogCookie(token, accoutData) {
 	console.log("token:" + token + ",accoutData:" + accoutData)
 }
-
-
-
-//--------------------------------------dingdong---------------------------------
-
-/**
- * 时间过滤器
- */
-Vue.filter('dateFormat', function (time, formatStr='YYYY-MM-DD HH:mm') {
-  if(constant.isBlank(time)){
-    return null
-  }else{
-    return moment(time).format(formatStr)
-  }
-})
-
-/**
- * 使用自定义时间js
- */
-Vue.use(global_date)
-
-
-
-
-
 
 /**
  * 创建VUE实例，其他实例注入
