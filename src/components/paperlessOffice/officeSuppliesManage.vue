@@ -1,5 +1,6 @@
 <template>
   <div class="container user-container" id="officeSuppliesManage">
+    <test></test>
     <div class="row">
       <div class="col-md-12 col-lg-12 main-title">
         <h2>办公用品管理</h2>
@@ -499,10 +500,12 @@
   import Cookies from 'js-cookie'
   //require('@/../static/js/bootstrap-datetimepicker.js')
   import department from '@/components/vuecommon/department.vue'
+  import test from '@/components/vuecommon/test.vue'
 
   export default {
     components: {
-      department
+      department,
+      test
     },
     data() {
       return {

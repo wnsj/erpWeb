@@ -71,7 +71,7 @@
 				<div class="col-md-5">
 					<br />
 					<button type="button" class="btn btn-warning pull-right m_r_10">取消</button>
-					<button type="button" class="btn btn-warning pull-right m_r_10">确定</button>
+					<button type="button" class="btn btn-warning pull-right m_r_10" v-on:click="submitAskForLeaveApply()">确定</button>
 				</div>
 			</div>
 		</div>
@@ -414,7 +414,7 @@
 			},
 			submitAskForLeaveApply:function(){
 				var url = this.url + '/wzbg/departOfEmpList'
-				
+				console.log('lInfo:-'+this.lInfo.toSource())
 				axios({
 					method: 'post',
 					url: url,

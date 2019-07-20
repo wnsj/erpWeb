@@ -33,8 +33,8 @@ import officeSuppliesManage from '../components/paperlessOffice/officeSuppliesMa
 import computerSupplies from '../components/paperlessOffice/computerSupplies.vue'
 import computerAdvanceApplication from '../components/paperlessOffice/computerAdvanceApplication.vue'
 import empRequire from '../components/paperlessOffice/empRequire.vue'
-import report from '../components/report/report.vue'
-import clock from '../components/clock/clock.vue'
+import report from '../components/paperlessOffice/report/report.vue'
+import clock from '../components/paperlessOffice/clock/clock.vue'
 
 Vue.use(Router)
 
@@ -116,11 +116,11 @@ export default new Router({
 				// 无纸化办公
 
 				{
-					path: '/report',
+					path: '/paperlessOffice/report',
 					component: report
 				},
 				{
-					path: '/clock',
+					path: '/paperlessOffice/clock',
 					component: clock
 				},
 				
