@@ -1,4 +1,5 @@
 <template>
+
   <div class='col-sm-8'>
     <table class="table table-bordered table-hover user-table">
       <thead>

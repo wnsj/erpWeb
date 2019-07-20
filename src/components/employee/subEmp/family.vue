@@ -115,6 +115,11 @@
 				else
 					return this.familyList
 			},
+			cleanData:function(){
+				this.familyChild=''
+				this.familyName=''
+				this.familybirthday='0'
+			},
 			// 获取所有员工的家庭成员信息
 			getFamilyAll: function() {
 				console.log('getFamilyAll+param'+this.familyChild+this.familyName+this.familybirthday)

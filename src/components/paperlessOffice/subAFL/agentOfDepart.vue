@@ -79,6 +79,7 @@
 			},
 			backAciton:function(item){
 				this.$emit('backAciton', item)
+				$("#myModalJoin_add").modal('hide')
 			},
 			closex:function(){
 				$("#myModalJoin_add").modal('hide')
@@ -95,7 +96,7 @@
 					},
 					data: {
 						departId:this.departId ,
-						accountId:this.accountInfo.account_ID
+						accountId:this.accountInfo().account_ID
 					},
 					dataType: 'json',
 				}).then((response) => {
