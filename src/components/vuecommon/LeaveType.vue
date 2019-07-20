@@ -26,11 +26,17 @@
     },
     props: ['leaveTypeName'],
     watch:{
-      leaveTypeName:function(){
-        this.leaveTypeLabel = this.leaveTypeName
+      leaveTypeName:{
+        handler(val){
+          this.leaveTypeLabel = val
+        },
+        immediate: true
       },
-      leaveTypeLabel:function(val){
-        this.$emit('leaveTypeChange',val)
+      leaveTypeLabel:{
+        handler(val){
+          this.$emit('leaveTypeChange',val)
+        },
+        immediate: true
       }
     },
     methods:{
