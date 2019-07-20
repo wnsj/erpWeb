@@ -144,12 +144,15 @@
 
                 <tr v-for="(itemObj,index) in addOffice" :key='index'>
                   <th class="text-center">
-                    <select class="form-control" v-model="itemObj.officeId" @change="officeChange(itemObj)">
+                    <select class="form-control" v-model="itemObj.officeId" @change="officeChange(itemObj),selectChange('selectId_'+index,'textId_'+index,'specTextId_'+index)"
+                      name="select" :id="'selectId_'+index" style="position: relative;">
                       <option value="0">--请选择--</option>
                       <option v-for="item in officeNames" :key="item.id" :value="item.id">
                         {{item.name}}
                       </option>
                     </select>
+                    <input type="text" :id="'textId_'+index" placeholder="请输入名称..." v-model="itemObj.name" style="position: absolute;
+                      border: 1;outline: none;display: none;" />
                   </th>
                   <th class="text-center"><input type="text" placeholder="请输入数字" class="form-control" v-model="itemObj.num"
                       @input="inputOfficeNum(itemObj)"></th>
@@ -160,6 +163,8 @@
                         {{item.specification}}
                       </option>
                     </select>
+                    <input type="text" :id="'specTextId_'+index" placeholder="请输入规格..." v-model="itemObj.specification"
+                      style="position: absolute;border: 1;outline: none;display: none;" />
                   </th>
                   <th class="text-center"><input type="text" placeholder="备注" class="form-control" v-model="itemObj.remark"></th>
                   <th class="text-center"><button @click="delRow(index)">删除</button></th>
@@ -275,23 +280,32 @@
                 </tr>
 
                 <tr v-for="(itemObj,index) in officeInfoList" :key='index'>
-                  <th class="text-center">
-                    <select class="form-control" v-model="itemObj.officeId" @change="officeChange(itemObj)" :disabled="itemObj.advice2 == '同意' ">
+                  <th class="text-center" @click="isShow('spanId_' + index + 1,'selectId_' + index + 1,'specId_' + index + 1,'spanSpecId_'+ index + 1)">
+                    <span style="display: block;" :id="'spanId_' + index + 1" class='spanClass'>{{itemObj.name}}</span>
+                    <select class="form-control clearClass" v-model="itemObj.officeId" @change="officeChange(itemObj),selectChange('selectId_'+ index + 1,'textId_' + index + 1,'specTextId_' + index + 1)"
+                      :disabled="itemObj.advice2 == '同意'" style="position: relative;display: none;" :id="'selectId_' + index + 1">
                       <option value="0">--请选择--</option>
                       <option v-for="(item,index) in officeNames" :key="index" :value="item.id">
                         {{item.name}}
                       </option>
                     </select>
+                    <input class="form-control clearClass" type="text" :id="'textId_' + index + 1" placeholder="请输入名称..."
+                      v-model="itemObj.name" style="display: none; position: absolute;border: 1;outline: none;" />
                   </th>
                   <th class="text-center"><input type="text" placeholder="请输入数字" class="form-control" v-model="itemObj.num"
                       @input="inputOfficeNum(itemObj)" :disabled="itemObj.advice2 == '同意' "></th>
                   <th class="text-center">
-                    <select class="form-control" v-model="itemObj.specId" @change="speChange(itemObj)" :disabled="itemObj.advice2 == '同意' ">
+                    <span style="display: block;" class='spanClass' :id="'spanSpecId_' + index + 1">{{itemObj.specification}}</span>
+                    <select class="form-control clearClass" v-model="itemObj.specId" @change="speChange(itemObj)"
+                      :disabled="itemObj.advice2 == '同意' " style="position: relative;display: none;"
+                      :id="'specId_' + index + 1">
                       <option value="0">--请选择--</option>
                       <option v-for="item in itemObj.specificationList" :key="item.id" :value="item.id">
                         {{item.specification}}
                       </option>
                     </select>
+                    <input class="form-control clearClass" type="text" :id="'specTextId_' + index + 1" placeholder="请输入规格..."
+                      v-model="itemObj.specification" style="position: absolute;width: 100px;height: 28px; border: 1;outline: none;display: none;" />
                   </th>
                   <th class="text-center"><input type="text" placeholder="备注" class="form-control" v-model="itemObj.remark"
                       :disabled="itemObj.advice2 == '同意' "></th>
@@ -502,7 +516,7 @@
 
   export default {
     components: {
-      department
+      department,
     },
     data() {
       return {
@@ -752,6 +766,14 @@
         }, (error) => {
           console.log("请求失败处理");
         });
+        var arr = $(".clearClass");
+        for (var i = 0; i < arr.length; i++) {
+          arr[i].style.display = 'none'
+        }
+        var arrs = $(".spanClass");
+        for (var i = 0; i < arrs.length; i++) {
+          arrs[i].style.display = 'block'
+        }
       },
       //申请按钮
       requestOffice() {
@@ -778,6 +800,8 @@
                 specification: ''
               });
               $("#myModalJoin").modal("show");
+              document.getElementById('textId_0').style.display = "none";
+              document.getElementById('specTextId_0').style.display = "none";
               //获取部门相关负责人
               this.queryDeptConscientious(2, this.account.departId, true);
             }
@@ -915,8 +939,8 @@
                     alert("审核人不能为空!")
                     return;
                   }
-                  if(!confirm("确定提交吗?")){
-                     $("#myModalJoinInfo").modal("hide");
+                  if (!confirm("确定提交吗?")) {
+                    $("#myModalJoinInfo").modal("hide");
                     return;
                   }
                   this.officeInfoList.forEach(item => {
@@ -1302,7 +1326,7 @@
                 specification: item.specification,
                 month: $('#textDatePick2').val(),
                 state: 1,
-                isWanCheng:1
+                isWanCheng: 1
               }]
             };
             //完成
@@ -1323,6 +1347,40 @@
         }), (error) => {
           console.log("请求失败处理");
         };
+      },
+      //是否显示内容'spanSpecId_' + index + 1
+      isShow(spanId, selectId, specId, spanSpecId) {
+        console.log(spanId, selectId, specId)
+        var oSelect = document.getElementById(selectId);
+        var oSpec = document.getElementById(specId);
+        var oText = document.getElementById(spanId);
+        var oSpanSpec = document.getElementById(spanSpecId);
+        oSelect.style.display = "block";
+        oSpec.style.display = "block";
+        oText.style.display = "none";
+        oSpanSpec.style.display = "none";
+      },
+      //判断是否选择了输入框
+      selectChange(selectId, textId, specTextId) {
+        var oSelect = document.getElementById(selectId);
+        var oText = document.getElementById(textId);
+        var oSpecText = document.getElementById(specTextId);
+        if (oSelect.value == "26") {
+          oText.value = '';
+          oSelect.name = '';
+          oText.name = 'select';
+          oText.style.display = "block";
+
+          oSpecText.value = '';
+          oSpecText.name = '';
+          oSpecText.name = 'select';
+          oSpecText.style.display = "block";
+        } else {
+          oSelect.name = 'select';
+          oText.name = '';
+          oText.style.display = "none";
+          oSpecText.style.display = "none";
+        }
       }
     },
     mounted() {
