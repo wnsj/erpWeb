@@ -130,7 +130,7 @@
 
 			<div class="modal fade" id="lioa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog staff_t">
-					<lioa></lioa>
+					<lioa ></lioa>
 				</div>
 			</div>
 			<div class="modal fade" id="lioc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

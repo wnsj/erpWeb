@@ -53,6 +53,7 @@ Vue.prototype.notHaveRule='您没有此项功能操作的权限'
 
 /*------------------------------------------公共方法-----------------------------------------------------------*/
 Vue.prototype.accountInfo = function(){
+	console.log('已经被调用了')
 	return constant.accountInfo()
 }
 Vue.prototype.getNowFormatDate = function() {
