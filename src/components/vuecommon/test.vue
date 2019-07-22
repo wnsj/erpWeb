@@ -20,7 +20,7 @@
               <option :value="0">选择输入</option>
             </select>
             <input type="text" :id="'textId_'+index" placeholder="请输入名称..." v-model="item.name" style="display: none; position: absolute;
-              top: 47px;width: 100px;height: 28px; border: 1;outline: none;display: none;" />
+              width: 100px;height: 28px; border: 1;outline: none;display: none;" />
           </td>
           <td class="text-center">2</td>
           <td class="text-center">3</td>
@@ -117,7 +117,6 @@
           });
       },
       selectChange(selectId, textId) {
-        alert("selectId:" + selectId + ",textId:" + textId);
         var oSelect = document.getElementById(selectId);
         var oText = document.getElementById(textId);
         if (oSelect.value == "0") {
