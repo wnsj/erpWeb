@@ -116,9 +116,9 @@
 								<td class="text-center"><button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal"
 									 	 v-on:click="showLeaveInfo(item,'2')">查看</button></td>
 								<td class="text-center"><button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal"
-									 v-on:click="showLeaveInfo(item,'3')">修改</button></td>
+									 v-on:click="showLeaveInfo(item,'4')">修改</button></td>
 								<td class="text-center"><button type="button" class="btn btn-warning pull-right m_r_10" 
-								v-on:click="showLeaveInfo(item,'4')">处理</button></td>
+								v-on:click="showLeaveInfo(item,'3')">处理</button></td>
 							</tr>
 
 						</tbody>
@@ -130,7 +130,7 @@
 
 			<div class="modal fade" id="lioa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog staff_t">
-					<lioa ></lioa>
+					<lioa @submitAskForLeaveApply='submitAFLASuccess'></lioa>
 				</div>
 			</div>
 			<div class="modal fade" id="lioc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -140,13 +140,17 @@
 			</div>
 			<div class="modal fade" id="lioh" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog staff_t">
-					<lioh></lioh>
+					<lioh @submitAskForLeaveModify='submitAFLASuccess'></lioh>
 				</div>
 			</div>
 			<div class="modal fade" id="liom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog staff_t">
-					<liom></liom>
+					<liom @submitAskForLeaveApply='submitAFLASuccess'></liom>
 				</div>
+			</div>
+			<div class="modal fade" id="myModalJoin_add" tabindex="3" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+			</div>
 			</div>
 		</div> 
 	</div>
@@ -178,7 +182,7 @@
 				departId:'0',
 				departName:'',
 				name:'',
-				accountId:this.accountInfo.account_ID,
+				accountId:this.accountInfo().account_ID,
 				
 				lInfo:{},
 			};
@@ -190,29 +194,52 @@
 			},
 			showLeaveInfo:function(lInfo,param){
 				
-				this.$children[param].showLInfo(lInfo,param)
 				if(param=='1'){
 					$("#lioa").modal('show')
 				}else if(param=='2'){
 					$("#lioc").modal('show')
 				}else if(param=='3'){
-					if(this.accountId==lInfo.account1 
-					|| this.accountId==lInfo.account2
-					|| this.accountId==lInfo.account3
-					|| this.accountId==lInfo.account4){
+					if(!this.isBlank(lInfo.result3)||lInfo.result3==''){
+						alert('处理完成，无法在进行处理')
+						return
+					}
+					if(this.accountId==lInfo.account1){
+						this.$children[3].showCVAREmp('check')
+						$("#lioh").modal('show')
+					}else if(this.accountId==lInfo.account2){
+						this.$children[3].showCVAREmp('verify')
+						$("#lioh").modal('show')
+					}else if(this.accountId==lInfo.account3){
+						this.$children[3].showCVAREmp('approval')
+						$("#lioh").modal('show')
+					}else if(this.accountId==lInfo.account4){
+						this.$children[3].showCVAREmp('report')
 						$("#lioh").modal('show')
 					}else{
 						alert(this.notHaveRule)
 					}
 					
 				}else if(param=='4'){
-					if(lInfo.leaveAccount == this.accountId()){
+					if(lInfo.leaveAccount == this.accountInfo().account_ID){
 						$("#liom").modal('show')
 					}else{
 						alert(this.notHaveRule)
 					}
 				}
+				this.$children[param].showLInfo(lInfo,param)
 			},
+			//申请,修改成功返回
+			submitAFLASuccess:function(param){
+				if(param=='apply'){
+					$("#lioa").modal('hide')
+				}else if(param=='modify'){
+					$("#liom").modal('hide')
+				}else if(param=='handle'){
+					$("#lioh").modal('hide')
+				}
+				this.askOfLeaveList()
+			},
+			
 			timeChange:function(){
 				console.log('begin:'+this.beginDate)
 			},
@@ -259,6 +286,7 @@
 					if (res.retCode == '0000') {
 						if (res.resData.length > 0) {
 							this.aflList = res.resData
+							console.log('askOfLeaveList:'+this.aflList.toString())
 							$("#myModalQuery").modal('hide');
 						} else {
 							alert('没有查询到相关数据')

@@ -16,7 +16,7 @@
 					<p>类型：</p>
 				</div>
 				<div class="col-xs-8  col-sm-8 col-md-8 col-lg-8">
-					<leave></leave>
+					<leave @leaveChange='levelStype'></leave>
 				</div>
 			</div>
 			<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
@@ -35,7 +35,11 @@
 			<div class="col-md-1">
 
 				<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" data-target="#myModalJoin_add">+</button>
-				<agent @backAciton='agentAction'></agent>
+				<div class="modal fade" id="myModalJoin_add" tabindex="3" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<agent @backAciton='agentAction' @closex='closeModal'></agent>
+					</div>
+				</div>
 			</div>
 
 			<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
@@ -45,7 +49,7 @@
 				<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
 					<div class='input-group date datetimePicker'>
 
-						<input name="endTimeStr" type='text' class="form-control" v-model="beginDate" />
+						<input ref="startTime" type='text' class="form-control" v-model="beginDate" />
 						<span class="input-group-addon">
 							<span class="glyphicon glyphicon-calendar"></span>
 						</span>
@@ -53,7 +57,7 @@
 					<span class="leavespan01">&nbsp;&nbsp;&nbsp;至：</span>
 					<div class='input-group date datetimePicker'>
 
-						<input name="endTimeStr" type='text' class="form-control" v-model="endDate" />
+						<input ref="endTime" type='text' class="form-control" v-model="endDate" />
 						<span class="input-group-addon">
 							<span class="glyphicon glyphicon-calendar"></span>
 						</span>
@@ -65,7 +69,7 @@
 					<p>说明：</p>
 				</div>
 				<div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
-					<textarea class="explain_leave"></textarea>
+					<textarea class="explain_leave" v-model="lInfo.leaveRemark"></textarea>
 				</div>
 
 				<div class="col-md-5">
@@ -181,7 +185,7 @@
 				</div>
 				<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
 					<select class="form-control" v-model="lInfo.account4">
-						<option value="0">李珊珊</option>
+						<option value="1127">李珊珊</option>
 					</select>
 				</div>
 			</div>
@@ -237,10 +241,10 @@
 		},
 		data() {
 			return {
-				lInfo: '', //請假信息
+				lInfo: {}, //請假信息
 				departId: '', //请假人的部门ID
 				positionId: '', //请假人岗位ID
-				accountId:'',//请假人账号ID
+				accountId: '', //请假人账号ID
 				delgateEMP: [], //代理人
 				cEmpList: [],
 				emps: [], //人员列表
@@ -256,8 +260,8 @@
 				levelApproval: '0',
 
 
-				beginDate: this.moment('', 'YYYY/MM/DD 08:30'),
-				endDate: this.moment('', 'YYYY/MM/DD 17:30'),
+				beginDate: this.moment('', 'YYYY-MM-DD 08:30'),
+				endDate: this.moment('', 'YYYY-MM-DD 17:30'),
 
 				isModify: '',
 				isModify_1: true,
@@ -268,21 +272,46 @@
 		},
 		methods: {
 			showLInfo: function(lInfo, param) {
-				alert("apply-" + param)
-				this.lInfo=this.accountInfo()
-				this.departId=this.accountInfo().departId
-				this.positionId=this.accountInfo().position_ID
+				this.lInfo = this.accountInfo()
+				this.departId = this.accountInfo().departId
+				this.positionId = this.accountInfo().position_ID
 				this.accountId = this.accountInfo().account_ID
-				this.empList()
+				this.lInfo.leaveAccount = this.accountInfo().account_ID
+				this.lInfo.departId = this.accountInfo().departId
+				this.lInfo.positionId = this.accountInfo().position_ID
+				this.lInfo.addTime = this.moment()
+				this.lInfo.step = '0'
+
+
+				//清空数据
+				this.empList_check = [],
+					this.empListCheckTimes = 0,
+					this.levelCheck = '0',
+					this.empList_verify = [],
+					this.empListVerifyTimes = 0,
+					this.levelVerify = '0',
+					this.empList_approval = [],
+					this.empListApprovalTimes = 0,
+					this.levelApproval = '0',
+
+
+					this.empList()
 				this.addEmp('check')
 				this.addEmp('verify')
 				this.addEmp('approval')
 			},
+			levelStype: function(param) {
+				this.lInfo.leaveType = param
+			},
 			//代理人数据返回
-			agentAction:function(param){
-				console.log('agentActionId:'+param.employeeId)
+			agentAction: function(param) {
+				console.log('agentActionId:' + param.employeeId)
+				$("#myModalJoin_add").modal('hide')
 				this.emps.push(param)
-				this.lInfo.agentAccount=param.employeeId
+				this.lInfo.agentAccount = param.employeeId
+			},
+			closeModal:function(){
+				$("#myModalJoin_add").modal('hide')
 			},
 			//代理人弹窗
 			showSelectEmp: function() {
@@ -380,7 +409,7 @@
 			},
 			empList: function() {
 				var url = this.url + '/wzbg/departOfEmpList'
-				console.log('checkEmpList:' + url)
+				console.log('empList-modify:' + this.lInfo.departId)
 				axios({
 					method: 'post',
 					url: url,
@@ -390,14 +419,14 @@
 					},
 					data: {
 						departId: this.lInfo.departId,
-						accountId: this.lInfo.account_ID
+						accountId: this.lInfo.leaveAccount
 					},
 					dataType: 'json',
 				}).then((response) => {
 					var res = response.data
 					if (res.retCode == '0000') {
-						alert('LeaveInfoOfApply:' + res.resData.length)
-						console.log('LeaveInfoOfApply:' + res.resData)
+						// alert('LeaveInfoOfApply:' + res.resData.length)
+						console.log('empList-modify:' + res.resData)
 						if (res.resData.length > 0) {
 							this.emps = res.resData
 							$("#myModalQuery").modal('hide');
@@ -412,9 +441,38 @@
 					console.log('请求失败处理')
 				});
 			},
-			submitAskForLeaveApply:function(){
-				var url = this.url + '/wzbg/departOfEmpList'
-				console.log('lInfo:-'+this.lInfo.toSource())
+			submitAskForLeaveApply: function() {
+				var url = this.url + '/wzbg/insertLeaveApplication'
+				this.lInfo.startTime = this.$refs.startTime.value
+				this.lInfo.endTime = this.$refs.endTime.value
+				if (this.isBlank(this.lInfo.account_ID)) {
+					alert('提交请假账户数据异常')
+					return
+				}
+				if (this.isBlank(this.lInfo.leaveType)) {
+					alert('请选择请假类型')
+					return
+				}
+				if (this.isBlank(this.lInfo.account1)) {
+					alert('请选择审查人员')
+					return
+				}
+				if (this.isBlank(this.lInfo.account2)) {
+					alert('请选择审核人员')
+					return
+				}
+				if (this.isBlank(this.lInfo.account3)) {
+					alert('请选择批准人员')
+					return
+				}
+				if (this.isBlank(this.lInfo.account4)) {
+					alert('请选择报备人员')
+					return
+				}
+				if (this.isBlank(this.lInfo.leaveRemark)) {
+					alert('请填写请假说明')
+					return
+				}
 				axios({
 					method: 'post',
 					url: url,
@@ -431,16 +489,16 @@
 					if (res.retCode == '0000') {
 						alert('LeaveInfoOfApply:' + res.resData.length)
 						console.log('LeaveInfoOfApply:' + res.resData)
-// 						if (res.resData.length > 0) {
-// 							this.emps = res.resData
-// 							$("#myModalQuery").modal('hide');
-// 						} else {
-// 							alert('已经没有更多的数据了')
-// 						}
+						if (res.resData == 1) {
+							alert('请假成功')
+							this.$emit('submitAskForLeaveApply','apply')
+						} else {
+							alert('已经没有更多的数据了')
+						}
 					} else {
 						alert(res.retMsg)
 					}
-				
+
 				}).catch((error) => {
 					console.log('请求失败处理')
 				});
@@ -448,7 +506,7 @@
 
 		},
 		created() {
-			
+
 		},
 		mounted: function() {
 			$(function() {
