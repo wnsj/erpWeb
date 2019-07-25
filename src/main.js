@@ -12,7 +12,6 @@ import moment from 'moment'
 import * as constant from '../src/assets/js/constant.js'
 import {exportTableToExcel} from 'vendor/Export2Excel.js'
 import * as date from '../src/assets/js/date.js'
-// import * as global_date from '../src/assets/js/global_date.js'
 require('@/../static/js/bootstrap-datetimepicker.js')
 import global_date from '../src/assets/js/global_date'
 
