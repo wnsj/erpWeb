@@ -19,12 +19,6 @@
     },
     props: ['accountID'],
     watch:{
-      accountID:{
-        handler(val){
-          this.accId = val
-        },
-        immediate: true
-      },
       accId:{
         handler(val){
           this.$emit('approvalChange',val)

@@ -495,7 +495,6 @@
   import DatePicker from 'vue2-datepicker'
   import axios from 'axios'
   import Cookies from 'js-cookie'
-  import moment from 'moment'
   import department from '../../vuecommon/department.vue'
   import leaveType from '../../vuecommon/leaveType.vue'
   import deptEmp from '../../vuecommon/deptEmp.vue'
@@ -731,6 +730,7 @@
       },
       changeAgent(val) {
         this.agentAccount = val //外层调用组件方注册变更方法，将组件内的数据变更，同步到组件外的数据状态中
+        console.log("代理人账户ID" + this.agentAccount)
       },
       examineChange(val) {
         this.examineAccount = val
@@ -763,6 +763,7 @@
               this.$refs.examine.initParam();  //  初始化参数
               this.$refs.check.initParam();
               this.$refs.approve.initParam();
+              this.$refs.agent.initParamNull();
               this.toLoad(item);  //  加载数据
               $('#reportBackApplyModel').modal('show');  //  弹框
             }

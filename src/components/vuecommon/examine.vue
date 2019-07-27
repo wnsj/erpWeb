@@ -24,12 +24,6 @@
       },
       props: ['examineAccount'],
       watch:{
-        examineAccount:{
-          handler(val){
-            this.accountId = val
-          },
-          immediate: true
-        },
         accountId:{
           handler(val){
             this.$emit('examineChange',val)
@@ -83,12 +77,12 @@
               typeIds: this.typeIds
             },
             dataType: 'json',
-          }).then((response) => {
+          }).then(response => {
             console.log(response.data.retData)
             this.examineList = (response.data.retData);
             this.accountId = this.examineList[0].accountId;
-          }).catch((error) => {
-            console.log('请求失败处理')
+          }).catch(err => {
+            console.log(err)
           });
         }
       },

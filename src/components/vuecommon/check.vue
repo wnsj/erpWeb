@@ -24,12 +24,6 @@
     },
     props: ['checkAccount'],
     watch:{
-      checkAccount:{
-        handler(val){
-          this.accountId = val
-        },
-        immediate: true
-      },
       accountId:{
         handler(val){
           this.$emit('checkChange',val)
