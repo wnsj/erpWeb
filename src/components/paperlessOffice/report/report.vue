@@ -323,7 +323,10 @@
               <div class="form-group clearfix">
                 <label class="col-md-1 control-label text-right nopad">报备人：</label>
                 <div class="col-md-2">
-                  <approvalLeaveAcc :accountID="reportAccount" @approvalChange='reportChange'></approvalLeaveAcc>
+<!--                  <approvalLeaveAcc :accountID="reportAccount" @approvalChange='reportChange'></approvalLeaveAcc>-->
+                  <select class="form-control">
+                    <option>李珊珊</option>
+                  </select>
                 </div>
                 <label class="col-md-2 control-label text-right nopad">备注：</label>
                 <div class="col-md-3">
@@ -560,7 +563,7 @@
         examineAccount: '',   // 审查人
         checkAccount: '',     // 审核人
         approveAccount: '',   // 批准人
-        reportAccount: '',    // 报备人
+        reportAccount: '1127',// 报备人(暂时固定为李珊珊)
         // 初始化数据
         deptInitId: '',
         typeId: 0,
@@ -741,10 +744,10 @@
         this.approveAccount = val
         console.log("批准人账户ID" + this.checkAccount)
       },
-      reportChange(val){
-        this.reportAccount = val
-        console.log("报备人账户ID" + this.reportAccount)
-      },
+      // reportChange(val){
+      //   this.reportAccount = val
+      //   console.log("报备人账户ID" + this.reportAccount)
+      // },
 
       // 申请销假按钮
       applyReportBack(item) {
@@ -779,7 +782,7 @@
         this.startBackTime = item.startTime // 请假开始时间
         this.endBackTime = item.endTime // 请假结束时间
         this.leaveBackRemark = item.leaveRemark // 请假说明
-        this.reportAccount = item.checkAccount // 回显报备人信息(item里的审批人)
+        // this.reportAccount = item.checkAccount // 回显报备人信息(item里的审批人)
         //  组件数据
         this.$refs.agent.getLeaveAccount([item.leaveAccount, item.leaveDeptId])
         this.$refs.agentChoose.getLeaveAccount([item.leaveAccount, item.leaveDeptId])
@@ -960,27 +963,30 @@
             'Access-Token': this.accessToken
           },
           data: {
-            account1: this.examineAccount,
-            account2: this.checkAccount,
-            account3: this.approveAccount,
-            account4: this.reportAccount,
-            account_ID: this.leaveAccount,
-            account_Name: this.leaveEmpBackName,
-            addTime: this.$currentTime(),
-            agentAccount: this.agentAccount,
-            departId: this.deptInitId,
-            endTime: this.endBackTime,
-            leaveAccount: this.leaveAccount,
-            leaveRemark:  this.leaveBackRemark,
-            leaveType:  this.leaveTypeBackName,
-            positionName: this.leavePositionBackName,
-            startTime: this.startBackTime,
-            step:"0",
-            baobeiId: this.reportId,
+            lInfo:{
+              account1: this.examineAccount,
+              account2: this.checkAccount,
+              account3: this.approveAccount,
+              account4: this.reportAccount,
+              account_ID: this.leaveAccount,
+              account_Name: this.leaveEmpBackName,
+              addTime: this.$currentTime(),
+              agentAccount: this.agentAccount,
+              departId: this.deptInitId,
+              endTime: this.endBackTime,
+              leaveAccount: this.leaveAccount,
+              leaveRemark:  this.leaveBackRemark,
+              leaveType:  this.leaveTypeBackName,
+              positionName: this.leavePositionBackName,
+              startTime: this.startBackTime,
+              step:"0",
+              baobeiId: this.reportId,
+            }
           },
           dataType: 'json',
         }).then(response => {
           console.log(response.data.retData)
+          $('#reportBackApplyModel').modal('hide');
         }).catch(err => {
           console.log(err)
         });
@@ -1089,8 +1095,8 @@
           this.$refs.departUpdate.setDpart(item.leaveDeptId)
           this.$refs.deptEmpUpdate.getDeptId(item.leaveDeptId)
           this.deptEmpUpdateId = item.leaveAccount
-          // this.startUpdateTime = this.dateFormat(item.startTime)
-          // this.endUpdateTime = this.dateFormat(item.endTime)
+          this.startUpdateTime = item.startTime
+          this.endUpdateTime = item.endTime
           this.leaveUpdateRemark = item.leaveRemark
           this.accountUpdateID = item.checkAccount
           // 弹框
@@ -1138,8 +1144,8 @@
             id: this.editId,
             type: this.leaveTypeUpdateName,
             leaveAccount: this.deptEmpUpdateId,
-            startTime: this.startUpdateTime,
-            endTime: this.endUpdateTime,
+            startTime: this.$YYYY_MM_DD_HH_mm(this.startUpdateTime),
+            endTime: this.$YYYY_MM_DD_HH_mm(this.endUpdateTime),
             leaveRemark: this.leaveUpdateRemark,
             checkAccount: this.accountUpdateID,
             updateTime: this.getCurrentYYYY_MM_DD_HH_MM_SS(),
