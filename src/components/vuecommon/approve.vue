@@ -19,6 +19,7 @@
         typeId: 0,
         positionTypeId: '',
         typeIds:[],
+        approve:{},
         approveList: [] // 审查人集合
       }
     },
@@ -52,9 +53,9 @@
         if(this.typeId == 4){
           this.positionTypeId = 6
         }
-        // if(this.typeId == 5){
-        //   this.positionTypeId = 6
-        // }
+        if(this.typeId == 5){
+          this.positionTypeId = 6
+        }
         this.typeIds.push(this.positionTypeId);
       },
       setTypeId(){
@@ -62,6 +63,9 @@
       },
       getDeptId(val){
         this.deptId = val
+      },
+      showApproveInfo(val){
+        this.approve = val
       },
       // 查询审核人信息
       getApproveList: function () {
@@ -80,7 +84,18 @@
         }).then((response) => {
           console.log(response.data.retData)
           this.approveList = (response.data.retData);
-          this.accountId = this.approveList[0].accountId;
+          if(!this.isBlank(this.approve.accountId)){
+            for(let i=0; i<this.approveList.length; i++){
+              if(this.approve.accountId == this.approveList[i].accountId){  // 如果获取的批准人已存在集合中
+                this.accountId = this.approve.accountId;  // 默认显示获取的批准人
+                return false;
+              }
+            }
+            this.approveList.push(this.approve);  // 如果获取的批准人不存在集合中 向集合中加入数据
+            this.accountId = this.approve.accountId;  // 默认显示新增加的批准人
+          }else{
+            this.accountId = this.approveList[0].accountId;
+          }
         }).catch((error) => {
           console.log('请求失败处理')
         });

@@ -13,7 +13,8 @@
         <span class="select-box-title">~</span>
         <date-picker v-model="endDate" type="date" format="YYYY-MM-DD" confirm></date-picker>
       </div>
-    </div><br>
+    </div>
+    <br>
     <div class="row">
       <div class="col-md-3">
         <div class="input-group">
@@ -72,6 +73,7 @@
               <th class="text-center">报备结果</th>
               <th class="text-center">查看</th>
               <th class="text-center">修改</th>
+              <th class="text-center">处理</th>
             </tr>
             </thead>
             <tbody>
@@ -85,8 +87,8 @@
                         {'color':''}">
               <td class="text-center">{{item.leaveAccountName}}</td>
               <td class="text-center">{{item.leaveDeptName}}</td>
-              <td class="text-center">{{dateFormat(item.addTime)}}</td>
-              <td class="text-center">{{dateFormat(item.startTime)}}</td>
+              <td class="text-center">{{item.addTime|dateFormat}}</td>
+              <td class="text-center">{{item.startTime|dateFormat}}</td>
               <td class="text-center">{{item.reason}}</td>
               <td class="text-center">{{item.leaveRemark}}</td>
               <td class="text-center">{{item.witnessAccountName}}</td>
@@ -109,7 +111,7 @@
                         item.result3 == 0? {'color':'#ff0000'}:
                         item.result4 == 0? {'color':'#ff0000'}:
                         {'color':''}">
-                        <b>查看</b>
+                  <b>查看</b>
                 </button>
               </td>
               <td class="text-center">
@@ -121,7 +123,19 @@
                         item.result3 == 0? {'color':'#ff0000'}:
                         item.result4 == 0? {'color':'#ff0000'}:
                         {'color':''}">
-                        <b>修改</b>
+                  <b>修改</b>
+                </button>
+              </td>
+              <td class="text-center">
+                <button type="button" class="btn btn-sm btn-default" @click="disposeClock(item)"
+                        :style="item.result4 == 1? {'color':'#00ff00'}:
+                        item.resultR == 0? {'color':'#ff0000'}:
+                        item.result1 == 0? {'color':'#ff0000'}:
+                        item.result2 == 0? {'color':'#ff0000'}:
+                        item.result3 == 0? {'color':'#ff0000'}:
+                        item.result4 == 0? {'color':'#ff0000'}:
+                        {'color':''}">
+                  <b>处理</b>
                 </button>
               </td>
             </tr>
@@ -135,7 +149,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" @click="clearAddModel">
+            <button type="button" class="close" data-dismiss="modal">
               <span>×</span>
             </button>
             <h4 class="modal-title">新增打卡证明</h4>
@@ -182,7 +196,7 @@
               <button type="button" class="btn btn-sm btn-warning" @click="addClock">确认</button>
             </div>
             <div class="col-md-1">
-              <button type="button" class="btn btn-sm btn-info">取消</button>
+              <button type="button" class="btn btn-sm btn-info" @click="cancelAdd">取消</button>
             </div>
           </div> <!-- /.modal-footer -->
           <div class="modal-body">
@@ -193,8 +207,8 @@
                 <agent :agentAccount="accountR" ref="agent" @agentChange="changeAccountR"></agent>
               </div>
               <div class="col-md-1">
-              <button type="button" data-toggle="modal" data-target="#agentChooseModel" @click="queryEmpByDept"><span
-                class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                <button type="button" data-toggle="modal" data-target="#agentChooseModel" @click="queryEmpByDept"><span
+                  class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
@@ -501,9 +515,11 @@
             </div>
           </div><!-- /.modal-body -->
           <div class="modal-footer">
-            <div class="col-md-12">
-              <button type="button" class="btn btn-warning">确认</button>
-              <button type="button" data-dismiss="modal" class="btn btn-info">取消</button>
+            <div class="col-md-6">
+              <button type="button" class="btn btn-sm btn-warning" @click="updateReport">确认</button>
+            </div>
+            <div class="col-md-1">
+              <button type="button" class="btn btn-sm btn-info" @click="cancelUpdate">取消</button>
             </div>
           </div> <!-- /.modal-footer -->
           <div class="modal-body">
@@ -514,7 +530,7 @@
                 <agent :agentAccount="updateAccountR" ref="agentUpdate" @agentChange="changeUpdateAccountR"></agent>
               </div>
               <div class="col-md-1">
-                <button type="button" data-toggle="modal" data-target="#agentChooseModel" @click="queryEmpByDeptForUpdate"><span
+                <button type="button" data-toggle="modal" data-target="#agentChooseUpdateModel" @click="queryEmpByDeptForUpdate"><span
                   class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
@@ -528,92 +544,248 @@
                 <button type="button" class="btn btn-sm btn-warning" disabled="disabled">不同意</button>
               </div>
             </div>
-            <agentChoose ref="agentUpdateChoose" @getAgentInfo="getAccountRUpdateInfo"></agentChoose>
-<!--            <legend><h5>审查</h5></legend>-->
-<!--            <div class="form-group clearfix">-->
-<!--              <label class="col-md-1 control-label text-right nopad">审查人：</label>-->
-<!--              <div class="col-md-2">-->
-<!--                <examine :examineAccount="examineAccount" ref="examine" @examineChange="examineChange"></examine>-->
-<!--              </div>-->
-<!--              <div class="col-md-1">-->
-<!--                <button type="button" data-toggle="modal" @click="addExamineOption" :disabled="isAbleForExamine">-->
-<!--                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>-->
-<!--                </button>-->
-<!--              </div>-->
-<!--              <label class="col-md-1 control-label text-right nopad">备注：</label>-->
-<!--              <div class="col-md-3">-->
-<!--                <input type="text" class="form-control" disabled="disabled"/>-->
-<!--              </div>-->
-<!--              <div class="col-md-1 col-md-offset-1">-->
-<!--                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">同意</button>-->
-<!--              </div>-->
-<!--              <div class="col-md-1">-->
-<!--                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">不同意</button>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <legend><h5>审核</h5></legend>-->
-<!--            <div class="form-group clearfix">-->
-<!--              <label class="col-md-1 control-label text-right nopad">审核人：</label>-->
-<!--              <div class="col-md-2">-->
-<!--                <check :checkAccount="checkAccount" ref="check" @checkChange="checkChange"></check>-->
-<!--              </div>-->
-<!--              <div class="col-md-1">-->
-<!--                <button type="button" data-toggle="modal" @click="addCheckOption" :disabled="isAbleForCheck">-->
-<!--                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>-->
-<!--                </button>-->
-<!--              </div>-->
-<!--              <label class="col-md-1 control-label text-right nopad">备注：</label>-->
-<!--              <div class="col-md-3">-->
-<!--                <input type="text" class="form-control" disabled="disabled"/>-->
-<!--              </div>-->
-<!--              <div class="col-md-1 col-md-offset-1">-->
-<!--                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">同意</button>-->
-<!--              </div>-->
-<!--              <div class="col-md-1">-->
-<!--                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">不同意</button>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <legend><h5>批准</h5></legend>-->
-<!--            <div class="form-group clearfix">-->
-<!--              <label class="col-md-1 control-label text-right nopad">批准人：</label>-->
-<!--              <div class="col-md-2">-->
-<!--                <approve :approveAccount="approveAccount" ref="approve" @approveChange="approveChange"></approve>-->
-<!--              </div>-->
-<!--              <div class="col-md-1">-->
-<!--                <button type="button" data-toggle="modal" @click="addApproveOption" :disabled="isAbleForApprove">-->
-<!--                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>-->
-<!--                </button>-->
-<!--              </div>-->
-<!--              <label class="col-md-1 control-label text-right nopad">备注：</label>-->
-<!--              <div class="col-md-3">-->
-<!--                <input type="text" class="form-control" disabled="disabled"/>-->
-<!--              </div>-->
-<!--              <div class="col-md-1 col-md-offset-1">-->
-<!--                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">同意</button>-->
-<!--              </div>-->
-<!--              <div class="col-md-1">-->
-<!--                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">不同意</button>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <legend><h5>报备人</h5></legend>-->
-<!--            <div class="form-group clearfix">-->
-<!--              <label class="col-md-1 control-label text-right nopad">报备人：</label>-->
-<!--              <div class="col-md-2">-->
-<!--                <select class="form-control">-->
-<!--                  <option>李珊珊</option>-->
-<!--                </select>-->
-<!--              </div>-->
-<!--              <label class="col-md-2 control-label text-right nopad">备注：</label>-->
-<!--              <div class="col-md-3">-->
-<!--                <input type="text" class="form-control" disabled="disabled"/>-->
-<!--              </div>-->
-<!--              <div class="col-md-1 col-md-offset-1">-->
-<!--                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">同意</button>-->
-<!--              </div>-->
-<!--              <div class="col-md-1">-->
-<!--                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">不同意</button>-->
-<!--              </div>-->
-<!--            </div>-->
+            <agentChooseUpdate ref="agentUpdateChoose" @getAgentInfo="getAccountRUpdateInfo"></agentChooseUpdate>
+            <legend><h5>审查</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-1 control-label text-right nopad">审查人：</label>
+              <div class="col-md-2">
+                <examine :examineAccount="updateExamineAccount" ref="examineUpdate" @examineChange="examineUpdateChange"></examine>
+              </div>
+              <div class="col-md-1">
+                <button type="button" data-toggle="modal" @click="addExamineUpdateOption" :disabled="isAbleForUpdateExamine">
+                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                </button>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">备注：</label>
+              <div class="col-md-3">
+                <input type="text" class="form-control" disabled="disabled"/>
+              </div>
+              <div class="col-md-1 col-md-offset-1">
+                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">不同意</button>
+              </div>
+            </div>
+            <legend><h5>审核</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-1 control-label text-right nopad">审核人：</label>
+              <div class="col-md-2">
+                <check :checkAccount="updateCheckAccount" ref="checkUpdate" @checkChange="checkUpdateChange"></check>
+              </div>
+              <div class="col-md-1">
+                <button type="button" data-toggle="modal" @click="addCheckUpdateOption" :disabled="isAbleForUpdateCheck">
+                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                </button>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">备注：</label>
+              <div class="col-md-3">
+                <input type="text" class="form-control" disabled="disabled"/>
+              </div>
+              <div class="col-md-1 col-md-offset-1">
+                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">不同意</button>
+              </div>
+            </div>
+            <legend><h5>批准</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-1 control-label text-right nopad">批准人：</label>
+              <div class="col-md-2">
+                <approve :approveAccount="updateApproveAccount" ref="approveUpdate" @approveChange="approveUpdateChange"></approve>
+              </div>
+              <div class="col-md-1">
+                <button type="button" data-toggle="modal" @click="addApproveUpdateOption" :disabled="isAbleForUpdateApprove">
+                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                </button>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">备注：</label>
+              <div class="col-md-3">
+                <input type="text" class="form-control" disabled="disabled"/>
+              </div>
+              <div class="col-md-1 col-md-offset-1">
+                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">不同意</button>
+              </div>
+            </div>
+            <legend><h5>报备人</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-1 control-label text-right nopad">报备人：</label>
+              <div class="col-md-2">
+                <select class="form-control">
+                  <option v-model="updateReportAccount">{{this.updateReportName}}</option>
+                </select>
+              </div>
+              <label class="col-md-2 control-label text-right nopad">备注：</label>
+              <div class="col-md-3">
+                <input type="text" class="form-control" disabled="disabled"/>
+              </div>
+              <div class="col-md-1 col-md-offset-1">
+                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">不同意</button>
+              </div>
+            </div>
+          </div><!-- /.modal-body -->
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!-- 处理忘记打卡证明-->
+    <div class="modal fade" id="clockDisposeModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+              <span>×</span>
+            </button>
+            <h4 class="modal-title">处理打卡证明</h4>
+          </div><!-- /.modal-header -->
+          <div class="modal-body">
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">申请人姓名：</label>
+              <div class="col-md-2">
+                <input type="text" class="form-control" disabled="disabled" v-model="showLeaveAccountName"/>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">部门：</label>
+              <div class="col-md-2">
+                <input type="text" class="form-control" disabled="disabled" v-model="showLeaveDeptName"/>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">职位：</label>
+              <div class="col-md-2">
+                <input type="text" class="form-control" disabled="disabled" v-model="showLeavePositionName"/>
+              </div>
+            </div>
+            <legend><h5>打卡</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">原因：</label>
+              <div class="col-md-2">
+                <input type="text" class="form-control" disabled="disabled" v-model="showReason"/>
+              </div>
+              <label class="control-label text-right nopad col-md-2 col-lg-offset-1">未打卡时间：</label>
+              <div class="col-md-3">
+                <date-picker v-model="showNotClockTime" format="YYYY-MM-DD HH:mm" disabled="disabled"></date-picker>
+              </div>
+            </div>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">说明：</label>
+              <div class="col-md-10">
+                <textarea class="textarea" placeholder="未打卡说明：" disabled="disabled" v-model="showLeaveRemark"></textarea>
+              </div>
+            </div>
+          </div><!-- /.modal-body -->
+          <div class="modal-footer">
+            <div class="col-md-6">
+              <button type="button" class="btn btn-sm btn-warning" disabled="disabled">确认</button>
+            </div>
+            <div class="col-md-1">
+              <button type="button" class="btn btn-sm btn-info" disabled="disabled">取消</button>
+            </div>
+          </div> <!-- /.modal-footer -->
+          <div class="modal-body">
+            <legend><h5>证明</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-1 control-label text-right nopad">证明人：</label>
+              <div class="col-md-2">
+                <input type="text" class="form-control" disabled="disabled" v-model="showAccountR"/>
+              </div>
+              <div class="col-md-1">
+                <button type="button" disabled="disabled"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">备注：</label>
+              <div class="col-md-3">
+                <input type="text" class="form-control" :disabled="isAbleForAccountR"/>
+              </div>
+              <div class="col-md-1 col-md-offset-1">
+                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccountR">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccountR">不同意</button>
+              </div>
+            </div>
+            <legend><h5>审查</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-1 control-label text-right nopad">审查人：</label>
+              <div class="col-md-2">
+                <input type="text" class="form-control" disabled="disabled" v-model="showExamine"/>
+              </div>
+              <div class="col-md-1">
+                <button type="button" disabled="disabled"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">备注：</label>
+              <div class="col-md-3">
+                <input type="text" class="form-control" :disabled="isAbleForAccount1"/>
+              </div>
+              <div class="col-md-1 col-md-offset-1">
+                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount1">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount1">不同意</button>
+              </div>
+            </div>
+            <legend><h5>审核</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-1 control-label text-right nopad">审核人：</label>
+              <div class="col-md-2">
+                <input type="text" class="form-control" disabled="disabled" v-model="showCheck"/>
+              </div>
+              <div class="col-md-1">
+                <button type="button" disabled="disabled"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">备注：</label>
+              <div class="col-md-3">
+                <input type="text" class="form-control" :disabled="isAbleForAccount2"/>
+              </div>
+              <div class="col-md-1 col-md-offset-1">
+                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount2">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount2">不同意</button>
+              </div>
+            </div>
+            <legend><h5>批准</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-1 control-label text-right nopad">批准人：</label>
+              <div class="col-md-2">
+                <input type="text" class="form-control" disabled="disabled" v-model="showApprove"/>
+              </div>
+              <div class="col-md-1">
+                <button type="button" disabled="disabled"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">备注：</label>
+              <div class="col-md-3">
+                <input type="text" class="form-control" :disabled="isAbleForAccount3"/>
+              </div>
+              <div class="col-md-1 col-md-offset-1">
+                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount3">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount3">不同意</button>
+              </div>
+            </div>
+            <legend><h5>报备</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-1 control-label text-right nopad">报备人：</label>
+              <div class="col-md-2">
+                <input type="text" class="form-control" disabled="disabled" v-model="showReport"/>
+              </div>
+              <div class="col-md-1">
+                <button type="button" disabled="disabled"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+              </div>
+              <label class="col-md-1 control-label text-right nopad">备注：</label>
+              <div class="col-md-3">
+                <input type="text" class="form-control" :disabled="isAbleForAccount4"/>
+              </div>
+              <div class="col-md-1 col-md-offset-1">
+                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount4">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount4">不同意</button>
+              </div>
+            </div>
           </div><!-- /.modal-body -->
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
@@ -627,17 +799,18 @@
   import moment from 'moment'
   import agent from '../../vuecommon/agent.vue'
   import agentChoose from '../report/subReport/agentChoose.vue'
+  import agentChooseUpdate from '../report/subReport/agentChooseUpdate.vue'
   import department from '../../vuecommon/department.vue'
   import examine from '../../vuecommon/examine.vue'
   import check from '../../vuecommon/check.vue'
   import approve from '../../vuecommon/approve.vue'
-
   export default {
     components: {
       department,
       DatePicker,
       agent,
       agentChoose,
+      agentChooseUpdate,
       examine,
       check,
       approve
@@ -645,8 +818,8 @@
     data() {
       return {
         // 查询
-        beginDate: moment(),
-        endDate: moment(),
+        beginDate: this.$currentDate(),
+        endDate: this.$currentDate(),
         accountName: '',
         deptQueryId: '',
         state: '',
@@ -671,7 +844,7 @@
           {label: '忘记打卡'},
           {label: '其他'}
         ],
-        notClockTime: moment().subtract(1,'days').format("YYYY-MM-DD 17:30"),
+        notClockTime: moment().subtract(1, 'days').format("YYYY-MM-DD 17:30"),
         leaveRemark: '',
 
         empInfo: '',          // 基本信息
@@ -685,14 +858,19 @@
         parentId: '',         // 父级部门
         // 审查人组件
         deptExamineId: '',
-        typeExamineId:'',
+        typeExamineId: '',
+        deptExamineUpdateId: '',
+        typeExamineUpdateId: '',
         // 审核人组件
         deptCheckId: '',
         typeCheckId: '',
+        deptCheckUpdateId: '',
+        typeCheckUpdateId: '',
         // 批准人组件
         deptApproveId: '',
         typeApproveId: '',
-
+        deptApproveUpdateId: '',
+        typeApproveUpdateId: '',
 
 
         //  查看
@@ -709,7 +887,8 @@
         showApprove: '',   // 批准人账户
         showReport: '1127',// 报备人(暂时固定为李珊珊)
 
-        //  修改
+        // 修改
+        id: "",
         leaveUpdateAccount: '',
         leaveUpdateAccountName: '',
         leaveUpdateDeptId: '',
@@ -720,10 +899,14 @@
         leaveUpdateRemark: '',
         updateAccountR: '',
         updateAccountRName: '',
-        // updateExamineAccount: '',
-        // updateCheckAccount: '',
-        // updateApproveAccount: '',
-        // updateReportAccount: '',
+        updateExamineAccount: '',
+        updateExamineName: '',
+        updateCheckAccount: '',
+        updateCheckName: '',
+        updateApproveAccount: '',
+        updateApproveName: '',
+        updateReportAccount: '',
+        updateReportName: '',
 
         updateRemarkR: '',
         updateRemark1: '',
@@ -734,13 +917,24 @@
         // 按钮状态
         isAbleForExamine: false,
         isAbleForCheck: false,
-        isAbleForApprove: false
+        isAbleForApprove: false,
+        isAbleForUpdateExamine: false,
+        isAbleForUpdateCheck: false,
+        isAbleForUpdateApprove: false,
+
+        isAbleForAccountR: "disabled",
+        isAbleForAccount1: "disabled",
+        isAbleForAccount2: "disabled",
+        isAbleForAccount3: "disabled",
+        isAbleForAccount4: "disabled"
       }
     },
     methods: {
-      // ---------------------------------------公用----------------------------------
-      dateFormat(time){ // 回显时间格式化
-        return moment(time).format("YYYY-MM-DD HH:mm")
+      cancelAdd(){
+        $('#clockAddModel').modal('hide');
+      },
+      cancelUpdate(){
+        $('#clockModifyModel').modal('hide');
       },
       // ---------------------------------------查询----------------------------------
       deptChangeForQuery(val) {
@@ -756,8 +950,8 @@
           },
           data: {
             accountId: this.has(51) ? '' : JSON.parse(Cookies.get("accountData")).account.account_ID,
-            beginDate:  moment(this.beginDate).format("YYYY-MM-DD 00:00:00"),
-            endDate: moment(this.endDate).format("YYYY-MM-DD 23:59:59"),
+            beginDate: this.$queryStartTime(this.beginDate),
+            endDate: this.$queryEndTime(this.endDate),
             leaveDeptId: this.deptQueryId,
             leaveAccountName: this.accountName,
             state: this.state
@@ -790,6 +984,7 @@
       },
       // 申请按钮
       applyClock() {
+        this.clearAddModel();
         this.leaveAccount = JSON.parse(Cookies.get("accountData")).account.account_ID;
         this.$refs.examine.initParam();  // 初始化参数
         this.$refs.check.initParam();
@@ -805,19 +1000,22 @@
         this.$refs.agent.insertAgentInfo(item)
       },
       // 清空添加模态框
-      clearAddModel(){
-        this.leaveAccount ='',
-        this.leaveAccountName = '',
-        this.leaveDeptName = '',
-        this.leavePositionName = '',
-        this.reason = '',
-        this.notClockTime = moment().subtract(1,'days').format("YYYY-MM-DD 17:30"),
-        this.leaveRemark = '',
-        this.accountR = 0,          //  证明人账户
-        this.examineAccount = '',   // 审查人账户
-        this.checkAccount = '',     // 审核人账户
-        this.approveAccount = '',   // 批准人账户
-        this.reportAccount = '1127' // 报备人(暂时固定为李珊珊)
+      clearAddModel() {
+        this.leaveAccount = '',
+          this.leaveAccountName = '',
+          this.leaveDeptName = '',
+          this.leavePositionName = '',
+          this.reason = '',
+          this.notClockTime = moment().subtract(1, 'days').format("YYYY-MM-DD 17:30"),
+          this.leaveRemark = '',
+          this.accountR = 0,          //  证明人账户
+          this.examineAccount = '',   // 审查人账户
+          this.checkAccount = '',     // 审核人账户
+          this.approveAccount = '',   // 批准人账户
+          this.reportAccount = '1127',// 报备人(暂时固定为李珊珊)
+          this.isAbleForExamine = false,
+          this.isAbleForCheck = false,
+          this.isAbleForApprove = false
       },
       // 查询基本信息
       queryEmpInfo() {
@@ -841,7 +1039,7 @@
         });
       },
       // 加载数据
-      toLoad(data){
+      toLoad(data) {
         // 回显数据
         this.leaveAccount = data.account
         this.leaveAccountName = data.name
@@ -862,7 +1060,6 @@
         this.$refs.examine.getExamineList()
         this.$refs.check.getCheckList()
         this.$refs.approve.getApproveList();
-        console.log("account:" + this.$refs.agent.agentInitId);
       },
 
       // 添加审查人
@@ -985,20 +1182,20 @@
         });
       },
 
-      addClock(){ // 申请确认按钮
-        if(this.isBlank(this.reason)){
+      addClock() { // 申请确认按钮
+        if (this.isBlank(this.reason)) {
           alert("请选择未打卡原因!")
           return false;
         }
-        if(this.isBlank(this.leaveRemark)){
+        if (this.isBlank(this.leaveRemark)) {
           alert("请输入说明!")
           return false;
         }
-        if(this.isBlank(this.notClockTime)){
+        if (this.isBlank(this.notClockTime)) {
           alert("请选择未打卡时间!")
           return false;
         }
-        if(this.isBlank(this.leaveRemark)){
+        if (this.isBlank(this.leaveRemark)) {
           alert("请输入说明!")
           return false;
         }
@@ -1012,16 +1209,16 @@
           data: {
             reason: this.reason,
             leaveAccount: this.leaveAccount,
-            addTime: this.dateFormat(),
-            startTime: this.notClockTime,
+            addTime: this.$currentTime(),
+            startTime: this.$YYYY_MM_DD_17_30(this.notClockTime),
             leaveRemark: this.leaveRemark,
             accountR: this.accountR,
             account1: this.examineAccount,
             account2: this.checkAccount,
             account3: this.approveAccount,
             account4: this.reportAccount,
-            updateTime: this.dateFormat(),
-            step:'0'
+            updateTime: this.$currentTime(),
+            step: '0'
           },
           dataType: 'json',
         }).then(response => {
@@ -1033,7 +1230,6 @@
           console.log(err)
         });
       },
-
 
 
       // ---------------------------------------查看----------------------------------
@@ -1052,77 +1248,320 @@
         this.showReport = item.reportAccountName
       },
 
-      // ---------------------------------------修改----------------------------------
-      editClock(item) {
-        if (item.leaveAccount != JSON.parse(Cookies.get("accountData")).account.account_ID) {
-          alert("不能修改他人的报备")
-        } else {
-          this.leaveUpdateAccount = item.leaveAccount
-          this.leaveUpdateAccountName = item.leaveAccountName
-          this.leaveUpdateDeptId = item.leaveDeptId
-          this.leaveUpdateDeptName = item.leaveDeptName
-          this.leaveUpdatePositionName = item.leavePositionName
-          this.reasonUpdate = item.reason
-          this.notClockUpdateTime = item.startTime
-          this.leaveUpdateRemark = item.leaveRemark
-          this.updateAccountR = item.accountR
-          this.updateAccountRName = item.witnessAccountName
-          // this.updateExamineAccount = item.account1
-          // this.updateCheckAccount = item.account2
-          // this.updateApproveAccount = item.account3
-          // this.updateReportAccount = item.account4
-          console.log(this.updateAccountR)
-          this.toUpdateLoad();
-          $('#clockModifyModel').modal('show');
-        }
-      },
-
-      // 加载数据
-      toUpdateLoad(){
-        // 传值给子组件
-        console.log("this.leaveUpdateAccount" + this.leaveUpdateAccount)
-        console.log("this.leaveUpdateDeptId" + this.leaveUpdateDeptId)
-        this.$refs.agentUpdate.getLeaveAccount([this.leaveUpdateAccount, this.leaveUpdateDeptId])
-        this.$refs.agentUpdateChoose.getLeaveAccount([this.leaveUpdateAccount, this.leaveUpdateDeptId])
-        this.$refs.agentUpdate.showAgentInfo({account:this.updateAccountR, name:this.updateAccountRName})
-
-
-        // this.$refs.examine.getDeptId(this.deptInitId)
-        // this.$refs.examine.getTypeId(this.typeId)
-        // this.$refs.check.getDeptId(this.deptInitId)
-        // this.$refs.check.getTypeId(this.typeId)
-        // this.$refs.approve.getDeptId(this.deptInitId)
-        // this.$refs.approve.getTypeId(this.typeId)
-        // 执行子组件方法
-        // this.$refs.examine.getExamineList()
-        // this.$refs.check.getCheckList()
-        // this.$refs.approve.getApproveList();
-        // console.log("account:" + this.$refs.agent.agentInitId);
-      },
-
-
+      //---------------------------------------修改----------------------------------
       // 组件方法
+      approveUpdateChange(val) {
+        this.updateApproveAccount = val
+        console.log("批准人账户ID" + this.updateApproveAccount)
+      },
       changeUpdateAccountR(val) {
         this.updateAccountR = val
         console.log("证明人账户ID" + this.updateAccountR)
       },
-      // examineUpdateChange(val) {
-      //   this.updateExamineAccount = val
-      //   console.log("审查人账户ID" + this.updateExamineAccount)
-      // },
-      // checkUpdateChange(val) {
-      //   this.updateCheckAccount = val
-      //   console.log("审核人账户ID" + this.updateCheckAccount)
-      // },
-      // approveUpdateChange(val) {
-      //   this.updateApproveAccount = val
-      //   console.log("批准人账户ID" + this.updateApproveAccount)
-      // },
-      queryEmpByDeptForUpdate(){
-        this.$refs.agentUpdateChoose.queryEmpByDept()
+      examineUpdateChange(val) {
+        this.updateExamineAccount = val
+        console.log("审查人账户ID" + this.updateExamineAccount)
+      },
+      checkUpdateChange(val) {
+        this.updateCheckAccount = val
+        console.log("审核人账户ID" + this.updateCheckAccount)
       },
       getAccountRUpdateInfo(item) {
         this.$refs.agentUpdate.insertAgentInfo(item)
+      },
+      // 初始化
+      init(){
+        this.$refs.examineUpdate.initParam();  // 初始化参数
+        this.$refs.checkUpdate.initParam();  // 初始化参数
+        this.$refs.approveUpdate.initParam();  // 初始化参数
+        this.isAbleForUpdateExamine = false,
+        this.isAbleForUpdateCheck = false,
+        this.isAbleForUpdateApprove = false
+      },
+      // 证明人选择组件方法
+      queryEmpByDeptForUpdate() {
+        this.$refs.agentUpdateChoose.queryEmpByDept()
+      },
+      // 数据回显
+      getEditInfo(item){
+        this.id = item.id
+        this.leaveUpdateAccount = item.leaveAccount
+        this.leaveUpdateAccountName = item.leaveAccountName
+        this.leaveUpdateDeptId = item.leaveDeptId
+        this.leaveUpdateDeptName = item.leaveDeptName
+        this.leaveUpdatePositionName = item.leavePositionName
+        this.reasonUpdate = item.reason
+        this.notClockUpdateTime = item.startTime
+        this.leaveUpdateRemark = item.leaveRemark
+        this.updateAccountR = item.accountR
+        this.updateAccountRName = item.witnessAccountName
+        this.updateExamineAccount = item.account1
+        this.updateExamineName = item.examineAccountName
+        this.updateCheckAccount = item.account2
+        this.updateCheckName = item.checkAccountName
+        this.updateApproveAccount = item.account3
+        this.updateApproveName = item.approveAccountName
+        this.updateReportAccount = item.account4
+        this.updateReportName = item.reportAccountName
+        this.queryEmpUpdateInfo();
+      },
+      // 修改按钮
+      editClock(item) {
+        if (item.leaveAccount != JSON.parse(Cookies.get("accountData")).account.account_ID) {
+          alert("不能修改他人的报备")
+        } else {
+          this.init();  // 初始化
+          this.getEditInfo(item); // 回显数据
+          $('#clockModifyModel').modal('show');
+        }
+      },
+      // 加载修改模态框组件数据
+      toUpdateLoad(data) {
+        // 获取职务级别和初始部门
+        this.deptInitId = this.leaveUpdateDeptId
+        this.typeId = data.typeId
+        this.toChild(this.deptInitId, this.typeId)
+      },
+      // 调用子组件的属性和方法
+      toChild(dept,typeId){
+        // 证明人组件
+        this.$refs.agentUpdate.getLeaveAccount([this.leaveUpdateAccount, this.leaveUpdateDeptId])
+        this.$refs.agentUpdate.showAgentInfo({account: this.updateAccountR, name: this.updateAccountRName})
+        this.$refs.agentUpdateChoose.getLeaveAccount([this.leaveUpdateAccount, this.leaveUpdateDeptId])
+        // 审查人组件
+        this.$refs.examineUpdate.getDeptId(dept)
+        this.$refs.examineUpdate.getTypeId(typeId)
+        this.$refs.examineUpdate.showExamineInfo({accountId: this.updateExamineAccount, accountName: this.updateExamineName})
+        this.$refs.examineUpdate.getExamineList()
+        // 审核人组件
+        this.$refs.checkUpdate.getDeptId(dept)
+        this.$refs.checkUpdate.getTypeId(typeId)
+        this.$refs.checkUpdate.showCheckInfo({accountId: this.updateCheckAccount, accountName: this.updateCheckName})
+        this.$refs.checkUpdate.getCheckList()
+        // 批准人组件
+        this.$refs.approveUpdate.getDeptId(dept)
+        this.$refs.approveUpdate.getTypeId(typeId)
+        this.$refs.approveUpdate.showApproveInfo({accountId: this.updateApproveAccount, accountName: this.updateApproveName})
+        this.$refs.approveUpdate.getApproveList()
+      },
+
+      /***********axios***********/
+
+      // 查询基本信息
+      queryEmpUpdateInfo() {
+        axios({
+          method: 'post',
+          url: this.url + '/leaveForgetController/queryEmpInfoByAccount',
+          headers: {
+            'Content-Type': this.contentType,
+            'Access-Token': this.accessToken
+          },
+          data: {
+            account: this.leaveUpdateAccount
+          },
+          dataType: 'json',
+        }).then((response) => {
+          console.log(response.data.retData)
+          this.empInfo = response.data.retData;
+          this.toUpdateLoad(this.empInfo);
+        }).catch(err => {
+          console.log(err)
+        });
+      },
+      // 修改---添加审查人
+      addExamineUpdateOption() {
+        if (this.isBlank(this.deptExamineUpdateId)) {  // 首次加载初始化参数
+          this.deptExamineUpdateId = this.deptInitId // 部门
+        }
+        axios({
+          method: 'post',
+          url: this.url + '/leavePrepareController/queryParentDept',
+          headers: {
+            'Content-Type': this.contentType,
+            'Access-Token': this.accessToken
+          },
+          data: {
+            deptId: this.deptExamineUpdateId
+          },
+          dataType: 'json',
+        }).then(response => {
+          console.log(response.data.retData)
+          this.parentId = response.data.retData // 获取请假人的父级部门ID
+          if (this.deptExamineUpdateId == '0') { // 当下一次初始部门ID为0时(没有父级部门时)
+            this.$refs.examineUpdate.getDeptId(this.deptInitId) // 传初始化参数给子组件
+            this.deptExamineUpdateId = this.deptInitId; // 下一轮初始的部门ID为初始参数
+            this.typeExamineUpdateId = this.$refs.examineUpdate.setTypeId();
+            if (this.typeExamineUpdateId < 6) {
+              this.$refs.examineUpdate.getTypeId(this.typeExamineUpdateId);
+            }
+            if (this.typeExamineUpdateId == 6) {  // 禁用选项
+              this.$refs.examineUpdate.changeAble();
+              this.isAbleForUpdateExamine = "disabled"
+            }
+          } else {
+            this.$refs.examineUpdate.getDeptId(this.parentId) // 传父级部门ID给子组件
+            this.deptExamineUpdateId = this.parentId;  // 下一轮初始的部门ID为该部门的父级部门
+          }
+          this.$refs.examineUpdate.getExamineList();  // 调用子组件方法
+        }).catch(err => {
+          console.log(err)
+        });
+      },
+      // 修改---添加审核人
+      addCheckUpdateOption() {
+        if (this.isBlank(this.deptCheckUpdateId)) {  // 首次加载初始化参数
+          this.deptCheckUpdateId = this.deptInitId // 部门
+        }
+        axios({
+          method: 'post',
+          url: this.url + '/leavePrepareController/queryParentDept',
+          headers: {
+            'Content-Type': this.contentType,
+            'Access-Token': this.accessToken
+          },
+          data: {
+            deptId: this.deptCheckUpdateId
+          },
+          dataType: 'json',
+        }).then(response => {
+          console.log(response.data.retData)
+          console.log("typeId:" +this.typeCheckUpdateId);
+          this.parentId = response.data.retData // 获取请假人的父级部门ID
+          if (this.deptCheckUpdateId == '0') { // 当下一次初始部门ID为0时(没有父级部门时)
+            this.$refs.checkUpdate.getDeptId(this.deptInitId) // 传初始化参数给子组件
+            this.deptCheckUpdateId = this.deptInitId; // 下一轮初始的部门ID为初始参数
+            this.typeCheckUpdateId = this.$refs.checkUpdate.setTypeId();
+            if (this.typeCheckUpdateId < 6) {
+              this.$refs.checkUpdate.getTypeId(this.typeCheckUpdateId);
+            }
+            if (this.typeCheckUpdateId == 6) {  // 禁用选项
+              this.$refs.checkUpdate.changeAble();
+              this.isAbleForUpdateCheck = "disabled"
+            }
+          } else {
+            this.$refs.checkUpdate.getDeptId(this.parentId) // 传父级部门ID给子组件
+            this.deptCheckUpdateId = this.parentId;  // 下一轮初始的部门ID为该部门的父级部门
+          }
+          this.$refs.checkUpdate.getCheckList();  // 调用子组件方法
+        }).catch(err => {
+          console.log(err)
+        });
+      },
+      // 修改---添加批准人
+      addApproveUpdateOption(){
+        if (this.isBlank(this.deptApproveUpdateId)) {  // 首次加载初始化参数
+          this.deptApproveUpdateId = this.deptInitId // 部门
+        }
+        axios({
+          method: 'post',
+          url: this.url + '/leavePrepareController/queryParentDept',
+          headers: {
+            'Content-Type': this.contentType,
+            'Access-Token': this.accessToken
+          },
+          data: {
+            deptId: this.deptApproveUpdateId
+          },
+          dataType: 'json',
+        }).then(response => {
+          console.log(response.data.retData)
+          console.log("this.typeApproveId" + this.deptApproveUpdateId)
+          this.parentId = response.data.retData // 获取请假人的父级部门ID
+          if (this.deptApproveUpdateId == '0') { // 当下一次初始部门ID为0时(没有父级部门时)
+            this.$refs.approveUpdate.getDeptId(this.deptInitId) // 传初始化参数给子组件
+            this.deptApproveUpdateId = this.deptInitId; // 下一轮初始的部门ID为初始参数
+            this.typeApproveUpdateId = this.$refs.approveUpdate.setTypeId();
+            if (this.typeApproveUpdateId < 6) {
+              this.$refs.approveUpdate.getTypeId(this.typeApproveUpdateId);
+            }
+            if (this.typeApproveUpdateId == 6) {  // 禁用选项
+              this.$refs.approveUpdate.changeAble();
+              this.isAbleForUpdateApprove = "disabled"
+            }
+          } else {
+            this.$refs.approveUpdate.getDeptId(this.parentId) // 传父级部门ID给子组件
+            this.deptApproveUpdateId = this.parentId;  // 下一轮初始的部门ID为该部门的父级部门
+          }
+          this.$refs.approveUpdate.getApproveList();  // 调用子组件方法
+        }).catch(err => {
+          console.log(err)
+        });
+      },
+      // 更新方法
+      updateReport(){
+        let msg = confirm("修改后需要重新审批,确认修改？")
+        if(msg){
+          axios({
+            method: 'post',
+            url: this.url + '/leaveForgetController/updateLeaveForget',
+            headers: {
+              'Content-Type': this.contentType,
+              'Access-Token': this.accessToken
+            },
+            data: {
+              id: this.id,
+              reason: this.reasonUpdate,
+              startTime: this.$YYYY_MM_DD_17_30(this.notClockUpdateTime),
+              accountR: this.updateAccountR,
+              account1: this.updateExamineAccount,
+              account2: this.updateCheckAccount,
+              account3: this.updateApproveAccount,
+              account4: this.updateReportAccount,
+              leaveRemark: this.leaveUpdateRemark,
+              updateTime: this.$currentTime()
+            },
+            dataType: 'json',
+          }).then(response => {
+            console.log(response.data.retData);
+            $('#clockModifyModel').modal('hide');
+            this.queryClock();
+          }).catch(err => {
+            console.log(err)
+          });
+        }
+      },
+
+      //---------------------------------------处理----------------------------------
+      disposeClock(item){
+        console.log(item)
+        this.showLeaveAccountName = item.leaveAccountName
+        this.showLeaveDeptName = item.leaveDeptName
+        this.showLeavePositionName = item.leavePositionName
+        this.showReason = item.reason
+        this.showNotClockTime = item.startTime
+        this.showLeaveRemark = item.leaveRemark
+        this.showAccountR = item.witnessAccountName
+        this.showExamine = item.examineAccountName
+        this.showCheck = item.checkAccountName
+        this.showApprove = item.approveAccountName
+        this.showReport = item.reportAccountName
+        let loginAccount = JSON.parse(Cookies.get("accountData")).account.account_ID;
+        let flag = 0;
+        if(item.accountR == loginAccount){
+          this.isAbleForAccountR = false;
+          flag = 1;
+        }
+        if(item.account1 == loginAccount){
+          this.isAbleForAccount1 = false;
+          flag = 1;
+        }
+        if(item.account2 == loginAccount){
+          this.isAbleForAccount2 = false;
+          flag = 1;
+        }
+        if(item.account3 == loginAccount){
+          this.isAbleForAccount3 = false;
+          flag = 1;
+        }
+        if(item.account4 == loginAccount){
+          this.isAbleForAccount4 = false;
+          flag = 1;
+        }
+        if(flag == 1){
+          $("#clockDisposeModel").modal("show");
+        }else{
+          alert("无权对此条数据进行处理")
+        }
       },
 
     }

@@ -19,6 +19,7 @@
           typeId: 0,
           positionTypeId: '',
           typeIds:[],
+          examine:{},
           examineList: [] // 审查人集合
         }
       },
@@ -63,6 +64,9 @@
         getDeptId(val){
           this.deptId = val
         },
+        showExamineInfo(val){
+          this.examine = val
+        },
         // 查询审查人信息
         getExamineList: function () {
           axios({
@@ -79,8 +83,19 @@
             dataType: 'json',
           }).then(response => {
             console.log(response.data.retData)
-            this.examineList = (response.data.retData);
-            this.accountId = this.examineList[0].accountId;
+            this.examineList = response.data.retData;
+            if(!this.isBlank(this.examine.accountId)){
+              for(let i=0; i<this.examineList.length; i++){
+                if(this.examine.accountId == this.examineList[i].accountId){  // 如果获取的审查人已存在集合中
+                  this.accountId = this.examine.accountId;  // 默认显示获取的审查人
+                  return false;
+                }
+              }
+              this.examineList.push(this.examine);  // 如果获取的审查人不存在集合中 向集合中加入数据
+              this.accountId = this.examine.accountId;  // 默认显示新增加的审查人
+            }else{
+              this.accountId = this.examineList[0].accountId;
+            }
           }).catch(err => {
             console.log(err)
           });

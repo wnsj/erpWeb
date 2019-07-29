@@ -37,6 +37,7 @@
       },
       insertAgentInfo(val) {
         this.agentList.push(val)
+        this.accountId = val.account
       },
       initParamNull(){  // 初始化参数为空
         this.accountId = ''
@@ -69,12 +70,13 @@
           }
           if(!this.isBlank(this.agent.account)){
             for(let i=0; i<this.agentList.length; i++){
-              if(this.agent.account == this.agentList[i].account){
+              if(this.agent.account == this.agentList[i].account){  // 如果获取的证明人已存在集合中
+                this.accountId = this.agent.account;  // 默认显示获取的证明人
                 return false;
               }
             }
-            this.agentList.push(this.agent);
-            this.accountId = this.agent.account;
+            this.agentList.push(this.agent);  // 如果获取的证明人不存在集合中 向集合中加入数据
+            this.accountId = this.agent.account;  // 默认显示新增加的证明人
           }
         }).catch((error) => {
           console.log('请求失败处理')

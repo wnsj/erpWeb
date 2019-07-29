@@ -19,6 +19,7 @@
         typeId: 0,
         positionTypeId: '',
         typeIds:[],
+        check:{},
         checkList: [] // 审查人集合
       }
     },
@@ -63,6 +64,9 @@
       getDeptId(val){
         this.deptId = val
       },
+      showCheckInfo(val){
+        this.check = val
+      },
       // 查询审核人信息
       getCheckList: function () {
         axios({
@@ -80,7 +84,18 @@
         }).then((response) => {
           console.log(response.data.retData)
           this.checkList = (response.data.retData);
-          this.accountId = this.checkList[0].accountId;
+          if(!this.isBlank(this.check.accountId)){
+            for(let i=0; i<this.checkList.length; i++){
+              if(this.check.accountId == this.checkList[i].accountId){  // 如果获取的审查人已存在集合中
+                this.accountId = this.check.accountId;  // 默认显示获取的审查人
+                return false;
+              }
+            }
+            this.checkList.push(this.check);  // 如果获取的审查人不存在集合中 向集合中加入数据
+            this.accountId = this.check.accountId;  // 默认显示新增加的审查人
+          }else{
+            this.accountId = this.checkList[0].accountId;
+          }
         }).catch((error) => {
           console.log('请求失败处理')
         });
