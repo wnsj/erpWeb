@@ -697,13 +697,17 @@
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
-                <input type="text" class="form-control" :disabled="isAbleForAccountR"/>
+                <input type="text" class="form-control" :disabled="isAbleForAccountR" v-model="remarkR"/>
               </div>
-              <div class="col-md-1 col-md-offset-1">
-                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccountR">同意</button>
+              <label class="col-md-1 control-label text-right nopad">结果：</label>
+              <div class="col-md-1">
+                <span class="nopad"><b>{{this.resultR == 0? '不同意':this.resultR == 1? '同意':''}}</b></span>
               </div>
               <div class="col-md-1">
-                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccountR">不同意</button>
+                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccountR" @click="agreeR">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccountR" @click="disagreeR">不同意</button>
               </div>
             </div>
             <legend><h5>审查</h5></legend>
@@ -717,13 +721,17 @@
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
-                <input type="text" class="form-control" :disabled="isAbleForAccount1"/>
+                <input type="text" class="form-control" :disabled="isAbleForAccount1" v-model="remark1"/>
               </div>
-              <div class="col-md-1 col-md-offset-1">
-                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount1">同意</button>
+              <label class="col-md-1 control-label text-right nopad">结果：</label>
+              <div class="col-md-1">
+                <span class="nopad"><b>{{this.result1 == 0? '不同意':this.result1 == 1? '同意':''}}</b></span>
               </div>
               <div class="col-md-1">
-                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount1">不同意</button>
+                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount1" @click="agreeExamine">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount1" @click="disagreeExamine">不同意</button>
               </div>
             </div>
             <legend><h5>审核</h5></legend>
@@ -737,13 +745,17 @@
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
-                <input type="text" class="form-control" :disabled="isAbleForAccount2"/>
+                <input type="text" class="form-control" :disabled="isAbleForAccount2" v-model="remark2"/>
               </div>
-              <div class="col-md-1 col-md-offset-1">
-                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount2">同意</button>
+              <label class="col-md-1 control-label text-right nopad">结果：</label>
+              <div class="col-md-1">
+                <span class="nopad"><b>{{this.result2 == 0? '不同意':this.result2 == 1? '同意':''}}</b></span>
               </div>
               <div class="col-md-1">
-                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount2">不同意</button>
+                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount2" @click="agreeCheck">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount2" @click="disagreeCheck">不同意</button>
               </div>
             </div>
             <legend><h5>批准</h5></legend>
@@ -757,13 +769,17 @@
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
-                <input type="text" class="form-control" :disabled="isAbleForAccount3"/>
+                <input type="text" class="form-control" :disabled="isAbleForAccount3" v-model="remark3"/>
               </div>
-              <div class="col-md-1 col-md-offset-1">
-                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount3">同意</button>
+              <label class="col-md-1 control-label text-right nopad">结果：</label>
+              <div class="col-md-1">
+                <span class="nopad"><b>{{this.result3 == 0? '不同意':this.result3 == 1? '同意':''}}</b></span>
               </div>
               <div class="col-md-1">
-                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount3">不同意</button>
+                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount3" @click="agreeApprove">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount3" @click="disagreeApprove">不同意</button>
               </div>
             </div>
             <legend><h5>报备</h5></legend>
@@ -777,13 +793,17 @@
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
-                <input type="text" class="form-control" :disabled="isAbleForAccount4"/>
+                <input type="text" class="form-control" :disabled="isAbleForAccount4" v-model="remark4"/>
               </div>
-              <div class="col-md-1 col-md-offset-1">
-                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount4">同意</button>
+              <label class="col-md-1 control-label text-right nopad">结果：</label>
+              <div class="col-md-1">
+                <span class="nopad"><b>{{this.result4 == 0? '不同意':this.result4 == 1? '同意':''}}</b></span>
               </div>
               <div class="col-md-1">
-                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount4">不同意</button>
+                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount4" @click="agreeReport">同意</button>
+              </div>
+              <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-warning" :disabled="isAbleForAccount4" @click="disagreeReport">不同意</button>
               </div>
             </div>
           </div><!-- /.modal-body -->
@@ -831,7 +851,6 @@
           {value: '4', label: '未通过'},
         ],
         clockList: [],
-
         //  新增
         leaveAccount: '',
         leaveAccountName: '',
@@ -846,9 +865,7 @@
         ],
         notClockTime: moment().subtract(1, 'days').format("YYYY-MM-DD 17:30"),
         leaveRemark: '',
-
         empInfo: '',          // 基本信息
-
         accountR: '0',         // 证明人账户
         examineAccount: '',   // 审查人账户
         checkAccount: '',     // 审核人账户
@@ -871,8 +888,6 @@
         typeApproveId: '',
         deptApproveUpdateId: '',
         typeApproveUpdateId: '',
-
-
         //  查看
         showLeaveAccountName: '',
         showLeaveDeptName: '',
@@ -880,13 +895,11 @@
         showReason: '',
         showNotClockTime: '',
         showLeaveRemark: '',
-
         showAccountR: '',         // 证明人账户
         showExamine: '',   // 审查人账户
         showCheck: '',     // 审核人账户
         showApprove: '',   // 批准人账户
         showReport: '1127',// 报备人(暂时固定为李珊珊)
-
         // 修改
         id: "",
         leaveUpdateAccount: '',
@@ -907,13 +920,6 @@
         updateApproveName: '',
         updateReportAccount: '',
         updateReportName: '',
-
-        updateRemarkR: '',
-        updateRemark1: '',
-        updateRemark2: '',
-        updateRemark3: '',
-        updateRemark4: '',
-
         // 按钮状态
         isAbleForExamine: false,
         isAbleForCheck: false,
@@ -921,12 +927,25 @@
         isAbleForUpdateExamine: false,
         isAbleForUpdateCheck: false,
         isAbleForUpdateApprove: false,
-
         isAbleForAccountR: "disabled",
         isAbleForAccount1: "disabled",
         isAbleForAccount2: "disabled",
         isAbleForAccount3: "disabled",
-        isAbleForAccount4: "disabled"
+        isAbleForAccount4: "disabled",
+        // 备注
+        remarkR: '',
+        remark1: '',
+        remark2: '',
+        remark3: '',
+        remark4: '',
+        //处理结果
+        resultR: '',
+        result1: '',
+        result2: '',
+        result3: '',
+        result4: '',
+        // 步骤
+        step: '',
       }
     },
     methods: {
@@ -1075,7 +1094,8 @@
             'Access-Token': this.accessToken
           },
           data: {
-            deptId: this.deptExamineId
+            deptId: this.deptExamineId,
+            step: 0
           },
           dataType: 'json',
         }).then(response => {
@@ -1218,7 +1238,7 @@
             account3: this.approveAccount,
             account4: this.reportAccount,
             updateTime: this.$currentTime(),
-            step: '0'
+            step: 0
           },
           dataType: 'json',
         }).then(response => {
@@ -1507,7 +1527,23 @@
               account2: this.updateCheckAccount,
               account3: this.updateApproveAccount,
               account4: this.updateReportAccount,
+              timeR: -1,
+              time1: -1,
+              time2: -1,
+              time3: -1,
+              time4: -1,
+              resultR: -1,
+              result1: -1,
+              result2: -1,
+              result3: -1,
+              result4: -1,
+              remarkR: -1,
+              remark1: -1,
+              remark2: -1,
+              remark3: -1,
+              remark4: -1,
               leaveRemark: this.leaveUpdateRemark,
+              step: 0,
               updateTime: this.$currentTime()
             },
             dataType: 'json',
@@ -1523,44 +1559,383 @@
 
       //---------------------------------------处理----------------------------------
       disposeClock(item){
-        console.log(item)
-        this.showLeaveAccountName = item.leaveAccountName
-        this.showLeaveDeptName = item.leaveDeptName
-        this.showLeavePositionName = item.leavePositionName
-        this.showReason = item.reason
-        this.showNotClockTime = item.startTime
-        this.showLeaveRemark = item.leaveRemark
-        this.showAccountR = item.witnessAccountName
-        this.showExamine = item.examineAccountName
-        this.showCheck = item.checkAccountName
-        this.showApprove = item.approveAccountName
-        this.showReport = item.reportAccountName
-        let loginAccount = JSON.parse(Cookies.get("accountData")).account.account_ID;
-        let flag = 0;
-        if(item.accountR == loginAccount){
-          this.isAbleForAccountR = false;
-          flag = 1;
-        }
-        if(item.account1 == loginAccount){
-          this.isAbleForAccount1 = false;
-          flag = 1;
-        }
-        if(item.account2 == loginAccount){
-          this.isAbleForAccount2 = false;
-          flag = 1;
-        }
-        if(item.account3 == loginAccount){
-          this.isAbleForAccount3 = false;
-          flag = 1;
-        }
-        if(item.account4 == loginAccount){
-          this.isAbleForAccount4 = false;
-          flag = 1;
-        }
-        if(flag == 1){
-          $("#clockDisposeModel").modal("show");
+        if(item.result4 != null){
+          alert("处理已完成,无法再次处理！")
         }else{
-          alert("无权对此条数据进行处理")
+          this.id = item.id
+          this.showLeaveAccountName = item.leaveAccountName
+          this.showLeaveDeptName = item.leaveDeptName
+          this.showLeavePositionName = item.leavePositionName
+          this.showReason = item.reason
+          this.showNotClockTime = item.startTime
+          this.showLeaveRemark = item.leaveRemark
+          this.showAccountR = item.witnessAccountName
+          this.showExamine = item.examineAccountName
+          this.showCheck = item.checkAccountName
+          this.showApprove = item.approveAccountName
+          this.showReport = item.reportAccountName
+          this.remarkR = item.remarkR
+          this.remark1 = item.remark1
+          this.remark2 = item.remark2
+          this.remark3 = item.remark3
+          this.remark4 = item.remark4
+          this.resultR = item.resultR
+          this.result1 = item.result1
+          this.result2 = item.result2
+          this.result3 = item.result3
+          this.result4 = item.result4
+          this.step = item.step
+          let loginAccount = JSON.parse(Cookies.get("accountData")).account.account_ID;
+          let flag = 0;
+          if(item.accountR == loginAccount){
+            this.isAbleForAccountR = false;
+            flag = 1;
+          }
+          if(item.account1 == loginAccount){
+            this.isAbleForAccount1 = false;
+            flag = 1;
+          }
+          if(item.account2 == loginAccount){
+            this.isAbleForAccount2 = false;
+            flag = 1;
+          }
+          if(item.account3 == loginAccount){
+            this.isAbleForAccount3 = false;
+            flag = 1;
+          }
+          if(item.account4 == loginAccount){
+            this.isAbleForAccount4 = false;
+            flag = 1;
+          }
+          if(flag == 1){
+            $("#clockDisposeModel").modal("show");
+          }else{
+            alert("无权对此条数据进行处理")
+          }
+        }
+      },
+      // 证明人同意按钮
+      agreeR(){
+        if(this.step > 1){
+          alert("下一步已处理,不能再次提交！")
+        }else{
+          axios({
+            method: 'post',
+            url: this.url + '/leaveForgetController/updateLeaveForget',
+            headers: {
+              'Content-Type': this.contentType,
+              'Access-Token': this.accessToken
+            },
+            data: {
+              id: this.id,
+              timeR: this.$currentTime(),
+              resultR: 1,
+              remarkR: this.remarkR,
+              step: 1,
+              updateTime: this.$currentTime()
+            },
+            dataType: 'json',
+          }).then(response => {
+            console.log(response.data.retData);
+            $('#clockDisposeModel').modal('hide');
+            this.queryClock();
+          }).catch(err => {
+            console.log(err)
+          });
+        }
+      },
+      // 证明人不同意按钮
+      disagreeR(){
+        if(this.step > 1){
+          alert("下一步已处理,不能再次提交！")
+        }else {
+          axios({
+            method: 'post',
+            url: this.url + '/leaveForgetController/updateLeaveForget',
+            headers: {
+              'Content-Type': this.contentType,
+              'Access-Token': this.accessToken
+            },
+            data: {
+              id: this.id,
+              timeR: this.$currentTime(),
+              resultR: 0,
+              remarkR: this.remarkR,
+              step: 1,
+              updateTime: this.$currentTime()
+            },
+            dataType: 'json',
+          }).then(response => {
+            console.log(response.data.retData);
+            $('#clockDisposeModel').modal('hide');
+            this.queryClock();
+          }).catch(err => {
+            console.log(err)
+          });
+        }
+      },
+      // 审查人同意按钮
+      agreeExamine(){
+        if(this.resultR == 1){
+         if(this.step>2){
+           alert("下一步已处理,不能再次提交！")
+         }else{
+           axios({
+             method: 'post',
+             url: this.url + '/leaveForgetController/updateLeaveForget',
+             headers: {
+               'Content-Type': this.contentType,
+               'Access-Token': this.accessToken
+             },
+             data: {
+               id: this.id,
+               time1: this.$currentTime(),
+               result1: 1,
+               remark1: this.remark1,
+               step: 2,
+               updateTime: this.$currentTime()
+             },
+             dataType: 'json',
+           }).then(response => {
+             console.log(response.data.retData);
+             $('#clockDisposeModel').modal('hide');
+             this.queryClock();
+           }).catch(err => {
+             console.log(err)
+           });
+         }
+        }else{
+          alert("上一步未批准")
+        }
+      },
+      // 审查人不同意按钮
+      disagreeExamine(){
+        if(this.resultR == 1) {
+          if (this.step > 2) {
+            alert("下一步已处理,不能再次提交！")
+          } else {
+            axios({
+              method: 'post',
+              url: this.url + '/leaveForgetController/updateLeaveForget',
+              headers: {
+                'Content-Type': this.contentType,
+                'Access-Token': this.accessToken
+              },
+              data: {
+                id: this.id,
+                time1: this.$currentTime(),
+                result1: 0,
+                remark1: this.remark1,
+                step: 2,
+                updateTime: this.$currentTime()
+              },
+              dataType: 'json',
+            }).then(response => {
+              console.log(response.data.retData);
+              $('#clockDisposeModel').modal('hide');
+              this.queryClock();
+            }).catch(err => {
+              console.log(err)
+            });
+          }
+        }else{
+          alert("上一步未批准")
+        }
+      },
+      // 审核人同意按钮
+      agreeCheck(){
+        if(this.result1 == 1) {
+          if (this.step > 3) {
+            alert("下一步已处理,不能再次提交！")
+          } else {
+            axios({
+              method: 'post',
+              url: this.url + '/leaveForgetController/updateLeaveForget',
+              headers: {
+                'Content-Type': this.contentType,
+                'Access-Token': this.accessToken
+              },
+              data: {
+                id: this.id,
+                time2: this.$currentTime(),
+                result2: 1,
+                remark2: this.remark2,
+                step: 3,
+                updateTime: this.$currentTime()
+              },
+              dataType: 'json',
+            }).then(response => {
+              console.log(response.data.retData);
+              $('#clockDisposeModel').modal('hide');
+              this.queryClock();
+            }).catch(err => {
+              console.log(err)
+            });
+          }
+        }else {
+          alert("上一步未批准")
+        }
+      },
+      // 审核人不同意按钮
+      disagreeCheck(){
+        if(this.result1 == 1) {
+          if (this.step > 3) {
+            alert("下一步已处理,不能再次提交！")
+          } else {
+            axios({
+              method: 'post',
+              url: this.url + '/leaveForgetController/updateLeaveForget',
+              headers: {
+                'Content-Type': this.contentType,
+                'Access-Token': this.accessToken
+              },
+              data: {
+                id: this.id,
+                time2: this.$currentTime(),
+                result2: 0,
+                remark2: this.remark2,
+                step: 3,
+                updateTime: this.$currentTime()
+              },
+              dataType: 'json',
+            }).then(response => {
+              console.log(response.data.retData);
+              $('#clockDisposeModel').modal('hide');
+              this.queryClock();
+            }).catch(err => {
+              console.log(err)
+            });
+          }
+        }else {
+          alert("上一步未批准")
+        }
+      },
+      // 批准人同意按钮
+      agreeApprove(){
+        if(this.result2 == 1) {
+          if (this.step > 4) {
+            alert("下一步已处理,不能再次提交！")
+          } else {
+            axios({
+              method: 'post',
+              url: this.url + '/leaveForgetController/updateLeaveForget',
+              headers: {
+                'Content-Type': this.contentType,
+                'Access-Token': this.accessToken
+              },
+              data: {
+                id: this.id,
+                time3: this.$currentTime(),
+                result3: 1,
+                remark3: this.remark3,
+                step: 4,
+                updateTime: this.$currentTime()
+              },
+              dataType: 'json',
+            }).then(response => {
+              console.log(response.data.retData);
+              $('#clockDisposeModel').modal('hide');
+              this.queryClock();
+            }).catch(err => {
+              console.log(err)
+            });
+          }
+        }else {
+          alert("上一步未批准")
+        }
+      },
+      // 批准人不同意按钮
+      disagreeApprove(){
+        if(this.result2 == 1) {
+          if (this.step > 4) {
+            alert("下一步已处理,不能再次提交！")
+          } else {
+            axios({
+              method: 'post',
+              url: this.url + '/leaveForgetController/updateLeaveForget',
+              headers: {
+                'Content-Type': this.contentType,
+                'Access-Token': this.accessToken
+              },
+              data: {
+                id: this.id,
+                time3: this.$currentTime(),
+                result3: 0,
+                remark3: this.remark3,
+                step: 4,
+                updateTime: this.$currentTime()
+              },
+              dataType: 'json',
+            }).then(response => {
+              console.log(response.data.retData);
+              $('#clockDisposeModel').modal('hide');
+              this.queryClock();
+            }).catch(err => {
+              console.log(err)
+            });
+          }
+        }else {
+          alert("上一步未批准")
+        }
+      },
+      // 报备人同意按钮
+      agreeReport(){
+        if(this.result3 == 1) {
+          axios({
+            method: 'post',
+            url: this.url + '/leaveForgetController/updateLeaveForget',
+            headers: {
+              'Content-Type': this.contentType,
+              'Access-Token': this.accessToken
+            },
+            data: {
+              id: this.id,
+              time4: this.$currentTime(),
+              result4: 1,
+              remark4: this.remark4,
+              step: 5,
+              updateTime: this.$currentTime()
+            },
+            dataType: 'json',
+          }).then(response => {
+            console.log(response.data.retData);
+            $('#clockDisposeModel').modal('hide');
+            this.queryClock();
+          }).catch(err => {
+            console.log(err)
+          });
+        }else {
+          alert("上一步未批准")
+        }
+      },
+      // 报备人不同意按钮
+      disagreeReport(){
+        if(this.result3 == 1) {
+          axios({
+            method: 'post',
+            url: this.url + '/leaveForgetController/updateLeaveForget',
+            headers: {
+              'Content-Type': this.contentType,
+              'Access-Token': this.accessToken
+            },
+            data: {
+              id: this.id,
+              time4: this.$currentTime(),
+              result4: 0,
+              remark4: this.remark4,
+              step: 5,
+              updateTime: this.$currentTime()
+            },
+            dataType: 'json',
+          }).then(response => {
+            console.log(response.data.retData);
+            $('#clockDisposeModel').modal('hide');
+            this.queryClock();
+          }).catch(err => {
+            console.log(err)
+          });
+        }else {
+          alert("上一步未批准")
         }
       },
 
