@@ -37,7 +37,6 @@
     methods:{
       //提交职位名称和ID
       positionChange: function() {
-				
         this.positionName = this.exchangePositionName(this.position)
         // alert(this.positionId+this.positionName)
         // this.$emit('positionChange',this.positionId,this.positionName)

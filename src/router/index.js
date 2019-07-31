@@ -33,8 +33,10 @@ import officeSuppliesManage from '../components/paperlessOffice/officeSuppliesMa
 import computerSupplies from '../components/paperlessOffice/computerSupplies.vue'
 import computerAdvanceApplication from '../components/paperlessOffice/computerAdvanceApplication.vue'
 import empRequire from '../components/paperlessOffice/empRequire.vue'
-import report from '../components/paperlessOffice/report/report.vue'
-import clock from '../components/paperlessOffice/clock/clock.vue'
+import report from '../components/paperlessOffice/report.vue'
+import clock from '../components/paperlessOffice/clock.vue'
+import preApplication from '../components/paperlessOffice/computerPreApplication.vue'
+
 
 Vue.use(Router)
 
@@ -123,12 +125,12 @@ export default new Router({
 					path: '/paperlessOffice/clock',
 					component: clock
 				},
-				
+
 				{
 					path: '/paperlessOffice/askForLeave',
 					component: askForLeave
 				},
-				
+
 				{
 					path: '/paperlessOffice/restdown',
 					component: restdown
@@ -136,7 +138,11 @@ export default new Router({
 				{
 					path:'/paperlessOffice/officeSuppliesManage',
 					component:officeSuppliesManage
-				}
+				},
+        {
+          path:'/paperlessOffice/computerPreApplication',
+          component:preApplication
+        }
 			],
 			redirect: '/employee'
 		}

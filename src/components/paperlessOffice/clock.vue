@@ -817,13 +817,13 @@
   import axios from 'axios'
   import Cookies from 'js-cookie'
   import moment from 'moment'
-  import agent from '../../vuecommon/agent.vue'
-  import agentChoose from '../report/subReport/agentChoose.vue'
-  import agentChooseUpdate from '../report/subReport/agentChooseUpdate.vue'
-  import department from '../../vuecommon/department.vue'
-  import examine from '../../vuecommon/examine.vue'
-  import check from '../../vuecommon/check.vue'
-  import approve from '../../vuecommon/approve.vue'
+  import agent from '../vuecommon/agent.vue'
+  import agentChoose from './subReportAndClock/agentChoose.vue'
+  import agentChooseUpdate from './subReportAndClock/agentChooseUpdate.vue'
+  import department from '../vuecommon/department.vue'
+  import examine from '../vuecommon/examine.vue'
+  import check from '../vuecommon/check.vue'
+  import approve from '../vuecommon/approve.vue'
   export default {
     components: {
       department,

@@ -62,7 +62,7 @@
 <script>
     name:'agentChooseUpdate'
     import axios from 'axios'
-    import department from '../../../vuecommon/department.vue'
+    import department from '../../vuecommon/department.vue'
     export default {
         components: {
             department
