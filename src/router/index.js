@@ -19,9 +19,10 @@ import abnormal from '../components/perAnalysis/abnormal.vue'
 import separation from '../components/perAnalysis/separation.vue'
 import effectiveness from '../components/perAnalysis/effectiveness.vue'
 import uilization from '../components/perAnalysis/uilization.vue'
+
+//登录页，主页
 import login from '@/components/userComponent/login.vue'
 import mainPage from '@/components/userComponent/mainPage.vue'
-
 
 //无纸化
 import askForLeave from '../components/paperlessOffice/askForLeave.vue'
@@ -139,6 +140,10 @@ export default new Router({
 					path:'/paperlessOffice/officeSuppliesManage',
 					component:officeSuppliesManage
 				},
+        {
+          path: '/paperlessOffice/conferenceRoomManage',
+          component: conferenceRoomManage
+        },
         {
           path:'/paperlessOffice/computerPreApplication',
           component:preApplication
