@@ -19,9 +19,10 @@ import abnormal from '../components/perAnalysis/abnormal.vue'
 import separation from '../components/perAnalysis/separation.vue'
 import effectiveness from '../components/perAnalysis/effectiveness.vue'
 import uilization from '../components/perAnalysis/uilization.vue'
+
+//登录页，主页
 import login from '@/components/userComponent/login.vue'
 import mainPage from '@/components/userComponent/mainPage.vue'
-
 
 //无纸化
 import askForLeave from '../components/paperlessOffice/askForLeave.vue'
@@ -33,8 +34,10 @@ import officeSuppliesManage from '../components/paperlessOffice/officeSuppliesMa
 import computerSupplies from '../components/paperlessOffice/computerSupplies.vue'
 import computerAdvanceApplication from '../components/paperlessOffice/computerAdvanceApplication.vue'
 import empRequire from '../components/paperlessOffice/empRequire.vue'
-import report from '../components/paperlessOffice/report/report.vue'
-import clock from '../components/paperlessOffice/clock/clock.vue'
+import report from '../components/paperlessOffice/report.vue'
+import clock from '../components/paperlessOffice/clock.vue'
+import preApplication from '../components/paperlessOffice/computerPreApplication.vue'
+
 
 Vue.use(Router)
 
@@ -55,8 +58,7 @@ export default new Router({
 			name: '首页',
 			component: mainPage,
 			hidden: false,
-			children: [
-				{
+			children: [{
 					path: '/employee',
 					component: employee
 				},
@@ -123,28 +125,30 @@ export default new Router({
 					path: '/paperlessOffice/clock',
 					component: clock
 				},
-				
+
 				{
 					path: '/paperlessOffice/askForLeave',
 					component: askForLeave
 				},
-				
+
 				{
 					path: '/paperlessOffice/restdown',
 					component: restdown
 				},
 				{
-					path:'/paperlessOffice/officeSuppliesManage',
-					component:officeSuppliesManage
+					path: '/paperlessOffice/officeSuppliesManage',
+					component: officeSuppliesManage
+				},
+
+				{
+					path: '/paperlessOffice/conferenceRoomManage',
+					component: conferenceRoomManage
 				},
 				{
-					path:'/paperlessOffice/conferenceRoomManage',
-					component:conferenceRoomManage
-				},
-				{
-					path:'/paperlessOffice/empRequire',
-					component:empRequire
-				},
+					path: '/paperlessOffice/computerPreApplication',
+					component: preApplication
+				}
+
 			],
 			redirect: '/employee'
 		}

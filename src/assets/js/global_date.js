@@ -11,6 +11,10 @@ const currentDate =() => {
 const YYYY_MM_DD_HH_mm =(time) => {
   return moment(time).format("YYYY-MM-DD HH:mm")
 }
+/*格式化YYYY_MM_DD_HH_mm_ss*/
+const YYYY_MM_DD_HH_mm_ss =(time) => {
+  return moment(time).format("YYYY-MM-DD HH:mm:ss")
+}
 /*查询时间转换*/
 const queryStartTime =(time) => {
   return moment(time).format("YYYY-MM-DD 00:00:00")
@@ -25,15 +29,21 @@ const addStartTime = () =>{
 const addEndTime = () =>{
   return moment().format("YYYY-MM-DD 17:30")
 }
+/*格式化YYYY_MM_DD_17_30*/
+const YYYY_MM_DD_17_30 = (time) =>{
+  return moment(time).format("YYYY-MM-DD 17:30")
+}
 
 export default {
   install (Vue){
     Vue.prototype.$currentTime = currentTime
     Vue.prototype.$currentDate = currentDate
     Vue.prototype.$YYYY_MM_DD_HH_mm = YYYY_MM_DD_HH_mm
+    Vue.prototype.$YYYY_MM_DD_HH_mm_ss = YYYY_MM_DD_HH_mm_ss
     Vue.prototype.$queryStartTime = queryStartTime
     Vue.prototype.$queryEndTime = queryEndTime
     Vue.prototype.$addStartTime = addStartTime
     Vue.prototype.$addEndTime = addEndTime
+    Vue.prototype.$YYYY_MM_DD_17_30 = YYYY_MM_DD_17_30
   }
 }

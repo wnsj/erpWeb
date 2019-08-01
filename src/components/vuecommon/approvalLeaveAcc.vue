@@ -19,12 +19,6 @@
     },
     props: ['accountID'],
     watch:{
-      accountID:{
-        handler(val){
-          this.accId = val
-        },
-        immediate: true
-      },
       accId:{
         handler(val){
           this.$emit('approvalChange',val)
@@ -42,10 +36,9 @@
       },
       // 查询审批人类型信息
       getApprovalAccount: function() {
-        var url = this.url + '/leavePrepareController/queryApprovalLeaveAccount'
         axios({
           method: 'post',
-          url: url,
+          url: this.url + '/leavePrepareController/queryApprovalLeaveAccount',
           headers: {
             'Content-Type': this.contentType,
             'Access-Token': this.accessToken
@@ -54,7 +47,9 @@
           },
           dataType: 'json',
         }).then((response) => {
+          console.log(response.data.retData)
           this.accountList = response.data.retData;
+          this.accId =  this.accountList[0].accountID
         }).catch((error) => {
           console.log('请求失败处理')
         });
@@ -62,7 +57,8 @@
     },
     created() {
       this.getApprovalAccount();
-    },
+      this.accId = this.accountId
+    }
   }
 </script>
 

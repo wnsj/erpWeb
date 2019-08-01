@@ -15,18 +15,19 @@
         accountId: '', //创建props属性agentAccount的副本
         leaveAccount: '',
         deptId: '',
+        agent:{},
         agentList: [] // 代理人或者证明人集合
       };
     },
     props: ['agentAccount'], // 父组件传来的值
     watch: {
       accountId:{
-        handler(newVal,oldVal){
+        handler(newVal){
           this.accountId = newVal
           this.$emit('agentChange',newVal)
         },
         immediate: true
-      }
+      },
     },
     methods: {
       getLeaveAccount(val) {
@@ -36,13 +37,22 @@
       },
       insertAgentInfo(val) {
         this.agentList.push(val)
+        this.accountId = val.account
+      },
+      initParamNull(){  // 初始化参数为空
+        this.accountId = ''
+      },
+      initParamZero(){  // 初始化参数为0
+        this.accountId = '0'
+      },
+      showAgentInfo(val){
+        this.agent = val
       },
       // 查询审批人信息
       getAgentList: function () {
-        var url = this.url + '/leavePrepareController/queryAgentList'
         axios({
           method: 'post',
-          url: url,
+          url: this.url + '/leavePrepareController/queryAgentList',
           headers: {
             'Content-Type': this.contentType,
             'Access-Token': this.accessToken
@@ -53,7 +63,21 @@
           },
           dataType: 'json',
         }).then((response) => {
+          console.log(response.data.retData)
           this.agentList = response.data.retData;
+          if(this.accountId == '0') { // 如果父组件传来的是'0' 就让组件显示默认值 否则不显示
+            this.accountId = this.agentList[0].account;
+          }
+          if(!this.isBlank(this.agent.account)){
+            for(let i=0; i<this.agentList.length; i++){
+              if(this.agent.account == this.agentList[i].account){  // 如果获取的证明人已存在集合中
+                this.accountId = this.agent.account;  // 默认显示获取的证明人
+                return false;
+              }
+            }
+            this.agentList.push(this.agent);  // 如果获取的证明人不存在集合中 向集合中加入数据
+            this.accountId = this.agent.account;  // 默认显示新增加的证明人
+          }
         }).catch((error) => {
           console.log('请求失败处理')
         });
@@ -61,7 +85,7 @@
     },
     created() {
       this.accountId = this.agentAccount
-    }
+    },
   }
 </script>
 
