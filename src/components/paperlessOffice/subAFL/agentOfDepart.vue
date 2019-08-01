@@ -1,7 +1,6 @@
 <template>
 	<!--+  弹出-->
-	<div class="modal fade" id="myModalJoin_add" tabindex="3" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
+
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" aria-hidden="true" v-on:click="closex()">×</button>
@@ -54,8 +53,7 @@
 				</div>
 
 			</div>
-		</div>
-	</div>
+	
 
 </template>
 
@@ -79,9 +77,10 @@
 			},
 			backAciton:function(item){
 				this.$emit('backAciton', item)
-				$("#myModalJoin_add").modal('hide')
+				
 			},
 			closex:function(){
+				$("#myModalJoin_modify").modal('hide')
 				$("#myModalJoin_add").modal('hide')
 			},
 			empList:function(){

@@ -58,8 +58,7 @@ export default new Router({
 			name: '首页',
 			component: mainPage,
 			hidden: false,
-			children: [
-				{
+			children: [{
 					path: '/employee',
 					component: employee
 				},
@@ -137,17 +136,23 @@ export default new Router({
 					component: restdown
 				},
 				{
-					path:'/paperlessOffice/officeSuppliesManage',
-					component:officeSuppliesManage
+					path: '/paperlessOffice/officeSuppliesManage',
+					component: officeSuppliesManage
 				},
-        {
-          path: '/paperlessOffice/conferenceRoomManage',
-          component: conferenceRoomManage
-        },
-        {
-          path:'/paperlessOffice/computerPreApplication',
-          component:preApplication
-        }
+
+				{
+					path: '/paperlessOffice/conferenceRoomManage',
+					component: conferenceRoomManage
+				},
+				{
+					path: '/paperlessOffice/computerPreApplication',
+					component: preApplication
+				},
+				{
+					path: '/paperlessOffice/empRequire',
+					component: preApplication
+				}
+
 			],
 			redirect: '/employee'
 		}

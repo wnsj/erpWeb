@@ -60,9 +60,9 @@
 			</div>
 
 			<button type="button" class="btn btn-primary pull-right" @click="dowmelxe('请假表')">导出</button>
-			<button type="button" class="btn btn-primary pull-right m_r_10" data-toggle="modal" data-target="#myModalJoin">申请</button>
+			<button type="button" class="btn btn-primary pull-right m_r_10" data-toggle="modal" v-on:click="showRestInfo('','1')">申请</button>
 
-			<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal">查询</button>
+			<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" v-on:click="restDownList()">查询</button>
 
 		</div>
 		<div class="row">
@@ -71,7 +71,6 @@
 					<table class="table table-bordered table-hover user-table offover" id="datatable">
 						<thead>
 							<tr>
-								<th class="text-center">类型</th>
 								<th class="text-center">申请人</th>
 								<th class="text-center">申请部门</th>
 								<th class="text-center">原因</th>
@@ -96,47 +95,59 @@
 						</thead>
 						<tbody>
 							<tr v-for="(item,index) in rdLsit" :key='index'>
-								<td class="text-center">类型</td>
-								<td class="text-center">王二小</td>
-								<td class="text-center">公共事业部</td>
-								<td class="text-center">个人</td>
-								<td class="text-center">今天</td>
-								<td class="text-center">明天</td>
-								<td class="text-center">后天</td>
-								<td class="text-center">20190628</td>
-								<td class="text-center">1天</td>
-								<td class="text-center">说明</td>
-								<td class="text-center">王二小</td>
-								<td class="text-center">同意</td>
-								<td class="text-center">王二小</td>
-								<td class="text-center">同意</td>
-								<td class="text-center">王二小</td>
-								<td class="text-center">同意</td>
-								<td class="text-center">王二小</td>
-								<td class="text-center">同意</td>
+								<td class="text-center">{{item.leaveAccountName}}</td>
+								<td class="text-center">{{item.departName}}</td>
+								<td class="text-center">{{item.reason}}</td>
+								<td class="text-center">{{item.addTime}}</td>
+								<td class="text-center">{{item.startTime}}</td>
+								<td class="text-center">{{item.endTime}}</td>
+								<td class="text-center">{{item.workTime}}</td>
+								<td class="text-center">{{item.workTotal}}</td>
+								<td class="text-center">{{item.leaveRemark}}</td>
+								<td class="text-center">{{item.accountName1}}</td>
+								<td class="text-center">{{item.result1}}</td>
+								<td class="text-center">{{item.accountName2}}</td>
+								<td class="text-center">{{item.result2}}</td>
+								<td class="text-center">{{item.accountName3}}</td>
+								<td class="text-center">{{item.result3}}</td>
+								<td class="text-center">{{item.accountName4}}</td>
+								<td class="text-center">{{item.result4}}</td>
 								<td class="text-center"><button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal"
-									 data-target="#myModalJoin_check" v-on:click="showLeaveInfo(item,'select')">查看</button></td>
+									 data-target="#myModalJoin_check" v-on:click="showRestInfo(item,'2')">查看</button></td>
 								<td class="text-center"><button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal"
-									 data-target="#myModalJoin_revise" v-on:click="showLeaveInfo(item,'modyfy')">修改</button></td>
+									 data-target="#myModalJoin_revise" v-on:click="showRestInfo(item,'3')">修改</button></td>
 								<td class="text-center"><button type="button" class="btn btn-warning pull-right m_r_10" 
-								v-on:click="showLeaveInfo(item,'handle')">处理</button></td>
+								v-on:click="showRestInfo(item,'4')">处理</button></td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
 			</div>
 		</div>
-		<rdInfo></rdInfo>
+			<rdInfo @restDownApply='rdInfoBack'></rdInfo>
+			<rdCheck></rdCheck>
+			<rdModify></rdModify>
+			<rdHandle @submitROHModify='rdInfoBack'></rdHandle>
+			
 	</div>
 </template>
 
 <script>
+	import axios from 'axios'
+	import rdInfo from '../paperlessOffice/subRD/RdInfoOfApply.vue'
+	import rdCheck from '../paperlessOffice/subRD/RdInfoOfCheck.vue'
+	import rdHandle from '../paperlessOffice/subRD/RdInfoOfHandle.vue'
+	import rdModify from '../paperlessOffice/subRD/RdInfoOfModify.vue'
+
 	import depart from '../vuecommon/department.vue'
-	import rdInfo from '../paperlessOffice/subRD/rdInfo.vue'
+	
 	export default {
 		components:{
 			depart,
 			rdInfo,
+			rdCheck,
+			rdModify,
+			rdHandle,
 		},
 		data() {
 			return {
@@ -146,15 +157,135 @@
 				endDate:this.getCurrentDay,
 				departId:'0',
 				departName:'',
+				accountId:this.accountInfo().account_ID,
 				
-				rdLsit:[''],
+				rdLsit:[],
 			};
 		},
 		methods:{
-			showLeaveInfo:function(lInfo,param){
+			showRestInfo:function(rdInfo,param){
+					
+					if(param=='1'){
+						$("#rdApplyModal").modal('show')
+					}else if(param=='2'){
+						$("#rdCheckModal").modal('show')
+					}else if(param=='3'){
+						console.log(rdInfo.leaveAccount+' == '+this.accountInfo().account_ID)
+						if(rdInfo.leaveAccount == this.accountInfo().account_ID){
+							$("#rdModifyModal").modal('show')
+						}else{
+							alert(this.notHaveRule)
+						}
+					}
+					else if(param=='4'){
+						if(!this.isBlank(rdInfo.result4)||rdInfo.result4==''){
+							alert('处理完成，无法在进行处理')
+							return
+						}
+						if(this.accountId==rdInfo.account1 
+						|| this.accountId==rdInfo.account2
+						|| this.accountId==rdInfo.account3
+						|| this.accountId==rdInfo.account4){
+							if(this.accountId==rdInfo.account1){
+								this.$children[4].showROHEmp('check')
+							}
+							if(this.accountId==rdInfo.account2){
+								this.$children[4].showROHEmp('verify')
+							}
+							if(this.accountId==rdInfo.account3){
+								this.$children[4].showROHEmp('approval')
+							}
+							if(this.accountId==rdInfo.account4){
+								this.$children[4].showROHEmp('report')
+							}
+							$("#rdHandleModal").modal('show')
+						}else{
+							alert(this.notHaveRule)
+						}
+					}
+					this.$children[param].initInfo(rdInfo,param)
+					
+				},
+			
+			//申请及其他返回
+			rdInfoBack:function(param){
+				alert(param)
+				if(param=='apply'){
+					$("#rdApplyModal").modal('hide')
+				}else if(param=='handle'){
+					$("#rdHandleModal").modal('hide')
+				}
+				this.restDownList()
+			},
+			
+			//查看倒休列表
+			restDownList: function() {
 				
-				$("#myModalJoin").modal('show')
-			}
+				
+				var dpId,hState,aId
+				//权限判断 account=='' 没有值查询所有，有值查询当前用户
+				if(this.has(51)){
+					aId=''
+				}else{
+					aId=this.accountId
+				}
+				if(this.departId=='0'){
+					dpId=''
+				}else{
+					dpId=this.departId
+				}
+				if(this.handleState=='全部'){
+					hState=''
+				}else{
+					hState=this.handleState
+				}
+				
+				var url = this.url + '/wzbg/restDownList'
+				axios({
+					method: 'post',
+					url: url,
+					headers: {
+						'Content-Type': this.contentType,
+						'Access-Token': this.accessToken
+					},
+					data: {
+						name: this.name,
+						beginDate: this.getYYYYMMDDHHMMSS_00(this.beginDate),
+						endDate: this.getYYYYMMDDHHMMSS_24(this.endDate),
+						departId: dpId,
+						handleState: hState,
+						accountId:aId,
+					},
+					dataType: 'json',
+				}).then((response) => {
+					var res = response.data
+					if (res.retCode == '0000') {
+						if (res.resData.length > 0) {
+							this.rdLsit = res.resData
+							console.log('restDownList:'+this.rdList.toString())
+							$("#myModalQuery").modal('hide');
+						} else {
+							alert('没有查询到相关数据')
+						}
+					} else {
+						alert(res.retMsg)
+					}
+			
+				}).catch((error) => {
+					console.log('请求失败处理')
+				});
+			},
+		},
+		create(){
+			this.restDownList()
+		},
+		mounted: function() {
+			$(function() {
+				$('.datetimePicker').datetimepicker({
+					format: 'yyyy-mm-dd hh:ii',
+					language: 'cn',
+				});
+			})
 		}
 		
 	}
