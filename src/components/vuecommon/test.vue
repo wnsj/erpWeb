@@ -1,157 +1,183 @@
 <template>
 
-  <div class='col-sm-8'>
-    <table class="table table-bordered table-hover user-table">
-      <thead>
-        <tr>
-          <th class="text-center"><span style="color: red;">*</span>名称</th>
-          <th class="text-center"><span style="color: red;">*</span>数量</th>
-          <th class="text-center"><span style="color: red;">*</span>规格与要求 </th>
-          <th class="text-center">备注</th>
-          <th class="text-center">删除</th>
-          <th class="text-center"></th>
-        </tr>
-        <tr v-for="(item,index) in officeDataList" :key='index'>
-          <td class="text-center" @click="isShow('spanId_'+index,'selectId_'+index)">
-            <span style="display: block;" :id="'spanId_'+index">{{item.name}}</span>
-            <select name="select" :id="'selectId_'+index" @change="selectChange('selectId_'+index,'textId_'+index)"
-              v-model="item.name" style="position: relative;width: 120px;height: 28px;display: none;">
-              <option v-for="(ite,idx) in testList" :key="idx" :value="ite.key">{{ite.key}}</option>
-              <option :value="0">选择输入</option>
-            </select>
-            <input type="text" :id="'textId_'+index" placeholder="请输入名称..." v-model="item.name" style="display: none; position: absolute;
-              width: 100px;height: 28px; border: 1;outline: none;display: none;" />
-          </td>
-          <td class="text-center">2</td>
-          <td class="text-center">3</td>
-          <td class="text-center">4</td>
-          <td class="text-center">5</td>
-          <td class="text-center">6</td>
-        </tr>
-      </thead>
-    </table>
-    <button v-on:click="testFnction()">testFnction</button>
-  </div>
+	<div class="m-5">
+		<div class="uploadBox">
+			<h3>上传文件</h3>
+			<div class="fileBox">
+				<input type="file" id="myFile" class="inputfile" @change="handlerUpload($event)">
+				<label for="myFile">
+					<i class="iconfont">&#xe632;</i>点击上传本地文件
+				</label>
+				<button v-on:click="downLaod()">下载文件</button>
+			</div>
+			<ul class="files">
+				<li v-for="(file, index) in files">
+					<div class="fileInfo">
+
+						<div class="fileName filePart">
+							{{ file.name }}
+						</div>
+						<div class="fileSize filePart ml10">
+							{{file.size}}
+						</div>
+						<!--进度条-->
+						<div class="progress">
+							<span :style="{width:file.uploadPercentage,backgroundColor:file.uploadStatus==1 ||file.uploadStatus==2?'':'red'}"></span>
+						</div>
+						<div class="fileStatus">
+							<span v-if="file.uploadStatus == -1" class="uploadFail">出错啦，请重新上传或者删除</span>
+							<span v-if="file.uploadStatus == 2" class="uploadSuccess"> 已上传</span>
+							<span v-if="file.uploadStatus == 1" class="uploadSuccess"> 上传中...</span>
+							<span v-if="file.uploadStatus == -2" class="uploadFail">出错啦，文件类型不符合要求</span>
+							<span v-if="file.uploadStatus == -3" class="uploadFail">出错啦，文件大小超出限制</span>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	</div>
 
 </template>
 
 <script>
-  import axios from 'axios'
-  import $ from 'jquery'
-  import {
-    moment
-  } from 'moment'
+	import axios from 'axios'
+	import $ from 'jquery'
+	import {
+		moment
+	} from 'moment'
 
-  export default {
-    data() {
-      return {
-        checkEmpList: [],
-        isValue: true,
-        isHidden: true,
-        testList: [{
-          key: 'value1'
-        }, {
-          key: 'value2'
-        }, {
-          key: 'value3'
-        }, {
-          key: 'value4'
-        }],
-        officeDataList: [{
-          name: '小本',
-          num: 1,
-          specification: '本'
-        }, {
-          name: '笔',
-          num: 1,
-          specification: '只'
-        }, {
-          name: '桌子',
-          num: 1,
-          specification: '张'
-        }]
-      }
-    },
-    methods: {
-      isShow(spanId, selectId) {
-        console.log("spanId:" + spanId + ",selectId:" + selectId);
-        var oSelect = document.getElementById(selectId);
-        var oText = document.getElementById(spanId);
-        console.log(" oSelect.style.display:" + oSelect.style.display)
-        oSelect.style.display = "block";
-        oText.style.display = "none";
-      },
-      userAllInfo: function() {
-        return {
-          'id': 0,
-          'name': 'muwenliang',
-          'position': 'java组长',
-          'depart': '公共事业部'
-        }
-      },
-      testFnction: function() {
-        alert('1')
-        // this.getProject()
-        // alert('2')
-        // if (this.isValue == true) {
-        //   alert('isvalue:' + this.isValue)
-        // } else {
-        //   alert('isvalue:' + this.isValue)
-        // }
+	export default {
+		data() {
+			return {
+				files: [],
+				uploadSuccess: 0
+			}
+		},
+		methods: {
+			handlerUpload: function(e) {
+				var url = this.url + '/wzbg/upload2'
+				//获取选定的文件
+				let tFiles = e.target.files;
+				let len = tFiles.length;
+				for (var i = 0; i < len; i++) {
+					//开始上传每一个文件
+					var item = {
+						name: tFiles[i].name,
+						uploadPercentage: 1,
+						size: this.formatFileSize(tFiles[i].size, 0),
+						uploadStatus: 0
+					}
+					console.log(item)
+					this.files.push(item);
+					//开始上传文件 新建一个formData
+					let param = new FormData();
+					param.append("name", "wiiiiiinney");
+					//通过append向form对象添加数据
+					param.append("file", tFiles[i]);
+					//FormData私有类对象，访问不到，可以通过get判断值是否传进去
+					console.log(param.get("file"));
+					//判断大小
+					if (!this.checkFileSize(tFiles[i].size)) {
+						item.uploadStatus = -3;
+						return false;
+					}
+					if (!this.checkFileType(tFiles[i].name.split('.')[1])) {
+						item.uploadStatus = -2;
+						return false;
+					}
+					//通过axios上传文件
+					//配置
+					let config = {
+						//添加请求头 
+						headers: {
+							"Content-Type": "multipart/form-data"
+						},
+						//添加上传进度监听事件 
+						onUploadProgress: e => {
+							var completeProgress = ((e.loaded / e.total * 100) | 0) + "%";
+							console.log(this.files)
+							item.uploadPercentage = completeProgress;
+						}
+					};
+					axios.post(url, param, config).then(function(
+						response) {
+						console.log(response);
+						item.uploadStatus = 2;
+					}).catch(function(error) {
+						console.log(error);
+						item.uploadStatus = -1;
+					});
+				}
+			},
+			formatFileSize: function(fileSize, idx) {
+				var units = ["B", "KB", "MB", "GB"];
+				idx = idx || 0;
+				if (fileSize < 1024 || idx === units.length - 1) {
+					return fileSize.toFixed(1) +
+						units[idx];
+				}
+				return this.formatFileSize(fileSize / 1024, ++idx);
+			},
+			checkFileType: function(fileType) {
+				const acceptTypes = ['xls', 'doc', 'jpg'];
+				for (var i = 0; i < acceptTypes.length; i++) {
+					if (fileType === acceptTypes[i]) {
+						return true;
+					}
+				}
+				return false;
+			},
+			checkFileSize: function(fileSize) {
+				//2M
+				const MAX_SIZE = 2 * 1024 * 1024;
+				if (fileSize > MAX_SIZE) {
+					return false;
+				}
+				return true;
+			},
 
-        this.officeDataList.forEach(item => {
-          console.log("officeDataList:" + item)
-        })
-      },
-      // 获取所有项目
-      getProject: function() {
-        var url = this.url + '/search/projectList'
 
-        axios.get(url).then((response) => {
-            this.projectList = response.data
-            this.isValue = false
-            console.log(response.data)
-          })
-          .catch((error) => {
-            console.log(error)
-          });
-      },
-      selectChange(selectId, textId) {
-        var oSelect = document.getElementById(selectId);
-        var oText = document.getElementById(textId);
-        if (oSelect.value == "0") {
-          oText.value = '';
-          oSelect.name = '';
-          oText.name = 'select';
-          oText.style.display = "block";
-        } else {
-          oSelect.name = 'select';
-          oText.name = '';
-          oText.style.display = "none";
-        }
-      }
-    },
-    mounted() {
 
-    }
-  }
+
+			downLaod: function() {
+				var url = this.url + '/wzbg/downloadFile'
+				axios({
+					method: 'post',
+					url: url,
+					headers: {
+						'Content-Type': this.contentType,
+						'Access-Token': this.accessToken
+					},
+					responseType: 'blob'
+				}).then(res => {
+					let blob = res.data
+					let reader = new FileReader()
+					reader.readAsDataURL(blob)
+					reader.onload = (e) => {
+						let a = document.createElement('a')
+						a.download = fileName
+						a.href = e.target.result
+						document.body.appendChild(a)
+						a.click()
+						document.body.removeChild(a)
+					}
+
+					
+
+
+				})
+			}
+		}
+	}
 </script>
 
 <style>
-  #select {
-    position: relative;
-    width: 120px;
-    height: 28px;
-  }
 
-  #text {
-    position: absolute;
-    left: 92px;
-    top: 47px;
-    width: 100px;
-    height: 28px;
-    border: 1;
-    outline: none;
-    display: none;
-  }
 </style>
+<!-- accountInfo:{"permission":["1","2","3","4","5","6","7","70","72","74"],
+"accessToken":"624d10794d40e33d7d81328e1aeba12f",
+"account":{"departId":"55","departName":"开发组",
+"positionName":"研发组长","account_State":"在用",
+"account_Name":"王杰林","account_ID":"239","account_Pwd":"",
+"position_ID":"73","account_Mac":null}} -->

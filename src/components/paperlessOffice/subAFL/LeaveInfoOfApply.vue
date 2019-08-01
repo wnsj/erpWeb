@@ -3,6 +3,7 @@
 		<div class="modal-header">
 			<button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
 			<h1 class="modal-title">请假</h1>
+			<DatePicker v-on:click="vOnChange()"></DatePicker>
 		</div>
 		<div class="modal-header">
 			<h4 id="myModalLabel" class="modal-title"><span>申请人姓名：<i>{{lInfo.account_Name}}</i></span>
@@ -11,6 +12,7 @@
 		</div>
 		<div class="modal-header modal_header_leave">
 			<h6>请假</h6>
+
 			<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
 				<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">
 					<p>类型：</p>
@@ -230,6 +232,7 @@
 
 <script>
 	import axios from 'axios'
+	import DatePicker from 'vue2-datepicker'
 	import depart from '../../vuecommon/department.vue'
 	import leave from '../../vuecommon/leaveTypes.vue'
 	import agent from '../subAFL/agentOfDepart.vue'
@@ -237,7 +240,8 @@
 		components: {
 			depart,
 			leave,
-			agent
+			agent,
+			DatePicker
 		},
 		data() {
 			return {
@@ -271,6 +275,9 @@
 			};
 		},
 		methods: {
+			vOnChange: function() {
+				console.log("adsfdsfsafdas")
+			},
 			showLInfo: function(lInfo, param) {
 				this.lInfo = this.accountInfo()
 				this.departId = this.accountInfo().departId
@@ -310,7 +317,7 @@
 				this.emps.push(param)
 				this.lInfo.agentAccount = param.employeeId
 			},
-			closeModal:function(){
+			closeModal: function() {
 				$("#myModalJoin_add").modal('hide')
 			},
 			//代理人弹窗
@@ -491,7 +498,7 @@
 						console.log('LeaveInfoOfApply:' + res.resData)
 						if (res.resData == 1) {
 							alert('请假成功')
-							this.$emit('submitAskForLeaveApply','apply')
+							this.$emit('submitAskForLeaveApply', 'apply')
 						} else {
 							alert('已经没有更多的数据了')
 						}

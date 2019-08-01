@@ -127,7 +127,7 @@
 			</div>
 		</div>
 		<div class="row row_edit">
-
+			
 			<div class="modal fade" id="lioa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog staff_t">
 					<lioa @submitAskForLeaveApply='submitAFLASuccess'></lioa>
@@ -288,8 +288,6 @@
 							this.aflList = res.resData
 							console.log('askOfLeaveList:'+this.aflList.toString())
 							$("#myModalQuery").modal('hide');
-						} else {
-							alert('没有查询到相关数据')
 						}
 					} else {
 						alert(res.retMsg)

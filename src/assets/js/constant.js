@@ -67,7 +67,6 @@ export function accountInfo(){
 	if(isBlank(jsonString))return false;
 	var accountData = JSON.parse(jsonString);
 	var accountInfo = accountData.account;
-	console.log('accountInfo:'+jsonString)
 	return accountInfo;
 }
 

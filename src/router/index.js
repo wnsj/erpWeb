@@ -136,7 +136,15 @@ export default new Router({
 				{
 					path:'/paperlessOffice/officeSuppliesManage',
 					component:officeSuppliesManage
-				}
+				},
+				{
+					path:'/paperlessOffice/conferenceRoomManage',
+					component:conferenceRoomManage
+				},
+				{
+					path:'/paperlessOffice/empRequire',
+					component:empRequire
+				},
 			],
 			redirect: '/employee'
 		}

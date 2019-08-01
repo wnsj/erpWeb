@@ -61,6 +61,12 @@
               <li>
                 <router-link to="/paperlessOffice/clock"><i class="fa fa-table" aria-hidden="true"></i>忘打卡证明</router-link>
               </li>
+							<li>
+							  <router-link to="/paperlessOffice/conferenceRoomManage"><i class="fa fa-table" aria-hidden="true"></i>忘打卡证明</router-link>
+							</li>
+							<li>
+							  <router-link to="/paperlessOffice/empRequire"><i class="fa fa-table" aria-hidden="true"></i>人员需求</router-link>
+							</li>
             </ul>
             <!-- <li><i class="fa fa-area-chart" aria-hidden="true"></i>item</li> -->
           </ul>
