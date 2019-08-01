@@ -131,63 +131,63 @@
           <div class="modal-body">
             <legend><h5>电脑用品需求单</h5></legend>
             <div class="form-group clearfix">
-              <label class="col-md-1 control-label text-left nopad">部门：</label>
-              <div class="col-md-4">
+              <label class="col-md-2 control-label text-right nopad">部门：</label>
+              <div class="col-md-3">
                 <department ref="dept" @departChange='deptChangeForAdd'></department>
               </div>
               <label class="col-md-2 control-label text-right nopad">用品类型：</label>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <select class="form-control"><option>领用电脑</option></select>
               </div>
             </div>
             <div class="form-group clearfix">
-              <label class="col-md-1 control-label text-left nopad">岗位：</label>
-              <div class="col-md-4">
+              <label class="col-md-2 control-label text-right nopad">岗位：</label>
+              <div class="col-md-3">
                 <job :pid="computerForAdd.pid" ref="job" @jobChange="jobChange"></job>
               </div>
               <label class="col-md-2 control-label text-right nopad">用品：</label>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <textarea class="textarea" placeholder="电脑" disabled="disabled"></textarea>
               </div>
             </div>
             <div class="form-group clearfix">
-              <label class="col-md-2 control-label text-left nopad">预备使用人：</label>
+              <label class="col-md-2 control-label text-right nopad">预备使用人：</label>
               <div class="col-md-3">
                 <input type="text" class="form-control" placeholder="UserName" v-model="computerForAdd.userName">
               </div>
               <label class="col-md-2 control-label text-right nopad">使用时间：</label>
               <div class="col-md-3">
-              <date-picker v-model="computerForAdd.useTime" type="datetime" format="YYYY-MM-DD HH:mm" confirm></date-picker>
+                <date-picker v-model="computerForAdd.useTime" type="datetime" format="YYYY-MM-DD HH:mm" confirm></date-picker>
               </div>
             </div>
           </div><!-- /.modal-body -->
           <div class="modal-footer">
-            <div class="col-md-6">
+            <div class="text-center">
               <button type="button" class="btn btn-sm btn-warning" @click="addPreApp">确认提交</button>
             </div>
           </div> <!-- /.modal-footer -->
           <div class="modal-body">
             <legend><h5>审核人</h5></legend>
             <div class="form-group clearfix">
-              <label class="col-md-1 control-label text-left nopad">负责人：</label>
-              <div class="col-md-4">
+              <label class="col-md-2 control-label text-right nopad">负责人：</label>
+              <div class="col-md-3">
                 <select class="form-control"><option>李庆功</option></select>
               </div>
               <label class="col-md-2 control-label text-right nopad">同意：</label>
-              <div class="col-md-4 col-md-offset-1">
+              <div class="col-md-3 col-md-offset-1">
                 <button type="button" class="btn btn-sm btn-dark" disabled="disabled">同意</button>
                 <button type="button" class="btn btn-sm btn-dark" disabled="disabled">不同意</button>
               </div>
             </div>
             <div class="form-group clearfix">
-              <label class="col-md-1 control-label text-left nopad">负责人：</label>
-              <div class="col-md-4">
+              <label class="col-md-2 control-label text-right nopad">负责人：</label>
+              <div class="col-md-3">
                 <textarea class="textarea" placeholder="负责人说明" disabled="disabled"></textarea>
               </div>
             </div>
             <div class="form-group clearfix">
-              <label class="col-md-1 control-label text-left nopad">对接人：</label>
-              <div class="col-md-4">
+              <label class="col-md-2 control-label text-right nopad">对接人：</label>
+              <div class="col-md-3">
                 <input type="text" class="form-control" disabled="disabled">
               </div>
               <div class="col-md-2 col-md-offset-3" >
@@ -195,17 +195,22 @@
               </div>
             </div>
             <div class="form-group clearfix">
-              <label class="col-md-1 control-label text-left nopad">实际使用人：</label>
-              <div class="col-md-4">
+              <label class="col-md-2 control-label text-right nopad">实际使用人：</label>
+              <div class="col-md-3">
                 <select class="form-control"><option></option></select>
               </div>
             </div>
             <div class="form-group clearfix">
-              <label class="col-md-1 control-label text-left nopad">主管：</label>
-              <div class="col-md-4">
-                <select class="form-control"><option></option></select>
+              <label class="col-md-2 control-label text-right nopad">主管：</label>
+              <div class="col-md-3">
+                <leader :lid="computerForAdd.lid" ref="leader" @leaderChange="leaderChange"></leader>
               </div>
-              <div class="col-md-2 col-md-offset-3" >
+              <div class="col-md-1">
+                <button type="button" data-toggle="modal" @click="queryLeaderBtn">
+                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                </button>
+              </div>
+              <div class="col-md-2 col-md-offset-2">
                 <button type="button" class="btn btn-sm btn-block" disabled="disabled">确定</button>
               </div>
             </div>
@@ -222,13 +227,15 @@
   import DatePicker from 'vue2-datepicker'
   import department from '../vuecommon/department.vue'
   import job from '../vuecommon/positionInfo.vue'
+  import leader from '../vuecommon/leaderInfo.vue'
 
   export default {
     name: "preApplication",
     components: {
       DatePicker,
       department,
-      job
+      job,
+      leader
     },
     data() {
       return {
@@ -248,7 +255,9 @@
         computerForAdd:{
           deptId: '',
           pid: '',
-          useTime: this.$currentTime(),
+          userName: '',
+          useTime: this.$currentHHmm(),
+          lid: '',
         },
         preAppList: {},
       }
@@ -285,20 +294,56 @@
         });
       },
       // ---------------------------------------添加----------------------------------
-      deptChangeForAdd(){
+      deptChangeForAdd(val){
         this.computerForAdd.deptId = val
       },
       jobChange(val){
         this.computerForAdd.pid = val
         console.log("职位ID" + this.computerForAdd.pid)
       },
+      leaderChange(val) {
+        this.computerForAdd.lid = val
+        console.log("主管ID" + this.computerForAdd.lid)
+      },
       preAppBtn(){
         this.$refs.job.getPositionInfo();
         $('#preAppAddModel').modal('show')
       },
-      addPreApp(){
+      queryLeaderBtn(){
+        if (this.computerForAdd.deptId == 0){
+          alert("请选择部门!")
+        }else{
+          this.$refs.leader.setDeptId(this.computerForAdd.deptId);
+        }
       },
-
+      addPreApp(){
+        axios({
+          method: 'post',
+          url: this.url + '/computerController/addPreApplication',
+          headers: {
+            'Content-Type': this.contentType,
+            'Access-Token': this.accessToken
+          },
+          data: {
+            deptId: this.computerForAdd.deptId,
+            submitTime: this.$currentTime(),
+            applyName: JSON.parse(Cookies.get("accountData")).account.account_Name,
+            applyId: JSON.parse(Cookies.get("accountData")).account.account_ID,
+            userName: this.computerForAdd.userName,
+            typeName: "领用电脑:电脑",
+            positionId: this.computerForAdd.pid,
+            principalId: 666,
+            useTime: this.$YYYY_MM_DD_HH_mm(this.computerForAdd.useTime)
+          },
+          dataType: 'json',
+        }).then(response => {
+          console.log(response.data.retData);
+          $('#preAppAddModel').modal('hide');
+          this.queryPreApp();
+        }).catch(err => {
+          console.log(err)
+        });
+      },
     },
     created() {
       this.computer.timeType = this.computer.timeTypes[0].value // SELECT默认选中

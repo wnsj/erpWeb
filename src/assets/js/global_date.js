@@ -3,6 +3,10 @@ import moment from "moment";
 const currentTime =() => {
   return moment().format("YYYY-MM-DD HH:mm:ss")
 }
+/*获取当前时分*/
+const currentHHmm =() => {
+  return moment().format("YYYY-MM-DD HH:mm")
+}
 /*获取当前日期*/
 const currentDate =() => {
   return moment().format("YYYY-MM-DD")
@@ -37,6 +41,7 @@ const YYYY_MM_DD_17_30 = (time) =>{
 export default {
   install (Vue){
     Vue.prototype.$currentTime = currentTime
+    Vue.prototype.$currentHHmm = currentHHmm
     Vue.prototype.$currentDate = currentDate
     Vue.prototype.$YYYY_MM_DD_HH_mm = YYYY_MM_DD_HH_mm
     Vue.prototype.$YYYY_MM_DD_HH_mm_ss = YYYY_MM_DD_HH_mm_ss
