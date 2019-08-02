@@ -70,7 +70,7 @@
               <th class="text-center">负责人</th>
               <th class="text-center">负责人意见</th>
               <th class="text-center">对接人</th>
-              <th class="text-center">申请状态</th>
+<!--              <th class="text-center">申请状态</th>-->
               <th class="text-center">查看详情</th>
             </tr>
             </thead>
@@ -102,13 +102,13 @@
                 }}
               </td>
               <td class="text-center">{{item.handName}}</td>
-              <td class="text-center">
-                <button type="button" class="btn btn-sm btn-default"
-                        :disabled="item.status == null? false:'disabled'"
-                >
-                  {{item.status == 1? '进行中':item.status == 2? '已完成':'点击完成'}}
-                </button>
-              </td>
+<!--              <td class="text-center">-->
+<!--                <button type="button" class="btn btn-sm btn-default"-->
+<!--                        :disabled="item.status == null? false:'disabled'"-->
+<!--                >-->
+<!--                  {{item.status == 1? '进行中':item.status == 2? '已完成':'点击完成'}}-->
+<!--                </button>-->
+<!--              </td>-->
               <td class="text-center">
                 <button type="button" class="btn btn-sm btn-default">查看详情</button>
               </td>
@@ -306,8 +306,18 @@
         console.log("主管ID" + this.computerForAdd.lid)
       },
       preAppBtn(){
+        this.clearAddModel();
         this.$refs.job.getPositionInfo();
         $('#preAppAddModel').modal('show')
+      },
+      clearAddModel(){
+        this.$refs.dept.setDpart(0), // 组件显示默认值
+        this.computerForAdd.deptId = 0, // data里默认值
+        this.computerForAdd.pid = '',
+        this.computerForAdd.userName = '',
+        this.computerForAdd.useTime = this.$currentHHmm(),
+        this.computerForAdd.lid = '',
+        this.$refs.leader.setDeptId(0)
       },
       queryLeaderBtn(){
         if (this.computerForAdd.deptId == 0){
@@ -317,32 +327,34 @@
         }
       },
       addPreApp(){
-        axios({
-          method: 'post',
-          url: this.url + '/computerController/addPreApplication',
-          headers: {
-            'Content-Type': this.contentType,
-            'Access-Token': this.accessToken
-          },
-          data: {
-            deptId: this.computerForAdd.deptId,
-            submitTime: this.$currentTime(),
-            applyName: JSON.parse(Cookies.get("accountData")).account.account_Name,
-            applyId: JSON.parse(Cookies.get("accountData")).account.account_ID,
-            userName: this.computerForAdd.userName,
-            typeName: "领用电脑:电脑",
-            positionId: this.computerForAdd.pid,
-            principalId: 666,
-            useTime: this.$YYYY_MM_DD_HH_mm(this.computerForAdd.useTime)
-          },
-          dataType: 'json',
-        }).then(response => {
-          console.log(response.data.retData);
-          $('#preAppAddModel').modal('hide');
-          this.queryPreApp();
-        }).catch(err => {
-          console.log(err)
-        });
+        if(this.$YYYY_MM_DD_HH_mm_ss(this.computerForAdd.useTime) < this.$currentTime()){
+          alert("使用时间不得小于当前时间")
+        }else{
+          axios({
+            method: 'post',
+            url: this.url + '/computerController/addPreApplication',
+            headers: {
+              'Content-Type': this.contentType,
+              'Access-Token': this.accessToken
+            },
+            data: {
+              deptId: this.computerForAdd.deptId,
+              submitTime: this.$currentTime(),
+              applyName: JSON.parse(Cookies.get("accountData")).account.account_Name,
+              applyId: JSON.parse(Cookies.get("accountData")).account.account_ID,
+              userName: this.computerForAdd.userName,
+              positionId: this.computerForAdd.pid,
+              useTime: this.$YYYY_MM_DD_HH_mm(this.computerForAdd.useTime)
+            },
+            dataType: 'json',
+          }).then(response => {
+            console.log(response.data.retData);
+            $('#preAppAddModel').modal('hide');
+            this.queryPreApp();
+          }).catch(err => {
+            console.log(err)
+          });
+        }
       },
     },
     created() {

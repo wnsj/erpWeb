@@ -1,7 +1,5 @@
 <!-- author:dingdong -->
 <!-- 所在部门主管信息 -->
-<!-- author:dingdong -->
-<!-- 所有岗位信息 -->
 <template>
   <select class="form-control" v-model="leaderId">
     <option v-for="leader in leaderInfoList" :value="leader.leaderId">{{leader.leaderName}}</option>
@@ -15,18 +13,18 @@
     data(){
       return {
         deptId: '',
-        leaderId: '',
+        leaderId: '', // 创建props里的pid的副本
         leaderInfoList: []
       }
     },
-    props: ['lid'],
-    watch:{
-      leaderId:{
+    props: ['lid'], // 父组件传来的值
+    watch:{         // 监听属性
+      leaderId:{    // 监听data里leaderId的数据变化
         handler(newVal){
-          this.leaderId = newVal
-          this.$emit('leaderChange',newVal)
+          this.leaderId = newVal  // 当监听到leaderId的值有变化时 将最新的值赋值给data里的leaderId
+          this.$emit('leaderChange',newVal) // 子组件通过$emit 触发父组件的自定义事件,并且将最新的值返回给父组件
         },
-        immediate: true
+        immediate: true // 代表在wacth里声明了leaderId这个方法之后立即先去执行handler方法
       },
     },
     methods:{
