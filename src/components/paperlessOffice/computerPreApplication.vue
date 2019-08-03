@@ -44,7 +44,7 @@
       </div>
       <div class="col-md-3 col-md-offset-1">
         <button type="button" class="btn btn-warning pull-right m_r_10">导出</button>
-        <button type="button" class="btn btn-info pull-right m_r_10" @click="preAppBtn">预申请</button>
+        <button type="button" class="btn btn-info pull-right m_r_10" @click="preAppBtn" v-if='has(72)'>预申请</button>
         <button type="button" class="btn btn-primary pull-right m_r_10" @click="queryPreApp">查询</button>
       </div>
     </div>
@@ -70,7 +70,6 @@
               <th class="text-center">负责人</th>
               <th class="text-center">负责人意见</th>
               <th class="text-center">对接人</th>
-<!--              <th class="text-center">申请状态</th>-->
               <th class="text-center">查看详情</th>
             </tr>
             </thead>
@@ -102,15 +101,8 @@
                 }}
               </td>
               <td class="text-center">{{item.handName}}</td>
-<!--              <td class="text-center">-->
-<!--                <button type="button" class="btn btn-sm btn-default"-->
-<!--                        :disabled="item.status == null? false:'disabled'"-->
-<!--                >-->
-<!--                  {{item.status == 1? '进行中':item.status == 2? '已完成':'点击完成'}}-->
-<!--                </button>-->
-<!--              </td>-->
               <td class="text-center">
-                <button type="button" class="btn btn-sm btn-default">查看详情</button>
+                <button type="button" class="btn btn-sm btn-default" @click="showInfoBtn(item)">查看详情</button>
               </td>
             </tr>
             </tbody>
@@ -218,6 +210,106 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+    <!-- 修改审批电脑预申请 -->
+    <div class="modal fade" id="preAppUpdateModel" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+              <span>×</span>
+            </button>
+            <h4 class="modal-title">电脑预申请</h4>
+          </div><!-- /.modal-header -->
+          <div class="modal-body">
+            <legend><h5>电脑用品需求单</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">部门：</label>
+              <div class="col-md-3">
+                <department ref="deptUpdate" :disabled="computerForUpdate.isAble" @departChange='deptChangeForUpdate'></department>
+              </div>
+            </div>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">岗位：</label>
+              <div class="col-md-3">
+                <job :pid="computerForUpdate.pid" :disabled="computerForUpdate.isAble" ref="jobUpdate" @jobChange="jobChangeForUpdate"></job>
+              </div>
+              <label class="col-md-2 control-label text-right nopad">用品：</label>
+              <div class="col-md-3">
+                <textarea class="textarea" placeholder="领用电脑:电脑" disabled="disabled"></textarea>
+              </div>
+            </div>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">预备使用人：</label>
+              <div class="col-md-3">
+                <input type="text" class="form-control" placeholder="UserName" :disabled="computerForUpdate.isAble" v-model="computerForUpdate.userName">
+              </div>
+              <label class="col-md-2 control-label text-right nopad">使用时间：</label>
+              <div class="col-md-3">
+                <date-picker v-model="computerForUpdate.useTime" type="datetime" format="YYYY-MM-DD HH:mm" confirm
+                  :disabled="computerForUpdate.isAble">
+                </date-picker>
+              </div>
+            </div>
+          </div><!-- /.modal-body -->
+          <div class="modal-footer">
+            <div class="text-center">
+              <button type="button" class="btn btn-sm btn-warning"
+                :disabled="computerForUpdate.isAble" @click="modifyPreApp">修改
+              </button>
+            </div>
+          </div> <!-- /.modal-footer -->
+          <div class="modal-body">
+            <legend><h5>审核人</h5></legend>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">负责人：</label>
+              <div class="col-md-3">
+                <select class="form-control"><option>李庆功</option></select>
+              </div>
+              <label class="col-md-2 control-label text-right nopad">同意：</label>
+              <div class="col-md-3 col-md-offset-1">
+                <button type="button" class="btn btn-sm btn-warning">同意</button>
+                <button type="button" class="btn btn-sm btn-warning">不同意</button>
+              </div>
+            </div>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">负责人：</label>
+              <div class="col-md-3">
+                <textarea class="textarea" v-model="computerForUpdate.remark" disabled="disabled"></textarea>
+              </div>
+            </div>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">对接人：</label>
+              <div class="col-md-3">
+                <input type="text" class="form-control" v-model="computerForUpdate.handName" disabled="disabled">
+              </div>
+              <div class="col-md-2 col-md-offset-3" >
+                <button type="button" class="btn btn-sm btn-block">完成</button>
+              </div>
+            </div>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">实际使用人：</label>
+              <div class="col-md-3">
+                <select class="form-control"><option></option></select>
+              </div>
+            </div>
+            <div class="form-group clearfix">
+              <label class="col-md-2 control-label text-right nopad">主管：</label>
+              <div class="col-md-3">
+                <leader :lid="computerForUpdate.lid" ref="leaderUpdate" @leaderChange="leaderChangeForUpdate"></leader>
+              </div>
+              <div class="col-md-1">
+                <button type="button" data-toggle="modal" @click="updateLeaderBtn">
+                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                </button>
+              </div>
+              <div class="col-md-2 col-md-offset-2">
+                <button type="button" class="btn btn-sm btn-block">确定</button>
+              </div>
+            </div>
+          </div><!-- /.modal-body -->
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
   </div><!-- /.container -->
 </template>
 
@@ -258,6 +350,20 @@
           userName: '',
           useTime: this.$currentHHmm(),
           lid: '',
+          handName: '',
+
+        },
+        computerForUpdate:{
+          id: '',
+          applyId: '',
+          deptId: '',
+          pid: '',
+          userName: '',
+          handName: '',
+          useTime: '',
+          remark: '',
+          lid: '',
+          isAble: 'disabled',
         },
         preAppList: {},
       }
@@ -276,8 +382,8 @@
             'Access-Token': this.accessToken
           },
           data: {
-            accountId: this.has(71) ? '' : JSON.parse(Cookies.get("accountData")).account.account_ID,
-            accountName: this.has(71) ? '' : JSON.parse(Cookies.get("accountData")).account.account_Name,
+            accountId: this.has(72) ? '' : JSON.parse(Cookies.get("accountData")).account.account_ID,
+            accountName: this.has(72) ? '' : JSON.parse(Cookies.get("accountData")).account.account_Name,
             timeType: this.computer.timeType,
             beginTime: this.$queryStartTime(this.computer.beginDate),
             endTime: this.$queryEndTime(this.computer.endDate),
@@ -356,6 +462,75 @@
           });
         }
       },
+      // ---------------------------------------修改审批----------------------------------
+      deptChangeForUpdate(val){
+        this.computerForUpdate.deptId = val
+      },
+      jobChangeForUpdate(val){
+        this.computerForUpdate.pid = val
+        console.log("职位ID" + this.computerForUpdate.pid)
+      },
+      leaderChangeForUpdate(val){
+        this.computerForUpdate.lid = val
+        console.log("主管ID" + this.computerForUpdate.lid)
+      },
+      updateLeaderBtn(){
+        if (this.computerForUpdate.deptId == 0){
+          alert("请选择部门!")
+        }else{
+          this.$refs.leaderUpdate.setDeptId(this.computerForUpdate.deptId);
+        }
+      },
+      clearUpdateModel(){
+        this.$refs.leaderUpdate.setDeptId('0')
+        this.computerForUpdate.isAble = 'disabled'
+      },
+      showInfoBtn(item){
+        console.log(item)
+        this.clearUpdateModel()
+        const loginAccount = JSON.parse(Cookies.get("accountData")).account.account_ID
+        if(loginAccount == item.applyId){
+          this.computerForUpdate.isAble = false
+        }
+        this.computerForUpdate.id = item.id
+        this.computerForUpdate.applyId = item.applyId
+        this.computerForUpdate.deptId = item.deptId
+        this.computerForUpdate.pid = item.positionId
+        this.computerForUpdate.userName = item.userName
+        this.computerForUpdate.handName = item.handName
+        this.computerForUpdate.useTime = item.useTime
+        this.computerForUpdate.remark = item.remark
+        this.computerForUpdate.lid = item.leaderId
+        this.$refs.deptUpdate.setDpart(item.deptId)
+        this.$refs.jobUpdate.getPositionInfo()
+        this.$refs.jobUpdate.setPositionId(item.positionId)
+        $('#preAppUpdateModel').modal('show')
+      },
+      modifyPreApp(){
+        axios({
+          method: 'post',
+          url: this.url + '/computerController/updatePreApplication',
+          headers: {
+            'Content-Type': this.contentType,
+            'Access-Token': this.accessToken
+          },
+          data: {
+            id: this.computerForUpdate.id,
+            deptId: this.computerForUpdate.deptId,
+            positionId: this.computerForUpdate.positionId,
+            userName: this.computerForUpdate.userName,
+            useTime: this.$YYYY_MM_DD_HH_mm(this.computerForUpdate.useTime),
+            remark : this.computerForUpdate.remark
+          },
+          dataType: 'json',
+        }).then(response => {
+          console.log(response.data.retData);
+          $('#preAppUpdateModel').modal('hide');
+          this.queryPreApp();
+        }).catch(err => {
+          console.log(err)
+        });
+      }
     },
     created() {
       this.computer.timeType = this.computer.timeTypes[0].value // SELECT默认选中

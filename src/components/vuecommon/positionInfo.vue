@@ -27,13 +27,17 @@
       },
     },
     methods:{
-      getPositionInfo:function () {
+      setPositionId(val){
+        this.positionId = val
+      },
+      getPositionInfo(){
         let url = this.url + '/computerController/queryPositionInfo'
-        axios.get(url)
-        .then((response) =>{
+        axios.get(url).then((response) =>{
           console.log(response.data.retData);
           this.positionInfoList = response.data.retData;
-          this.positionId = this.positionInfoList[0].positionId;
+          if(this.isBlank(this.positionId)) {
+            this.positionId = this.positionInfoList[0].positionId;
+          }
         }).catch(function (error) {
           console.log(error);
           alert("get请求失败");
@@ -41,6 +45,7 @@
       }
     },
     created() {
+      console.log("this.positionId" + this.pid)
       this.positionId = this.pid
     }
   }
