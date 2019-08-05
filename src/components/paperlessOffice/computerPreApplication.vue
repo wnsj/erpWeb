@@ -21,7 +21,7 @@
       <div class="col-md-3">
         <div class="input-group">
           <span class="input-group-addon">交接人：</span>
-          <input type="text" class="form-control" placeholder="HandName" v-model="computer.handName">
+          <input type="text" class="form-control">
         </div>
       </div>
     </div>
@@ -70,6 +70,7 @@
               <th class="text-center">负责人</th>
               <th class="text-center">负责人意见</th>
               <th class="text-center">对接人</th>
+              <th class="text-center">是否进行</th>
               <th class="text-center">查看详情</th>
             </tr>
             </thead>
@@ -101,6 +102,12 @@
                 }}
               </td>
               <td class="text-center">{{item.handName}}</td>
+              <td class="text-center">
+                <button type="button" class="btn btn-sm btn-default"
+                  :disabled="item.status == null? false:'disabled'">
+                  <b>{{item.status == 1? '进行中':item.status == 2? '已完成':'点击完成'}}</b>
+                </button>
+              </td>
               <td class="text-center">
                 <button type="button" class="btn btn-sm btn-default" @click="showInfoBtn(item)">查看详情</button>
               </td>
@@ -165,7 +172,7 @@
               <div class="col-md-3">
                 <select class="form-control"><option>李庆功</option></select>
               </div>
-              <label class="col-md-2 control-label text-right nopad">同意：</label>
+              <label class="col-md-2 control-label text-right nopad">意见：</label>
               <div class="col-md-3 col-md-offset-1">
                 <button type="button" class="btn btn-sm btn-dark" disabled="disabled">同意</button>
                 <button type="button" class="btn btn-sm btn-dark" disabled="disabled">不同意</button>
@@ -265,10 +272,20 @@
               <div class="col-md-3">
                 <select class="form-control"><option>李庆功</option></select>
               </div>
-              <label class="col-md-2 control-label text-right nopad">同意：</label>
+              <label class="col-md-2 control-label text-right nopad">意见：</label>
+              <div class="col-md-1">
+                <span class="nopad">
+                  <b>{{this.computerForUpdate.principalAudit == 2? '不同意':
+                        this.computerForUpdate.principalAudit == 1? '同意':''}}
+                  </b></span>
+                </div>
               <div class="col-md-3 col-md-offset-1">
-                <button type="button" class="btn btn-sm btn-warning">同意</button>
-                <button type="button" class="btn btn-sm btn-warning">不同意</button>
+                <button type="button" class="btn btn-sm btn-warning" @click="agreePreApp"
+                  :disabled="computerForUpdate.isAbleForCheck"><b>同意</b>
+                </button>
+                <button type="button" class="btn btn-sm btn-warning"
+                  :disabled="computerForUpdate.isAbleForCheck" @click="disagreePreApp"><b>不同意</b>
+                </button>
               </div>
             </div>
             <div class="form-group clearfix">
@@ -280,7 +297,7 @@
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">对接人：</label>
               <div class="col-md-3">
-                <input type="text" class="form-control" v-model="computerForUpdate.handName" disabled="disabled">
+                <hand :hid="computerForUpdate.hid" ref="hand" @handChange="handChange"></hand>
               </div>
               <div class="col-md-2 col-md-offset-3" >
                 <button type="button" class="btn btn-sm btn-block">完成</button>
@@ -320,6 +337,7 @@
   import department from '../vuecommon/department.vue'
   import job from '../vuecommon/positionInfo.vue'
   import leader from '../vuecommon/leaderInfo.vue'
+  import hand from '../vuecommon/handInfo.vue'
 
   export default {
     name: "preApplication",
@@ -327,7 +345,8 @@
       DatePicker,
       department,
       job,
-      leader
+      leader,
+      hand
     },
     data() {
       return {
@@ -349,9 +368,7 @@
           pid: '',
           userName: '',
           useTime: this.$currentHHmm(),
-          lid: '',
-          handName: '',
-
+          lid: ''
         },
         computerForUpdate:{
           id: '',
@@ -359,11 +376,14 @@
           deptId: '',
           pid: '',
           userName: '',
+          handId: '',
           handName: '',
           useTime: '',
           remark: '',
           lid: '',
           isAble: 'disabled',
+          isAbleForCheck: 'disabled',
+          principalAudit: '',
         },
         preAppList: {},
       }
@@ -405,11 +425,9 @@
       },
       jobChange(val){
         this.computerForAdd.pid = val
-        console.log("职位ID" + this.computerForAdd.pid)
       },
       leaderChange(val) {
         this.computerForAdd.lid = val
-        console.log("主管ID" + this.computerForAdd.lid)
       },
       preAppBtn(){
         this.clearAddModel();
@@ -419,7 +437,6 @@
       clearAddModel(){
         this.$refs.dept.setDpart(0), // 组件显示默认值
         this.computerForAdd.deptId = 0, // data里默认值
-        this.computerForAdd.pid = '',
         this.computerForAdd.userName = '',
         this.computerForAdd.useTime = this.$currentHHmm(),
         this.computerForAdd.lid = '',
@@ -468,11 +485,13 @@
       },
       jobChangeForUpdate(val){
         this.computerForUpdate.pid = val
-        console.log("职位ID" + this.computerForUpdate.pid)
       },
       leaderChangeForUpdate(val){
         this.computerForUpdate.lid = val
-        console.log("主管ID" + this.computerForUpdate.lid)
+      },
+      handChange(val){
+        this.computerForUpdate.hid = val[0]
+        this.computerForUpdate.handName = val[1]
       },
       updateLeaderBtn(){
         if (this.computerForUpdate.deptId == 0){
@@ -486,24 +505,29 @@
         this.computerForUpdate.isAble = 'disabled'
       },
       showInfoBtn(item){
-        console.log(item)
         this.clearUpdateModel()
         const loginAccount = JSON.parse(Cookies.get("accountData")).account.account_ID
         if(loginAccount == item.applyId){
           this.computerForUpdate.isAble = false
+        }
+        if(loginAccount == 666){
+          this.computerForUpdate.isAbleForCheck = false
         }
         this.computerForUpdate.id = item.id
         this.computerForUpdate.applyId = item.applyId
         this.computerForUpdate.deptId = item.deptId
         this.computerForUpdate.pid = item.positionId
         this.computerForUpdate.userName = item.userName
-        this.computerForUpdate.handName = item.handName
         this.computerForUpdate.useTime = item.useTime
         this.computerForUpdate.remark = item.remark
+        this.computerForUpdate.hid = item.handId
+        this.computerForUpdate.handName = item.handName
         this.computerForUpdate.lid = item.leaderId
+        this.computerForUpdate.principalAudit = item.principalAudit
         this.$refs.deptUpdate.setDpart(item.deptId)
         this.$refs.jobUpdate.getPositionInfo()
         this.$refs.jobUpdate.setPositionId(item.positionId)
+        this.$refs.hand.setHandId(item.handId)
         $('#preAppUpdateModel').modal('show')
       },
       modifyPreApp(){
@@ -517,10 +541,11 @@
           data: {
             id: this.computerForUpdate.id,
             deptId: this.computerForUpdate.deptId,
-            positionId: this.computerForUpdate.positionId,
+            positionId: this.computerForUpdate.pid,
             userName: this.computerForUpdate.userName,
             useTime: this.$YYYY_MM_DD_HH_mm(this.computerForUpdate.useTime),
-            remark : this.computerForUpdate.remark
+            submitTime: this.$currentTime(),
+            remark : this.computerForUpdate.remark,
           },
           dataType: 'json',
         }).then(response => {
@@ -530,7 +555,52 @@
         }).catch(err => {
           console.log(err)
         });
-      }
+      },
+    // ---------------------------------------负责人审批----------------------------------
+      agreePreApp(){
+        axios({
+          method: 'post',
+          url: this.url + '/computerController/checkPreApp',
+          headers: {
+            'Content-Type': this.contentType,
+            'Access-Token': this.accessToken
+          },
+          data: {
+            id: this.computerForUpdate.id,
+            handId:  this.computerForUpdate.hid,
+            handName: this.computerForUpdate.handName,
+            principalAudit: '1'
+          },
+          dataType: 'json',
+        }).then(response => {
+          console.log(response.data.retData);
+          $('#preAppUpdateModel').modal('hide');
+          this.queryPreApp();
+        }).catch(err => {
+          console.log(err)
+        });
+      },
+      disagreePreApp(){
+        axios({
+          method: 'post',
+          url: this.url + '/computerController/checkPreApp',
+          headers: {
+            'Content-Type': this.contentType,
+            'Access-Token': this.accessToken
+          },
+          data: {
+            id: this.computerForUpdate.id,
+            principalAudit: '2'
+          },
+          dataType: 'json',
+        }).then(response => {
+          console.log(response.data.retData);
+          $('#preAppUpdateModel').modal('hide');
+          this.queryPreApp();
+        }).catch(err => {
+          console.log(err)
+        });
+      },
     },
     created() {
       this.computer.timeType = this.computer.timeTypes[0].value // SELECT默认选中
