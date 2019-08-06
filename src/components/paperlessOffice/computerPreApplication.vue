@@ -70,7 +70,7 @@
               <th class="text-center">负责人</th>
               <th class="text-center">负责人意见</th>
               <th class="text-center">对接人</th>
-              <th class="text-center">是否进行</th>
+              <th class="text-center" v-if="hasDept('23')">是否进行</th>
               <th class="text-center">查看详情</th>
             </tr>
             </thead>
@@ -102,10 +102,10 @@
                 }}
               </td>
               <td class="text-center">{{item.handName}}</td>
-              <td class="text-center">
-                <button type="button" class="btn btn-sm btn-default"
-                  :disabled="item.status == null? false:'disabled'">
-                  <b>{{item.status == 1? '进行中':item.status == 2? '已完成':'点击完成'}}</b>
+              <td class="text-center" v-if="hasDept('23')">
+                <button type="button" class="btn btn-sm btn-default" @click="continueBtn(item)"
+                        :disabled="item.status == null? false:'disabled'">
+                  <b>{{item.status == 1? '进行中':item.status == 2? '已完成':'点击进行'}}</b>
                 </button>
               </td>
               <td class="text-center">
@@ -136,7 +136,9 @@
               </div>
               <label class="col-md-2 control-label text-right nopad">用品类型：</label>
               <div class="col-md-3">
-                <select class="form-control"><option>领用电脑</option></select>
+                <select class="form-control">
+                  <option>领用电脑</option>
+                </select>
               </div>
             </div>
             <div class="form-group clearfix">
@@ -170,7 +172,9 @@
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">负责人：</label>
               <div class="col-md-3">
-                <select class="form-control"><option>李庆功</option></select>
+                <select class="form-control">
+                  <option>李庆功</option>
+                </select>
               </div>
               <label class="col-md-2 control-label text-right nopad">意见：</label>
               <div class="col-md-3 col-md-offset-1">
@@ -189,14 +193,16 @@
               <div class="col-md-3">
                 <input type="text" class="form-control" disabled="disabled">
               </div>
-              <div class="col-md-2 col-md-offset-3" >
+              <div class="col-md-2 col-md-offset-3">
                 <button type="button" class="btn btn-sm btn-block" disabled="disabled">完成</button>
               </div>
             </div>
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">实际使用人：</label>
               <div class="col-md-3">
-                <select class="form-control"><option></option></select>
+                <select class="form-control">
+                  <option></option>
+                </select>
               </div>
             </div>
             <div class="form-group clearfix">
@@ -238,7 +244,8 @@
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">岗位：</label>
               <div class="col-md-3">
-                <job :pid="computerForUpdate.pid" :disabled="computerForUpdate.isAble" ref="jobUpdate" @jobChange="jobChangeForUpdate"></job>
+                <job :pid="computerForUpdate.pid" :disabled="computerForUpdate.isAble" ref="jobUpdate"
+                     @jobChange="jobChangeForUpdate"></job>
               </div>
               <label class="col-md-2 control-label text-right nopad">用品：</label>
               <div class="col-md-3">
@@ -248,12 +255,13 @@
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">预备使用人：</label>
               <div class="col-md-3">
-                <input type="text" class="form-control" placeholder="UserName" :disabled="computerForUpdate.isAble" v-model="computerForUpdate.userName">
+                <input type="text" class="form-control" placeholder="UserName" :disabled="computerForUpdate.isAble"
+                       v-model="computerForUpdate.userName">
               </div>
               <label class="col-md-2 control-label text-right nopad">使用时间：</label>
               <div class="col-md-3">
                 <date-picker v-model="computerForUpdate.useTime" type="datetime" format="YYYY-MM-DD HH:mm" confirm
-                  :disabled="computerForUpdate.isAble">
+                             :disabled="computerForUpdate.isAble">
                 </date-picker>
               </div>
             </div>
@@ -261,7 +269,7 @@
           <div class="modal-footer">
             <div class="text-center">
               <button type="button" class="btn btn-sm btn-warning"
-                :disabled="computerForUpdate.isAble" @click="modifyPreApp">修改
+                      :disabled="computerForUpdate.isAble" @click="modifyPreApp">修改
               </button>
             </div>
           </div> <!-- /.modal-footer -->
@@ -270,7 +278,9 @@
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">负责人：</label>
               <div class="col-md-3">
-                <select class="form-control"><option>李庆功</option></select>
+                <select class="form-control">
+                  <option>李庆功</option>
+                </select>
               </div>
               <label class="col-md-2 control-label text-right nopad">意见：</label>
               <div class="col-md-1">
@@ -278,20 +288,22 @@
                   <b>{{this.computerForUpdate.principalAudit == 2? '不同意':
                         this.computerForUpdate.principalAudit == 1? '同意':''}}
                   </b></span>
-                </div>
+              </div>
               <div class="col-md-3 col-md-offset-1">
                 <button type="button" class="btn btn-sm btn-warning" @click="agreePreApp"
-                  :disabled="computerForUpdate.isAbleForCheck"><b>同意</b>
+                        :disabled="computerForUpdate.isAbleForCheck"><b>同意</b>
                 </button>
                 <button type="button" class="btn btn-sm btn-warning"
-                  :disabled="computerForUpdate.isAbleForCheck" @click="disagreePreApp"><b>不同意</b>
+                        :disabled="computerForUpdate.isAbleForCheck" @click="disagreePreApp"><b>不同意</b>
                 </button>
               </div>
             </div>
             <div class="form-group clearfix">
-              <label class="col-md-2 control-label text-right nopad">负责人：</label>
+              <label class="col-md-2 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
-                <textarea class="textarea" v-model="computerForUpdate.remark" disabled="disabled"></textarea>
+                <textarea class="textarea" v-model="computerForUpdate.remark"
+                          :disabled="computerForUpdate.isAbleForCheck">
+                </textarea>
               </div>
             </div>
             <div class="form-group clearfix">
@@ -299,14 +311,20 @@
               <div class="col-md-3">
                 <hand :hid="computerForUpdate.hid" ref="hand" @handChange="handChange"></hand>
               </div>
-              <div class="col-md-2 col-md-offset-3" >
-                <button type="button" class="btn btn-sm btn-block">完成</button>
+              <label class="col-md-2 control-label text-right nopad">对接：</label>
+              <div class="col-md-2 col-md-offset-2">
+                <button type="button" :disabled="!hasDept('23')" class="btn btn-sm btn-warning btn-block"
+                        @click="finishDocking">
+                  <b>完成</b>
+                </button>
               </div>
             </div>
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">实际使用人：</label>
               <div class="col-md-3">
-                <select class="form-control"><option></option></select>
+                <select class="form-control">
+                  <option></option>
+                </select>
               </div>
             </div>
             <div class="form-group clearfix">
@@ -319,7 +337,7 @@
                   <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                 </button>
               </div>
-              <div class="col-md-2 col-md-offset-2">
+              <div class="col-md-2 col-md-offset-3">
                 <button type="button" class="btn btn-sm btn-block">确定</button>
               </div>
             </div>
@@ -363,14 +381,14 @@
           beginDate: this.$currentDate(),
           endDate: this.$currentDate(),
         },
-        computerForAdd:{
+        computerForAdd: {
           deptId: '',
           pid: '',
           userName: '',
           useTime: this.$currentHHmm(),
           lid: ''
         },
-        computerForUpdate:{
+        computerForUpdate: {
           id: '',
           applyId: '',
           deptId: '',
@@ -384,6 +402,7 @@
           isAble: 'disabled',
           isAbleForCheck: 'disabled',
           principalAudit: '',
+          finishTime: '',
         },
         preAppList: {},
       }
@@ -394,6 +413,10 @@
         this.computer.deptId = val
       },
       queryPreApp() {
+        if (!this.isBlank(this.$route.params.userName)) {
+          console.log(this.$route.params.userName)
+          this.computer.userName = this.$route.params.userName
+        }
         axios({
           method: 'post',
           url: this.url + '/computerController/queryPreApplication',
@@ -420,39 +443,39 @@
         });
       },
       // ---------------------------------------添加----------------------------------
-      deptChangeForAdd(val){
+      deptChangeForAdd(val) {
         this.computerForAdd.deptId = val
       },
-      jobChange(val){
+      jobChange(val) {
         this.computerForAdd.pid = val
       },
       leaderChange(val) {
         this.computerForAdd.lid = val
       },
-      preAppBtn(){
+      preAppBtn() {
         this.clearAddModel();
         this.$refs.job.getPositionInfo();
         $('#preAppAddModel').modal('show')
       },
-      clearAddModel(){
+      clearAddModel() {
         this.$refs.dept.setDpart(0), // 组件显示默认值
-        this.computerForAdd.deptId = 0, // data里默认值
-        this.computerForAdd.userName = '',
-        this.computerForAdd.useTime = this.$currentHHmm(),
-        this.computerForAdd.lid = '',
-        this.$refs.leader.setDeptId(0)
+          this.computerForAdd.deptId = 0, // data里默认值
+          this.computerForAdd.userName = '',
+          this.computerForAdd.useTime = this.$currentHHmm(),
+          this.computerForAdd.lid = '',
+          this.$refs.leader.setDeptId(0)
       },
-      queryLeaderBtn(){
-        if (this.computerForAdd.deptId == 0){
+      queryLeaderBtn() {
+        if (this.computerForAdd.deptId == 0) {
           alert("请选择部门!")
-        }else{
+        } else {
           this.$refs.leader.setDeptId(this.computerForAdd.deptId);
         }
       },
-      addPreApp(){
-        if(this.$YYYY_MM_DD_HH_mm_ss(this.computerForAdd.useTime) < this.$currentTime()){
+      addPreApp() {
+        if (this.$YYYY_MM_DD_HH_mm_ss(this.computerForAdd.useTime) < this.$currentTime()) {
           alert("使用时间不得小于当前时间")
-        }else{
+        } else {
           axios({
             method: 'post',
             url: this.url + '/computerController/addPreApplication',
@@ -480,37 +503,37 @@
         }
       },
       // ---------------------------------------修改审批----------------------------------
-      deptChangeForUpdate(val){
+      deptChangeForUpdate(val) {
         this.computerForUpdate.deptId = val
       },
-      jobChangeForUpdate(val){
+      jobChangeForUpdate(val) {
         this.computerForUpdate.pid = val
       },
-      leaderChangeForUpdate(val){
+      leaderChangeForUpdate(val) {
         this.computerForUpdate.lid = val
       },
-      handChange(val){
+      handChange(val) {
         this.computerForUpdate.hid = val[0]
         this.computerForUpdate.handName = val[1]
       },
-      updateLeaderBtn(){
-        if (this.computerForUpdate.deptId == 0){
+      updateLeaderBtn() {
+        if (this.computerForUpdate.deptId == 0) {
           alert("请选择部门!")
-        }else{
+        } else {
           this.$refs.leaderUpdate.setDeptId(this.computerForUpdate.deptId);
         }
       },
-      clearUpdateModel(){
+      clearUpdateModel() {
         this.$refs.leaderUpdate.setDeptId('0')
         this.computerForUpdate.isAble = 'disabled'
       },
-      showInfoBtn(item){
+      showInfoBtn(item) {
         this.clearUpdateModel()
         const loginAccount = JSON.parse(Cookies.get("accountData")).account.account_ID
-        if(loginAccount == item.applyId){
+        if (loginAccount == item.applyId) {
           this.computerForUpdate.isAble = false
         }
-        if(loginAccount == 666){
+        if (loginAccount == 666) {
           this.computerForUpdate.isAbleForCheck = false
         }
         this.computerForUpdate.id = item.id
@@ -524,13 +547,14 @@
         this.computerForUpdate.handName = item.handName
         this.computerForUpdate.lid = item.leaderId
         this.computerForUpdate.principalAudit = item.principalAudit
+        this.computerForUpdate.finishTime = item.finishTime
         this.$refs.deptUpdate.setDpart(item.deptId)
         this.$refs.jobUpdate.getPositionInfo()
         this.$refs.jobUpdate.setPositionId(item.positionId)
         this.$refs.hand.setHandId(item.handId)
         $('#preAppUpdateModel').modal('show')
       },
-      modifyPreApp(){
+      modifyPreApp() {
         axios({
           method: 'post',
           url: this.url + '/computerController/updatePreApplication',
@@ -544,8 +568,7 @@
             positionId: this.computerForUpdate.pid,
             userName: this.computerForUpdate.userName,
             useTime: this.$YYYY_MM_DD_HH_mm(this.computerForUpdate.useTime),
-            submitTime: this.$currentTime(),
-            remark : this.computerForUpdate.remark,
+            submitTime: this.$currentTime()
           },
           dataType: 'json',
         }).then(response => {
@@ -556,8 +579,8 @@
           console.log(err)
         });
       },
-    // ---------------------------------------负责人审批----------------------------------
-      agreePreApp(){
+      // ---------------------------------------负责人审批----------------------------------
+      agreePreApp() {
         axios({
           method: 'post',
           url: this.url + '/computerController/checkPreApp',
@@ -567,9 +590,11 @@
           },
           data: {
             id: this.computerForUpdate.id,
-            handId:  this.computerForUpdate.hid,
+            handId: this.computerForUpdate.hid,
             handName: this.computerForUpdate.handName,
-            principalAudit: '1'
+            remark: this.computerForUpdate.remark,
+            principalAudit: '1',
+            principalIsSee: '1'
           },
           dataType: 'json',
         }).then(response => {
@@ -580,7 +605,7 @@
           console.log(err)
         });
       },
-      disagreePreApp(){
+      disagreePreApp() {
         axios({
           method: 'post',
           url: this.url + '/computerController/checkPreApp',
@@ -590,7 +615,9 @@
           },
           data: {
             id: this.computerForUpdate.id,
-            principalAudit: '2'
+            remark: this.computerForUpdate.remark,
+            principalAudit: '2',
+            principalIsSee: '1'
           },
           dataType: 'json',
         }).then(response => {
@@ -601,9 +628,70 @@
           console.log(err)
         });
       },
+      // ---------------------------------------对接----------------------------------
+      continueBtn(item) {
+        if (this.isBlank(item.finishTime)) {
+          alert('请点击查看详情,点击完成按钮后再操作此处')
+          return false;
+        } else {
+          let msg = confirm("是否进行？")
+          axios({
+            method: 'post',
+            url: this.url + '/computerController/checkPreApp',
+            headers: {
+              'Content-Type': this.contentType,
+              'Access-Token': this.accessToken
+            },
+            data: {
+              id: item.id,
+              status: '1',
+              handIsSee: '1'
+            },
+            dataType: 'json',
+          }).then(response => {
+            console.log(response.data.retData);
+            $('#preAppUpdateModel').modal('hide');
+            this.queryPreApp();
+          }).catch(err => {
+            console.log(err)
+          });
+        }
+      },
+      finishDocking() {
+        if (this.computerForUpdate.principalAudit != 1) {
+          alert('负责人未同意前或审批未通过,不可进行完成操作!')
+          return false;
+        } else {
+          if (!this.isBlank(this.computerForUpdate.finishTime)) {
+            alert('已完成')
+            return false;
+          }
+          axios({
+            method: 'post',
+            url: this.url + '/computerController/checkPreApp',
+            headers: {
+              'Content-Type': this.contentType,
+              'Access-Token': this.accessToken
+            },
+            data: {
+              id: this.computerForUpdate.id,
+              finishTime: this.$currentHHmm(),
+              handIsSee: '1'
+            },
+            dataType: 'json',
+          }).then(response => {
+            console.log(response.data.retData);
+            $('#preAppUpdateModel').modal('hide');
+            this.queryPreApp();
+          }).catch(err => {
+            console.log(err)
+          });
+        }
+      }
     },
     created() {
       this.computer.timeType = this.computer.timeTypes[0].value // SELECT默认选中
+      this.queryPreApp();
     }
   }
 </script>
@@ -612,13 +700,15 @@
   .m_r_10 {
     margin-right: 10px;
   }
+
   .nopad {
     padding-left: 0;
     padding-right: 0;
     line-height: 34px;
   }
-  .textarea{
-    resize:none;
+
+  .textarea {
+    resize: none;
     width: 100%;
     height: 60px;
   }

@@ -146,11 +146,12 @@ export default new Router({
 				},
 				{
 					path: '/paperlessOffice/computerPreApplication',
-					component: preApplication
+          name: 'preApplication',
+          component: preApplication
 				},
 				{
 					path: '/paperlessOffice/empRequire',
-					component: preApplication
+					component: empRequire
 				}
 
 			],
