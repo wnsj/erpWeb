@@ -47,7 +47,7 @@
 <script>
 	import axios from 'axios'
 	import {isBlank} from '@/assets/js/constant.js'
-	
+
 	export default {
 		props: ['item'],
 		methods: {
@@ -80,8 +80,8 @@
 			},
 			//修改考勤规则种类
 			updatequeryAttRuleType() {
-				if (isBlank(this.item.earlyMinutes) || isBlank(this.item.lateMinutes)) {
-					alert("出勤规则最早或最晚时间为空！");
+				if (isBlank(this.item.name)) {
+					alert("出勤规则名为空！");
 					return;
 				}
 				var url = this.url + "/kqParamSetContr/updateAttRuleType";
