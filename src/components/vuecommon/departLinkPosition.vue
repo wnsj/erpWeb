@@ -38,6 +38,7 @@
 			positionChange: function() {
 				this.$emit('positionChange', this.positionId)
 			},
+			
 			//岗位随部门ID联动
 			departLinkChange(departId) {
 				var url = this.url + "/kqParamSetContr/queryDepartmentPosition";
@@ -56,6 +57,7 @@
 					.then(response => {
 						if (response.data.retCode == "0000") {
 							this.positionList = response.data.retData
+							
 						} else {
 							console.log(response.data);
 						}

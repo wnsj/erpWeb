@@ -137,6 +137,7 @@
 					console.log(res)
 					if (res.retCode == '0000') {
 						alert(res.resData.message)
+						console.log('入职人员'+res)
 						this.$emit('addEmployeeInfo')
 						$("#myModalJoin").modal('hide')
 						this.cleanData()

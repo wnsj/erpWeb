@@ -1,6 +1,6 @@
 <template>
 	<!--家庭成员添加弹窗-->
-	<div class="modal-dialog staff_t" id="updatefamily_modify">
+	<div class="modal-dialog staff_t" id="updatefamily_add">
 		<div class="modal-header">
 			<button type="button" aria-hidden="true" class="close" v-on:click="closeBtn()">×</button>
 			<!-- <h4 id="myModalLabel" class="modal-title">添加家庭成员</h4> -->
@@ -70,13 +70,15 @@
 <script>
 	import {isBlank} from '../../../../../assets/js/constant.js'
 	export default {
-		props:['familyInfo'],
 		data() {
 			return {
-				
+				familyInfo:{},
 			};
 		},
 		methods:{
+			childrenFEmpInfo:function(param){
+				this.familyInfo=param
+			},
 			submitFamilyInfo:function(){
 				if(isBlank(this.familyInfo.appellation)){
 					alert('称谓不能为空')

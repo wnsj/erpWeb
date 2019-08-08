@@ -61,8 +61,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="(item,index) in searchFamily(familyChild)" :key="index" v-if="(familyName == '' && familybirthday == 0) || (item.chname.search(familyName) != -1 && familybirthday == 0)
-							|| (familyName == '' && item.birth.split('-')[1] == familybirthday) || (item.chname.search(familyName) != -1 && item.birth.split('-')[1] == familybirthday)">
+							<tr v-for="(item,index) in familyList" :key="index">
 								<td>{{item.jobnum}}</td>
 								<td>{{item.name}}</td>
 								<td>{{item.appellation}}</td>
@@ -97,24 +96,7 @@
 			};
 		},
 		methods:{
-			// 家庭成员赛选
-			searchFamily: function(param) {
 			
-				var newList = []
-				this.familyList.forEach(
-					function(item) {
-			
-						if (item.name.search(param) != -1 || item.jobnum.toString().search(param) != -1) {
-							newList.push(item)
-						}
-					}
-				)
-				// alert(newList.length)
-				if (newList.length > 0)
-					return newList
-				else
-					return this.familyList
-			},
 			cleanData:function(){
 				this.familyChild=''
 				this.familyName=''
@@ -124,6 +106,7 @@
 			getFamilyAll: function() {
 				console.log('getFamilyAll+param'+this.familyChild+this.familyName+this.familybirthday)
 				var url = this.url + '/search/fmList'
+				// this.familyList=[]
 				axios({
 					method: 'post',
 					url: url,
@@ -132,8 +115,9 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
-						chname: this.familyChild,
-						name: this.familyName,
+						chname: this.familyName,
+						name: this.familyChild,
+						jobnum:this.familyChild,
 						birth: this.familybirthday,
 					},
 					dataType: 'json',

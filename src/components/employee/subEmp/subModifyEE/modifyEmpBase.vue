@@ -45,7 +45,7 @@
 				<div class="col-md-5">
 					<input type="text" class="form-control" v-model="personalBase.positionName" disabled>
 				</div>
-				<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#Post_transfer">岗位调动</button>
+				<button type="button" class="btn btn-warning" data-toggle="modal" v-on:click="positionShiftAction()">岗位调动</button>
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">入职日期：</label>
@@ -83,7 +83,7 @@
 				<div class="col-md-5">
 					<lReason></lReason>
 				</div>
-				<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#Cause_management">原因管理</button>
+				<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#Cause_management" >原因管理</button>
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">状态：</label>
@@ -102,7 +102,7 @@
 			</div>
 		</form>
 		<lrManager></lrManager>
-		<positionShift :oldDepart = 'personalBase.departName' :oldPosition = 'personalBase.positionName' @shiftChange = 'positionShift'></positionShift>
+		<positionShift  @shiftChange = 'positionShift'></positionShift>
 	</div>
 </template>
 
@@ -130,11 +130,16 @@
 			childrenBaseInfo:function(param){
 				this.personalBase = param
 			},
+			positionShiftAction:function(){
+				this.$children[2].initData(this.personalBase)
+				$("#Post_transfer").modal('show')
+			},
 			positionShift:function (positionShiftInfo){
 				this.personalBase.departName = positionShiftInfo.departName
 				this.personalBase.departId = positionShiftInfo.departId
 				this.personalBase.positionName = positionShiftInfo.positionName
 				this.personalBase.positionId = positionShiftInfo.positionId
+				$("#Post_transfer").modal('hide')
 			},
 			
 		},
