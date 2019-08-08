@@ -234,7 +234,7 @@
       //切换月表
       changeToMon() {
         if (!this.isBlank(this.ryScheduleListUid) && this.ryScheduleListName != '未选择员工') {
-          alert("ryScheduleListUid:" + this.ryScheduleListUid + ",ryScheduleListName:" + this.ryScheduleListName)
+          //alert("ryScheduleListUid:" + this.ryScheduleListUid + ",ryScheduleListName:" + this.ryScheduleListName)
           //{id:this.ryScheduleListUid,name:this.ryScheduleListName}
           var obj = {};
           obj.id = this.ryScheduleListUid;
