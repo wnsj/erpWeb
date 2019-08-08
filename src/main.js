@@ -182,7 +182,9 @@ Vue.filter('dateFormat', function (time, formatStr='YYYY-MM-DD HH:mm') {
  */
 Vue.use(global_date)
 
-
+Vue.prototype.hasDept = function(param) {
+  return constant.hasDept(param);
+}
 
 
 

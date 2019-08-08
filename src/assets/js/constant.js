@@ -54,14 +54,28 @@ function has(param){
 	for (var i = 0; i < permission.length; i++) {
 		if(permission[i] == param){
 			return true;
-		} 
+		}
 	}
 	return false;
 }
 
+//部门判断方法（包含返回true，反之false）
+function hasDept(param){
+  //未传值
+  if(isBlank(param)) return false;
+  const jsonString = Cookies.get("accountData");
+  //未登录
+  if(isBlank(jsonString))return false;
+  const accountData = JSON.parse(jsonString);
+  const deptId = accountData.account.departId;
+  const state = accountData.account.account_State;
+  if(deptId == (param) && state == "在用") return true;
+  return false;
+}
+
 //用户的基本信息
 export function accountInfo(){
-	
+
 	var jsonString = Cookies.get("accountData");
 	//未登录
 	if(isBlank(jsonString))return false;
@@ -73,5 +87,6 @@ export function accountInfo(){
 export {
 	//isBlank,
 	CallVueMethod,
-	has
+	has,
+	hasDept
 }

@@ -428,7 +428,7 @@
                   <p>提交人：</p>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                  <input type="text" :value="account.account_Name" readonly="readonly" class="form-control" />
+                  <input type="text" :value="hasHz.isHuiZong == '9999' ? hasHz.huiZongRenName : account.account_Name" readonly="readonly" class="form-control" />
                 </div>
               </div>
 
