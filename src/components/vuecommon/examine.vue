@@ -51,12 +51,9 @@
           if(this.typeId <= 4){
             this.type4(this.typeId)
           }
-          if(this.typeId = 5){
+          if(this.typeId == 5){
             this.type5(this.typeId)
           }
-          // if(this.typeId = 6){
-          //   this.type6(this.typeId)
-          // }
         },
         type4(id){
           if(id == 2 || id == 3){
@@ -87,11 +84,7 @@
         },
         // type6(id){
         //   if(id == 6){
-        //     this.positionTypeId = ''
-        //     this.typeIds = ''
-        //   }
-        //   if(!this.isBlank(this.positionTypeId)){
-        //     this.typeIds.push(this.positionTypeId);
+        //     this.positionTypeId = '74'
         //   }
         // },
         setTypeId(){
@@ -123,9 +116,9 @@
           if(this.deptId == 0){
             this.round ++
           }
-          console.log("部门" + this.deptId)
-          console.log("职位数组" + this.typeIds)
-          console.log("部门" + this.deptIds)
+          // console.log("部门" + this.deptId)
+          // console.log("职位数组" + this.typeIds)
+          // console.log("部门" + this.deptIds)
           axios({
             method: 'post',
             url: this.url + '/leavePrepareController/queryCheckInfo',
