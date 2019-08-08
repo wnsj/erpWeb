@@ -23,22 +23,12 @@
 			</div>
 			<div class="row add-mt">
 				<div class="form-inline col-xs-6 col-sm-6 col-md-6 col-lg-6">
-					<div class="form-group">
-						<label for="firstTime" class="control-label">时间：</label>
-						<div class="input-group">
-							<input type="date" class="form-control" id="firstTime" v-model="begin">
-							<div class="input-group-addon"> <span class="glyphicon glyphicon-calendar"></span> </div>
-						</div>
-					</div>
+					<label for="firstTime" class="control-label">时间：</label>
+					<dPicker v-model="begin"></dPicker>
 				</div>
 				<div class="form-inline col-xs-6 col-sm-6 col-md-6 col-lg-6">
-					<div class="form-group">
-						<label for="secondTime" class="control-label">至：</label>
-						<div class="input-group">
-							<input type="date" class="form-control" id="secondTime" v-model="end">
-							<div class="input-group-addon"> <span class="glyphicon glyphicon-calendar"></span> </div>
-						</div>
-					</div>
+					<label for="secondTime" class="control-label">至：</label>
+					<dPicker v-model="end"></dPicker>
 				</div>
 			</div>
 			<div class="row add-mt">
@@ -89,15 +79,17 @@
 
 <script>
 	import leaveReason from '../../vuecommon/leaveReason.vue'
+	import dPicker from 'vue2-datepicker'
 	export default {
 		components:{
-			leaveReason
+			leaveReason,
+			dPicker,
 		},
 		data() {
 			return {
 				category:'0', 
-				begin:'',
-				end:'',
+				begin:this.moment('','YYYY-MM-DD 00:00:00'),
+				end:this.moment('','YYYY-MM-DD 00:00:00'),
 				advanceResignType:'',
 				advanceReasonId:'',
 				birthday:'0',
@@ -113,6 +105,7 @@
 			},
 			// 高级查询
 			submitAdvacedParam:function(param){
+				alert(this.begin)
 				this.advanceParam.category = this.category
 				this.advanceParam.begin = this.begin
 				this.advanceParam.end = this.end

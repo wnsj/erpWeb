@@ -61,14 +61,14 @@
 			
 			//添加家庭成员
 			popupFamilyInfo:function(){
-// 				this.familyInfo = {}
-// 				this.familyInfo.type='add'
-// 				this.$refs.fEmp.childrenFEmpInfo(this.familyInfo)
-				$("#updatefamily_add").modal('show')
+				this.familyInfo = {}
+				this.familyInfo.type='add'
+				this.$refs.modifyFEmp.childrenFEmpInfo(this.familyInfo)
+				$("#updatefamily_modify").modal('show')
 			},
 			popbackFamilyInfo:function(familyInfo){
 				
-				$("#updatefamily_add").modal('hide')
+				$("#updatefamily_modify").modal('hide')
 				
 				// alert(this.personalFamily.length)
 				if(this.familyInfo.type=='modify'){
@@ -84,12 +84,12 @@
 			},
 			//修改家庭成员
 			modifyFamilyInfo:function(item,index){
-// 				this.familyInfo = {}
-// 				this.familyInfo=Object.assign({},item)
-// 				this.modifyFIIndex = index
-// 				this.familyInfo.type='modify'
-// 				this.$refs.modifyFEmp.childrenFEmpInfo(this.familyInfo)
-				$("#updatefamily_add").modal('show')
+				this.familyInfo = {}
+				this.familyInfo=Object.assign({},item)
+				this.modifyFIIndex = index
+				this.familyInfo.type='modify'
+				this.$refs.modifyFEmp.childrenFEmpInfo(this.familyInfo)
+				$("#updatefamily_modify").modal('show')
 			},
 			//删除家庭成员
 			cancelRFInfo:function(index){

@@ -36,7 +36,7 @@
 				</tbody>
 			</table>
 		</div>
-		<!-- <familyEmp ref='fEmp' @submitFamilyInfo='popbackFamilyInfo'></familyEmp> -->
+		<familyEmp ref='fEmp' @submitFamilyInfo='popbackFamilyInfo'></familyEmp>
 	</div>
 	
 </template>

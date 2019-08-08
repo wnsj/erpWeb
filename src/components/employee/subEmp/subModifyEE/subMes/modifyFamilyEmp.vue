@@ -1,6 +1,6 @@
 <template>
 	<!--家庭成员添加弹窗-->
-	<div class="modal-dialog staff_t" id="updatefamily_add">
+	<div class="modal-dialog staff_t" id="updatefamily_modify">
 		<div class="modal-header">
 			<button type="button" aria-hidden="true" class="close" v-on:click="closeBtn()">×</button>
 			<!-- <h4 id="myModalLabel" class="modal-title">添加家庭成员</h4> -->
@@ -91,7 +91,7 @@
 				this.$emit('submitFamilyInfo',this.familyInfo)
 			},
 			closeBtn:function (){
-				$("#updatefamily_add").modal('hide')
+				$("#updatefamily_modify").modal('hide')
 			}
 		}
 	}

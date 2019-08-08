@@ -106,7 +106,7 @@
 			getFamilyAll: function() {
 				console.log('getFamilyAll+param'+this.familyChild+this.familyName+this.familybirthday)
 				var url = this.url + '/search/fmList'
-				// this.familyList=[]
+				this.familyList=[]
 				axios({
 					method: 'post',
 					url: url,

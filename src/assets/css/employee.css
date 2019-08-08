@@ -57,7 +57,7 @@
 .m_r_10{ margin-right:10px;}
 
 #Post_transfer{ background-color:#fff; display:none; z-index:99999999; position:fixed; left:0; right:0; top:30%; width:660px!important; box-shadow:0 5px 15px rgba(0, 0, 0, .5); padding:10px;}
-#updatefamily_add,#family_update{ background-color:#fff; display:none; z-index:99999999; position:fixed; left:0; right:0; top:10%; width:660px!important; box-shadow:0 5px 15px rgba(0, 0, 0, .5); padding:10px;}
+#updatefamily_add,#updatefamily_modify,#family_update{ background-color:#fff; display:none; z-index:99999999; position:fixed; left:0; right:0; top:10%; width:660px!important; box-shadow:0 5px 15px rgba(0, 0, 0, .5); padding:10px;}
 
 .embed-responsive{
 	overflow: auto;
