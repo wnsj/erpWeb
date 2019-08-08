@@ -15,9 +15,10 @@
         return {
           isAble: false,
           accountId: '',
+          applyAccount: '',
           deptId: '',
           typeId: 0,
-          positionId: '',
+          deputyId: '',
           positionTypeId: '',
           typeIds:[],
           deptIds: [],
@@ -79,14 +80,9 @@
             this.typeIds.push(this.positionTypeId);
           }
           if(id == 6){
-            this.positionId = '33'
+            this.deputyId ='33'
           }
         },
-        // type6(id){
-        //   if(id == 6){
-        //     this.positionTypeId = '74'
-        //   }
-        // },
         setTypeId(){
           return this.positionTypeId
         },
@@ -103,6 +99,9 @@
           this.positionTypeId = ''
           this.typeIds = ''
         },
+        getApplyAccount(val){
+          this.applyAccount = val
+        },
         // 查询审查人信息
         getExamineList: function () {
           if(this.typeIds.length == 0){ // 当职位为空时 开始传部门数组
@@ -116,9 +115,9 @@
           if(this.deptId == 0){
             this.round ++
           }
-          // console.log("部门" + this.deptId)
-          // console.log("职位数组" + this.typeIds)
-          // console.log("部门" + this.deptIds)
+          console.log("部门" + this.deptId)
+          console.log("职位数组" + this.typeIds)
+          console.log("部门" + this.deptIds)
           axios({
             method: 'post',
             url: this.url + '/leavePrepareController/queryCheckInfo',
@@ -130,12 +129,19 @@
               deptId: this.deptId,
               typeIds: this.typeIds,
               deptIds: this.deptIds,
-              positionId: this.positionId
+              deputyId: this.deputyId
             },
             dataType: 'json',
           }).then(response => {
             console.log(response.data.retData)
             this.examineList = response.data.retData;
+            if(this.examineList.length > 0){
+              for(let i=0; i<this.examineList.length; i++){ // 排除申请人自己
+                if(this.applyAccount == this.examineList[i].accountId){
+                  this.examineList.splice(i,1)
+                }
+              }
+            }
             if(!this.isBlank(this.examine.accountId)){
               for(let i=0; i<this.examineList.length; i++){
                 if(this.examine.accountId == this.examineList[i].accountId){  // 如果获取的审查人已存在集合中
@@ -146,7 +152,11 @@
               this.examineList.push(this.examine);  // 如果获取的审查人不存在集合中 向集合中加入数据
               this.accountId = this.examine.accountId;  // 默认显示新增加的审查人
             }else{
-              this.accountId = this.examineList[0].accountId;
+              if(this.examineList.length > 0){
+                this.accountId = this.examineList[0].accountId;
+              }else{
+                this.accountId = ''
+              }
             }
           }).catch(err => {
             console.log(err)
