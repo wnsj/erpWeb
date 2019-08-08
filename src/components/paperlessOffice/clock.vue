@@ -1104,12 +1104,12 @@
           console.log(response.data.retData)
           this.parentId = response.data.retData // 获取请假人的父级部门ID
           console.log("deptExamineId" + this.deptExamineId)
+          console.log("typeId" + this.typeId)
           if (this.deptExamineId == '0') { // 当下一次初始部门ID为0时(没有父级部门时)
             this.$refs.examine.getDeptId(this.deptInitId) // 传初始化参数给子组件
             this.deptExamineId = this.deptInitId; // 下一轮初始的部门ID为初始参数
             this.typeExamineId = this.$refs.examine.setTypeId();// 获得到positionTypeId的值
-            console.log("获得到positionTypeId的值" + this.typeExamineId)
-            if(this.typeExamineId <= 6){
+            if (this.typeExamineId <= 6) {
               if(this.typeId <=4){
                 this.$refs.examine.type4(this.typeExamineId);
               }
