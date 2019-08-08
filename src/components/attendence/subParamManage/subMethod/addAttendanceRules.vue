@@ -67,10 +67,10 @@
 				// newqueryAttRule.name = this.newqueryAttRuleName;
 				// newqueryAttRule.earlyMinutes = this.newqueryAttRuleEarlyMinutes;
 				// newqueryAttRule.lateMinutes = this.newearlyMinutesLateMinutes;
-				if (isBlank(this.newqueryAttRuleEarlyMinutes) || isBlank(this.newearlyMinutesLateMinutes)) {
-					alert("出勤规则最早或最晚时间为空！");
-					return;
-				}
+        if(this.isBlank(this.newqueryAttRuleName)){
+          alert("出勤规则名不能为空!")
+          return;
+        }
 				axios({
 					method: "post",
 					url: url,
