@@ -57,7 +57,6 @@
     },
     created() {
       this.getApprovalAccount();
-      this.accId = this.accountId
     }
   }
 </script>

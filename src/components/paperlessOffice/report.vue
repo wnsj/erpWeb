@@ -7,15 +7,14 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-4">
         <span class="select-box-title">填写日期：</span>
-        <date-picker v-model="beginDate" type="date" confirm></date-picker>
+        <date-picker v-model="beginDate" type="date" class="queryDate"></date-picker>
         <span class="select-box-title">~</span>
-        <date-picker v-model="endDate" type="date" confirm></date-picker>
+        <date-picker v-model="endDate" type="date" class="queryDate"></date-picker>
       </div>
-    </div>
-    <br>
-    <div class="row">
+      <!--    </div>-->
+      <!--    <div class="row">-->
       <div class="col-md-3">
         <div class="input-group">
           <span class="input-group-addon">请假人部门</span>
@@ -42,9 +41,8 @@
     <br>
     <div class="row">
       <div class="col-md-3 col-md-offset-9">
-        <button type="button" class="btn btn-warning pull-right m_r_10" v-if='has(51)'>导出</button>
-        <button type="button" class="btn btn-info pull-right m_r_10" data-toggle="modal" data-target="#reportAddModel"
-                v-if='has(51)'>申请
+        <button type="button" class="btn btn-warning pull-right m_r_10" v-if='has(51)' @click="exportTableToExcel('reportTable','请假报备表')">导出</button>
+        <button type="button" class="btn btn-info pull-right m_r_10" v-if='has(51)' @click="addBtn">申请
         </button>
         <button type="button" class="btn btn-primary pull-right m_r_10" @click="queryReport">查询</button>
       </div>
@@ -54,7 +52,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="pre-scrollable">
-          <table class="table table-bordered table-hover text-nowrap" id="reporttable">
+          <table class="table table-bordered table-hover text-nowrap" id="reportTable">
             <thead>
             <tr>
               <th class="text-center">类型</th>
@@ -72,7 +70,6 @@
               <th class="text-center">审批意见</th>
               <th class="text-center">状态</th>
               <th class="text-center">申请销假</th>
-
               <th class="text-center" v-if='has(51)'>审批</th>
               <th class="text-center" v-if='has(51)'>修改</th>
               <th class="text-center" v-if='has(51)'>销假</th>
@@ -103,7 +100,7 @@
               <td class="text-center">
                 <button type="button" class="btn btn-sm"
                         :disabled="item.state==1? true:false"
-                        @click="applyReportBack(item)"><b>申请销假</b>
+                        @click="applyReportBackBtn(item)"><b>申请销假</b>
                 </button>
               </td>
               <td class="text-center" v-if='has(51)'>
@@ -166,9 +163,9 @@
               <div class="form-group clearfix">
                 <label class="col-md-2 control-label text-right nopad">请假时间：</label>
                 <div class="col-md-8">
-                  <date-picker v-model="startTime" type="datetime" format="YYYY-MM-DD HH:mm" :minute-step="10" confirm></date-picker>
+                  <date-picker v-model="startTime" type="datetime" format="YYYY-MM-DD HH:mm"></date-picker>
                   <span class="select-box-title">~</span>
-                  <date-picker v-model="endTime" type="datetime" format="YYYY-MM-DD HH:mm" :minute-step="10" confirm></date-picker>
+                  <date-picker v-model="endTime" type="datetime" format="YYYY-MM-DD HH:mm"></date-picker>
                 </div>
               </div>
               <div class="form-group clearfix">
@@ -180,7 +177,7 @@
               <div class="form-group clearfix">
                 <label class="col-md-2 control-label text-right nopad">审批人：</label>
                 <div class="col-md-3">
-                  <approvalLeaveAcc :accountID="accountID" @approvalChange='approvalChange'></approvalLeaveAcc>
+                  <approvalLeaveAcc :accountID="accountID" ref="approval" @approvalChange='approvalChange'></approvalLeaveAcc>
                 </div>
               </div>
               <div class="form-group clearfix">
@@ -302,7 +299,7 @@
               <div class="form-group clearfix">
                 <label class="col-md-1 control-label text-right nopad">批准人：</label>
                 <div class="col-md-2">
-                  <approve :approveAccount="approveAccount" ref="approve" @approveChange="approveChange"></approve>
+                  <approve :approveAccount="approveAccount" @approveChange="approveChange"></approve>
                 </div>
                 <div class="col-md-1">
                   <button type="button" data-toggle="modal" @click="addApproveOption" :disabled="isAbleForApprove">
@@ -323,7 +320,7 @@
               <div class="form-group clearfix">
                 <label class="col-md-1 control-label text-right nopad">报备人：</label>
                 <div class="col-md-2">
-<!--                  <approvalLeaveAcc :accountID="reportAccount" @approvalChange='reportChange'></approvalLeaveAcc>-->
+                  <!--                  <approvalLeaveAcc :accountID="reportAccount" @approvalChange='reportChange'></approvalLeaveAcc>-->
                   <select class="form-control">
                     <option>李珊珊</option>
                   </select>
@@ -453,9 +450,9 @@
               <div class="form-group clearfix">
                 <label class="col-md-2 control-label text-right nopad">请假时间：</label>
                 <div class="col-md-8">
-                  <date-picker v-model="startUpdateTime" type="datetime" format="YYYY-MM-DD HH:mm" :minute-step="10" confirm></date-picker>
+                  <date-picker v-model="startUpdateTime" type="datetime" format="YYYY-MM-DD HH:mm" :minute-step="10"></date-picker>
                   <span class="select-box-title">~</span>
-                  <date-picker v-model="endUpdateTime" type="datetime" format="YYYY-MM-DD HH:mm" :minute-step="10" confirm></date-picker>
+                  <date-picker v-model="endUpdateTime" type="datetime" format="YYYY-MM-DD HH:mm" :minute-step="10"></date-picker>
                 </div>
               </div>
               <div class="form-group clearfix">
@@ -568,7 +565,7 @@
         typeId: 0,
         // 审查人组件
         deptExamineId: '',
-        typeExamineId:'',
+        typeExamineId: '',
         // 审核人组件
         deptCheckId: '',
         typeCheckId: '',
@@ -608,14 +605,12 @@
     methods: {
       //---------------------------------------清空操作----------------------------------
       addModelClear() { // 清空添加模态框
-        $('#reportAddModel').modal('hide');
         this.leaveTypeName = '',
-          this.departId = this.$refs.departAdd.setDpart("0"),
-          this.deptEmpId = '',
-          this.startTime = this.$addStartTime(),
-          this.endTime = this.$addEndTime(),
-          this.leaveRemark = '',
-          this.accountID = ''
+        this.departId = this.$refs.departAdd.setDpart("0"),
+        this.deptEmpId = '',
+        this.startTime = this.$addStartTime(),
+        this.endTime = this.$addEndTime(),
+        this.leaveRemark = ''
       },
       reviewReportClear() { // 清空审批模态框
         $('#reviewReportModel').modal('hide');
@@ -651,6 +646,10 @@
       },
 
       // ---------------------------------------添加----------------------------------
+      addBtn(){ // 申请按钮
+        this.addModelClear()
+        $('#reportAddModel').modal('show')
+      },
       leaveTypeChange(val) { // 假期类型
         this.leaveTypeName = val
       },
@@ -664,35 +663,32 @@
       },
       approvalChange(val) {   // 审批人
         this.accountID = val
+        console.log("审批人" + this.accountID)
       },
       addReport() {     // 添加请假报备信息
         if (this.isBlank(this.leaveTypeName)) {
-          alert('请选择请假类型');
+          alert('请选择请假类型!');
           return false;
         }
         if (this.isBlank(this.departId) || this.departId == 0) {
-          alert('请选择部门');
+          alert('请选择部门!');
           return false;
         }
         if (this.isBlank(this.deptEmpId)) {
-          alert('请选择请假人');
+          alert('请选择请假人!');
           return false;
         }
         if (this.isBlank(this.startTime)) {
-          alert('请假开始时间不能为空,或格式不正确');
+          alert('请选择开始时间!');
           return false;
         }
         if (this.isBlank(this.endTime)) {
-          alert('请假结束时间不能为空,或格式不正确');
+          alert('请选择结束时间!');
           return false;
         }
 
         if (this.isBlank(this.leaveRemark)) {
           alert('请选择请假原因');
-          return false;
-        }
-        if (this.isBlank(this.accountID)) {
-          alert('请选择审批人');
           return false;
         }
         axios({
@@ -715,11 +711,10 @@
           },
           dataType: 'json',
         }).then(response => {
+          $('#reportAddModel').modal('hide');
           this.queryReport();
-          this.addModelClear();
           console.log(response.data.retData)
         }).catch(err => {
-          this.addModelClear();
           console.log(err)
         });
       },
@@ -750,7 +745,7 @@
       // },
 
       // 申请销假按钮
-      applyReportBack(item) {
+      applyReportBackBtn(item) {
         if (JSON.parse(Cookies.get("accountData")).account.account_ID != item.leaveAccount) {
           alert("不能为他人申请销假")
         } else {
@@ -772,7 +767,7 @@
       },
 
       // 加载数据
-      toLoad(item){
+      toLoad(item) {
         //  回显数据
         this.reportId = item.id
         this.leaveAccount = item.leaveAccount
@@ -802,7 +797,7 @@
           this.$refs.examine.insertCheckInfo([item.fillAccount, item.fillEmpName])
           this.$refs.examine.changeAble();
           this.isAbleForExamine = "disabled";
-        }else {
+        } else {
           this.isAbleForExamine = false;
           this.$refs.examine.getExamineList();
         }
@@ -811,7 +806,7 @@
           this.$refs.check.insertCheckInfo([item.fillAccount, item.fillEmpName])
           this.$refs.check.changeAble();
           this.isAbleForCheck = "disabled";
-        }else {
+        } else {
           this.isAbleForCheck = false;
           this.$refs.check.getCheckList();
         }
@@ -822,7 +817,7 @@
           this.$refs.approve.insertCheckInfo([item.fillAccount, item.fillEmpName])
           this.$refs.approve.changeAble();
           this.isAbleForApprove = "disabled";
-        }else {
+        } else {
           this.isAbleForApprove = false;
           this.$refs.approve.getApproveList();
         }
@@ -955,7 +950,7 @@
         });
       },
 
-      addReportToLeave(){
+      addReportToLeave() {
         axios({
           method: 'post',
           url: this.url + '/wzbg/insertLeaveApplication',
@@ -964,7 +959,7 @@
             'Access-Token': this.accessToken
           },
           data: {
-            lInfo:{
+            lInfo: {
               account1: this.examineAccount,
               account2: this.checkAccount,
               account3: this.approveAccount,
@@ -976,11 +971,11 @@
               departId: this.deptInitId,
               endTime: this.endBackTime,
               leaveAccount: this.leaveAccount,
-              leaveRemark:  this.leaveBackRemark,
-              leaveType:  this.leaveTypeBackName,
+              leaveRemark: this.leaveBackRemark,
+              leaveType: this.leaveTypeBackName,
               positionName: this.leavePositionBackName,
               startTime: this.startBackTime,
-              step:"0",
+              step: "0",
               baobeiId: this.reportId,
             }
           },
@@ -1204,7 +1199,8 @@
 
       // ---------------------------------------取消----------------------------------
       reportCancel(item) {
-        if (item.leaveAccount != JSON.parse(Cookies.get("accountData")).account.account_ID) {
+        const loginAccount = JSON.parse(Cookies.get("accountData")).account.account_ID
+        if (item.fillAccount != loginAccount){
           alert("不能取消他人的报备!")
         } else {
           if (item.state == 2) {
@@ -1228,10 +1224,10 @@
                 dataType: 'json',
               }).then((response) => {
                 if (response.data.retCode == '0000') {
+                  alert('取消成功')
                   this.queryReport();
-                  console.log('取消操作成功')
                 } else {
-                  console.log('取消操作失败')
+                  alert('取消失败')
                 }
               }).catch((error) => {
                 console.log('取消请求失败')
@@ -1281,6 +1277,12 @@
 
   input[type="date"] {
     line-height: 26px !important;
+  }
+
+  .queryDate {
+    position: relative;
+    display: inline-block;
+    width: 120px;
   }
 </style>
 

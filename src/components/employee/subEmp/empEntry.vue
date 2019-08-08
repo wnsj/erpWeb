@@ -148,6 +148,19 @@
 				}).catch((error) => {
 					console.log('请求失败处理')
 				});
+
+			},
+			goToUrl(){
+			  const msg = confirm("员工添加成功,是否需要申请电脑？")
+			  if(msg){
+          this.$router.push({
+            // path:'/paperlessOffice/computerPreApplication',
+            // query:{userName: this.personalBase.erpaaccount}
+            name:'preApplication',
+            params:{userName: this.personalBase.erpaaccount}
+          });
+			  }
+
 			}
 		}
 		
