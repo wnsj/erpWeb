@@ -1,7 +1,7 @@
 <!-- author:dingdong -->
 <!-- 审查人组件 -->
 <template>
-  <select class="form-control" v-model="accountId" :disabled="isAble">
+  <select class="form-control" v-model="accountId">
     <option v-for="(item,index) in examineList" :key="index" :value="item.accountId">{{item.accountName}}</option>
   </select>
 </template>
@@ -17,10 +17,13 @@
           accountId: '',
           deptId: '',
           typeId: 0,
+          positionId: '',
           positionTypeId: '',
           typeIds:[],
+          deptIds: [],
           examine:{},
-          examineList: [] // 审查人集合
+          examineList: [], // 审查人集合
+          round: 0,
         }
       },
       props: ['examineAccount'],
@@ -33,13 +36,11 @@
         }
       },
       methods: {
-        changeAble(){ // 设置为禁用
-          this.isAble = "disabled"
-        },
         initParam(){  // 初始化参数
           this.isAble = false
           this.typeIds = []
           this.examineList = []
+          this.deptIds = []
         },
         insertCheckInfo(val) {
           this.examineList.push({accountId:val[0], accountName:val[1]})
@@ -47,28 +48,84 @@
         },
         getTypeId(val){
           this.typeId = val
-          if(this.typeId == 2 || this.typeId == 3){
+          if(this.typeId <= 4){
+            this.type4(this.typeId)
+          }
+          if(this.typeId = 5){
+            this.type5(this.typeId)
+          }
+          // if(this.typeId = 6){
+          //   this.type6(this.typeId)
+          // }
+        },
+        type4(id){
+          if(id == 2 || id == 3){
             this.positionTypeId = 4
           }
-          if(this.typeId == 4){
+          if(id == 4){
             this.positionTypeId = 5
           }
-          if(this.typeId == 5){
+          if(id == 5){
             this.positionTypeId = 6
           }
-          this.typeIds.push(this.positionTypeId);
+          if(id == 6){
+            this.positionTypeId = ''
+            this.typeIds = ''
+          }
+          if(!this.isBlank(this.positionTypeId)){
+            this.typeIds.push(this.positionTypeId);
+          }
         },
+        type5(id){
+          if(id == 5){
+            this.positionTypeId = 6
+            this.typeIds.push(this.positionTypeId);
+          }
+          if(id == 6){
+            this.positionId = '33'
+          }
+        },
+        // type6(id){
+        //   if(id == 6){
+        //     this.positionTypeId = ''
+        //     this.typeIds = ''
+        //   }
+        //   if(!this.isBlank(this.positionTypeId)){
+        //     this.typeIds.push(this.positionTypeId);
+        //   }
+        // },
         setTypeId(){
           return this.positionTypeId
         },
         getDeptId(val){
           this.deptId = val
         },
+        setRound(){
+          return this.round
+        },
         showExamineInfo(val){
           this.examine = val
         },
+        initTypes(){
+          this.positionTypeId = ''
+          this.typeIds = ''
+        },
         // 查询审查人信息
         getExamineList: function () {
+          if(this.typeIds.length == 0){ // 当职位为空时 开始传部门数组
+            if(this.deptId == 0){
+              this.deptIds = ''
+              this.$parent.changeAddBtnAble()
+            }else{
+              this.deptIds.push(this.deptId)
+            }
+          }
+          if(this.deptId == 0){
+            this.round ++
+          }
+          console.log("部门" + this.deptId)
+          console.log("职位数组" + this.typeIds)
+          console.log("部门" + this.deptIds)
           axios({
             method: 'post',
             url: this.url + '/leavePrepareController/queryCheckInfo',
@@ -78,7 +135,9 @@
             },
             data: {
               deptId: this.deptId,
-              typeIds: this.typeIds
+              typeIds: this.typeIds,
+              deptIds: this.deptIds,
+              positionId: this.positionId
             },
             dataType: 'json',
           }).then(response => {

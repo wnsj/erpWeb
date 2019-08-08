@@ -157,7 +157,6 @@
             // query:{userName: this.personalBase.erpaaccount}
             name:'preApplication',
             params:{userName: this.personalBase.erpaaccount}
-
           });
 			  }
 			}

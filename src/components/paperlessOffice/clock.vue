@@ -7,18 +7,15 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-4">
         <span class="select-box-title">申请日期：</span>
-        <date-picker v-model="beginDate" type="date" format="YYYY-MM-DD" confirm></date-picker>
+        <date-picker v-model="beginDate" type="date" format="YYYY-MM-DD" class="queryDate"></date-picker>
         <span class="select-box-title">~</span>
-        <date-picker v-model="endDate" type="date" format="YYYY-MM-DD" confirm></date-picker>
+        <date-picker v-model="endDate" type="date" format="YYYY-MM-DD" class="queryDate"></date-picker>
       </div>
-    </div>
-    <br>
-    <div class="row">
       <div class="col-md-3">
         <div class="input-group">
-          <span class="input-group-addon">请假人部门</span>
+          <span class="input-group-addon">部门</span>
           <department ref="deptQuery" @departChange='deptChangeForQuery'></department>
         </div>
       </div>
@@ -39,6 +36,7 @@
         </div>
       </div>
     </div>
+    <br>
     <div class="row">
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-md-offset-9">
         <button type="button" class="btn btn-warning pull-right m_r_10">导出</button>
@@ -158,15 +156,15 @@
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">申请人姓名：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="leaveAccountName"/>
+                <span class="nopad">{{leaveAccountName}}</span>
               </div>
               <label class="col-md-1 control-label text-right nopad">部门：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="leaveDeptName"/>
+                <span class="nopad">{{leaveDeptName}}</span>
               </div>
               <label class="col-md-1 control-label text-right nopad">职位：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="leavePositionName"/>
+                <span class="nopad">{{leavePositionName}}</span>
               </div>
             </div>
             <legend><h5>打卡</h5></legend>
@@ -187,7 +185,7 @@
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">说明：</label>
               <div class="col-md-10">
-                <textarea class="textarea" placeholder="未打卡说明：" v-model="leaveRemark"></textarea>
+                <textarea class="textarea" v-model="leaveRemark"></textarea>
               </div>
             </div>
           </div><!-- /.modal-body -->
@@ -207,8 +205,9 @@
                 <agent :agentAccount="accountR" ref="agent" @agentChange="changeAccountR"></agent>
               </div>
               <div class="col-md-1">
-                <button type="button" data-toggle="modal" data-target="#agentChooseModel" @click="queryEmpByDept"><span
-                  class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                <button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-plus" aria-hidden="true"
+                  data-toggle="modal" data-target="#agentChooseModel" @click="queryEmpByDept">
+                </button>
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
@@ -229,8 +228,8 @@
                 <examine :examineAccount="examineAccount" ref="examine" @examineChange="examineChange"></examine>
               </div>
               <div class="col-md-1">
-                <button type="button" data-toggle="modal" @click="addExamineOption" :disabled="isAbleForExamine">
-                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                <button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-plus" aria-hidden="true"
+                  data-toggle="modal" @click="addExamineOption" :disabled="isAbleForExamine">
                 </button>
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
@@ -251,8 +250,8 @@
                 <check :checkAccount="checkAccount" ref="check" @checkChange="checkChange"></check>
               </div>
               <div class="col-md-1">
-                <button type="button" data-toggle="modal" @click="addCheckOption" :disabled="isAbleForCheck">
-                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                <button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-plus" aria-hidden="true"
+                  data-toggle="modal" @click="addCheckOption" :disabled="isAbleForCheck">
                 </button>
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
@@ -273,8 +272,8 @@
                 <approve :approveAccount="approveAccount" ref="approve" @approveChange="approveChange"></approve>
               </div>
               <div class="col-md-1">
-                <button type="button" data-toggle="modal" @click="addApproveOption" :disabled="isAbleForApprove">
-                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                <button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-plus" aria-hidden="true"
+                  data-toggle="modal" @click="addApproveOption" :disabled="isAbleForApprove">
                 </button>
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
@@ -824,6 +823,7 @@
   import examine from '../vuecommon/examine.vue'
   import check from '../vuecommon/check.vue'
   import approve from '../vuecommon/approve.vue'
+
   export default {
     components: {
       department,
@@ -949,10 +949,10 @@
       }
     },
     methods: {
-      cancelAdd(){
+      cancelAdd() {
         $('#clockAddModel').modal('hide');
       },
-      cancelUpdate(){
+      cancelUpdate() {
         $('#clockModifyModel').modal('hide');
       },
       // ---------------------------------------查询----------------------------------
@@ -987,19 +987,19 @@
       // 组件方法
       changeAccountR(val) {
         this.accountR = val
-        console.log("证明人账户ID" + this.accountR)
+        // console.log("证明人账户ID" + this.accountR)
       },
       examineChange(val) {
         this.examineAccount = val
-        console.log("审查人账户ID" + this.examineAccount)
+        // console.log("审查人账户ID" + this.examineAccount)
       },
       checkChange(val) {
         this.checkAccount = val
-        console.log("审核人账户ID" + this.checkAccount)
+        // console.log("审核人账户ID" + this.checkAccount)
       },
       approveChange(val) {
         this.approveAccount = val
-        console.log("批准人账户ID" + this.checkAccount)
+        // console.log("批准人账户ID" + this.checkAccount)
       },
       // 申请按钮
       applyClock() {
@@ -1020,21 +1020,22 @@
       },
       // 清空添加模态框
       clearAddModel() {
+        this.deptExamineId = '',
         this.leaveAccount = '',
-          this.leaveAccountName = '',
-          this.leaveDeptName = '',
-          this.leavePositionName = '',
-          this.reason = '',
-          this.notClockTime = moment().subtract(1, 'days').format("YYYY-MM-DD 17:30"),
-          this.leaveRemark = '',
-          this.accountR = 0,          //  证明人账户
-          this.examineAccount = '',   // 审查人账户
-          this.checkAccount = '',     // 审核人账户
-          this.approveAccount = '',   // 批准人账户
-          this.reportAccount = '1127',// 报备人(暂时固定为李珊珊)
-          this.isAbleForExamine = false,
-          this.isAbleForCheck = false,
-          this.isAbleForApprove = false
+        this.leaveAccountName = '',
+        this.leaveDeptName = '',
+        this.leavePositionName = '',
+        this.reason = '',
+        this.notClockTime = moment().subtract(1, 'days').format("YYYY-MM-DD 17:30"),
+        this.leaveRemark = '',
+        this.accountR = 0,          //  证明人账户
+        this.examineAccount = '',   // 审查人账户
+        this.checkAccount = '',     // 审核人账户
+        this.approveAccount = '',   // 批准人账户
+        this.reportAccount = '1127',// 报备人(暂时固定为李珊珊)
+        this.isAbleForExamine = false,
+        this.isAbleForCheck = false,
+        this.isAbleForApprove = false
       },
       // 查询基本信息
       queryEmpInfo() {
@@ -1066,6 +1067,7 @@
         this.leaveDeptName = data.deptName
         this.leavePositionName = data.positionName
         this.typeId = data.typeId
+        console.log("职位" + this.typeId)
         // 传值给子组件
         this.$refs.agent.getLeaveAccount([this.leaveAccount, this.deptInitId])
         this.$refs.agentChoose.getLeaveAccount([this.leaveAccount, this.deptInitId])
@@ -1101,16 +1103,22 @@
         }).then(response => {
           console.log(response.data.retData)
           this.parentId = response.data.retData // 获取请假人的父级部门ID
+          console.log("deptExamineId" + this.deptExamineId)
           if (this.deptExamineId == '0') { // 当下一次初始部门ID为0时(没有父级部门时)
             this.$refs.examine.getDeptId(this.deptInitId) // 传初始化参数给子组件
             this.deptExamineId = this.deptInitId; // 下一轮初始的部门ID为初始参数
-            this.typeExamineId = this.$refs.examine.setTypeId();
-            if (this.typeExamineId < 6) {
-              this.$refs.examine.getTypeId(this.typeExamineId);
-            }
-            if (this.typeExamineId == 6) {  // 禁用选项
-              this.$refs.examine.changeAble();
-              this.isAbleForExamine = "disabled"
+            this.typeExamineId = this.$refs.examine.setTypeId();// 获得到positionTypeId的值
+            console.log("获得到positionTypeId的值" + this.typeExamineId)
+            if(this.typeExamineId <= 6){
+              if(this.typeId <=4){
+                this.$refs.examine.type4(this.typeExamineId);
+              }
+              if(this.typeId ==5){
+                if(this.$refs.examine.setRound() == 2){
+                  this.$refs.examine.initTypes()
+                }
+                this.$refs.examine.type5(this.typeExamineId);
+              }
             }
           } else {
             this.$refs.examine.getDeptId(this.parentId) // 传父级部门ID给子组件
@@ -1121,7 +1129,9 @@
           console.log(err)
         });
       },
-
+      changeAddBtnAble() {
+        this.isAbleForExamine = "disabled"
+      },
       // 添加审核人
       addCheckOption() {
         if (this.isBlank(this.deptCheckId)) {  // 首次加载初始化参数
@@ -1185,12 +1195,8 @@
             this.$refs.approve.getDeptId(this.deptInitId) // 传初始化参数给子组件
             this.deptApproveId = this.deptInitId; // 下一轮初始的部门ID为初始参数
             this.typeApproveId = this.$refs.approve.setTypeId();
-            if (this.typeApproveId < 6) {
+            if (this.typeApproveId <= 6) {
               this.$refs.approve.getTypeId(this.typeApproveId);
-            }
-            if (this.typeApproveId == 6) {  // 禁用选项
-              this.$refs.approve.changeAble();
-              this.isAbleForApprove = "disabled"
             }
           } else {
             this.$refs.approve.getDeptId(this.parentId) // 传父级部门ID给子组件
@@ -1272,38 +1278,38 @@
       // 组件方法
       approveUpdateChange(val) {
         this.updateApproveAccount = val
-        console.log("批准人账户ID" + this.updateApproveAccount)
+        // console.log("批准人账户ID" + this.updateApproveAccount)
       },
       changeUpdateAccountR(val) {
         this.updateAccountR = val
-        console.log("证明人账户ID" + this.updateAccountR)
+        // console.log("证明人账户ID" + this.updateAccountR)
       },
       examineUpdateChange(val) {
         this.updateExamineAccount = val
-        console.log("审查人账户ID" + this.updateExamineAccount)
+        // console.log("审查人账户ID" + this.updateExamineAccount)
       },
       checkUpdateChange(val) {
         this.updateCheckAccount = val
-        console.log("审核人账户ID" + this.updateCheckAccount)
+        // console.log("审核人账户ID" + this.updateCheckAccount)
       },
       getAccountRUpdateInfo(item) {
         this.$refs.agentUpdate.insertAgentInfo(item)
       },
       // 初始化
-      init(){
+      init() {
         this.$refs.examineUpdate.initParam();  // 初始化参数
         this.$refs.checkUpdate.initParam();  // 初始化参数
         this.$refs.approveUpdate.initParam();  // 初始化参数
         this.isAbleForUpdateExamine = false,
-        this.isAbleForUpdateCheck = false,
-        this.isAbleForUpdateApprove = false
+          this.isAbleForUpdateCheck = false,
+          this.isAbleForUpdateApprove = false
       },
       // 证明人选择组件方法
       queryEmpByDeptForUpdate() {
         this.$refs.agentUpdateChoose.queryEmpByDept()
       },
       // 数据回显
-      getEditInfo(item){
+      getEditInfo(item) {
         this.id = item.id
         this.leaveUpdateAccount = item.leaveAccount
         this.leaveUpdateAccountName = item.leaveAccountName
@@ -1343,7 +1349,7 @@
         this.toChild(this.deptInitId, this.typeId)
       },
       // 调用子组件的属性和方法
-      toChild(dept,typeId){
+      toChild(dept, typeId) {
         // 证明人组件
         this.$refs.agentUpdate.getLeaveAccount([this.leaveUpdateAccount, this.leaveUpdateDeptId])
         this.$refs.agentUpdate.showAgentInfo({account: this.updateAccountR, name: this.updateAccountRName})
@@ -1445,7 +1451,7 @@
           dataType: 'json',
         }).then(response => {
           console.log(response.data.retData)
-          console.log("typeId:" +this.typeCheckUpdateId);
+          console.log("typeId:" + this.typeCheckUpdateId);
           this.parentId = response.data.retData // 获取请假人的父级部门ID
           if (this.deptCheckUpdateId == '0') { // 当下一次初始部门ID为0时(没有父级部门时)
             this.$refs.checkUpdate.getDeptId(this.deptInitId) // 传初始化参数给子组件
@@ -1468,7 +1474,7 @@
         });
       },
       // 修改---添加批准人
-      addApproveUpdateOption(){
+      addApproveUpdateOption() {
         if (this.isBlank(this.deptApproveUpdateId)) {  // 首次加载初始化参数
           this.deptApproveUpdateId = this.deptInitId // 部门
         }
@@ -1508,9 +1514,9 @@
         });
       },
       // 更新方法
-      updateReport(){
+      updateReport() {
         let msg = confirm("修改后需要重新审批,确认修改？")
-        if(msg){
+        if (msg) {
           axios({
             method: 'post',
             url: this.url + '/leaveForgetController/updateLeaveForget',
@@ -1558,10 +1564,10 @@
       },
 
       //---------------------------------------处理----------------------------------
-      disposeClock(item){
-        if(item.result4 != null){
+      disposeClock(item) {
+        if (item.result4 != null) {
           alert("处理已完成,无法再次处理！")
-        }else{
+        } else {
           this.id = item.id
           this.showLeaveAccountName = item.leaveAccountName
           this.showLeaveDeptName = item.leaveDeptName
@@ -1587,38 +1593,38 @@
           this.step = item.step
           let loginAccount = JSON.parse(Cookies.get("accountData")).account.account_ID;
           let flag = 0;
-          if(item.accountR == loginAccount){
+          if (item.accountR == loginAccount) {
             this.isAbleForAccountR = false;
             flag = 1;
           }
-          if(item.account1 == loginAccount){
+          if (item.account1 == loginAccount) {
             this.isAbleForAccount1 = false;
             flag = 1;
           }
-          if(item.account2 == loginAccount){
+          if (item.account2 == loginAccount) {
             this.isAbleForAccount2 = false;
             flag = 1;
           }
-          if(item.account3 == loginAccount){
+          if (item.account3 == loginAccount) {
             this.isAbleForAccount3 = false;
             flag = 1;
           }
-          if(item.account4 == loginAccount){
+          if (item.account4 == loginAccount) {
             this.isAbleForAccount4 = false;
             flag = 1;
           }
-          if(flag == 1){
+          if (flag == 1) {
             $("#clockDisposeModel").modal("show");
-          }else{
+          } else {
             alert("无权对此条数据进行处理")
           }
         }
       },
       // 证明人同意按钮
-      agreeR(){
-        if(this.step > 1){
+      agreeR() {
+        if (this.step > 1) {
           alert("下一步已处理,不能再次提交！")
-        }else{
+        } else {
           axios({
             method: 'post',
             url: this.url + '/leaveForgetController/updateLeaveForget',
@@ -1645,10 +1651,10 @@
         }
       },
       // 证明人不同意按钮
-      disagreeR(){
-        if(this.step > 1){
+      disagreeR() {
+        if (this.step > 1) {
           alert("下一步已处理,不能再次提交！")
-        }else {
+        } else {
           axios({
             method: 'post',
             url: this.url + '/leaveForgetController/updateLeaveForget',
@@ -1675,42 +1681,42 @@
         }
       },
       // 审查人同意按钮
-      agreeExamine(){
-        if(this.resultR == 1){
-         if(this.step>2){
-           alert("下一步已处理,不能再次提交！")
-         }else{
-           axios({
-             method: 'post',
-             url: this.url + '/leaveForgetController/updateLeaveForget',
-             headers: {
-               'Content-Type': this.contentType,
-               'Access-Token': this.accessToken
-             },
-             data: {
-               id: this.id,
-               time1: this.$currentTime(),
-               result1: 1,
-               remark1: this.remark1,
-               step: 2,
-               updateTime: this.$currentTime()
-             },
-             dataType: 'json',
-           }).then(response => {
-             console.log(response.data.retData);
-             $('#clockDisposeModel').modal('hide');
-             this.queryClock();
-           }).catch(err => {
-             console.log(err)
-           });
-         }
-        }else{
+      agreeExamine() {
+        if (this.resultR == 1) {
+          if (this.step > 2) {
+            alert("下一步已处理,不能再次提交！")
+          } else {
+            axios({
+              method: 'post',
+              url: this.url + '/leaveForgetController/updateLeaveForget',
+              headers: {
+                'Content-Type': this.contentType,
+                'Access-Token': this.accessToken
+              },
+              data: {
+                id: this.id,
+                time1: this.$currentTime(),
+                result1: 1,
+                remark1: this.remark1,
+                step: 2,
+                updateTime: this.$currentTime()
+              },
+              dataType: 'json',
+            }).then(response => {
+              console.log(response.data.retData);
+              $('#clockDisposeModel').modal('hide');
+              this.queryClock();
+            }).catch(err => {
+              console.log(err)
+            });
+          }
+        } else {
           alert("上一步未批准")
         }
       },
       // 审查人不同意按钮
-      disagreeExamine(){
-        if(this.resultR == 1) {
+      disagreeExamine() {
+        if (this.resultR == 1) {
           if (this.step > 2) {
             alert("下一步已处理,不能再次提交！")
           } else {
@@ -1738,13 +1744,13 @@
               console.log(err)
             });
           }
-        }else{
+        } else {
           alert("上一步未批准")
         }
       },
       // 审核人同意按钮
-      agreeCheck(){
-        if(this.result1 == 1) {
+      agreeCheck() {
+        if (this.result1 == 1) {
           if (this.step > 3) {
             alert("下一步已处理,不能再次提交！")
           } else {
@@ -1772,13 +1778,13 @@
               console.log(err)
             });
           }
-        }else {
+        } else {
           alert("上一步未批准")
         }
       },
       // 审核人不同意按钮
-      disagreeCheck(){
-        if(this.result1 == 1) {
+      disagreeCheck() {
+        if (this.result1 == 1) {
           if (this.step > 3) {
             alert("下一步已处理,不能再次提交！")
           } else {
@@ -1806,13 +1812,13 @@
               console.log(err)
             });
           }
-        }else {
+        } else {
           alert("上一步未批准")
         }
       },
       // 批准人同意按钮
-      agreeApprove(){
-        if(this.result2 == 1) {
+      agreeApprove() {
+        if (this.result2 == 1) {
           if (this.step > 4) {
             alert("下一步已处理,不能再次提交！")
           } else {
@@ -1840,13 +1846,13 @@
               console.log(err)
             });
           }
-        }else {
+        } else {
           alert("上一步未批准")
         }
       },
       // 批准人不同意按钮
-      disagreeApprove(){
-        if(this.result2 == 1) {
+      disagreeApprove() {
+        if (this.result2 == 1) {
           if (this.step > 4) {
             alert("下一步已处理,不能再次提交！")
           } else {
@@ -1874,13 +1880,13 @@
               console.log(err)
             });
           }
-        }else {
+        } else {
           alert("上一步未批准")
         }
       },
       // 报备人同意按钮
-      agreeReport(){
-        if(this.result3 == 1) {
+      agreeReport() {
+        if (this.result3 == 1) {
           axios({
             method: 'post',
             url: this.url + '/leaveForgetController/updateLeaveForget',
@@ -1904,13 +1910,13 @@
           }).catch(err => {
             console.log(err)
           });
-        }else {
+        } else {
           alert("上一步未批准")
         }
       },
       // 报备人不同意按钮
-      disagreeReport(){
-        if(this.result3 == 1) {
+      disagreeReport() {
+        if (this.result3 == 1) {
           axios({
             method: 'post',
             url: this.url + '/leaveForgetController/updateLeaveForget',
@@ -1934,7 +1940,7 @@
           }).catch(err => {
             console.log(err)
           });
-        }else {
+        } else {
           alert("上一步未批准")
         }
       },
@@ -1977,6 +1983,12 @@
 
   input[type="date"] {
     line-height: 26px !important;
+  }
+
+  .queryDate {
+    position: relative;
+    display: inline-block;
+    width: 120px;
   }
 </style>
 
