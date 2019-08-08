@@ -4,7 +4,7 @@
       <div class="table-responsive col-xs-2 col-sm-2 col-md-2 col-lg-2">
         <div class="centent">
           <div class="treebox">
-            <departmentEmployee @selectEmp="getEmpData"></departmentEmployee>
+            <departmentEmployee @retEmpObj="getEmpData" ref="deptEmp"></departmentEmployee>
           </div>
         </div>
       </div>
@@ -130,9 +130,9 @@
         this.Day();
         this.Month_Day();
       },
-      getEmpData(empId, empName) {
-        var Uid = this.userId = empId;
-        this.ryScheduleListName = empName;
+      getEmpData(emp) {
+        var Uid = this.userId = emp.account;
+        this.ryScheduleListName = emp.name;
         var obj = new Object();
         obj.userId = Uid;
         obj.startTime = this.year + "-" + this.month + "-" + this.day;
@@ -251,7 +251,7 @@
           var dayelement = document.createElement("div");
           dayelement.className = "everyday";
           if (this.ryScheduleList.length > 0) {
-            dayelement.innerHTML = j + "<span>" + this.ryScheduleList[j - 1] + "</span>";
+              dayelement.innerHTML = j + "<br/><span>" + this.ryScheduleList[j - 1] + "</span>";
           } else {
             dayelement.innerHTML = j;
           }
@@ -264,12 +264,17 @@
       sendApproves() {
         CallVueMethod.setApproves(this.Day());
       },
-      //根据姓名查询排班计划
-      searchShifts() {
-        if (isBlank(this.searchWords)) {
-          alert('名字不能为空！');
-          return;
+      retEmpData(emp) {
+        var v = {};
+        v = emp;
+        if (this.isBlank(v.name)) {
+          this.userId = "";
+          this.ryScheduleListName = '未选择员工';
+        } else {
+          this.userId = v.account;
+          this.ryScheduleListName = v.name;
         }
+
         var obj = new Object();
         obj.userName = this.searchWords;
         obj.startTime = this.year + "-" + this.month + "-" + this.day;
@@ -279,7 +284,19 @@
         this.clearAll();
         this.Day();
         this.Month_Day();
-        // this.searchWords = '';
+      },
+      //根据姓名查询排班计划
+      searchShifts() {
+        if (isBlank(this.searchWords)) {
+          alert('名字不能为空！');
+          return;
+        }
+        this.$refs.deptEmp.searchEmp(this.searchWords);
+      },
+      setEmp(emp) {
+        alert(emp.id + "##" + emp.name)
+        this.userId = emp.id;
+        this.ryScheduleListName = emp.name;
       }
     },
     mounted() {
