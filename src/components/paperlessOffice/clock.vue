@@ -206,7 +206,7 @@
               </div>
               <div class="col-md-1">
                 <button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-plus" aria-hidden="true"
-                  data-toggle="modal" data-target="#agentChooseModel" @click="queryEmpByDept">
+                        data-toggle="modal" data-target="#agentChooseModel" @click="queryEmpByDept">
                 </button>
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
@@ -229,7 +229,7 @@
               </div>
               <div class="col-md-1">
                 <button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-plus" aria-hidden="true"
-                  data-toggle="modal" @click="addExamineOption" :disabled="isAbleForExamine">
+                        data-toggle="modal" @click="addExamineOption" :disabled="isAbleForExamine">
                 </button>
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
@@ -251,7 +251,7 @@
               </div>
               <div class="col-md-1">
                 <button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-plus" aria-hidden="true"
-                  data-toggle="modal" @click="addCheckOption" :disabled="isAbleForCheck">
+                        data-toggle="modal" @click="addCheckOption" :disabled="isAbleForCheck">
                 </button>
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
@@ -273,7 +273,7 @@
               </div>
               <div class="col-md-1">
                 <button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-plus" aria-hidden="true"
-                  data-toggle="modal" @click="addApproveOption" :disabled="isAbleForApprove">
+                        data-toggle="modal" @click="addApproveOption" :disabled="isAbleForApprove">
                 </button>
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
@@ -551,10 +551,15 @@
                 <examine :examineAccount="updateExamineAccount" ref="examineUpdate" @examineChange="examineUpdateChange"></examine>
               </div>
               <div class="col-md-1">
-                <button type="button" data-toggle="modal" @click="addExamineUpdateOption" :disabled="isAbleForUpdateExamine">
-                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                <button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-plus" aria-hidden="true"
+                        data-toggle="modal" @click="addExamineUpdateOption" :disabled="isAbleForUpdateExamine">
                 </button>
               </div>
+<!--              <div class="col-md-1">-->
+<!--                <button type="button" data-toggle="modal" @click="" :disabled="">-->
+<!--                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>-->
+<!--                </button>-->
+<!--              </div>-->
               <label class="col-md-1 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
                 <input type="text" class="form-control" disabled="disabled"/>
@@ -920,6 +925,7 @@
         updateApproveName: '',
         updateReportAccount: '',
         updateReportName: '',
+        clickTime: 0,
         // 按钮状态
         isAbleForExamine: false,
         isAbleForCheck: false,
@@ -987,19 +993,15 @@
       // 组件方法
       changeAccountR(val) {
         this.accountR = val
-        // console.log("证明人账户ID" + this.accountR)
       },
       examineChange(val) {
         this.examineAccount = val
-        // console.log("审查人账户ID" + this.examineAccount)
       },
       checkChange(val) {
         this.checkAccount = val
-        // console.log("审核人账户ID" + this.checkAccount)
       },
       approveChange(val) {
         this.approveAccount = val
-        // console.log("批准人账户ID" + this.checkAccount)
       },
       // 申请按钮
       applyClock() {
@@ -1067,7 +1069,6 @@
         this.leaveDeptName = data.deptName
         this.leavePositionName = data.positionName
         this.typeId = data.typeId
-        console.log("职位" + this.typeId)
         // 传值给子组件
         this.$refs.agent.getLeaveAccount([this.leaveAccount, this.deptInitId])
         this.$refs.agentChoose.getLeaveAccount([this.leaveAccount, this.deptInitId])
@@ -1104,21 +1105,25 @@
         }).then(response => {
           console.log(response.data.retData)
           this.parentId = response.data.retData // 获取请假人的父级部门ID
-          console.log("deptExamineId" + this.deptExamineId)
-          console.log("typeId" + this.typeId)
           if (this.deptExamineId == '0') { // 当下一次初始部门ID为0时(没有父级部门时)
             this.$refs.examine.getDeptId(this.deptInitId) // 传初始化参数给子组件
             this.deptExamineId = this.deptInitId; // 下一轮初始的部门ID为初始参数
             this.typeExamineId = this.$refs.examine.setTypeId();// 获得到positionTypeId的值
             if (this.typeExamineId <= 6) {
-              if(this.typeId <=4){
+              if (this.typeId <= 4) {
                 this.$refs.examine.type4(this.typeExamineId);
               }
-              if(this.typeId ==5){
-                if(this.$refs.examine.setRound() == 2){
-                  this.$refs.examine.initTypes()
+              if (this.typeId == 5) {
+                if (this.$refs.examine.setRound() == 2) {
+                  this.$refs.examine.initType5()
                 }
                 this.$refs.examine.type5(this.typeExamineId);
+              }
+            }
+            if (this.typeId == 6) {
+              this.$refs.examine.type6(this.typeExamineId);
+              if (this.$refs.examine.setRound() == 1) {
+                this.$refs.examine.getDeptId(this.deptExamineId)
               }
             }
           } else {
@@ -1279,31 +1284,29 @@
       // 组件方法
       approveUpdateChange(val) {
         this.updateApproveAccount = val
-        // console.log("批准人账户ID" + this.updateApproveAccount)
       },
       changeUpdateAccountR(val) {
         this.updateAccountR = val
-        // console.log("证明人账户ID" + this.updateAccountR)
       },
       examineUpdateChange(val) {
         this.updateExamineAccount = val
-        // console.log("审查人账户ID" + this.updateExamineAccount)
       },
       checkUpdateChange(val) {
         this.updateCheckAccount = val
-        // console.log("审核人账户ID" + this.updateCheckAccount)
       },
       getAccountRUpdateInfo(item) {
         this.$refs.agentUpdate.insertAgentInfo(item)
       },
       // 初始化
       init() {
+        this.deptExamineUpdateId = ''
+        this.leaveAccount = JSON.parse(Cookies.get("accountData")).account.account_ID
         this.$refs.examineUpdate.initParam();  // 初始化参数
         this.$refs.checkUpdate.initParam();  // 初始化参数
         this.$refs.approveUpdate.initParam();  // 初始化参数
         this.isAbleForUpdateExamine = false,
-          this.isAbleForUpdateCheck = false,
-          this.isAbleForUpdateApprove = false
+        this.isAbleForUpdateCheck = false,
+        this.isAbleForUpdateApprove = false
       },
       // 证明人选择组件方法
       queryEmpByDeptForUpdate() {
@@ -1358,6 +1361,7 @@
         // 审查人组件
         this.$refs.examineUpdate.getDeptId(dept)
         this.$refs.examineUpdate.getTypeId(typeId)
+        this.$refs.examineUpdate.getApplyAccount(this.leaveAccount)
         this.$refs.examineUpdate.showExamineInfo({accountId: this.updateExamineAccount, accountName: this.updateExamineName})
         this.$refs.examineUpdate.getExamineList()
         // 审核人组件
@@ -1395,11 +1399,16 @@
           console.log(err)
         });
       },
+      changeModifyBtnAble() {
+        this.isAbleForUpdateExamine = "disabled"
+      },
       // 修改---添加审查人
       addExamineUpdateOption() {
         if (this.isBlank(this.deptExamineUpdateId)) {  // 首次加载初始化参数
           this.deptExamineUpdateId = this.deptInitId // 部门
         }
+        this.clickTime ++
+        this.$refs.examineUpdate.getClickTime(this.clickTime)
         axios({
           method: 'post',
           url: this.url + '/leavePrepareController/queryParentDept',
@@ -1418,12 +1427,22 @@
             this.$refs.examineUpdate.getDeptId(this.deptInitId) // 传初始化参数给子组件
             this.deptExamineUpdateId = this.deptInitId; // 下一轮初始的部门ID为初始参数
             this.typeExamineUpdateId = this.$refs.examineUpdate.setTypeId();
-            if (this.typeExamineUpdateId < 6) {
-              this.$refs.examineUpdate.getTypeId(this.typeExamineUpdateId);
+            if (this.typeExamineUpdateId <= 6) {
+              if (this.typeId <= 4) {
+                this.$refs.examineUpdate.type4(this.typeExamineUpdateId);
+              }
+              if (this.typeId == 5) {
+                if (this.$refs.examineUpdate.setRound() == 2) {
+                  this.$refs.examineUpdate.initType5()
+                }
+                this.$refs.examineUpdate.type5(this.typeExamineUpdateId);
+              }
             }
-            if (this.typeExamineUpdateId == 6) {  // 禁用选项
-              this.$refs.examineUpdate.changeAble();
-              this.isAbleForUpdateExamine = "disabled"
+            if (this.typeId == 6) {
+              this.$refs.examineUpdate.type6(this.typeExamineUpdateId);
+              if (this.$refs.examineUpdate.setRound() == 1) {
+                this.$refs.examineUpdate.getDeptId(this.deptExamineUpdateId)
+              }
             }
           } else {
             this.$refs.examineUpdate.getDeptId(this.parentId) // 传父级部门ID给子组件
@@ -1452,7 +1471,6 @@
           dataType: 'json',
         }).then(response => {
           console.log(response.data.retData)
-          console.log("typeId:" + this.typeCheckUpdateId);
           this.parentId = response.data.retData // 获取请假人的父级部门ID
           if (this.deptCheckUpdateId == '0') { // 当下一次初始部门ID为0时(没有父级部门时)
             this.$refs.checkUpdate.getDeptId(this.deptInitId) // 传初始化参数给子组件
@@ -1492,7 +1510,6 @@
           dataType: 'json',
         }).then(response => {
           console.log(response.data.retData)
-          console.log("this.typeApproveId" + this.deptApproveUpdateId)
           this.parentId = response.data.retData // 获取请假人的父级部门ID
           if (this.deptApproveUpdateId == '0') { // 当下一次初始部门ID为0时(没有父级部门时)
             this.$refs.approveUpdate.getDeptId(this.deptInitId) // 传初始化参数给子组件
@@ -1945,7 +1962,9 @@
           alert("上一步未批准")
         }
       },
-
+    },
+    created() {
+      this.queryClock();
     }
   }
 </script>
