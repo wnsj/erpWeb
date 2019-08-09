@@ -14,9 +14,12 @@ import {exportTableToExcel} from 'vendor/Export2Excel.js'
 import * as date from '../src/assets/js/date.js'
 require('@/../static/js/bootstrap-datetimepicker.js')
 import global_date from '../src/assets/js/global_date'
+import infiniteScroll from 'vue-infinite-scroll'
+
 
 Vue.config.productionTip = false
 Vue.use(VueResource)
+Vue.use(infiniteScroll)
 
 
 // 允许携带cookie
