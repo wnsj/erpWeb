@@ -25,7 +25,8 @@
                 </li>
                 <li class="m-l-s">
                   <span class="countdate">~ &nbsp;&nbsp;&nbsp;</span>
-                  <input type="date" class="form-control" v-model="endTime">
+                  <!-- <input type="date" class="form-control" v-model="endTime"> -->
+                  <datePicker v-model="endTime"></datePicker>
                 </li>
 
                 <button class="btn btn-default m-l-h" @click="getEffectiveness">查询</button>
@@ -137,10 +138,10 @@
       };
     },
     mounted() {
-      const s = document.createElement('script');
-      s.type = 'text/javascript';
-      s.src = '@/../static/js/copyexcel.js';
-      document.body.appendChild(s);
+        const s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.src = '@/../static/js/copyexcel.js';
+        document.body.appendChild(s);
     },
     methods: {
       //获取部门名字和id
@@ -153,7 +154,7 @@
       },
       // 获取招聘效果评估表内容
       getEffectiveness() {
-        if (this.isBlank(startTime) || this.isBlank(this.endTime)) {
+        if (this.isBlank(this.startTime) || this.isBlank(this.endTime)) {
           alert("查询时间不能为空!");
           return;
         }

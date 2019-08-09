@@ -1071,6 +1071,7 @@
         // 传值给子组件
         this.$refs.agent.getLeaveAccount([this.leaveAccount, this.deptInitId])
         this.$refs.agentChoose.getLeaveAccount([this.leaveAccount, this.deptInitId])
+        this.$refs.examine.getApplyAccount(this.leaveAccount)
         this.$refs.examine.getDeptId(this.deptInitId)
         this.$refs.examine.getTypeId(this.typeId)
         this.$refs.check.getDeptId(this.deptInitId)
