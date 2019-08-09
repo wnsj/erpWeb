@@ -114,7 +114,7 @@
 	import lReason from '../../../vuecommon/leaveReason.vue'
 	import lrManager from '../subModifyEE/subMes/lrManager.vue'
 	import positionShift from '../subModifyEE/subMes/positionShift.vue'
-	
+	import dPicker from 'vue2-datepicker'
 	export default {
 		components:{department,position,lReason,lrManager,positionShift},
 		// props:['personalBase'],//传过来的个人信息

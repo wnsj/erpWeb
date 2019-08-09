@@ -71,8 +71,9 @@
 				$("#myModalJoin").modal('hide')
 				this.cleanData()
 			},
+			//初始化数据
 			cleanData:function(){
-				this.$refs.baseInfo.cleanData()
+				this.$refs.baseInfo.initData()
 				this.$refs.detailInfo.cleanData()
 				this.$refs.familyInfo.cleanData()
 			},
@@ -83,6 +84,7 @@
 				this.personalBase.isDelete = '0'
 				this.personalBase.state = '1'
 				this.personalBase.createUser = this.accountInfo().account_ID
+				
 				
 				this.personalDetail = this.$refs.detailInfo.personalDetail
 				this.personalFamily = this.$refs.familyInfo.personalFamily
@@ -126,7 +128,6 @@
 						userBase: this.personalBase,
 						//详细信息
 						userDetail:this.personalDetail,
-						
 						//家庭信息
 						userFamily: this.personalFamily,
 					},

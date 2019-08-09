@@ -91,7 +91,7 @@
 				begin:this.moment('','YYYY-MM-DD 00:00:00'),
 				end:this.moment('','YYYY-MM-DD 00:00:00'),
 				advanceResignType:'',
-				advanceReasonId:'',
+				advanceReasonId:'0',
 				birthday:'0',
 				lrList:[],
 				
@@ -100,6 +100,17 @@
 			};
 		},
 		methods:{
+			//初始化数据
+			initData:function(){
+				this.begin=this.moment('','YYYY-MM-DD 00:00:00'),
+				this.end=this.moment('','YYYY-MM-DD 00:00:00'),
+				this.category='0'
+				this.advanceResignType=''
+				this.advanceReasonId='0'
+				this.$children[2].setLeaveId('0')
+				this.birthday='0'
+			},
+			//离职原因
 			leaveChange:function(reasonId,reasonName){
 				this.advanceReasonId=reasonId
 			},
@@ -107,8 +118,8 @@
 			submitAdvacedParam:function(param){
 				alert(this.begin)
 				this.advanceParam.category = this.category
-				this.advanceParam.begin = this.begin
-				this.advanceParam.end = this.end
+				this.advanceParam.begin = this.moment(this.begin,'YYYY-MM-DD 00:00:00.000') 
+				this.advanceParam.end = this.moment(this.end,'YYYY-MM-DD 00:00:00.000')
 				this.advanceParam.advanceResignType = this.advanceResignType
 				this.advanceParam.advanceReasonId = this.advanceReasonId
 				this.advanceParam.birthday = this.birthday
