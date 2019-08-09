@@ -182,7 +182,11 @@ Vue.filter('dateFormat', function(time, formatStr = 'YYYY-MM-DD HH:mm') {
   }
 })
 
-//时间过滤器可返回任何格式的时间
+/*
+时间过滤器可返回任何格式的时间
+使用示例:
+ <td class="text-center">{{item.SHIFTDATE | dateFormatFilter('YYYY-MM-DD')}}</td>
+*/
 Vue.filter('dateFormatFilter', function(time, format) {
   var formatStr = 'YYYY-MM-DD HH:mm'
   if (constant.isBlank(time)) {
