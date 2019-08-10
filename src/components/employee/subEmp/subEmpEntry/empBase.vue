@@ -101,13 +101,17 @@
 			};
 		},
 		methods:{
-			
-			//清空数据
-			cleanData:function(){
-				this.personalBase={}
+			initDate:function(){
+				this.personalBase={
+					birth:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
+					entryDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
+					positiveDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
+					state:'1',
+				},
 				this.$children[0].setDpart('0')
 				this.$children[1].setPosition('0')
 			},
+			
 			//时间变化后格式化
 			dateAction:function(type){
 				if(type=='0'){
@@ -120,7 +124,6 @@
 			},
 			//获取部门名字和id
 			departChange: function(departId, departName) {
-				
 				this.personalBase.departId = departId
 				this.personalBase.departName = departName
 			},

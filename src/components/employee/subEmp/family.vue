@@ -39,13 +39,13 @@
 					</div>
 					<div class="col-md-2 col-md-offset-1">
 						<button type="button" class="btn btn-primary" v-on:click="getFamilyAll()">查询</button>
-						<button type="button" class="btn btn-primary" @click="exportTableToExcel('datatable','家庭成员表')">导出</button>
+						<button type="button" class="btn btn-primary" @click="exportTableToExcel('fDatatable','家庭成员表')">导出</button>
 					</div>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-md-12 table-responsive text-center martop">
-					<table class="table table-bordered table-hover">
+					<table class="table table-bordered table-hover" id="fDatatable">
 						<thead>
 							<tr>
 								<th class="text-center">工号</th>

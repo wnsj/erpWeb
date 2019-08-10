@@ -12,7 +12,6 @@
 				<li class="active"><a href="#basic" data-toggle="tab">基本信息</a></li>
 				<li><a href="#detailed" data-toggle="tab">详细信息</a></li>
 				<li><a href="#family" data-toggle="tab">家庭成员</a></li>
-				<!-- <li><a href="#record" data-toggle="tab">调动记录</a></li> -->
 			</ul>
 			<div class="tab-content" style=" height:400px; overflow-y:scroll;">
 				<!-- 人员基本信息 -->

@@ -118,7 +118,7 @@
 		<div class="row row_edit">
 			<div class="modal fade" id="myModalQuery">
 				<div class="modal-dialog">
-					<advance @submitAdvacedParam='advanceSelect'></advance>
+					<advance ref='advance' @submitAdvacedParam='advanceSelect'></advance>
 				</div>
 			</div>
 			<div class="modal fade" id="myModalFamily" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -220,7 +220,7 @@
 			},
 			//高级查询按钮
 			advanceAction:function(){
-				this.$children[2].initData()
+				this.$refs.advance.initData()
 				$("#myModalQuery").modal('show');
 			},
 			//高级查询

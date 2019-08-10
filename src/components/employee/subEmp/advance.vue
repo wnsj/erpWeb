@@ -116,7 +116,6 @@
 			},
 			// 高级查询
 			submitAdvacedParam:function(param){
-				alert(this.begin)
 				this.advanceParam.category = this.category
 				this.advanceParam.begin = this.moment(this.begin,'YYYY-MM-DD 00:00:00.000') 
 				this.advanceParam.end = this.moment(this.end,'YYYY-MM-DD 00:00:00.000')
