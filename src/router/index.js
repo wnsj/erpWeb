@@ -73,7 +73,7 @@ export default new Router({
 					children: [{
 							path: '/recruitment/recruitChannels',
 							name: 'recruitChannels',
-							component: recruitChannels,
+							component: recruitChannels
 						},
 						{
 							path: '/recruitment/recruitPlan',
