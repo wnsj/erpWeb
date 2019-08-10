@@ -18,9 +18,7 @@
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">出生年月：</label>
-				<div class="col-md-5 input-group date form_date">
-					<input type=" date" class="form-control" v-model="personalBase.birth">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> </div>
+				<dPicker v-model="personalBase.birth" v-on:change="dateChange('0')"></dPicker>
 			</div>
 			<div class="form-group clearfix">
 				<label for="gh" class="col-md-2 control-label text-right nopad">工号：</label>
@@ -45,28 +43,22 @@
 				<div class="col-md-5">
 					<input type="text" class="form-control" v-model="personalBase.positionName" disabled>
 				</div>
-				<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#Post_transfer">岗位调动</button>
+				<button type="button" class="btn btn-warning" data-toggle="modal" v-on:click="positionShiftAction()">岗位调动</button>
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">入职日期：</label>
-				<div class="col-md-5 input-group date form_date">
-					<input type="date" class="form-control" v-model="personalBase.entryDate">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> </div>
+				<dPicker v-model="personalBase.entryDate" v-on:change="dateChange('1')"></dPicker>
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">转正日期：</label>
-				<div class="col-md-5 input-group date form_date">
-					<input type="date" class="form-control" v-model="personalBase.positiveDate">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> </div>
+				<dPicker v-model="personalBase.positiveDate" v-on:change="dateChange('2')"></dPicker>
 				<template>
 					<div class="col-md-3 text-primary linhet" v-if="personalBase.positiveDate == ''">非转正员工</div>
 				</template>
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">离职日期：</label>
-				<div class="col-md-5 input-group date form_date">
-					<input type="date" class="form-control" v-model="personalBase.resignDate">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> </div>
+				<dPicker v-model="personalBase.resignDate" v-on:change="dateChange('3')"></dPicker>
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">离职类型：</label>
@@ -83,7 +75,7 @@
 				<div class="col-md-5">
 					<lReason></lReason>
 				</div>
-				<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#Cause_management">原因管理</button>
+				<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#Cause_management" >原因管理</button>
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">状态：</label>
@@ -102,7 +94,7 @@
 			</div>
 		</form>
 		<lrManager></lrManager>
-		<positionShift :oldDepart = 'personalBase.departName' :oldPosition = 'personalBase.positionName' @shiftChange = 'positionShift'></positionShift>
+		<positionShift  @shiftChange = 'positionShift'></positionShift>
 	</div>
 </template>
 
@@ -114,9 +106,9 @@
 	import lReason from '../../../vuecommon/leaveReason.vue'
 	import lrManager from '../subModifyEE/subMes/lrManager.vue'
 	import positionShift from '../subModifyEE/subMes/positionShift.vue'
-	
+	import dPicker from 'vue2-datepicker'
 	export default {
-		components:{department,position,lReason,lrManager,positionShift},
+		components:{department,position,lReason,lrManager,positionShift,dPicker},
 		// props:['personalBase'],//传过来的个人信息
 		data() {
 			return {
@@ -130,11 +122,27 @@
 			childrenBaseInfo:function(param){
 				this.personalBase = param
 			},
+			dateChange:function(param){
+				if(param=='0'){
+					this.personalBase.birth=this.moment(this.personalBase.birth,'YYYY-MM-DD HH:MM:SS.000')
+				}else if(param=='1'){
+					this.personalBase.entryDate=this.moment(this.personalBase.entryDate,'YYYY-MM-DD HH:MM:SS.000')
+				}else if(param=='2'){
+					this.personalBase.positiveDate=this.moment(this.personalBase.positiveDate,'YYYY-MM-DD HH:MM:SS.000')
+				}else if(param=='3'){
+					this.personalBase.resignDate=this.moment(this.personalBase.resignDate,'YYYY-MM-DD HH:MM:SS.000')
+				}
+			},
+			positionShiftAction:function(){
+				this.$children[2].initData(this.personalBase)
+				$("#Post_transfer").modal('show')
+			},
 			positionShift:function (positionShiftInfo){
 				this.personalBase.departName = positionShiftInfo.departName
 				this.personalBase.departId = positionShiftInfo.departId
 				this.personalBase.positionName = positionShiftInfo.positionName
 				this.personalBase.positionId = positionShiftInfo.positionId
+				$("#Post_transfer").modal('hide')
 			},
 			
 		},

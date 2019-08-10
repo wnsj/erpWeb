@@ -66,6 +66,33 @@
             console.log(error)
           });
       },
+			//岗位随部门ID联动
+			departLinkChange(departId) {
+					alert('departLinkChange'+departId)
+				var url = this.url + "/kqParamSetContr/queryDepartmentPosition";
+				axios({
+						method: "post",
+						url: url,
+						headers: {
+							"Content-Type": this.contentType,
+							"Access-Token": this.accessToken
+						},
+						data: {
+							deptId: departId
+						},
+						dataType: "json"
+					})
+					.then(response => {
+						if (response.data.retCode == "0000") {
+							this.positionList = response.data.retData
+						} else {
+							console.log(response.data);
+						}
+					})
+					.catch(function(error) {
+						console.log("请求失败处理");
+					});
+			},
     },
     created() {
       this.getPosition()

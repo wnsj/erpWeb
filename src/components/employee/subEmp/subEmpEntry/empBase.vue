@@ -14,10 +14,14 @@
 				</div>
 			</div>
 			<div class="form-group clearfix">
+				
 				<label class="col-md-2 control-label text-right nopad">出生年月：</label>
-				<div class="col-md-5 input-group date form_date">
+				<dPicker v-model="personalBase.birth" v-on:change="dateAction('0')"></dPicker>
+				<!-- <div class="col-md-5 input-group date form_date">
+					
 					<input type="date" class="form-control" v-model="personalBase.birth" value="">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> </div>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+				</div> -->
 			</div>
 			<div class="form-group clearfix">
 				<label for="gh" class="col-md-2 control-label text-right nopad">工号：</label>
@@ -45,42 +49,23 @@
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">入职日期：</label>
-				<div class="col-md-5 input-group date form_date">
+				<dPicker v-model="personalBase.entryDate" v-on:change="dateAction('1')"></dPicker>
+				<!-- <div class="col-md-5 input-group date form_date">
 					<input type="date" class="form-control" v-model="personalBase.entryDate" value="">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> </div>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> </div> -->
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">转正日期：</label>
-				<div class="col-md-5 input-group date form_date">
+				<dPicker v-model="personalBase.positiveDate" v-on:change="dateAction('2')"></dPicker>
+				<!-- <div class="col-md-5 input-group date form_date">
 					<input type="date" class="form-control" v-model="personalBase.positiveDate" value="">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> </div>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> </div> -->
 			</div>
-			<div class="form-group clearfix">
-				<label class="col-md-2 control-label text-right nopad">离职日期：</label>
-				<div class="col-md-5 input-group date form_date">
-					<input type="date" class="form-control" v-model="personalBase.resignDate" value="">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> </div>
-			</div>
-			<div class="form-group clearfix">
-				<label class="col-md-2 control-label text-right nopad">离职类型：</label>
-				<div class="col-md-5 input-group date form_date">
-					<select class="form-control" >
-						<option></option>
-					</select>
-				</div>
-			</div>
-			<div class="form-group clearfix">
-				<label class="col-md-2 control-label text-right nopad">离职原因：</label>
-				<div class="col-md-5 input-group date form_date">
-					<select class="form-control" >
-						<option></option>
-					</select>
-				</div>
-			</div>
+			
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">状态：</label>
 				<div class="col-md-5 input-group date form_date">
-					<select class="form-control" v-model="personalBase.state">
+					<select class="form-control" v-model="personalBase.state" disabled="true">
 						<option value="1">在职</option>
 						<option value="2">离职</option>
 					</select>
@@ -100,34 +85,51 @@
 <script>
 	import department from '../../../vuecommon/department.vue'
 	import position from '../../../vuecommon/position.vue'
+	import dPicker from 'vue2-datepicker'
 	export default {
-		components:{department,position},
+		components:{department,position,dPicker},
 		data() {
 			return {
-				personalBase:{},
-				
+				personalBase:{
+					birth:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
+					entryDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
+					positiveDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
+					state:'1',
+				},
 				departmentList:[],
 				positionList:[],
 			};
 		},
 		methods:{
-			//清空数据
-			cleanData:function(){
-				this.personalBase={}
+			initDate:function(){
+				this.personalBase={
+					birth:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
+					entryDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
+					positiveDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
+					state:'1',
+				},
 				this.$children[0].setDpart('0')
 				this.$children[1].setPosition('0')
 			},
+			
+			//时间变化后格式化
+			dateAction:function(type){
+				if(type=='0'){
+					this.personalBase.birth=this.moment(this.personalBase.birth,'YYYY-MM-DD HH:MM:SS.000')
+				}else if(type=='1'){
+					this.personalBase.entryDate=this.moment(this.personalBase.entryDate,'YYYY-MM-DD HH:MM:SS.000')
+				}else if(type=='2'){
+					this.personalBase.positiveDate=this.moment(this.personalBase.positiveDate,'YYYY-MM-DD HH:MM:SS.000')
+				}
+			},
 			//获取部门名字和id
 			departChange: function(departId, departName) {
-				
 				this.personalBase.departId = departId
 				this.personalBase.departName = departName
 			},
 			positionChange:function (positionId,positionName){
-				
 				this.personalBase.positionId = positionId
 				this.personalBase.positionName = positionName
-				
 			}
 		}
 	}

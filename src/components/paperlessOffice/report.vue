@@ -1282,7 +1282,7 @@
   .queryDate {
     position: relative;
     display: inline-block;
-    width: 120px;
+    width: 120px !important;
   }
 </style>
 

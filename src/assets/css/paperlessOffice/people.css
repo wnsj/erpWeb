@@ -47,21 +47,22 @@
 
 .fam_con{ width:1140px; height:628px; position:fixed; top:100px; background-color:#fff; display:none;}
 .form_date.input-group[class*=col-]{ float:left; padding-left:15px; padding-right:15px;}
-/*员工入职*/
+/*员工请假*/
 .staff_t{ width:760px !important;}
+
+.modal_add{ width:660px !important; margin:0 auto; margin-top:180px}
 .modal-family{width: 1170px}
 .add-mt{
     margin-top: 15px;
+    margin-bottom: 15px
 }
 
 .m_r_10{ margin-right:10px;}
 
 #Post_transfer{ background-color:#fff; display:none; z-index:99999999; position:fixed; left:0; right:0; top:30%; width:660px!important; box-shadow:0 5px 15px rgba(0, 0, 0, .5); padding:10px;}
-#updatefamily_add,#updatefamily_modify,#family_update{ background-color:#fff; display:none; z-index:99999999; position:fixed; left:0; right:0; top:10%; width:660px!important; box-shadow:0 5px 15px rgba(0, 0, 0, .5); padding:10px;}
+#updatefamily_add,#family_update{ background-color:#fff; display:none; z-index:99999999; position:fixed; left:0; right:0; top:10%; width:660px!important; box-shadow:0 5px 15px rgba(0, 0, 0, .5); padding:10px;}
 
-.embed-responsive{
-	overflow: auto;
-}
+
 
 #Cause_management{ height:614px; overflow-y:scroll;}
 .pt2{ padding-top:2%;}
@@ -87,7 +88,60 @@
 
 
 
+.leavespan{ width:44%; display:block; float:left}
+.leavespan input{ width:100%; float:left}
+.leavespan01{ display:inline-block; float:left}
+
+#myModalLabel span{ margin:0 30px;}
+#myModalLabel span i{ font-style:normal}
+.modal_header_leave h6{ font-size:16px}
+
+.explain_leave{ width:100%; display:block; outline:none; resize:none; height:80px}
+
+.beihzu{ text-align:right}
+.beihzu i{ line-height:34px; color:#46b8da; display:block; padding:10px; float:right}
+.beihzu div{ float:right; margin-top:10px}
+
+#datatable{width: 2000px; overflow: scroll}
 
 
+
+.bottom_leave{ overflow: hidden; margin: 15px 0}
+.bottom_leave01{ display: inline-block; float: left; color: #f0ad4e}
+.bottom_leave02{display: inline-block; float: right}
+.bottom_leave02 span{ padding-right: 20px}
+.botleava01{ color: red}
+.botleava02{ color: green}
+.botleava03{ color: blue}
+
+
+.offday_add > .btn {
+    display: block;
+    float: none;
+    width: 100%;
+    max-width: 100%;
+    padding: 9px;
+    margin-left: -1px;
+    position: relative;
+    border-radius: 0;
+  }
+  .offday_add > .btn:first-child {
+    border-top-right-radius: 4px;
+  }
+  .offday_add > .btn:last-child {
+    margin-top: -2px;
+    border-bottom-right-radius: 4px;
+  }
+  .offday_add i{
+    position: absolute;
+    top: 0;
+    left: 4px;
+  }
+
+.people_talk{ resize: none; height: 76px; padding: 0;}
+
+.add_people{ margin-left: 0; margin-right: 15px}
+
+.peopl-footer{ color: red; margin: 15px}
 
 

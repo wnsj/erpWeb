@@ -1,5 +1,6 @@
 <template>
 	<select class="form-control" v-model.lazy="reasonId" v-on:change="leaveChange()">
+		<option value="0">--未选择--</option>
 		<option v-for="(item,index) in lrList" :key="index" v-bind:value="item.reasonId">{{item.reasonName}}</option>
 	</select>
 </template>
@@ -11,7 +12,7 @@
 		data() {
 			return {
 				reasonName: '',
-				reasonId: '',
+				reasonId: '0',
 				lrList: [],
 			};
 		},
@@ -21,6 +22,9 @@
 				this.reasonName = this.exchangeLeaveName(this.reasonId)
 				// alert(this.reasonId + this.reasonName)
 				this.$emit('leaveChange', this.reasonId, this.reasonName)
+			},
+			setLeaveId:function(param){
+				this.reasonId=param
 			},
 			//添加前缀的部门名字兑换原来的名字
 			exchangeLeaveName: function(param) {

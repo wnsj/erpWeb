@@ -5,23 +5,23 @@
 			<h4 id="myModalLabel" class="modal-title"></h4>
 		</div>
 		<p>部门：
-			<input type="text" v-model="oldDepart" class="form-control">
+			<input type="text" v-model="oldDepartmentName" class="form-control">
 			&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&nbsp;&nbsp;&nbsp;&nbsp;
-			<department :departName="departName" :departId="departId" @departChange='departChange'></department>
+			<department @departChange='departChange'></department>
 		</p>
 		<p>职位：
-			<input type="text" v-model="oldPosition" class="form-control">
+			<input type="text" v-model="oldPositionName" class="form-control">
 			&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&nbsp;&nbsp;&nbsp;&nbsp;
-			<position :positionId='positionId' :positionName='positionName' @positionChange= 'positionChange'></position>
+			<position @positionChange= 'positionChange'></position>
 		</p>
 		<p>类型：
-			<select v-model="shiftStype">
+			<select v-model="flag">
 				<option>换岗</option>
 				<option>晋升</option>
 				<option>降职</option>
 			</select>
 			&nbsp;&nbsp;&gt;&gt;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="date" id="postjobe_time" v-model="shiftDate" />
+			<dPicker v-model='upDateTime'></dPicker>
 		</p>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-info" v-on:click="shiftChange()">确认</button>
@@ -31,36 +31,56 @@
 </template>
 
 <script>
+	import axios from 'axios'
 	import department from '../../../../vuecommon/department.vue'
 	import position from '../../../../vuecommon/position.vue'
+	import dPicker from 'vue2-datepicker'
 	export default {
 		components:{
 			department,
 			position,
+			dPicker,
 		},
-		 props:['oldDepart','oldPosition'],
+		
 		data() {
 			return {
-				departName:'',
-				departId:'',
-				positionName:'',
-				positionId:'',
-				shiftDate:'',
-				shiftStype:'',
+				accountId:'',
+				oldDepartmentId:'',
+				oldDepartmentName:'',
+				oldPositionId:'',
+				oldPositionName:'',
+				newDepartmentId:'',
+				newDepartmentName:'',
+				newPositionId:'',
+				newPositionName:'',
+				upDateTime:this.moment(),//调动日期
+				flag:'换岗',				//调动类型	
 				
+				shifInfo:{},		//上传调动信息
 				positionShiftInfo:{},
 			};
 		},
 		methods:{
-			departChange: function(departId, departName) {
-				this.departId = departId
-				this.departName = departName
+			//初始化数据
+			initData:function(param){
+				this.oldDepartmentName=param.departName
+				this.oldPositionName=param.positionName
+				this.shifInfo.oldDepartmentId=param.departId
+				this.shifInfo.oldPositionId=param.positionId
+				this.shifInfo.accountId=param.accountId
 			},
+			//部门变化返回部门数据
+			departChange: function(departId, departName) {
+				this.newDepartmentId = departId
+				this.newDepartmentName = departName
+			},
+			//岗位变化返回岗位数据
 			positionChange: function(positionId, positionName) {
 				console.log('positionName'+positionName)
-				this.positionId = positionId
-				this.positionName = positionName
+				this.newPositionId = positionId
+				this.newPositionName = positionName
 			},
+			//提交岗位变更数据
 			shiftChange: function() {
 				if (this.departName==''){
 					alert('没有选择调动的部门')
@@ -70,22 +90,55 @@
 					alert('没有选择调动的岗位')
 					return
 				}
-				if (this.shiftDate==''){
+				if (this.upDateTime==''){
 					alert('没有选择调动的时间')
 					return
 				}
-				if (this.shiftStype==''){
+				if (this.flag==''){
 					alert('没有选择调动的类型')
 					return
 				}
-				this.positionShiftInfo.departName = this.departName
-				this.positionShiftInfo.departId= this.departId
-				this.positionShiftInfo.positionName = this.positionName
-				this.positionShiftInfo.positionId = this.positionId
-				this.positionShiftInfo.postjobe_time = this.shiftDate
-				this.positionShiftInfo.shiftStype = this.shiftStype
+				if(confirm("确定进行岗位调动操作")==false){
+					return
+				}
+				
+				this.positionShiftInfo.departName = this.newDepartmentName
+				this.positionShiftInfo.departId= this.newDepartmentId
+				this.positionShiftInfo.positionName = this.newPositionName
+				this.positionShiftInfo.positionId = this.newPositionId
+				
 				this.$emit('shiftChange', this.positionShiftInfo)
-				$("#Post_transfer").modal('hide')
+				this.submitPositionShift()
+				
+			},
+			submitPositionShift:function(){
+				
+				this.shifInfo.newDepartmentId=this.newDepartmentId
+				this.shifInfo.newPositionId=this.newPositionId
+				this.shifInfo.upDateTime=this.upDateTime
+				this.shifInfo.flag=this.flag
+				
+				var url = this.url + '/search/insertShiftInfo'
+				axios({
+					method: 'post',
+					url: url,
+					headers: {
+						'Content-Type': this.contentType,
+						'Access-Token': this.accessToken
+					},
+					data: this.shifInfo,
+					dataType: 'json',
+				}).then((response) => {
+					console.log('deleteLeaveReason')
+					console.log(response.data)
+					var res = response.data
+					alert(res.retMsg)
+					if(res.retCode=='0000'){
+						$("#Post_transfer").modal('hide')
+					}
+				}).catch((error) => {
+					alert('岗位调动提交失败')
+				});
 			},
 			closeBtn:function (){
 				$("#Post_transfer").modal('hide')

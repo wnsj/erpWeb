@@ -1,6 +1,6 @@
 <template>
 
-	<div class="m-5">
+	<!-- <div class="m-5">
 		<div class="uploadBox">
 			<h3>上传文件</h3>
 			<div class="fileBox">
@@ -20,7 +20,7 @@
 						<div class="fileSize filePart ml10">
 							{{file.size}}
 						</div>
-						<!--进度条-->
+						
 						<div class="progress">
 							<span :style="{width:file.uploadPercentage,backgroundColor:file.uploadStatus==1 ||file.uploadStatus==2?'':'red'}"></span>
 						</div>
@@ -36,8 +36,15 @@
 			</ul>
 		</div>
 	</div>
+	</div> -->
+	<div>
+		
+		<input list="students">
+		<datalist id="students">
+			<option value="student1"></option>
+		</datalist>
+		
 	</div>
-
 </template>
 
 <script>
@@ -54,121 +61,7 @@
 				uploadSuccess: 0
 			}
 		},
-		methods: {
-			handlerUpload: function(e) {
-				var url = this.url + '/wzbg/upload2'
-				//获取选定的文件
-				let tFiles = e.target.files;
-				let len = tFiles.length;
-				for (var i = 0; i < len; i++) {
-					//开始上传每一个文件
-					var item = {
-						name: tFiles[i].name,
-						uploadPercentage: 1,
-						size: this.formatFileSize(tFiles[i].size, 0),
-						uploadStatus: 0
-					}
-					console.log(item)
-					this.files.push(item);
-					//开始上传文件 新建一个formData
-					let param = new FormData();
-					param.append("name", "wiiiiiinney");
-					//通过append向form对象添加数据
-					param.append("file", tFiles[i]);
-					//FormData私有类对象，访问不到，可以通过get判断值是否传进去
-					console.log(param.get("file"));
-					//判断大小
-					if (!this.checkFileSize(tFiles[i].size)) {
-						item.uploadStatus = -3;
-						return false;
-					}
-					if (!this.checkFileType(tFiles[i].name.split('.')[1])) {
-						item.uploadStatus = -2;
-						return false;
-					}
-					//通过axios上传文件
-					//配置
-					let config = {
-						//添加请求头 
-						headers: {
-							"Content-Type": "multipart/form-data"
-						},
-						//添加上传进度监听事件 
-						onUploadProgress: e => {
-							var completeProgress = ((e.loaded / e.total * 100) | 0) + "%";
-							console.log(this.files)
-							item.uploadPercentage = completeProgress;
-						}
-					};
-					axios.post(url, param, config).then(function(
-						response) {
-						console.log(response);
-						item.uploadStatus = 2;
-					}).catch(function(error) {
-						console.log(error);
-						item.uploadStatus = -1;
-					});
-				}
-			},
-			formatFileSize: function(fileSize, idx) {
-				var units = ["B", "KB", "MB", "GB"];
-				idx = idx || 0;
-				if (fileSize < 1024 || idx === units.length - 1) {
-					return fileSize.toFixed(1) +
-						units[idx];
-				}
-				return this.formatFileSize(fileSize / 1024, ++idx);
-			},
-			checkFileType: function(fileType) {
-				const acceptTypes = ['xls', 'doc', 'jpg'];
-				for (var i = 0; i < acceptTypes.length; i++) {
-					if (fileType === acceptTypes[i]) {
-						return true;
-					}
-				}
-				return false;
-			},
-			checkFileSize: function(fileSize) {
-				//2M
-				const MAX_SIZE = 2 * 1024 * 1024;
-				if (fileSize > MAX_SIZE) {
-					return false;
-				}
-				return true;
-			},
-
-
-
-
-			downLaod: function() {
-				var url = this.url + '/wzbg/downloadFile'
-				axios({
-					method: 'post',
-					url: url,
-					headers: {
-						'Content-Type': this.contentType,
-						'Access-Token': this.accessToken
-					},
-					responseType: 'blob'
-				}).then(res => {
-					let blob = res.data
-					let reader = new FileReader()
-					reader.readAsDataURL(blob)
-					reader.onload = (e) => {
-						let a = document.createElement('a')
-						a.download = fileName
-						a.href = e.target.result
-						document.body.appendChild(a)
-						a.click()
-						document.body.removeChild(a)
-					}
-
-					
-
-
-				})
-			}
-		}
+		methods: {}
 	}
 </script>
 

@@ -21,9 +21,7 @@
 				</div>
 				<div class="form-group clearfix">
 					<label class="col-md-3 control-label text-right nopad">出生日期：</label>
-					<div class="col-md-6 input-group date form_date">
-						<input type="date" class="form-control" v-model="familyInfo.birth">
-						<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> </div>
+					<dPM v-model="familyInfo.birth" v-on:change="dateAction()"></dPM>
 				</div>
 				<div class="form-group clearfix">
 					<label class="col-md-3 control-label text-right nopad">工作单位：</label>
@@ -69,14 +67,21 @@
 
 <script>
 	import {isBlank} from '../../../../../assets/js/constant.js'
+	import dPM from 'vue2-datepicker'
 	export default {
-		props:['familyInfo'],
+		comments:{dPM,},
 		data() {
 			return {
-				
+				familyInfo:{},
 			};
 		},
+		dateAction:function(){
+			this.familyInfo.birth=this.moment(this.familyInfo.birth,'YYYY-MM-DD HH:MM:SS.000')
+		},
 		methods:{
+			childrenFEmpInfo:function(param){
+				this.familyInfo=param
+			},
 			submitFamilyInfo:function(){
 				if(isBlank(this.familyInfo.appellation)){
 					alert('称谓不能为空')
@@ -89,7 +94,7 @@
 				this.$emit('submitFamilyInfo',this.familyInfo)
 			},
 			closeBtn:function (){
-				$("#updatefamily_add").modal('hide')
+				$("#updatefamily_modify").modal('hide')
 			}
 		}
 	}

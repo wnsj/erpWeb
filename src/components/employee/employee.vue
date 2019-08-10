@@ -56,7 +56,7 @@
 				<button type="button" class="btn btn-primary pull-right m_r_10" @click="exportTableToExcel('datatable','人员管理表')">导出</button>
 				<button type="button" class="btn btn-primary pull-right m_r_10" data-toggle="modal" data-target="#myModalJoin">员工入职</button>
 				<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" v-on:click="familyBtn()">家庭成员</button>
-				<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" data-target="#myModalQuery">高级查询</button>
+				<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" v-on:click="advanceAction()">高级查询</button>
 			</div>
 		</div>
 		<div class="row">
@@ -118,7 +118,7 @@
 		<div class="row row_edit">
 			<div class="modal fade" id="myModalQuery">
 				<div class="modal-dialog">
-					<advance @submitAdvacedParam='advanceSelect'></advance>
+					<advance ref='advance' @submitAdvacedParam='advanceSelect'></advance>
 				</div>
 			</div>
 			<div class="modal fade" id="myModalFamily" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -176,7 +176,7 @@
 				projectName: '0',
 				projectId: '0',
 				departName: '0',
-				departId: '',
+				departId: '0',
 				state: '1',
 				searchContent: '',
 				employeeId: '',
@@ -218,6 +218,11 @@
 				this.departName = departName
 				this.getEmployee("depart")
 			},
+			//高级查询按钮
+			advanceAction:function(){
+				this.$refs.advance.initData()
+				$("#myModalQuery").modal('show');
+			},
 			//高级查询
 			advanceSelect: function(advanceParam) {
 				$("#myModalQuery").modal('hide');
@@ -257,7 +262,6 @@
 			advancedQuery: function(advanceParam) {
 
 				var url = this.url + '/search/advanceAllList'
-				console.log(advanceParam.begin + advanceParam.end + advanceParam.category)
 				axios({
 					method: 'post',
 					url: url,
@@ -271,6 +275,9 @@
 						endDate: advanceParam.end,
 						resignType: advanceParam.advanceResignType,
 						resignReasonId: advanceParam.advanceReasonId,
+						state:this.state,
+						projectId:this.projectId,
+						departId:this.departId,
 					},
 					dataType: 'json',
 				}).then((response) => {
@@ -352,52 +359,16 @@
 				var uPositionUrl = this.url + '/search/positionShifts'
 			},
 			getEmployee: function(param) {
-				var copyProjectId = ''
-				var copyDepartName = ''
-				var copyState='1'
-				if(this.state=='0'){
-					copyState=''
-				}else {
-					copyState=this.state
-				}
+				
 				if (param == 'all') {
 					this.projectId = '0'
-					copyProjectId = ''
 					this.projectName = '0'
 					this.departName = '0'
+					this.departId='0'
 					this.searchContent = ''
 					this.$refs.department.setDpart('0')
 					this.$refs.project.setProject('0')
-				} else if (param == 'project') {
-					copyDepartName = ''
-					if (this.projectId != '0') {
-						copyProjectId = this.projectId
-					}else{
-						copyProjectId=''
-					}
-				} else if (param == 'depart') {
-					copyProjectId = ''
-					if (this.departName != '0') {
-						copyDepartName = this.departName
-					}else{
-						copyDepartName=''
-					}
-				} else if (param == 'search') {
-					copyProjectId = ''
-					copyDepartName = ''
-				} else {
-					if (this.projectId != '0') {
-						copyProjectId = this.projectId
-					}else{
-						copyProjectId=''
-					}
-					if (this.departName != '0') {
-						copyDepartName = this.departName
-					}else{
-						copyDepartName=''
-					}
 				}
-				console.log('projectId:' + copyProjectId + 'departName' + this.departName)
 				var url = this.url + '/search/allList'
 				axios({
 					method: 'post',
@@ -407,9 +378,9 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
-						state: copyState,
-						projectId: copyProjectId,
-						departName: copyDepartName,
+						state: this.state,
+						projectId: this.projectId,
+						departId: this.departId,
 						searchContent: this.searchContent,
 					},
 					dataType: 'json',

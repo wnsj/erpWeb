@@ -30,8 +30,8 @@
 				<div class="col-md-8">
 					<button type="button" class="btn btn-info btn-sm int_pwd" v-on:click="initPassword()">初始化密码</button>
 					<button type="button" class="btn btn-info btn-sm reg_work" id="shiftPositionBtn" v-if="isShiftPosition==true" v-on:click="shiftPosition()">转正</button>
-					<button type="button" class="btn btn-info btn-sm recovery" v-on:click="deleteEmployee()">离职</button>
-					<button type="button" class="btn btn-info btn-sm detl" v-on:click="employeeResgin()">删除</button>
+					<button type="button" class="btn btn-info btn-sm recovery" v-on:click="employeeResgin()">离职</button>
+					<button type="button" class="btn btn-info btn-sm detl" v-on:click="deleteEmployee()">删除</button>
 				</div>
 				<button type="button" class="btn btn-info" v-on:click="updataEmployeeInfo()">确认</button>
 				<button type="button" data-dismiss="modal" class="btn btn-info">返回</button>
@@ -149,6 +149,7 @@
 			//离职
 			employeeResgin:function(){
 				var url = this.url + '/search/employeeResginDate'
+				
 				axios({
 					method: 'post',
 					url: url,
@@ -158,6 +159,7 @@
 					},
 					data: {
 						id: this.userId,
+						state:'2',
 						resignDate:this.personalBase.resignDate
 					},
 					dataType: 'json',
