@@ -1,16 +1,23 @@
 <template>
-	<div class="g-center login-page" @keyup.enter="login()">
-		<h1 class="main-title">九博管理系1统</h1>
-		<input placeholder="请输入账号" v-model="accountName" style="width:100%" /><br>
-		<input placeholder="请输入密码" type="password" v-model="accountPwd" style="width:100%" /><br>
-		<router-link to="/mainPage"><i class="fa fa-table" aria-hidden="false"></i>登录</router-link>
-		<button style="width:100%" @click="login()">{{btnText}}</button>
+	<div class="g-center login-page" @keyup.enter="login()" id="loincss">
+		<div class="loincss01">
+		<h1 class="main-title">九博管理系统</h1>
+		
+			<input placeholder="请输入账号" v-model="accountName" style="width:100%" /><br>
+			<input placeholder="请输入密码" type="password" v-model="accountPwd" style="width:100%" /><br>
+			<!-- <router-link to="/mainPage"><i class="fa fa-table" aria-hidden="false"></i>登录</router-link> -->
+		
+			<button style="width:100%" @click="login()">{{btnText}}</button>
+		</div>	
+
 <!-- 		<div v-has='1'> 测试内容1</div>
 		<div v-if='has(25)'> 测试内容2</div>
 		<button @click="consoleLog()" v-has="28">测试Btn</button> -->
-
 	</div>
 </template>
+<style>
+	@import '../../assets/css/logincss.css';
+</style>
 
 <script>
 	import axios from 'axios';
