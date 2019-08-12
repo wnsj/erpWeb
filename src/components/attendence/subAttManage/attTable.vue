@@ -120,9 +120,9 @@
 			},
 			//搜索考勤报表
 			searchKqTableList: function(param) {
-				var dN,pN,pId,dId,pjId
+				var dId,pN,pId,dId,pjId
 				if (param=='0'){
-					dN=''
+					dId=''
 					pN=''
 					this.name=''
 					this.jobNum=''
@@ -137,12 +137,12 @@
 					if(this.conditionChange=='depart'){
 						pjId=''
 						if (this.departId=='0'){
-							dN=''
+							dId=''
 						}else{
-							dN=this.departName
+							dId=this.departId
 						}
 					}else{
-						dN=''
+						dId=''
 						if(this.projectId=='0'){
 							pjId = ''
 						}else{
@@ -165,13 +165,13 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
-						departName:dN,
+						departId:dId,
 						positionName: pN,
 						name: this.name,
 						jobNum: this.jobNum,
 						projectId: pjId,
 						beginDate: this.beginDate,
-						endDate: this.getYYYYMMDDHHMMSS_24(this.endDate),
+						endDate: this.endDate,
 					},
 					dataType: 'json',
 				}).then((response) => {
@@ -211,7 +211,7 @@
 						name: "",
 						jobNum: "",
 						beginDate: this.beginDate,
-						endDate: this.getYYYYMMDDHHMMSS_24(this.endDate),
+						endDate: this.endDate,
 					},
 					dataType: 'json',
 				}).then((response) => {

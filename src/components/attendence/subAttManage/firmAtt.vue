@@ -135,10 +135,10 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
-						departId: this.departId,
-						positionName: pName,
-						name: this.kquName,
-						jobNum: this.kquJobNum,
+						departName: "",
+						positionName: "",
+						name: "",
+						jobNum: "",
 						beginDate: this.beginDate,
 						endDate: this.endDate,
 					},
