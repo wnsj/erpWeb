@@ -5,9 +5,9 @@
 				<div class="col-lg-8 mtr_a"> <span>部门：</span> <span class="com-sel">
 						<depart :departName="departName" :departId="departId" @departChange='departChange'></depart>
 					</span> <span>时间：</span> <span>
-						<input type="date" value="" class="form-control" v-model="dpBeginDate" />
+						<dPicker v-model="beginDate" v-on:change="dateAction('begin')"></dPicker>
 					</span> <span>&nbsp;&nbsp;&nbsp;至：</span> <span>
-						<input type="date" value="" class="form-control" v-model="dpEndDate" />
+						<dPicker v-model="endDate" v-on:change="dateAction('end')"></dPicker>
 					</span> <span class="search">
 						<button class="btn btn-warning" v-on:click="searchDepartKQInfo('0')">查询所有</button>
 					</span> <span class="search">
@@ -56,6 +56,7 @@
 
 <script>
 	import axios from 'axios'
+	import dPicker from 'vue2-datepicker'
 	import {
 		timeInit
 	} from '../../../assets/js/date.js'
@@ -65,14 +66,15 @@
 	export default {
 		components: {
 			depart,
-			singleDepart
+			singleDepart,
+			dPicker,
 		},
 		data() {
 			return {
 				departId: '0',
 				departName: '0',
-				dpBeginDate: timeInit(''),
-				dpEndDate: timeInit(''),
+				beginDate: this.moment('', 'YYYY-MM-DD 00:00:00.000'),
+				endDate: this.moment('', 'YYYY-MM-DD 23:59:59.000'),
 				departKqList: [],
 			};
 		},
@@ -82,12 +84,20 @@
 				this.departId = departId
 				this.departName = departName
 			},
+			//更新时间
+			dateAction: function(param) {
+				if (param == 'begin') {
+					this.beginDate = this.moment(this.beginDate, 'YYYY-MM-DD 00:00:00.000')
+				} else if (param == 'end') {
+					this.endDate = this.moment(this.endDate, 'YYYY-MM-DD 23:59:59.000')
+				}
+			},
 			//单个部门人员考勤信息
 			showSingleDepartAttend(param) {
 				param.departName = param.departKQName
-				param.beginDate = this.dpBeginDate
-				param.endDate = this.dpEndDate
-				this.$children[1].singleDepartAttend(param)
+				param.beginDate = this.beginDate
+				param.endDate = this.endDate
+				this.$children[3].singleDepartAttend(param)
 				$("#myDepartmentAttendance").modal('show')
 
 			},
@@ -116,9 +126,9 @@
 						positionName: "",
 						name: "",
 						jobNum: "",
-						departName: this.departName,
-						beginDate: this.dpBeginDate,
-						endDate: this.getYYYYMMDDHHMMSS_24(this.dpEndDate),
+						departId: this.departId,
+						beginDate: this.beginDate,
+						endDate: this.endDate,
 					},
 					dataType: 'json',
 				}).then((response) => {
@@ -156,8 +166,8 @@
 						positionName: "",
 						name: "",
 						jobNum: "",
-						beginDate: this.dpBeginDate,
-						endDate: this.getYYYYMMDDHHMMSS_24(this.dpEndDate),
+						beginDate: this.beginDate,
+						endDate: this.endDate,
 					},
 					dataType: 'json',
 				}).then((response) => {

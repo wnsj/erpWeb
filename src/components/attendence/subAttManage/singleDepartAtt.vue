@@ -21,7 +21,6 @@
 						<label class="checkbox-inline">
 							<input type="checkbox" id="inlineCheckbox3" value="option3"> 早退
 						</label>
-	
 						<button type="button" class="btn btn-primary pull-right">查询</button>
 					</div>
 	
@@ -67,6 +66,7 @@
 			};
 		},
 		methods:{
+			
 			//单个部门人员考勤信息
 			singleDepartAttend(param){
 				 console.log('param:'+param)

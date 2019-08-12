@@ -3,9 +3,9 @@
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 			<div class="table-responsive">
 				<div class="col-lg-8 mtr_a"> <span>时间：</span> <span>
-						<input type="date" value="" v-model="singleBeginDate" />
+						<dPicker v-model="beginDate" v-on:change="dateAction('begin')"></dPicker>
 					</span> <span>&nbsp;&nbsp;&nbsp;至：</span> <span>
-						<input type="date" value="" v-model="singleEndDate" />
+						<dPicker v-model="endDate" v-on:change="dateAction('end')"></dPicker>
 					</span> <span class="search">
 						<button class="btn btn-warning" v-on:click="searchSingleKqList()">查询</button>
 					</span> <span class="search">
@@ -51,18 +51,30 @@
 
 <script>
 	import axios from 'axios'
+	import dPicker from 'vue2-datepicker'
 	import {
 		timeInit
 	} from '../../../assets/js/date.js'
 	export default {
+		components:{
+			dPicker,
+		},
 		data() {
 			return {
-				singleBeginDate: timeInit(''),
-				singleEndDate: timeInit(''),
+				beginDate: this.moment('', 'YYYY-MM-DD 00:00:00.000'),
+				endDate: this.moment('', 'YYYY-MM-DD 23:59:59.000'),
 				singleKqList: [],
 			};
 		},
 		methods: {
+			//更新时间
+			dateAction: function(param) {
+				if (param == 'begin') {
+					this.beginDate = this.moment(this.beginDate, 'YYYY-MM-DD 00:00:00.000')
+				} else if (param == 'end') {
+					this.endDate = this.moment(this.endDate, 'YYYY-MM-DD 23:59:59.000')
+				}
+			},
 			//个人考勤信息汇总
 			searchSingleKqList: function() {
 				var url = this.url + '/kqgl/singleKQList'
@@ -74,9 +86,9 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
-						accountName: "王杰林",
-						beginDate: this.singleBeginDate,
-						endDate: this.getYYYYMMDDHHMMSS_24(this.singleEndDate),
+						accountName: this.accountInfo().account_Name,
+						beginDate: this.beginDate,
+						endDate: this.endDate,
 					},
 					dataType: 'json',
 				}).then((response) => {
@@ -108,9 +120,9 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
-						accountName: "王杰林",
-						beginDate: this.singleBeginDate,
-						endDate: this.getYYYYMMDDHHMMSS_24(this.singleEndDate),
+						accountName: this.accountInfo().account_Name,
+						beginDate: this.beginDate,
+						endDate: this.endDate,
 					},
 					dataType: 'json',
 				}).then((response) => {

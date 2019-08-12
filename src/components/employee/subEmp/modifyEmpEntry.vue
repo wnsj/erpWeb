@@ -218,6 +218,10 @@
 				console.log(userInfo)
 				var url = this.url + '/search/updateUserInfo'
 				
+				if(this.personalBase.state=='1'){
+					this.personalBase.resignDate=''
+				}
+				
 	
 				axios({
 					method: 'post',

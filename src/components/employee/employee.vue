@@ -99,10 +99,10 @@
 								<td>{{item.departName}}</td>
 								<td>{{item.positionName}}</td>
 								<td>{{item.erpaaccount}}</td>
-								<td>{{item.birth}}</td>
-								<td>{{item.entryDate}}</td>
-								<td>{{item.positiveDate}}</td>
-								<td>{{item.resignDate}}</td>
+								<td>{{item.birth | dateFormatFilter('YYYY-MM-DD')}}</td>
+								<td>{{item.entryDate | dateFormatFilter('YYYY-MM-DD')}}</td>
+								<td>{{item.positiveDate | dateFormatFilter('YYYY-MM-DD')}}</td>
+								<td>{{item.resignDate | dateFormatFilter('YYYY-MM-DD')}}</td>
 								<template>
 									<td v-if="item.state == 1">在职</td>
 									<td v-if="item.state == 2">停职</td>
