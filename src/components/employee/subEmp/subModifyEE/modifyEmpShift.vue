@@ -13,13 +13,13 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>成都运营</td>
-					<td>外推</td>
-					<td>成都运营</td>
-					<td>竞价</td>
-					<td></td>
-					<td>2018-12-1</td>
+				<tr v-for="(item,index) in shiftList" :key="index">
+					<td>{{item.oldDepartmentName}}</td>
+					<td>{{item.oldPositionName}}</td>
+					<td>{{item.newDepartmentName}}</td>
+					<td>{{item.newPositionName}}</td>
+					<td>{{item.flag}}</td>
+					<td>{{item.upDateTime}}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -31,7 +31,7 @@
 	export default {
 		data() {
 			return {
-				
+				shiftList:[],//换岗列表
 			};
 		},
 		methods:{
@@ -53,7 +53,16 @@
 					},
 					dataType: 'json',
 				}).then((response) => {
-					console.log(response.data)
+					console.log()
+					var res = response.data
+					console.log('response:'+res.resData+'param'+param)
+					if (res.retCode == '0000') {
+						if (res.resData.length > 0) {
+							this.shiftList = res.resData
+						} 
+					}else{
+						alert(res.retMsg)
+					}
 				}).catch((error) => {
 					console.log('请求失败处理')
 				});

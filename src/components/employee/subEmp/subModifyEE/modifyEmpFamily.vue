@@ -2,7 +2,7 @@
 	<!--家庭成员-->
 	<div class="tab-pane fade" id="updatafamily">
 		<div class="col-md-2 col-md-offset-10 clearfix martop pos_a">
-			<button type="button" class="btn btn-warning" data-toggle="modal" v-on:click="popupFamilyInfo()">RY添加</button>
+			<button type="button" class="btn btn-warning" data-toggle="modal" v-on:click="popupFamilyInfo()">添加</button>
 		</div>
 		<div class="col-md-12 clearfix nopad addbord martop mt50">
 			<table class="table table-bordered table-responsive" id="addTable">
@@ -36,16 +36,16 @@
 				</tbody>
 			</table>
 		</div>
-		<familyEmp ref='fEmp' @submitFamilyInfo='popbackFamilyInfo'></familyEmp>
+		<modifyFEmp ref='modifyFEmp' @submitFamilyInfo='popbackFamilyInfo'></modifyFEmp>
 	</div>
 	
 </template>
 
 <script>
 	import axios from 'axios'
-	import familyEmp from '../subModifyEE/subMes/addFamilyEmp.vue'
+	import modifyFEmp from '../subModifyEE/subMes/modifyFamilyEmp.vue'
 	export default {
-		components:{familyEmp},
+		components:{modifyFEmp},
 		
 		data() {
 			return {
@@ -63,12 +63,12 @@
 			popupFamilyInfo:function(){
 				this.familyInfo = {}
 				this.familyInfo.type='add'
-				this.$refs.fEmp.childrenFEmpInfo(this.familyInfo)
-				$("#updatefamily_add").modal('show')
+				this.$refs.modifyFEmp.childrenFEmpInfo(this.familyInfo)
+				$("#updatefamily_modify").modal('show')
 			},
 			popbackFamilyInfo:function(familyInfo){
 				
-				$("#updatefamily_add").modal('hide')
+				$("#updatefamily_modify").modal('hide')
 				
 				// alert(this.personalFamily.length)
 				if(this.familyInfo.type=='modify'){
@@ -88,8 +88,8 @@
 				this.familyInfo=Object.assign({},item)
 				this.modifyFIIndex = index
 				this.familyInfo.type='modify'
-				this.$refs.fEmp.childrenFEmpInfo(this.familyInfo)
-				$("#updatefamily_add").modal('show')
+				this.$refs.modifyFEmp.childrenFEmpInfo(this.familyInfo)
+				$("#updatefamily_modify").modal('show')
 			},
 			//删除家庭成员
 			cancelRFInfo:function(index){

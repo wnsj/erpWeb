@@ -121,6 +121,7 @@
 		},
 		methods: {
 			titleBtn: function(event) {
+				
 				$("#tresult").text(event.target.innerText);
 			},
 			changeTitle() {

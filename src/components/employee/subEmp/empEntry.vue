@@ -12,7 +12,6 @@
 				<li class="active"><a href="#basic" data-toggle="tab">基本信息</a></li>
 				<li><a href="#detailed" data-toggle="tab">详细信息</a></li>
 				<li><a href="#family" data-toggle="tab">家庭成员</a></li>
-				<li><a href="#record" data-toggle="tab">调动记录</a></li>
 			</ul>
 			<div class="tab-content" style=" height:400px; overflow-y:scroll;">
 				<!-- 人员基本信息 -->
@@ -22,9 +21,9 @@
 				<!--家庭成员-->
 				<familyInfo ref='familyInfo'></familyInfo>
 				<!--调动记录-->
-				<shiftInfo ref='shiftInfo'></shiftInfo>
+				<!-- <shiftInfo ref='shiftInfo'></shiftInfo> -->
 			</div>
-
+		
 		</div>
 		<div class="modal-footer">
 			<!--按钮 -->
@@ -71,24 +70,26 @@
 				$("#myModalJoin").modal('hide')
 				this.cleanData()
 			},
+			//初始化数据
 			cleanData:function(){
-				this.$refs.baseInfo.cleanData()
+				this.$refs.baseInfo.initData()
 				this.$refs.detailInfo.cleanData()
 				this.$refs.familyInfo.cleanData()
 			},
 			addEmployeeInfo: function() {
-
+				
 				// 修改基本信息
 				this.personalBase = this.$refs.baseInfo.personalBase
 				this.personalBase.isDelete = '0'
 				this.personalBase.state = '1'
 				this.personalBase.createUser = this.accountInfo().account_ID
-
+				
+				
 				this.personalDetail = this.$refs.detailInfo.personalDetail
 				this.personalFamily = this.$refs.familyInfo.personalFamily
-
+	
 				var url = this.url + '/search/insertUserInfo'
-
+			
 				if(this.isBlank(this.personalBase.name)){
 					alert("添加人员的姓名不能为空")
 					return
@@ -113,7 +114,7 @@
 					alert("必须选择岗位")
 					return
 				}
-
+				
 				axios({
 					method: 'post',
 					url: url,
@@ -126,7 +127,6 @@
 						userBase: this.personalBase,
 						//详细信息
 						userDetail:this.personalDetail,
-
 						//家庭信息
 						userFamily: this.personalFamily,
 					},
@@ -137,17 +137,18 @@
 					console.log(res)
 					if (res.retCode == '0000') {
 						alert(res.resData.message)
+						console.log('入职人员'+res)
 						this.$emit('addEmployeeInfo')
-            this.goToUrl()
 						$("#myModalJoin").modal('hide')
 						this.cleanData()
 					} else {
 						alert(res.retMsg)
 					}
-
+			
 				}).catch((error) => {
 					console.log('请求失败处理')
 				});
+
 			},
 			goToUrl(){
 			  const msg = confirm("员工添加成功,是否需要申请电脑？")
@@ -159,9 +160,10 @@
             params:{userName: this.personalBase.erpaaccount}
           });
 			  }
+
 			}
 		}
-
+		
 	}
 </script>
 
