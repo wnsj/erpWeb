@@ -1,7 +1,7 @@
 <!-- author:dingdong -->
 <!-- 审查人组件 -->
 <template>
-  <select class="form-control" v-model="accountId">
+  <select class="form-control" v-model="accountId" :disabled="isAble">
     <option v-for="(item,index) in examineList" :key="index" :value="item.accountId">{{item.accountName}}</option>
   </select>
 </template>
@@ -39,6 +39,9 @@
       }
     },
     methods: {
+      changeAble(){ // 设置为禁用
+        this.isAble = "disabled"
+      },
       initParam() {  // 初始化参数
         this.isAble = false
         this.typeIds = []
@@ -160,9 +163,6 @@
         if (this.type == 6 && this.round > 1) {
           this.positionIds = []
         }
-        // console.log("部门" + this.deptId)
-        // console.log("职位" + this.typeIds)
-        // console.log("岗位" + this.positionIds)
         axios({
           method: 'post',
           url: this.url + '/leavePrepareController/queryCheckInfo',

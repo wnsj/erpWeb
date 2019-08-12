@@ -809,12 +809,12 @@
   import axios from 'axios'
   import Cookies from 'js-cookie'
   import moment from 'moment'
-  import agent from '../vuecommon/agent.vue'
+  import agent from './subReportAndClock/agent.vue'
   import agentChoose from './subReportAndClock/agentChoose.vue'
   import agentChooseUpdate from './subReportAndClock/agentChooseUpdate.vue'
   import department from '../vuecommon/department.vue'
-  import examine from '../vuecommon/examine.vue'
-  import approve from '../vuecommon/approve.vue'
+  import examine from './subReportAndClock/examineClock.vue'
+  import approve from './subReportAndClock/approveClock.vue'
 
   export default {
     components: {

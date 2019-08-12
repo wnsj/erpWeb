@@ -299,7 +299,7 @@
               <div class="form-group clearfix">
                 <label class="col-md-1 control-label text-right nopad">批准人：</label>
                 <div class="col-md-2">
-                  <approve :approveAccount="approveAccount" @approveChange="approveChange"></approve>
+                  <approve :approveAccount="approveAccount" ref="approve" @approveChange="approveChange"></approve>
                 </div>
                 <div class="col-md-1">
                   <button type="button" data-toggle="modal" @click="addApproveOption" :disabled="isAbleForApprove">
@@ -495,12 +495,12 @@
   import department from '../vuecommon/department.vue'
   import leaveType from '../vuecommon/LeaveType.vue'
   import deptEmp from '../vuecommon/deptEmp.vue'
-  import agent from '../vuecommon/agent.vue'
+  import agent from './subReportAndClock/agent.vue'
   import approvalLeaveAcc from '../vuecommon/approvalLeaveAcc.vue'
   import agentChoose from './subReportAndClock/agentChoose.vue'
-  import examine from '../vuecommon/examine.vue'
-  import check from '../vuecommon/check.vue'
-  import approve from '../vuecommon/approve.vue'
+  import examine from './subReportAndClock/examineReport.vue'
+  import check from './subReportAndClock/checkReport.vue'
+  import approve from './subReportAndClock/approveReport.vue'
 
   export default {
     components: {
