@@ -29,8 +29,9 @@
 			<div class="col-md-12">
 				<div class="col-md-8">
 					<button type="button" class="btn btn-info btn-sm int_pwd" v-on:click="initPassword()">初始化密码</button>
-					<button type="button" class="btn btn-info btn-sm reg_work" id="shiftPositionBtn" v-if="isShiftPosition==true" v-on:click="shiftPosition()">转正</button>
-					<button type="button" class="btn btn-info btn-sm recovery" v-on:click="employeeResgin()">离职</button>
+					<button type="button" class="btn btn-info btn-sm reg_work" id="shiftPositionBtn" v-if="isShiftPosition==false && this.personalBase.state==1" v-on:click="shiftPosition()">转正</button>
+					<button type="button" class="btn btn-info btn-sm recovery" v-if="this.personalBase.state==1" v-on:click="employeeResgin()">离职</button>
+					<button type="button" class="btn btn-info btn-sm recovery" v-if="this.personalBase.state==2">恢复</button>
 					<button type="button" class="btn btn-info btn-sm detl" v-on:click="deleteEmployee()">删除</button>
 				</div>
 				<button type="button" class="btn btn-info" v-on:click="updataEmployeeInfo()">确认</button>
@@ -210,7 +211,10 @@
 				// 修改基本信息
 				this.personalBase = this.$refs.baseInfo.personalBase
 				this.personalDetail = this.$refs.detailInfo.personalDetail
+				this.personalDetail.uEmployeeBasicID=this.personalBase.id
 				this.personalFamily = this.$refs.familyInfo.personalFamily
+				
+				console.log('personalFamily:'+this.personalFamily.length)
 				
 				var userInfo = this.personalDetail
 				userInfo = this.personalBase
@@ -236,7 +240,7 @@
 						//详细信息
 						userDetail:this.personalDetail,
 						//家庭信息
-						userFamily: this.personalFaminly,
+						userFamily: this.personalFamily,
 					},
 					dataType: 'json',
 				}).then((response) => {

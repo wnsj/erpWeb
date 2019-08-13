@@ -135,14 +135,14 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
-						departName: "",
-						positionName: "",
-						name: "",
-						jobNum: "",
+						departId: this.departId,
+						positionName: pName,
+						name: this.kquName,
+						jobNum: this.kquJobNum,
 						beginDate: this.beginDate,
 						endDate: this.endDate,
 					},
-					dataType: 'json',
+					dataType: 'json',	
 				}).then((response) => {
 					var res = response.data
 					console.log('getKqList')

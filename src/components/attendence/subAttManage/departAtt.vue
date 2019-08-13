@@ -113,7 +113,7 @@
 					}
 				}
 				// alert(this.departName)
-				var url = this.url + '/kqgl/searchDepartKQList'
+				var url = this.url + '/kqgl/departOfFirmKQList'
 				// alert(url)
 				axios({
 					method: 'post',
@@ -123,9 +123,6 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
-						positionName: "",
-						name: "",
-						jobNum: "",
 						departId: this.departId,
 						beginDate: this.beginDate,
 						endDate: this.endDate,

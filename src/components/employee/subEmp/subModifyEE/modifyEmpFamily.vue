@@ -55,6 +55,7 @@
 				
 				familyInfo:{},
 				modifyFIIndex:0,
+				accountId:'',
 			};
 		},
 		methods:{
@@ -69,16 +70,14 @@
 			popbackFamilyInfo:function(familyInfo){
 				
 				$("#updatefamily_modify").modal('hide')
-				
+				this.familyInfo.uAccountId = this.accountId
 				// alert(this.personalFamily.length)
 				if(this.familyInfo.type=='modify'){
-					alert(this.familyInfo.type+'---'+familyInfo.chname)
-					this.cancelRFInfo(this.modifyFIIndex)
+					this.modifyRFInfo(this.modifyFIIndex)
 					
 					this.personalFamily.push(familyInfo)
 				}
 				if(this.familyInfo.type=='add'){
-					alert(this.familyInfo.type+'---'+familyInfo.chname)
 					this.personalFamily.push(familyInfo)
 				}
 			},
@@ -91,13 +90,44 @@
 				this.$refs.modifyFEmp.childrenFEmpInfo(this.familyInfo)
 				$("#updatefamily_modify").modal('show')
 			},
+			//修改家庭信息
+			modifyRFInfo:function(index){
+				this.personalFamily.splice(index, 1)
+			},
 			//删除家庭成员
 			cancelRFInfo:function(index){
-				this.personalFamily.splice(index, 1)
+				if(!confirm('确定删除')){
+					return
+				}
+				var ufmUrl = this.url + '/search/deletFamilyInfo'
+				
+				//家庭信息
+				axios({
+					method: 'post',
+					url: ufmUrl,
+					headers: {
+						'Content-Type': this.contentType,
+						'Access-Token': this.accessToken
+					},
+					data: this.personalFamily[index],
+					dataType: 'json',
+				}).then((response) => {
+					console.log('personalFamily')
+					if (response.data.retCode == '0000') {
+						this.personalFamily.splice(index, 1)
+						alert('删除成功')
+					} else {
+						alert(response.data.retMsg)
+					}
+				}).catch((error) => {
+					console.log('请求失败处理')
+				});
+				
 			},			
-			
+			//账户Id
 			childrenFamilyInfo:function(accountId,userId){
-				this.personalFamily.uEmployeeBasicID = userId
+				
+				this.accountId=accountId
 				this.getEmpFamilyInfo(accountId)
 			},
 			// 获取家庭信息
@@ -123,7 +153,6 @@
 					console.log('personalFamily')
 					if (response.data.retCode == '0000') {
 						this.personalFamily = response.data.resData
-						console.log(this.personalFaminly)
 					} else {
 						alert(response.data.retMsg)
 					}
