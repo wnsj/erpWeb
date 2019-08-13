@@ -2,7 +2,9 @@
 <template>
   <div class="container user-container" id="clock-app" v-cloak>
     <div class="row">
-      <h2>忘打卡证明</h2>
+      <div class="col-md-12 main-title">
+        <h2>忘打卡证明</h2>
+      </div>
     </div>
     <div class="form-group clearfix">
       <div class="col-md-4" id="date">
@@ -20,7 +22,7 @@
       <div class="col-md-1">
         <label class="control-label text-left nopad">姓名：</label>
       </div>
-      <div class="col-md-2" id  ="username">
+      <div class="col-md-2" id="username">
         <input type="text" class="form-control" placeholder="Username" v-model="accountName">
       </div>
       <div class="col-md-1">
@@ -1196,9 +1198,6 @@
       changeCheckAddAble() {
         this.isAbleForCheck = "disabled"
       },
-      getRound(val) {
-        this.round = val
-      },
       // 添加批准人
       addApproveOption() {
         if (this.isBlank(this.deptApproveId)) {  // 首次加载初始化参数
@@ -2111,23 +2110,28 @@
     display: inline-block;
     width: 120px;
   }
-  #date{
+
+  #date {
     width: 33%;
     margin-left: -10px;
   }
-  #dept{
+
+  #dept {
     width: 18.5%;
     margin-left: -50px;
   }
-  #username{
+
+  #username {
     width: 15%;
     margin-left: -50px;
   }
-  #status{
+
+  #status {
     width: 15%;
     margin-left: -50px;
   }
-  #btn{
+
+  #btn {
     margin-left: 82.6%;
   }
 </style>

@@ -19,7 +19,6 @@
         deptId: '',
         examine: {},
         examineList: [],
-        flag: '',
         isAble: false,
         positionIds: [],
         positionTypeId: '',
@@ -55,7 +54,8 @@
         this.accountId = val[0]
       },
       getTypeId(val) { // 获取初始职位级别
-        this.typeId = val
+        this.typeId = val[0]
+        console.log("职位级别" + this.typeId)
         if (this.typeId <= 3) {
           this.type3(this.typeId)
         }
@@ -77,6 +77,9 @@
           this.positionTypeId = 5
         }
         if (id == 5) {
+          this.positionTypeId = 6
+        }
+        if (id == 6) {
           this.positionTypeId = ''
           this.typeIds = ''
         }
@@ -120,9 +123,6 @@
       setRound() {
         return this.round
       },
-      showExamineInfo(val) {
-        this.examine = val
-      },
       initType5() {
         this.positionTypeId = ''
         this.typeIds = ''
@@ -134,35 +134,37 @@
       getClickTime(val) {
         this.clickTime = val
       },
-      getFlag(val) {
-        this.flag = val
+      setClickTime() {
+        return this.clickTime
       },
       // 查询审查人信息
       getExamineList: function () {
-        if (this.typeIds.length == 0 && this.deptId == 0 && this.type != 6 && this.flag == 1) {
+        if (this.typeIds.length == 0 && this.deptId == 0) {
           this.$parent.changeExamineAddAble()
-          this.$parent.changeExamineModifyAble()
-        }
-        if (this.typeIds.length == 0 && this.deptId == 0 && this.type != 6 && this.flag == 2) {
-          this.$parent.changeCheckAddAble()
-          this.$parent.changeCheckModifyAble()
         }
         if (this.deptId == 0) {
           this.round++
         }
-        if (this.type == 6 && this.round <= 1) {
-          if (this.round == 0) {
+        if (this.type == 6 && this.clickTime <= 2) {
+          if (this.clickTime == 0) {
             this.deptId = null
             this.positionIds.push('74')
           }
-          if (this.round == 1) {
+          if (this.clickTime == 1) {
             this.deptId = null
             this.positionIds.push('33')
           }
+          if (this.clickTime == 2) {
+            this.deptId = null
+            this.positionIds.push('34')
+          }
         }
-        if (this.type == 6 && this.round > 1) {
+        if (this.type == 6 && this.clickTime > 2) {
           this.positionIds = []
         }
+        console.log("部门" + this.deptId)
+        console.log("职位级别" + this.typeIds)
+        console.log("岗位" + this.positionIds)
         axios({
           method: 'post',
           url: this.url + '/leavePrepareController/queryCheckInfo',
@@ -191,17 +193,6 @@
             }
           }
           this.accountId = this.examineList[0].accountId;
-          //------------------------------------------修改时-----------------------------------------
-          if (!this.isBlank(this.examine.accountId)) {  // 有审查人时才执行
-            if (this.clickTime == 0) {  // 第一次加载
-              if(arr.indexOf(this.examine.accountId) == -1){
-                this.examineList.push(this.examine);  // 如果获取的审查人不存在集合中 向集合中加入数据
-                this.accountId = this.examine.accountId;  // 默认显示新增加的审查人
-              }
-            } else {  // 不是首次加载 显示第一项
-              this.accountId = this.examineList[0].accountId;
-            }
-          }
         }).catch(err => {
           console.log(err)
         });
