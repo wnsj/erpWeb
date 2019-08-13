@@ -20,7 +20,9 @@
         positionTypeId: '',
         typeIds:[],
         check:{},
-        checkList: [] // 审查人集合
+        checkList: [], // 审查人集合
+        days: 0,
+        flag: '',
       }
     },
     props: ['checkAccount'],
@@ -45,19 +47,68 @@
         this.checkList.push({accountId:val[0], accountName:val[1]})
         this.accountId = val[0]
       },
-      getTypeId(val){
-        this.typeId = val
-        if(this.typeId == 2 || this.typeId == 3){
+      getTypeId(val) { // 获取初始职位级别
+        this.typeId = val[0]
+        this.days = val[1]
+        if(this.days < 3){
+          if (this.typeId <= 3) {
+            this.type3(this.typeId)
+          }
+          // if (this.typeId == 4) {
+          //   this.type4(this.typeId)
+          // }
+          // if (this.typeId == 5) {
+          //   this.type5(this.typeId)
+          // }
+          // if (this.typeId == 6) {
+          //   this.type6(this.typeId)
+          // }
+        }
+        // if(this.days >= 3){
+        //   if (this.typeId <= 3) {
+        //     this.type3MoreThan3(this.typeId)
+        //   }
+        //   if (this.typeId == 4) {
+        //     this.type4MoreThan3(this.typeId)
+        //   }
+        //   if (this.typeId == 5) {
+        //     this.type5MoreThan3(this.typeId)
+        //   }
+        //   if (this.typeId == 6) {
+        //     this.type6MoreThan3(this.typeId)
+        //   }
+        // }
+      },
+      type3(id) {
+        if (id <= 3) {
           this.positionTypeId = 5
         }
-        if(this.typeId == 4){
-          this.positionTypeId = 5
-        }
-        if(this.typeId == 5){
+        if (id == 5) {
           this.positionTypeId = 6
         }
-        this.typeIds.push(this.positionTypeId);
+        if (id == 6) {
+          this.positionTypeId = ''
+          this.typeIds = ''
+        }
+        if (!this.isBlank(this.positionTypeId)) {
+          this.typeIds.push(this.positionTypeId);
+        }
       },
+      // type4(id) {},
+      // type5(id) {},
+      // type6(id) {},
+      // type3MoreThan3(id){
+      //
+      // },
+      // type4MoreThan3(id){
+      //
+      // },
+      // type5MoreThan3(id){
+      //
+      // },
+      // type6MoreThan3(id){
+      //
+      // },
       setTypeId(){
         return this.positionTypeId
       },

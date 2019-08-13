@@ -6,42 +6,74 @@
         <h2>请假报备管理</h2>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-4">
-        <span class="select-box-title">填写日期：</span>
+    <div class="form-group clearfix">
+      <div class="col-md-4" id="date">
+        <label class="control-label text-left nopad">填写日期：</label>
         <date-picker v-model="beginDate" type="date" class="queryDate"></date-picker>
-        <span class="select-box-title">~</span>
+        <span class="nopad">~</span>
         <date-picker v-model="endDate" type="date" class="queryDate"></date-picker>
       </div>
-      <!--    </div>-->
-      <!--    <div class="row">-->
-      <div class="col-md-3">
-        <div class="input-group">
-          <span class="input-group-addon">请假人部门</span>
-          <department ref="departSel" @departChange='departSelChange'></department>
-        </div>
-      </div>
       <div class="col-md-2">
-        <div class="input-group">
-          <span class="input-group-addon">姓名</span>
-          <input type="text" class="form-control" placeholder="Username" v-model="leaveName">
-        </div>
+        <label class="control-label text-left nopad">请假人部门：</label>
       </div>
-      <div class="col-md-2">
-        <div class="input-group">
-          <span class="input-group-addon">状态</span>
-          <select class="form-control" v-model="state">
-            <option v-for="(item,index) in stateList" :key="index" :value="item.value">
-              {{item.label}}
-            </option>
-          </select>
-        </div>
+      <div class="col-md-2" id="dept">
+        <department ref="departSel" @departChange='departSelChange'></department>
+      </div>
+      <div class="col-md-1">
+        <label class="control-label text-left nopad">姓名：</label>
+      </div>
+      <div class="col-md-2" id="username">
+        <input type="text" class="form-control" placeholder="Username" v-model="leaveName">
+      </div>
+      <div class="col-md-1">
+        <label class="control-label text-left nopad">状态：</label>
+      </div>
+      <div class="col-md-2" id="status">
+        <select class="form-control" v-model="state">
+          <option v-for="(item,index) in stateList" :key="index" :value="item.value">
+            {{item.label}}
+          </option>
+        </select>
       </div>
     </div>
-    <br>
+    <!--    <div class="row">-->
+    <!--      <div class="col-md-4">-->
+    <!--        <span class="select-box-title">填写日期：</span>-->
+    <!--        <date-picker v-model="beginDate" type="date" class="queryDate"></date-picker>-->
+    <!--        <span class="select-box-title">~</span>-->
+    <!--        <date-picker v-model="endDate" type="date" class="queryDate"></date-picker>-->
+    <!--      </div>-->
+    <!--      &lt;!&ndash;    </div>&ndash;&gt;-->
+    <!--      &lt;!&ndash;    <div class="row">&ndash;&gt;-->
+    <!--      <div class="col-md-3">-->
+    <!--        <div class="input-group">-->
+    <!--          <span class="input-group-addon">请假人部门</span>-->
+    <!--          <department ref="departSel" @departChange='departSelChange'></department>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--      <div class="col-md-2">-->
+    <!--        <div class="input-group">-->
+    <!--          <span class="input-group-addon">姓名</span>-->
+    <!--          <input type="text" class="form-control" placeholder="Username" v-model="leaveName">-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--      <div class="col-md-2">-->
+    <!--        <div class="input-group">-->
+    <!--          <span class="input-group-addon">状态</span>-->
+    <!--          <select class="form-control" v-model="state">-->
+    <!--            <option v-for="(item,index) in stateList" :key="index" :value="item.value">-->
+    <!--              {{item.label}}-->
+    <!--            </option>-->
+    <!--          </select>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </div>-->
+    <!--    <br>-->
     <div class="row">
       <div class="col-md-3 col-md-offset-9">
-        <button type="button" class="btn btn-warning pull-right m_r_10" v-if='has(51)' @click="exportTableToExcel('reportTable','请假报备表')">导出</button>
+        <button type="button" class="btn btn-warning pull-right m_r_10" v-if='has(51)' @click="exportTableToExcel('reportTable','请假报备表')">
+          导出
+        </button>
         <button type="button" class="btn btn-info pull-right m_r_10" v-if='has(51)' @click="addBtn">申请
         </button>
         <button type="button" class="btn btn-primary pull-right m_r_10" @click="queryReport">查询</button>
@@ -212,15 +244,15 @@
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">申请人姓名：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="leaveEmpBackName"/>
+                <span class="nopad">{{leaveEmpBackName}}</span>
               </div>
-              <label class="col-md-2 control-label text-right nopad">部门：</label>
+              <label class="col-md-1 control-label text-right nopad">部门：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="leaveDepartmentBackName"/>
+                <span class="nopad">{{leaveDepartmentBackName}}</span>
               </div>
-              <label class="col-md-2 control-label text-right nopad">职位：</label>
+              <label class="col-md-1 control-label text-right nopad">职位：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="leavePositionBackName"/>
+                <span class="nopad">{{leavePositionBackName}}</span>
               </div>
             </div>
           </div>
@@ -233,12 +265,13 @@
                   <leaveType :leaveTypeName="leaveTypeBackName" ref="leaveType"
                              @leaveTypeChange='leaveTypeBackChange'></leaveType>
                 </div>
-                <label class="col-md-2 control-label text-right nopad">代理人：</label>
+                <label class="col-md-1 control-label text-right nopad">代理人：</label>
                 <div class="col-md-3">
                   <agent :agentAccount="agentAccount" ref="agent" @agentChange="changeAgent"></agent>
                 </div>
-                <button type="button" data-toggle="modal" data-target="#agentChooseModel" @click="queryEmpByDept"><span
-                  class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                <button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-plus" aria-hidden="true"
+                        data-toggle="modal" data-target="#agentChooseModel" @click="queryEmpByDept">
+                </button>
               </div>
               <div class="form-group clearfix">
                 <label class="col-md-2 control-label text-right nopad">请假时间：</label>
@@ -260,8 +293,8 @@
                   <examine :examineAccount="examineAccount" ref="examine" @examineChange="examineChange"></examine>
                 </div>
                 <div class="col-md-1">
-                  <button type="button" data-toggle="modal" @click="addExamineOption" :disabled="isAbleForExamine">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                  <button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-plus" aria-hidden="true"
+                          data-toggle="modal" @click="addExamineOption" :disabled="isAbleForExamine">
                   </button>
                 </div>
                 <label class="col-md-1 control-label text-right nopad">备注：</label>
@@ -281,8 +314,8 @@
                   <check :checkAccount="checkAccount" ref="check" @checkChange="checkChange"></check>
                 </div>
                 <div class="col-md-1">
-                  <button type="button" data-toggle="modal" @click="addCheckOption" :disabled="isAbleForCheck">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                  <button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-plus" aria-hidden="true"
+                          data-toggle="modal" @click="addCheckOption" :disabled="isAbleForCheck">
                   </button>
                 </div>
                 <label class="col-md-1 control-label text-right nopad">备注：</label>
@@ -299,11 +332,11 @@
               <div class="form-group clearfix">
                 <label class="col-md-1 control-label text-right nopad">批准人：</label>
                 <div class="col-md-2">
-                  <approve :approveAccount="approveAccount" @approveChange="approveChange"></approve>
+                  <approve :approveAccount="approveAccount" ref="approve" @approveChange="approveChange"></approve>
                 </div>
                 <div class="col-md-1">
-                  <button type="button" data-toggle="modal" @click="addApproveOption" :disabled="isAbleForApprove">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                  <button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-plus" aria-hidden="true"
+                          data-toggle="modal" @click="addApproveOption" :disabled="isAbleForApprove">
                   </button>
                 </div>
                 <label class="col-md-1 control-label text-right nopad">备注：</label>
@@ -491,16 +524,17 @@
 <script>
   import DatePicker from 'vue2-datepicker'
   import axios from 'axios'
+  import moment from 'moment'
   import Cookies from 'js-cookie'
   import department from '../vuecommon/department.vue'
   import leaveType from '../vuecommon/LeaveType.vue'
   import deptEmp from '../vuecommon/deptEmp.vue'
-  import agent from '../vuecommon/agent.vue'
+  import agent from './subReportAndClock/agent.vue'
   import approvalLeaveAcc from '../vuecommon/approvalLeaveAcc.vue'
   import agentChoose from './subReportAndClock/agentChoose.vue'
-  import examine from '../vuecommon/examine.vue'
-  import check from '../vuecommon/check.vue'
-  import approve from '../vuecommon/approve.vue'
+  import examine from './subReportAndClock/examineReport.vue'
+  import check from './subReportAndClock/checkReport.vue'
+  import approve from './subReportAndClock/approveReport.vue'
 
   export default {
     components: {
@@ -594,22 +628,23 @@
         endUpdateTime: '',
         leaveUpdateRemark: '',
         accountUpdateID: '',
-
-
         // 按钮状态
         isAbleForExamine: false,
         isAbleForCheck: false,
-        isAbleForApprove: false
+        isAbleForApprove: false,
+        days: 0,
+        clickTimeForExamine: 0,
+        clickTimeForCheck: 0
       }
     },
     methods: {
       //---------------------------------------清空操作----------------------------------
       addModelClear() { // 清空添加模态框
-        this.leaveTypeName = '',
-        this.departId = this.$refs.departAdd.setDpart("0"),
-        this.deptEmpId = '',
-        this.startTime = this.$addStartTime(),
-        this.endTime = this.$addEndTime(),
+        this.leaveTypeName = ''
+        this.departId = this.$refs.departAdd.setDpart("0")
+        this.deptEmpId = ''
+        this.startTime = this.$addStartTime()
+        this.endTime = this.$addEndTime()
         this.leaveRemark = ''
       },
       reviewReportClear() { // 清空审批模态框
@@ -646,7 +681,7 @@
       },
 
       // ---------------------------------------添加----------------------------------
-      addBtn(){ // 申请按钮
+      addBtn() { // 申请按钮
         this.addModelClear()
         $('#reportAddModel').modal('show')
       },
@@ -663,7 +698,6 @@
       },
       approvalChange(val) {   // 审批人
         this.accountID = val
-        console.log("审批人" + this.accountID)
       },
       addReport() {     // 添加请假报备信息
         if (this.isBlank(this.leaveTypeName)) {
@@ -725,25 +759,16 @@
       },
       changeAgent(val) {
         this.agentAccount = val //外层调用组件方注册变更方法，将组件内的数据变更，同步到组件外的数据状态中
-        console.log("代理人账户ID" + this.agentAccount)
       },
       examineChange(val) {
         this.examineAccount = val
-        console.log("审查人账户ID" + this.examineAccount)
       },
       checkChange(val) {
         this.checkAccount = val
-        console.log("审核人账户ID" + this.checkAccount)
       },
       approveChange(val) {
         this.approveAccount = val
-        console.log("批准人账户ID" + this.checkAccount)
       },
-      // reportChange(val){
-      //   this.reportAccount = val
-      //   console.log("报备人账户ID" + this.reportAccount)
-      // },
-
       // 申请销假按钮
       applyReportBackBtn(item) {
         if (JSON.parse(Cookies.get("accountData")).account.account_ID != item.leaveAccount) {
@@ -769,6 +794,10 @@
       // 加载数据
       toLoad(item) {
         //  回显数据
+        this.deptExamineId = ''
+        this.deptCheckId = ''
+        this.clickTimeForExamine = 0
+        this.clickTimeForCheck = 0
         this.reportId = item.id
         this.leaveAccount = item.leaveAccount
         this.leaveEmpBackName = item.leaveEmpName // 申请人姓名
@@ -778,7 +807,15 @@
         this.startBackTime = item.startTime // 请假开始时间
         this.endBackTime = item.endTime // 请假结束时间
         this.leaveBackRemark = item.leaveRemark // 请假说明
-        // this.reportAccount = item.checkAccount // 回显报备人信息(item里的审批人)
+        // 计算时间差
+        let d1 = moment(this.startBackTime)
+        let d2 = moment(this.endBackTime)
+        this.days = d2.diff(d1, 'day')
+        const duration = moment.duration(d2.diff(d1))
+        const hours = duration.hours()
+        if (hours >= 8) {
+          this.days++
+        }
         //  组件数据
         this.$refs.agent.getLeaveAccount([item.leaveAccount, item.leaveDeptId])
         this.$refs.agentChoose.getLeaveAccount([item.leaveAccount, item.leaveDeptId])
@@ -786,10 +823,12 @@
         this.typeId = item.typeId // 获取请假人职务级别
         this.fillTypeId = item.fillTypeId // 获取填表人职务级别
         //  传值给子组件
+        this.$refs.examine.getApplyAccount(this.leaveAccount)
         this.$refs.examine.getDeptId(this.deptInitId)
-        this.$refs.examine.getTypeId(this.typeId)
+        this.$refs.examine.getTypeId(this.typeId, this.days)
+        this.$refs.check.getDeptId(this.leaveAccount)
         this.$refs.check.getDeptId(this.deptInitId)
-        this.$refs.check.getTypeId(this.typeId)
+        this.$refs.check.getTypeId(this.typeId, this.days)
         this.$refs.approve.getDeptId(this.deptInitId)
         this.$refs.approve.getTypeId(this.typeId)
         //  审查人组件
@@ -812,8 +851,6 @@
         }
         // 批准人组件
         if (this.fillTypeId > this.typeId && this.fillTypeId == 6) {
-          console.log(this.fillTypeId)
-          console.log(this.typeId)
           this.$refs.approve.insertCheckInfo([item.fillAccount, item.fillEmpName])
           this.$refs.approve.changeAble();
           this.isAbleForApprove = "disabled";
@@ -822,19 +859,22 @@
           this.$refs.approve.getApproveList();
         }
       },
-
       queryEmpByDept() {
         this.$refs.agentChoose.queryEmpByDept()
       },
       getAgentInfo(item) {
         this.$refs.agent.insertAgentInfo(item)
       },
-
+      changeExamineAddAble() {
+        this.isAbleForExamine = "disabled"
+      },
       // 添加审查人
       addExamineOption() {
         if (this.isBlank(this.deptExamineId)) {  // 首次加载初始化参数
           this.deptExamineId = this.deptInitId // 部门
         }
+        this.clickTimeForExamine++
+        this.$refs.examine.getClickTime(this.clickTimeForExamine)
         axios({
           method: 'post',
           url: this.url + '/leavePrepareController/queryParentDept',
@@ -852,24 +892,45 @@
           if (this.deptExamineId == '0') { // 当下一次初始部门ID为0时(没有父级部门时)
             this.$refs.examine.getDeptId(this.deptInitId) // 传初始化参数给子组件
             this.deptExamineId = this.deptInitId; // 下一轮初始的部门ID为初始参数
-            this.typeExamineId = this.$refs.examine.setTypeId();
-            if (this.typeExamineId < 6) {
-              this.$refs.examine.getTypeId(this.typeExamineId);
-            }
-            if (this.typeExamineId == 6) {  // 禁用选项
-              this.$refs.examine.changeAble();
-              this.isAbleForExamine = "disabled"
+            this.typeExamineId = this.$refs.examine.setTypeId();// 获得到positionTypeId的值
+            if (this.typeExamineId <= 6) {
+              if (this.typeId <= 3) {
+                this.$refs.examine.type3(this.typeExamineId);
+              }
+              if (this.typeId == 4) {
+                this.$refs.examine.type4(this.typeExamineId);
+              }
+              if (this.typeId == 5) {
+                if (this.$refs.examine.setRound() == 2) {
+                  this.$refs.examine.initType5()
+                }
+                this.$refs.examine.type5(this.typeExamineId);
+              }
             }
           } else {
-            this.$refs.examine.getDeptId(this.parentId) // 传父级部门ID给子组件
-            this.deptExamineId = this.parentId;  // 下一轮初始的部门ID为该部门的父级部门
+            if (this.typeId <= 5) {
+              this.$refs.examine.getDeptId(this.parentId) // 传父级部门ID给子组件
+              this.deptExamineId = this.parentId;  // 下一轮初始的部门ID为该部门的父级部门
+            }
+            if (this.typeId == 6) {
+              this.$refs.examine.type6(6);
+              if (this.$refs.examine.setClickTime() == 3) {
+                this.$refs.examine.getDeptId(this.deptExamineId)
+              }
+              if (this.$refs.examine.setClickTime() > 3) {
+                this.$refs.examine.getDeptId(this.parentId)
+                this.deptExamineId = this.parentId;
+              }
+            }
           }
           this.$refs.examine.getExamineList();  // 调用子组件方法
         }).catch(err => {
           console.log(err)
         });
       },
-
+      changeCheckAddAble() {
+        this.isAbleForCheck = "disabled"
+      },
       // 添加审核人
       addCheckOption() {
         if (this.isBlank(this.deptCheckId)) {  // 首次加载初始化参数
@@ -893,12 +954,19 @@
             this.$refs.check.getDeptId(this.deptInitId) // 传初始化参数给子组件
             this.deptCheckId = this.deptInitId; // 下一轮初始的部门ID为初始参数
             this.typeCheckId = this.$refs.check.setTypeId();
-            if (this.typeCheckId < 6) {
-              this.$refs.check.getTypeId(this.typeCheckId);
-            }
-            if (this.typeCheckId == 6) {  // 禁用选项
-              this.$refs.check.changeAble();
-              this.isAbleForCheck = "disabled"
+            if (this.typeCheckId <= 6) {
+              if (this.typeId <= 3) {
+                this.$refs.check.type3(this.typeCheckId);
+              }
+              if (this.typeId == 4) {
+                this.$refs.check.type4(this.typeCheckId);
+              }
+              if (this.typeId == 5) {
+                if (this.$refs.check.setRound() == 2) {
+                  this.$refs.check.initType5()
+                }
+                this.$refs.check.type5(this.typeCheckId);
+              }
             }
           } else {
             this.$refs.check.getDeptId(this.parentId) // 传父级部门ID给子组件
@@ -997,7 +1065,6 @@
             alert("该报备已取消,无需进行审批")
           } else {
             // 数据回显
-            console.log(item)
             this.id = item.id
             this.leaveTypeReviewName = item.type
             this.$refs.departReview.setDpart(item.leaveDeptId)
@@ -1163,7 +1230,6 @@
 
       // ---------------------------------------销假----------------------------------
       reportBack(item) {
-        console.log(item.checkResult)
         if (item.checkResult != 1) {
           alert("该报备未审批或未通过,不能申请销假")
         } else {
@@ -1200,7 +1266,7 @@
       // ---------------------------------------取消----------------------------------
       reportCancel(item) {
         const loginAccount = JSON.parse(Cookies.get("accountData")).account.account_ID
-        if (item.fillAccount != loginAccount){
+        if (item.fillAccount != loginAccount) {
           alert("不能取消他人的报备!")
         } else {
           if (item.state == 2) {
@@ -1282,8 +1348,32 @@
   .queryDate {
     position: relative;
     display: inline-block;
-    width: 120px !important;
+    width: 120px;
   }
+
+  #date {
+    width: 31%;
+    margin-left: -10px;
+  }
+
+  #dept {
+    width: 18.5%;
+    margin-left: -100px;
+  }
+
+  #username {
+    width: 15%;
+    margin-left: -50px;
+  }
+
+  #status {
+    width: 15%;
+    margin-left: -50px;
+  }
+
+  /*#btn {*/
+  /*  margin-left: 82.6%;*/
+  /*}*/
 </style>
 
 
