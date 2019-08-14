@@ -2,33 +2,46 @@
 <template>
   <div class="container user-container" id="report-app" v-cloak>
     <div class="row">
-      <div class="col-md-12 col-lg-12 main-title">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 main-title">
         <h2>请假报备管理</h2>
       </div>
     </div>
     <div class="form-group clearfix">
-      <div class="col-md-4" id="date">
+     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" id="date">
+				
         <label class="control-label text-left nopad">填写日期：</label>
+				
         <date-picker v-model="beginDate" type="date" class="queryDate"></date-picker>
+				
         <span class="nopad">~</span>
+			
         <date-picker v-model="endDate" type="date" class="queryDate"></date-picker>
+				
       </div>
-      <div class="col-md-2">
+			 <!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+				<div class="input-group">
+				  <span class="input-group-addon"  style="border: 1px solid #ccc;border-radius: 4px;background-color: transparent;">填写日期</span>
+				  <input type="date" value="" id="firstTime" v-model="beginDate" style="border: 1px solid #ccc;border-radius: 4px; margin-right: 6px; "/></span>
+					<span style="padding: 0; line-height: 34px;">&nbsp;~&nbsp;</span>
+					<input type="date" value="" id="secondTime" v-model="endDate" style="border: 1px solid #ccc;border-radius: 4px; margin-left: 6px; "/></span>
+				</div>
+			 -->
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
         <label class="control-label text-left nopad">请假人部门：</label>
       </div>
-      <div class="col-md-2" id="dept">
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="dept">
         <department ref="departSel" @departChange='departSelChange'></department>
       </div>
-      <div class="col-md-1">
+      <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
         <label class="control-label text-left nopad">姓名：</label>
       </div>
-      <div class="col-md-2" id="username">
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="username">
         <input type="text" class="form-control" placeholder="Username" v-model="leaveName">
       </div>
-      <div class="col-md-1">
+      <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
         <label class="control-label text-left nopad">状态：</label>
       </div>
-      <div class="col-md-2" id="status">
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="status">
         <select class="form-control" v-model="state">
           <option v-for="(item,index) in stateList" :key="index" :value="item.value">
             {{item.label}}
@@ -110,7 +123,7 @@
             </thead>
             <tbody>
             <tr v-for="(item,index) in reportList" :key="index"
-                :style="item.state == 1? {'color':'#0033ff'}:(item.state == 2? {'color':'#00ff00'}:{'color':''})">
+                :style="item.state == 1? {'background-color':'#337ab7','color':'#fff'}:(item.state == 2? {'background-color':'#1cc09f','color':'#fff'}:{'color':''})">
               <td class="text-center">{{item.type}}</td>
               <td class="text-center">{{item.leaveEmpName}}</td>
               <td class="text-center">{{item.leaveDepartmentName}}</td>
@@ -522,6 +535,7 @@
   </div>
 </template>
 <script>
+
   import DatePicker from 'vue2-datepicker'
   import axios from 'axios'
   import moment from 'moment'
@@ -1342,7 +1356,7 @@
   }
 
   input[type="date"] {
-    line-height: 26px !important;
+    line-height: 30px !important;
   }
 
   .queryDate {
@@ -1352,28 +1366,29 @@
   }
 
   #date {
-    width: 31%;
+   width: 31%;
     margin-left: -10px;
   }
 
   #dept {
-    width: 18.5%;
+   width: 18.5%;
     margin-left: -100px;
   }
 
   #username {
-    width: 15%;
+   width: 15%;
     margin-left: -50px;
   }
 
   #status {
-    width: 15%;
+   width: 15%;
     margin-left: -50px;
   }
 
   /*#btn {*/
   /*  margin-left: 82.6%;*/
   /*}*/
+	/* .mx-datepicker{ width: 120px;} */
 </style>
 
 

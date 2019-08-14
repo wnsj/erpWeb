@@ -38,9 +38,15 @@ function setClick() {
 
 		$(menuArray[0]).on("click", function() {
 			$(secondMenuArray[0]).slideToggle();
-		})
+			$(this).children("i.fa-sort-desc").toggleClass("fa-sort-asc");
+		} )
 		$(menuArray[1]).on("click", function() {
 			$(secondMenuArray[1]).slideToggle();
+			$(this).children("i.fa-sort-desc").toggleClass("fa-sort-asc");
+		})
+		$(menuArray[2]).on("click", function() {
+			$(secondMenuArray[2]).slideToggle();
+			$(this).children("i.fa-sort-desc").toggleClass("fa-sort-asc");
 		})
 
 		$(secondMenuItems[0]).on("click", function() {
