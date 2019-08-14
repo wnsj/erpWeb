@@ -6,75 +6,77 @@
           <div class="aside-logo">
             <h2 class="clear-mp">ERP系统</h2>
           </div>
-          <ul id="aside-menu">
-            <li>
-              <i class="fa fa-university" aria-hidden="true"></i>人员及权限<i class="fa fa-sort-desc item-down" aria-hidden="true"></i>
-            </li>
-            <!-- 二级菜单 -->
-            <ul class="second-menu">
-              <li class="li-active">
-                <router-link to="/employee"><i class="fa fa-circle" aria-hidden="true"></i>人员管理</router-link>
+					<ul id="aside-menu">
+						<li>
+							<i class="fa fa-university" aria-hidden="true"></i>人员及权限<i class="fa fa-sort-desc item-down" aria-hidden="true"></i>
+						</li>
+						<!-- 二级菜单 -->
+						<ul class="second-menu">
+							<li class="li-active">
+								<router-link to="/employee"><i class="fa fa-circle" aria-hidden="true"></i>人员管理</router-link>
+							</li>
+							<li>
+								<router-link to="/attendence"><i class="fa fa-table" aria-hidden="false" id="people02"></i>考勤管理</router-link>
+							</li>
+							<li>
+								<router-link to="/recruitment"><i class="fa fa-table" aria-hidden="false" id="people03"></i>招聘管理</router-link>
+							</li>
+						</ul>
+						<li>
+							<i class="fa fa-university" aria-hidden="true" id="people04"></i>人员信息表<i class="fa fa-sort-desc item-down" aria-hidden="true"></i>
+						</li>
+						<ul class="second-menu">
+							<li>
+								<router-link to="/perAnalysis/poresonnel"><i class="fa fa-circle" aria-hidden="false" id="people05"></i>在职人员分析表</router-link>
+							</li>
+							<li>
+								<router-link to="/perAnalysis/abnormal"><i class="fa fa-table" aria-hidden="false" id="people06"></i>人力资源异动分析表</router-link>
+							</li>
+							<li>
+								<router-link to="/perAnalysis/separation"><i class="fa fa-table" aria-hidden="false" id="people07"></i>离职人员分析表</router-link>
+							</li>
+							<li>
+								<router-link to="/perAnalysis/effectiveness"><i class="fa fa-table" aria-hidden="false" id="people08"></i>招聘效果评估分析表</router-link>
+							</li>
+							<li>
+								<router-link to="/perAnalysis/uilization"><i class="fa fa-table" aria-hidden="false" id="people09"></i>人力资源利用率分析表</router-link>
+							</li>
+						</ul>
+						<li>
+							
+							<i class="fa fa-university" aria-hidden="true" id="offfice01"></i>无纸化办公<i class="fa fa-sort-desc item-down" aria-hidden="true"></i>
+						</li>
+						<ul class="second-menu">
+							<li>
+								<router-link to="/paperlessOffice/askForLeave"><i class="fa fa-circle" aria-hidden="true" id="offfice02"></i>请假</router-link>
+							</li>
+							<li>
+								<router-link to="/paperlessOffice/restdown"><i class="fa fa-table" aria-hidden="true" id="offfice03"></i>倒休</router-link>
+							</li>
+							<li>
+								<router-link to="/paperlessOffice/report"><i class="fa fa-table" aria-hidden="true" id="offfice04"></i>请假报备</router-link>
+							</li>
+							<li>
+                <router-link to="/paperlessOffice/officeSuppliesManage"><i class="fa fa-table" aria-hidden="true" id="offfice05"></i>办公用品管理</router-link>
               </li>
               <li>
-                <router-link to="/attendence"><i class="fa fa-table" aria-hidden="false"></i>考勤管理</router-link>
-              </li>
-              <li>
-                <router-link to="/recruitment"><i class="fa fa-table" aria-hidden="false"></i>招聘管理</router-link>
-              </li>
-            </ul>
-            <li>
-              <i class="fa fa-university" aria-hidden="true"></i>人员信息表<i class="fa fa-sort-desc item-down" aria-hidden="true"></i>
-            </li>
-            <ul class="second-menu">
-              <li>
-                <router-link to="/perAnalysis/poresonnel"><i class="fa fa-circle" aria-hidden="false"></i>在职人员分析表</router-link>
-              </li>
-              <li>
-                <router-link to="/perAnalysis/abnormal"><i class="fa fa-table" aria-hidden="false"></i>人力资源异动分析表</router-link>
-              </li>
-              <li>
-                <router-link to="/perAnalysis/separation"><i class="fa fa-table" aria-hidden="false"></i>离职人员分析表</router-link>
-              </li>
-              <li>
-                <router-link to="/perAnalysis/effectiveness"><i class="fa fa-table" aria-hidden="false"></i>招聘效果评估分析表</router-link>
-              </li>
-              <li>
-                <router-link to="/perAnalysis/uilization"><i class="fa fa-table" aria-hidden="false"></i>人力资源利用率分析表</router-link>
-              </li>
-            </ul>
-            <li>
-              <i class="fa fa-university" aria-hidden="true"></i>无纸化办公<i class="fa fa-sort-desc item-down" aria-hidden="true"></i>
-            </li>
-            <ul class="second-menu">
-              <li>
-                <router-link to="/paperlessOffice/askForLeave"><i class="fa fa-table" aria-hidden="true"></i>请假</router-link>
-              </li>
-              <li>
-                <router-link to="/paperlessOffice/restdown"><i class="fa fa-table" aria-hidden="true"></i>倒休</router-link>
-              </li>
-              <li>
-                <router-link to="/paperlessOffice/report"><i class="fa fa-table" aria-hidden="true"></i>请假报备</router-link>
-              </li>
-              <li>
-                <router-link to="/paperlessOffice/officeSuppliesManage"><i class="fa fa-table" aria-hidden="true"></i>办公用品管理</router-link>
-              </li>
-              <li>
-                <router-link to="/paperlessOffice/clock"><i class="fa fa-table" aria-hidden="true"></i>忘打卡证明</router-link>
+                <router-link to="/paperlessOffice/clock"><i class="fa fa-table" aria-hidden="true" id="offfice06"></i>忘打卡证明</router-link>
               </li>
 
               <li>
-                <router-link to="/paperlessOffice/conferenceRoomManage"><i class="fa fa-table" aria-hidden="true"></i>会议室管理</router-link>
+                <router-link to="/paperlessOffice/conferenceRoomManage"><i class="fa fa-table" aria-hidden="true" id="offfice07"></i>会议室管理</router-link>
               </li>
               <li>
-                <router-link to="/paperlessOffice/computerPreApplication"><i class="fa fa-table" aria-hidden="true"></i>电脑预申请</router-link>
+                <router-link to="/paperlessOffice/computerPreApplication"><i class="fa fa-table" aria-hidden="true" id="offfice08"></i>电脑预申请</router-link>
               </li>
 							<li>
-                <router-link to="/paperlessOffice/empRequire"><i class="fa fa-table" aria-hidden="true"></i>人员需求</router-link>
+                <router-link to="/paperlessOffice/empRequire"><i class="fa fa-table" aria-hidden="true" id="offfice09"></i>人员需求</router-link>
               </li>
-            </ul>
-            <!-- <li><i class="fa fa-area-chart" aria-hidden="true"></i>item</li> -->
-          </ul>
-        </div>
+						</ul>
+						<!-- <li><i class="fa fa-area-chart" aria-hidden="true" id="item01"></i>item</li> -->
+					</ul>
+				
+				</div>
         <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 my-content clear-mp" id="Cdiv">
           <nav class="navbar navbar-default my-navbar">
             <div class="container-fluid">
@@ -153,4 +155,34 @@
 </script>
 
 <style>
+#people02:before {content: "\f1ae";}
+#people03:before {content: "\f0ae";}
+#people04:before {content: "\f0c0";}
+#people05:before {content: "\f044";}
+#people06:before {content: "\f0f0";}
+#people07:before {content: "\f0f0";}
+#people08:before {content: "\f007";}
+#people09:before {content: "\f080";}
+#offfice01:before {content: "\f109";}
+#offfice02:before {content: "\f044";}
+#offfice03:before {content: "\f0ec";}
+#offfice04:before {content: "\f0e8";}
+#offfice05:before {content: "\f115";}
+#offfice06:before {content: "\f09d";}
+#offfice07:before {content: "\f044";}
+#offfice08:before {content: "\f108";}
+#offfice09:before {content: "\f113";}
+#item01:before {content: "\f115";}
+#aside-menu a{ color: #fff;}
+/* .fa-sort-down:before, .fa-sort-desc:before {
+    content: "\f0dd";
+	display: none;
+} */
+/* .fa-sort-down:after, .fa-sort-desc:after {
+    content: "\f0d8";
+} */
+
+
+
 </style>
+

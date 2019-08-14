@@ -1,0 +1,8 @@
+#app{ height: 100%;}
+#loincss{ min-height: 100vh; background-image: url(../img/banner_2.jpg);background-repeat: no-repeat; background-size: 100% 100%;}
+#loincss .main-title{ /* color:rgb(28, 105, 164); */ color: #FFFFFF; background-image: url(../img/login_logo.png);background-repeat: no-repeat; background-size: 60px 60px; background-position: 0 0; line-height: 60px;text-indent: 50px; font-weight: bold; font-family: 黑体;}
+#loincss a{}
+.loincss01{ width: 360px; margin: 0 auto; height: 400px;padding: 20px; background-color:rgba(255,255,255,0.4);/* box-shadow: 2px 2px 5px #646464; */ position: fixed; top: 20%; left:42%;}
+.loincss01 input { line-height: 40px; font-size: 16px; text-indent: 1em; margin-top: 30px;}
+
+.loincss01 button { line-height: 40px; font-size: 18px; text-indent: 1em; border-radius: 4px; background-color: rgb(28, 105, 164); color: #FFFFFF; margin-top: 30px; border: none;}

@@ -2,50 +2,47 @@
 <template>
   <div class="container user-container" id="clock-app" v-cloak>
     <div class="row">
-      <div class="col-md-12 col-lg-12 main-title">
+      <div class="col-md-12 main-title">
         <h2>忘打卡证明</h2>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-4">
-        <span class="select-box-title">申请日期：</span>
+    <div class="form-group clearfix">
+      <div class="col-md-4" id="date">
+        <label class="control-label text-left nopad">申请日期：</label>
         <date-picker v-model="beginDate" type="date" format="YYYY-MM-DD" class="queryDate"></date-picker>
-        <span class="select-box-title">~</span>
+        <span class="nopad">~</span>
         <date-picker v-model="endDate" type="date" format="YYYY-MM-DD" class="queryDate"></date-picker>
       </div>
-      <div class="col-md-3">
-        <div class="input-group">
-          <span class="input-group-addon">部门</span>
-          <department ref="deptQuery" @departChange='deptChangeForQuery'></department>
-        </div>
+      <div class="col-md-1">
+        <label class="control-label text-left nopad">部门：</label>
       </div>
-      <div class="col-md-2">
-        <div class="input-group">
-          <span class="input-group-addon">姓名</span>
-          <input type="text" class="form-control" placeholder="Username" v-model="accountName">
-        </div>
+      <div class="col-md-2" id="dept">
+        <department ref="deptQuery" @departChange='deptChangeForQuery'></department>
       </div>
-      <div class="col-md-2">
-        <div class="input-group">
-          <span class="input-group-addon">状态</span>
-          <select class="form-control" v-model="state">
-            <option v-for="(item,index) in stateList" :key="index" :value="item.value">
-              {{item.label}}
-            </option>
-          </select>
-        </div>
+      <div class="col-md-1">
+        <label class="control-label text-left nopad">姓名：</label>
       </div>
-    </div>
-    <br>
-    <div class="row">
-      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-md-offset-9">
-        <button type="button" class="btn btn-warning pull-right m_r_10">导出</button>
-        <button type="button" class="btn btn-info pull-right m_r_10" data-toggle="modal" @click="applyClock">申请
-        </button>
-        <button type="button" class="btn btn-primary pull-right m_r_10" @click="queryClock">查询</button>
+      <div class="col-md-2" id="username">
+        <input type="text" class="form-control" placeholder="Username" v-model="accountName">
+      </div>
+      <div class="col-md-1">
+        <label class="control-label text-left nopad">状态：</label>
+      </div>
+      <div class="col-md-2" id="status">
+        <select class="form-control" v-model="state">
+          <option v-for="(item,index) in stateList" :key="index" :value="item.value">
+            {{item.label}}
+          </option>
+        </select>
       </div>
     </div>
-    <br>
+    <div class="form-group clearfix">
+      <div class="col-md-3 col-md-offset-9" id="btn">
+        <button type="button" class="btn btn-primary  m_r_10" @click="queryClock">查询</button>
+        <button type="button" class="btn btn-info  m_r_10" data-toggle="modal" @click="applyClock">申请</button>
+        <button type="button" class="btn btn-warning  m_r_10">导出</button>
+      </div>
+    </div>
     <!-- 查询结果集 -->
     <div class="row">
       <div class="col-md-12 col-lg-12">
@@ -178,7 +175,7 @@
                 </select>
               </div>
               <div class="col-md-6 col-md-offset-1">
-                <span class="select-box-title">未打卡时间：</span>
+                <label class="select-box-title">未打卡时间：</label>
                 <date-picker v-model="notClockTime" type="date" format="YYYY-MM-DD 17:30" confirm></date-picker>
               </div>
             </div>
@@ -247,7 +244,7 @@
             <div class="form-group clearfix">
               <label class="col-md-1 control-label text-right nopad">审核人：</label>
               <div class="col-md-2">
-                <check :checkAccount="checkAccount" ref="check" @checkChange="checkChange"></check>
+                <examine :examineAccount="checkAccount" ref="check" @examineChange="checkChange"></examine>
               </div>
               <div class="col-md-1">
                 <button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-plus" aria-hidden="true"
@@ -324,24 +321,24 @@
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">申请人姓名：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="showLeaveAccountName"/>
+                <span class="nopad">{{showLeaveAccountName}}</span>
               </div>
               <label class="col-md-1 control-label text-right nopad">部门：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="showLeaveDeptName"/>
+                <span class="nopad">{{showLeaveDeptName}}</span>
               </div>
               <label class="col-md-1 control-label text-right nopad">职位：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="showLeavePositionName"/>
+                <span class="nopad">{{showLeavePositionName}}</span>
               </div>
             </div>
             <legend><h5>打卡</h5></legend>
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">原因：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="showReason"/>
+                <span class="nopad">{{showReason}}</span>
               </div>
-              <label class="control-label text-right nopad col-md-2 col-lg-offset-1">未打卡时间：</label>
+              <label class="control-label text-right nopad col-md-2">未打卡时间：</label>
               <div class="col-md-3">
                 <date-picker v-model="showNotClockTime" format="YYYY-MM-DD HH:mm" disabled="disabled"></date-picker>
               </div>
@@ -349,7 +346,7 @@
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">说明：</label>
               <div class="col-md-10">
-                <textarea class="textarea" placeholder="未打卡说明：" disabled="disabled" v-model="showLeaveRemark"></textarea>
+                <textarea class="textarea" disabled="disabled" v-model="showLeaveRemark"></textarea>
               </div>
             </div>
           </div><!-- /.modal-body -->
@@ -366,10 +363,10 @@
             <div class="form-group clearfix">
               <label class="col-md-1 control-label text-right nopad">证明人：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="showAccountR"/>
+                <span class="nopad">{{showAccountR}}</span>
               </div>
               <div class="col-md-1">
-                <button type="button" disabled="disabled"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                <button type="button" disabled="disabled" class="btn btn-sm btn-warning glyphicon glyphicon-plus"></button>
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
@@ -386,10 +383,10 @@
             <div class="form-group clearfix">
               <label class="col-md-1 control-label text-right nopad">审查人：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="showExamine"/>
+                <span class="nopad">{{showExamine}}</span>
               </div>
               <div class="col-md-1">
-                <button type="button" disabled="disabled"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                <button type="button" disabled="disabled" class="btn btn-sm btn-warning glyphicon glyphicon-plus"></button>
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
@@ -406,10 +403,10 @@
             <div class="form-group clearfix">
               <label class="col-md-1 control-label text-right nopad">审核人：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="showCheck"/>
+                <span class="nopad">{{showCheck}}</span>
               </div>
               <div class="col-md-1">
-                <button type="button" disabled="disabled"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                <button type="button" disabled="disabled" class="btn btn-sm btn-warning glyphicon glyphicon-plus"></button>
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
@@ -426,10 +423,10 @@
             <div class="form-group clearfix">
               <label class="col-md-1 control-label text-right nopad">批准人：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="showApprove"/>
+                <span class="nopad">{{showApprove}}</span>
               </div>
               <div class="col-md-1">
-                <button type="button" disabled="disabled"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                <button type="button" disabled="disabled" class="btn btn-sm btn-warning glyphicon glyphicon-plus"></button>
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
@@ -446,12 +443,9 @@
             <div class="form-group clearfix">
               <label class="col-md-1 control-label text-right nopad">报备人：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="showReport"/>
+                <span class="nopad">{{showReport}}</span>
               </div>
-              <div class="col-md-1">
-                <button type="button" disabled="disabled"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-              </div>
-              <label class="col-md-1 control-label text-right nopad">备注：</label>
+              <label class="col-md-2 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
                 <input type="text" class="form-control" disabled="disabled"/>
               </div>
@@ -480,15 +474,15 @@
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">申请人姓名：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="leaveUpdateAccountName"/>
+                <span class="nopad">{{leaveUpdateAccountName}}</span>
               </div>
               <label class="col-md-1 control-label text-right nopad">部门：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="leaveUpdateDeptName"/>
+                <span class="nopad">{{leaveUpdateDeptName}}</span>
               </div>
               <label class="col-md-1 control-label text-right nopad">职位：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="leaveUpdatePositionName"/>
+                <span class="nopad">{{leaveUpdatePositionName}}</span>
               </div>
             </div>
             <legend><h5>打卡</h5></legend>
@@ -501,7 +495,7 @@
                   </option>
                 </select>
               </div>
-              <label class="control-label text-right nopad col-md-2 col-lg-offset-1">未打卡时间：</label>
+              <label class="control-label text-right nopad col-md-2">未打卡时间：</label>
               <div class="col-md-3">
                 <date-picker v-model="notClockUpdateTime" type="date" format="YYYY-MM-DD 17:30" confirm></date-picker>
               </div>
@@ -529,8 +523,9 @@
                 <agent :agentAccount="updateAccountR" ref="agentUpdate" @agentChange="changeUpdateAccountR"></agent>
               </div>
               <div class="col-md-1">
-                <button type="button" data-toggle="modal" data-target="#agentChooseUpdateModel" @click="queryEmpByDeptForUpdate"><span
-                  class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                <button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-plus" aria-hidden="true"
+                        data-toggle="modal" data-target="#agentChooseUpdateModel" @click="queryEmpByDeptForUpdate">
+                </button>
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
@@ -555,11 +550,6 @@
                         data-toggle="modal" @click="addExamineUpdateOption" :disabled="isAbleForUpdateExamine">
                 </button>
               </div>
-<!--              <div class="col-md-1">-->
-<!--                <button type="button" data-toggle="modal" @click="" :disabled="">-->
-<!--                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>-->
-<!--                </button>-->
-<!--              </div>-->
               <label class="col-md-1 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
                 <input type="text" class="form-control" disabled="disabled"/>
@@ -575,11 +565,11 @@
             <div class="form-group clearfix">
               <label class="col-md-1 control-label text-right nopad">审核人：</label>
               <div class="col-md-2">
-                <check :checkAccount="updateCheckAccount" ref="checkUpdate" @checkChange="checkUpdateChange"></check>
+                <examine :examineAccount="updateCheckAccount" ref="checkUpdate" @examineChange="checkUpdateChange"></examine>
               </div>
               <div class="col-md-1">
-                <button type="button" data-toggle="modal" @click="addCheckUpdateOption" :disabled="isAbleForUpdateCheck">
-                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                <button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-plus" aria-hidden="true"
+                        data-toggle="modal" @click="addCheckUpdateOption" :disabled="isAbleForUpdateCheck">
                 </button>
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
@@ -600,8 +590,8 @@
                 <approve :approveAccount="updateApproveAccount" ref="approveUpdate" @approveChange="approveUpdateChange"></approve>
               </div>
               <div class="col-md-1">
-                <button type="button" data-toggle="modal" @click="addApproveUpdateOption" :disabled="isAbleForUpdateApprove">
-                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                <button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-plus" aria-hidden="true"
+                        data-toggle="modal" @click="addApproveUpdateOption" :disabled="isAbleForUpdateApprove">
                 </button>
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
@@ -652,24 +642,24 @@
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">申请人姓名：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="showLeaveAccountName"/>
+                <span class="nopad">{{showLeaveAccountName}}</span>
               </div>
               <label class="col-md-1 control-label text-right nopad">部门：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="showLeaveDeptName"/>
+                <span class="nopad">{{showLeaveDeptName}}</span>
               </div>
               <label class="col-md-1 control-label text-right nopad">职位：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="showLeavePositionName"/>
+                <span class="nopad">{{showLeavePositionName}}</span>
               </div>
             </div>
             <legend><h5>打卡</h5></legend>
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">原因：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="showReason"/>
+                <span class="nopad">{{showReason}}</span>
               </div>
-              <label class="control-label text-right nopad col-md-2 col-lg-offset-1">未打卡时间：</label>
+              <label class="col-md-2 control-label text-right nopad">未打卡时间：</label>
               <div class="col-md-3">
                 <date-picker v-model="showNotClockTime" format="YYYY-MM-DD HH:mm" disabled="disabled"></date-picker>
               </div>
@@ -694,10 +684,10 @@
             <div class="form-group clearfix">
               <label class="col-md-1 control-label text-right nopad">证明人：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="showAccountR"/>
+                <span class="nopad">{{showAccountR}}</span>
               </div>
               <div class="col-md-1">
-                <button type="button" disabled="disabled"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                <button type="button" disabled="disabled" class="btn btn-sm btn-warning glyphicon glyphicon-plus"></button>
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
@@ -718,10 +708,10 @@
             <div class="form-group clearfix">
               <label class="col-md-1 control-label text-right nopad">审查人：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="showExamine"/>
+                <span class="nopad">{{showExamine}}</span>
               </div>
               <div class="col-md-1">
-                <button type="button" disabled="disabled"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                <button type="button" disabled="disabled" class="btn btn-sm btn-warning glyphicon glyphicon-plus"></button>
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
@@ -742,10 +732,10 @@
             <div class="form-group clearfix">
               <label class="col-md-1 control-label text-right nopad">审核人：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="showCheck"/>
+                <span class="nopad">{{showCheck}}</span>
               </div>
               <div class="col-md-1">
-                <button type="button" disabled="disabled"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                <button type="button" disabled="disabled" class="btn btn-sm btn-warning glyphicon glyphicon-plus"></button>
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
@@ -766,10 +756,10 @@
             <div class="form-group clearfix">
               <label class="col-md-1 control-label text-right nopad">批准人：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="showApprove"/>
+                <span class="nopad">{{showApprove}}</span>
               </div>
               <div class="col-md-1">
-                <button type="button" disabled="disabled"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                <button type="button" disabled="disabled" class="btn btn-sm btn-warning glyphicon glyphicon-plus"></button>
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
@@ -790,10 +780,10 @@
             <div class="form-group clearfix">
               <label class="col-md-1 control-label text-right nopad">报备人：</label>
               <div class="col-md-2">
-                <input type="text" class="form-control" disabled="disabled" v-model="showReport"/>
+                <span class="nopad">{{showReport}}</span>
               </div>
               <div class="col-md-1">
-                <button type="button" disabled="disabled"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                <button type="button" disabled="disabled" class="btn btn-sm btn-warning glyphicon glyphicon-plus"></button>
               </div>
               <label class="col-md-1 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
@@ -821,13 +811,12 @@
   import axios from 'axios'
   import Cookies from 'js-cookie'
   import moment from 'moment'
-  import agent from '../vuecommon/agent.vue'
+  import agent from './subReportAndClock/agent.vue'
   import agentChoose from './subReportAndClock/agentChoose.vue'
   import agentChooseUpdate from './subReportAndClock/agentChooseUpdate.vue'
   import department from '../vuecommon/department.vue'
-  import examine from '../vuecommon/examine.vue'
-  import check from '../vuecommon/check.vue'
-  import approve from '../vuecommon/approve.vue'
+  import examine from './subReportAndClock/examineClock.vue'
+  import approve from './subReportAndClock/approveClock.vue'
 
   export default {
     components: {
@@ -837,7 +826,6 @@
       agentChoose,
       agentChooseUpdate,
       examine,
-      check,
       approve
     },
     data() {
@@ -925,7 +913,9 @@
         updateApproveName: '',
         updateReportAccount: '',
         updateReportName: '',
-        clickTime: 0,
+        clickTimeForExamine: 0,
+        clickTimeForCheck: 0,
+        clickTimeForApprove: 0,
         // 按钮状态
         isAbleForExamine: false,
         isAbleForCheck: false,
@@ -1022,21 +1012,23 @@
       },
       // 清空添加模态框
       clearAddModel() {
-        this.deptExamineId = '',
-        this.leaveAccount = '',
-        this.leaveAccountName = '',
-        this.leaveDeptName = '',
-        this.leavePositionName = '',
-        this.reason = '',
-        this.notClockTime = moment().subtract(1, 'days').format("YYYY-MM-DD 17:30"),
-        this.leaveRemark = '',
-        this.accountR = 0,          //  证明人账户
-        this.examineAccount = '',   // 审查人账户
-        this.checkAccount = '',     // 审核人账户
-        this.approveAccount = '',   // 批准人账户
-        this.reportAccount = '1127',// 报备人(暂时固定为李珊珊)
-        this.isAbleForExamine = false,
-        this.isAbleForCheck = false,
+        this.deptExamineId = ''
+        this.deptCheckId = ''
+        this.deptApproveId = ''
+        this.leaveAccount = ''
+        this.leaveAccountName = ''
+        this.leaveDeptName = ''
+        this.leavePositionName = ''
+        this.reason = ''
+        this.notClockTime = moment().subtract(1, 'days').format("YYYY-MM-DD 17:30")
+        this.leaveRemark = ''
+        this.accountR = 0          //  证明人账户
+        this.examineAccount = ''   // 审查人账户
+        this.checkAccount = ''     // 审核人账户
+        this.approveAccount = ''   // 批准人账户
+        this.reportAccount = '1127'// 报备人(暂时固定为李珊珊)
+        this.isAbleForExamine = false
+        this.isAbleForCheck = false
         this.isAbleForApprove = false
       },
       // 查询基本信息
@@ -1072,16 +1064,24 @@
         // 传值给子组件
         this.$refs.agent.getLeaveAccount([this.leaveAccount, this.deptInitId])
         this.$refs.agentChoose.getLeaveAccount([this.leaveAccount, this.deptInitId])
+
         this.$refs.examine.getApplyAccount(this.leaveAccount)
         this.$refs.examine.getDeptId(this.deptInitId)
         this.$refs.examine.getTypeId(this.typeId)
+        this.$refs.examine.getFlag(1)
+
+        this.$refs.check.getApplyAccount(this.leaveAccount)
         this.$refs.check.getDeptId(this.deptInitId)
         this.$refs.check.getTypeId(this.typeId)
+        this.$refs.check.getFlag(2)
+
+        this.$refs.approve.getApplyAccount(this.leaveAccount)
         this.$refs.approve.getDeptId(this.deptInitId)
         this.$refs.approve.getTypeId(this.typeId)
+        this.$refs.approve.getFlag(1)
         // 执行子组件方法
         this.$refs.examine.getExamineList()
-        this.$refs.check.getCheckList()
+        this.$refs.check.getExamineList()
         this.$refs.approve.getApproveList();
       },
 
@@ -1110,7 +1110,10 @@
             this.deptExamineId = this.deptInitId; // 下一轮初始的部门ID为初始参数
             this.typeExamineId = this.$refs.examine.setTypeId();// 获得到positionTypeId的值
             if (this.typeExamineId <= 6) {
-              if (this.typeId <= 4) {
+              if (this.typeId <= 3) {
+                this.$refs.examine.type3(this.typeExamineId);
+              }
+              if (this.typeId == 4) {
                 this.$refs.examine.type4(this.typeExamineId);
               }
               if (this.typeId == 5) {
@@ -1135,7 +1138,8 @@
           console.log(err)
         });
       },
-      changeAddBtnAble() {
+      // 改变扩大按钮状态
+      changeExamineAddAble() {
         this.isAbleForExamine = "disabled"
       },
       // 添加审核人
@@ -1161,23 +1165,39 @@
             this.$refs.check.getDeptId(this.deptInitId) // 传初始化参数给子组件
             this.deptCheckId = this.deptInitId; // 下一轮初始的部门ID为初始参数
             this.typeCheckId = this.$refs.check.setTypeId();
-            if (this.typeCheckId < 6) {
-              this.$refs.check.getTypeId(this.typeCheckId);
+            if (this.typeCheckId <= 6) {
+              if (this.typeId <= 3) {
+                this.$refs.check.type3(this.typeCheckId);
+              }
+              if (this.typeId == 4) {
+                this.$refs.check.type4(this.typeCheckId);
+              }
+              if (this.typeId == 5) {
+                if (this.$refs.check.setRound() == 2) {
+                  this.$refs.check.initType5()
+                }
+                this.$refs.check.type5(this.typeCheckId);
+              }
             }
-            if (this.typeCheckId == 6) {  // 禁用选项
-              this.$refs.check.changeAble();
-              this.isAbleForCheck = "disabled"
+            if (this.typeId == 6) {
+              this.$refs.check.type6(this.typeCheckId);
+              if (this.$refs.check.setRound() == 1) {
+                this.$refs.check.getDeptId(this.deptCheckId)
+              }
             }
           } else {
             this.$refs.check.getDeptId(this.parentId) // 传父级部门ID给子组件
             this.deptCheckId = this.parentId;  // 下一轮初始的部门ID为该部门的父级部门
           }
-          this.$refs.check.getCheckList();  // 调用子组件方法
+          this.$refs.check.getExamineList();  // 调用子组件方法
         }).catch(err => {
           console.log(err)
         });
       },
-
+      // 改变扩大按钮状态
+      changeCheckAddAble() {
+        this.isAbleForCheck = "disabled"
+      },
       // 添加批准人
       addApproveOption() {
         if (this.isBlank(this.deptApproveId)) {  // 首次加载初始化参数
@@ -1197,23 +1217,50 @@
         }).then(response => {
           console.log(response.data.retData)
           this.parentId = response.data.retData // 获取请假人的父级部门ID
+          console.log("级别" + this.typeId)
           if (this.deptApproveId == '0') { // 当下一次初始部门ID为0时(没有父级部门时)
             this.$refs.approve.getDeptId(this.deptInitId) // 传初始化参数给子组件
             this.deptApproveId = this.deptInitId; // 下一轮初始的部门ID为初始参数
             this.typeApproveId = this.$refs.approve.setTypeId();
             if (this.typeApproveId <= 6) {
-              this.$refs.approve.getTypeId(this.typeApproveId);
+              if (this.typeId <= 3) {
+                this.$refs.approve.type3(this.typeApproveId);
+              }
+              if (this.typeId == 4) {
+                this.$refs.approve.type4(this.typeApproveId);
+              }
             }
           } else {
-            this.$refs.approve.getDeptId(this.parentId) // 传父级部门ID给子组件
-            this.deptApproveId = this.parentId;  // 下一轮初始的部门ID为该部门的父级部门
+            if (this.typeId < 5) {
+              this.$refs.approve.getDeptId(this.parentId) // 传父级部门ID给子组件
+              this.deptApproveId = this.parentId;  // 下一轮初始的部门ID为该部门的父级部门
+            } else {
+              if (this.$refs.approve.setRound() == 1) { // 点击一次查当前部门
+                if (this.typeId == 5) {
+                  this.$refs.approve.initType5()
+                  this.$refs.approve.getDeptId(this.deptApproveId)
+                  this.$refs.approve.type5(this.typeApproveId);
+                }
+                if (this.typeId == 6) {
+                  this.$refs.approve.initType5()
+                  this.$refs.approve.getDeptId(this.deptApproveId)
+                  this.$refs.approve.type6(this.typeApproveId);
+                }
+              } else {  // 下一次查父级部门
+                this.$refs.approve.getDeptId(this.parentId)
+                this.deptApproveId = this.parentId;
+              }
+            }
           }
           this.$refs.approve.getApproveList();  // 调用子组件方法
         }).catch(err => {
           console.log(err)
         });
       },
-
+      // 改变扩大按钮状态
+      changeApproveAddAble() {
+        this.isAbleForApprove = "disabled"
+      },
       addClock() { // 申请确认按钮
         if (this.isBlank(this.reason)) {
           alert("请选择未打卡原因!")
@@ -1262,8 +1309,6 @@
           console.log(err)
         });
       },
-
-
       // ---------------------------------------查看----------------------------------
       showClock(item) {
         console.log(item)
@@ -1279,7 +1324,6 @@
         this.showApprove = item.approveAccountName
         this.showReport = item.reportAccountName
       },
-
       //---------------------------------------修改----------------------------------
       // 组件方法
       approveUpdateChange(val) {
@@ -1300,12 +1344,14 @@
       // 初始化
       init() {
         this.deptExamineUpdateId = ''
+        this.deptCheckUpdateId = ''
+        this.deptApproveUpdateId = ''
         this.leaveAccount = JSON.parse(Cookies.get("accountData")).account.account_ID
         this.$refs.examineUpdate.initParam();  // 初始化参数
         this.$refs.checkUpdate.initParam();  // 初始化参数
         this.$refs.approveUpdate.initParam();  // 初始化参数
-        this.isAbleForUpdateExamine = false,
-        this.isAbleForUpdateCheck = false,
+        this.isAbleForUpdateExamine = false
+        this.isAbleForUpdateCheck = false
         this.isAbleForUpdateApprove = false
       },
       // 证明人选择组件方法
@@ -1340,6 +1386,7 @@
         if (item.leaveAccount != JSON.parse(Cookies.get("accountData")).account.account_ID) {
           alert("不能修改他人的报备")
         } else {
+          this.leaveAccount = JSON.parse(Cookies.get("accountData")).account.account_ID;
           this.init();  // 初始化
           this.getEditInfo(item); // 回显数据
           $('#clockModifyModel').modal('show');
@@ -1359,19 +1406,24 @@
         this.$refs.agentUpdate.showAgentInfo({account: this.updateAccountR, name: this.updateAccountRName})
         this.$refs.agentUpdateChoose.getLeaveAccount([this.leaveUpdateAccount, this.leaveUpdateDeptId])
         // 审查人组件
+        this.$refs.examineUpdate.getApplyAccount(this.leaveAccount)
         this.$refs.examineUpdate.getDeptId(dept)
         this.$refs.examineUpdate.getTypeId(typeId)
-        this.$refs.examineUpdate.getApplyAccount(this.leaveAccount)
+        this.$refs.examineUpdate.getFlag(1)
         this.$refs.examineUpdate.showExamineInfo({accountId: this.updateExamineAccount, accountName: this.updateExamineName})
         this.$refs.examineUpdate.getExamineList()
         // 审核人组件
+        this.$refs.checkUpdate.getApplyAccount(this.leaveAccount)
         this.$refs.checkUpdate.getDeptId(dept)
         this.$refs.checkUpdate.getTypeId(typeId)
-        this.$refs.checkUpdate.showCheckInfo({accountId: this.updateCheckAccount, accountName: this.updateCheckName})
-        this.$refs.checkUpdate.getCheckList()
+        this.$refs.checkUpdate.getFlag(2)
+        this.$refs.checkUpdate.showExamineInfo({accountId: this.updateCheckAccount, accountName: this.updateCheckName})
+        this.$refs.checkUpdate.getExamineList()
         // 批准人组件
+        this.$refs.approveUpdate.getApplyAccount(this.leaveAccount)
         this.$refs.approveUpdate.getDeptId(dept)
         this.$refs.approveUpdate.getTypeId(typeId)
+        this.$refs.approveUpdate.getFlag(1)
         this.$refs.approveUpdate.showApproveInfo({accountId: this.updateApproveAccount, accountName: this.updateApproveName})
         this.$refs.approveUpdate.getApproveList()
       },
@@ -1399,7 +1451,7 @@
           console.log(err)
         });
       },
-      changeModifyBtnAble() {
+      changeExamineModifyAble() {
         this.isAbleForUpdateExamine = "disabled"
       },
       // 修改---添加审查人
@@ -1407,8 +1459,8 @@
         if (this.isBlank(this.deptExamineUpdateId)) {  // 首次加载初始化参数
           this.deptExamineUpdateId = this.deptInitId // 部门
         }
-        this.clickTime ++
-        this.$refs.examineUpdate.getClickTime(this.clickTime)
+        this.clickTimeForExamine++
+        this.$refs.examineUpdate.getClickTime(this.clickTimeForExamine)
         axios({
           method: 'post',
           url: this.url + '/leavePrepareController/queryParentDept',
@@ -1428,7 +1480,10 @@
             this.deptExamineUpdateId = this.deptInitId; // 下一轮初始的部门ID为初始参数
             this.typeExamineUpdateId = this.$refs.examineUpdate.setTypeId();
             if (this.typeExamineUpdateId <= 6) {
-              if (this.typeId <= 4) {
+              if (this.typeId <= 3) {
+                this.$refs.examineUpdate.type3(this.typeExamineUpdateId);
+              }
+              if (this.typeId == 4) {
                 this.$refs.examineUpdate.type4(this.typeExamineUpdateId);
               }
               if (this.typeId == 5) {
@@ -1453,11 +1508,16 @@
           console.log(err)
         });
       },
+      changeCheckModifyAble() {
+        this.isAbleForUpdateCheck = "disabled"
+      },
       // 修改---添加审核人
       addCheckUpdateOption() {
         if (this.isBlank(this.deptCheckUpdateId)) {  // 首次加载初始化参数
           this.deptCheckUpdateId = this.deptInitId // 部门
         }
+        this.clickTimeForCheck++
+        this.$refs.checkUpdate.getClickTime(this.clickTimeForCheck)
         axios({
           method: 'post',
           url: this.url + '/leavePrepareController/queryParentDept',
@@ -1475,28 +1535,46 @@
           if (this.deptCheckUpdateId == '0') { // 当下一次初始部门ID为0时(没有父级部门时)
             this.$refs.checkUpdate.getDeptId(this.deptInitId) // 传初始化参数给子组件
             this.deptCheckUpdateId = this.deptInitId; // 下一轮初始的部门ID为初始参数
-            this.typeCheckUpdateId = this.$refs.checkUpdate.setTypeId();
-            if (this.typeCheckUpdateId < 6) {
-              this.$refs.checkUpdate.getTypeId(this.typeCheckUpdateId);
+            this.typeCheckUpdateId = this.$refs.checkUpdate.setTypeId();// 获得到positionTypeId的值
+            if (this.typeCheckUpdateId <= 6) {
+              if (this.typeId <= 3) {
+                this.$refs.checkUpdate.type3(this.typeCheckUpdateId);
+              }
+              if (this.typeId == 4) {
+                this.$refs.checkUpdate.type4(this.typeCheckUpdateId);
+              }
+              if (this.typeId == 5) {
+                if (this.$refs.checkUpdate.setRound() == 2) {
+                  this.$refs.checkUpdate.initType5()
+                }
+                this.$refs.checkUpdate.type5(this.typeCheckUpdateId);
+              }
             }
-            if (this.typeCheckUpdateId == 6) {  // 禁用选项
-              this.$refs.checkUpdate.changeAble();
-              this.isAbleForUpdateCheck = "disabled"
+            if (this.typeId == 6) {
+              this.$refs.checkUpdate.type6(this.typeCheckUpdateId);
+              if (this.$refs.checkUpdate.setRound() == 1) {
+                this.$refs.checkUpdate.getDeptId(this.deptCheckUpdateId)
+              }
             }
           } else {
             this.$refs.checkUpdate.getDeptId(this.parentId) // 传父级部门ID给子组件
             this.deptCheckUpdateId = this.parentId;  // 下一轮初始的部门ID为该部门的父级部门
           }
-          this.$refs.checkUpdate.getCheckList();  // 调用子组件方法
+          this.$refs.checkUpdate.getExamineList();  // 调用子组件方法
         }).catch(err => {
           console.log(err)
         });
+      },
+      changeApproveModifyAble() {
+        this.isAbleForUpdateApprove = "disabled"
       },
       // 修改---添加批准人
       addApproveUpdateOption() {
         if (this.isBlank(this.deptApproveUpdateId)) {  // 首次加载初始化参数
           this.deptApproveUpdateId = this.deptInitId // 部门
         }
+        this.clickTimeForApprove++
+        this.$refs.checkUpdate.getClickTime(this.clickTimeForApprove)
         axios({
           method: 'post',
           url: this.url + '/leavePrepareController/queryParentDept',
@@ -1515,16 +1593,38 @@
             this.$refs.approveUpdate.getDeptId(this.deptInitId) // 传初始化参数给子组件
             this.deptApproveUpdateId = this.deptInitId; // 下一轮初始的部门ID为初始参数
             this.typeApproveUpdateId = this.$refs.approveUpdate.setTypeId();
-            if (this.typeApproveUpdateId < 6) {
-              this.$refs.approveUpdate.getTypeId(this.typeApproveUpdateId);
-            }
-            if (this.typeApproveUpdateId == 6) {  // 禁用选项
-              this.$refs.approveUpdate.changeAble();
-              this.isAbleForUpdateApprove = "disabled"
+            if (this.typeApproveUpdateId <= 6) {
+              if (this.typeId <= 3) {
+                this.$refs.approveUpdate.type3(this.typeApproveUpdateId);
+              }
+              if (this.typeId == 4) {
+                this.$refs.approveUpdate.type4(this.typeApproveUpdateId);
+              }
             }
           } else {
-            this.$refs.approveUpdate.getDeptId(this.parentId) // 传父级部门ID给子组件
-            this.deptApproveUpdateId = this.parentId;  // 下一轮初始的部门ID为该部门的父级部门
+            // this.$refs.approveUpdate.getDeptId(this.parentId) // 传父级部门ID给子组件
+            // this.deptApproveUpdateId = this.parentId;  // 下一轮初始的部门ID为该部门的父级部门
+            if (this.typeId < 5) {
+              this.$refs.approveUpdate.getDeptId(this.parentId) // 传父级部门ID给子组件
+              this.deptApproveUpdateId = this.parentId;  // 下一轮初始的部门ID为该部门的父级部门
+            } else {
+              if (this.$refs.approveUpdate.setRound() == 1) { // 点击一次查当前部门
+                if (this.typeId == 5) {
+                  this.$refs.approveUpdate.initType5()
+                  this.$refs.approveUpdate.getDeptId(this.deptApproveUpdateId)
+                  this.$refs.approveUpdate.type5(this.typeApproveUpdateId);
+                }
+                if (this.typeId == 6) {
+                  this.$refs.approveUpdate.initType5()
+                  this.$refs.approveUpdate.getDeptId(this.deptApproveUpdateId)
+                  this.$refs.approveUpdate.type6(this.typeApproveUpdateId);
+                }
+              } else {  // 下一次查父级部门
+                this.$refs.approveUpdate.getDeptId(this.parentId)
+                this.deptApproveUpdateId = this.parentId;
+              }
+            }
+
           }
           this.$refs.approveUpdate.getApproveList();  // 调用子组件方法
         }).catch(err => {
@@ -2009,6 +2109,30 @@
     position: relative;
     display: inline-block;
     width: 120px;
+  }
+
+  #date {
+    width: 33%;
+    margin-left: -10px;
+  }
+
+  #dept {
+    width: 18.5%;
+    margin-left: -50px;
+  }
+
+  #username {
+    width: 15%;
+    margin-left: -50px;
+  }
+
+  #status {
+    width: 15%;
+    margin-left: -50px;
+  }
+
+  #btn {
+    margin-left: 82.6%;
   }
 </style>
 
