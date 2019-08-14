@@ -73,7 +73,7 @@
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">离职原因：</label>
 				<div class="col-md-5">
-					<lReason></lReason>
+					<lReason @leaveChange="leaveChange"></lReason>
 				</div>
 				<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#Cause_management" >原因管理</button>
 			</div>
@@ -121,7 +121,18 @@
 		methods:{
 			childrenBaseInfo:function(param){
 				this.personalBase = param
+				this.setleaveId()
 			},
+			//接收返回的离职原因
+			leaveChange:function(reasonId,reasonName){
+				console.log('leaveChange'+reasonId+reasonName)
+				this.personalBase.resignReason=reasonId
+			},
+			//设置离职原因
+			setleaveId:function(){
+				this.$children[4].setLeaveId(this.personalBase.resignReasonId)
+			},
+			//时间格式化
 			dateChange:function(param){
 				if(param=='0'){
 					this.personalBase.birth=this.moment(this.personalBase.birth,'YYYY-MM-DD HH:MM:SS.000')
@@ -133,10 +144,12 @@
 					this.personalBase.resignDate=this.moment(this.personalBase.resignDate,'YYYY-MM-DD HH:MM:SS.000')
 				}
 			},
+			//清空岗位调动信息
 			positionShiftAction:function(){
 				this.$children[2].initData(this.personalBase)
 				$("#Post_transfer").modal('show')
 			},
+			//接收岗位调动信息
 			positionShift:function (positionShiftInfo){
 				this.personalBase.departName = positionShiftInfo.departName
 				this.personalBase.departId = positionShiftInfo.departId

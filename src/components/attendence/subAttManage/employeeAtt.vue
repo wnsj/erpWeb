@@ -18,9 +18,9 @@
 						<button class="btn btn-primary" @click="exportTableToExcel('employeeAttTB','人员出勤统计')">导出</button>
 					</span> </div>
 				<div class="col-lg-11 mtr_a"> <span>时间：</span> <span>
-						<input type="date" value="" v-model="beginDate" />
+						<dPicker v-model="beginDate" v-on:change="dateAction('begin')"></dPicker>
 					</span> <span>&nbsp;&nbsp;&nbsp;至：</span> <span>
-						<input type="date" value="" v-model="endDate" />
+						<dPicker v-model="endDate" v-on:change="dateAction('end')"></dPicker>
 					</span> </div>
 				<div class="col-lg-11 mtr_a"> <span>注：</span> <span style="color:#FF0000; margin-right:10px;">旷工</span> <span style="color:#CD853F; margin-right:10px;">迟到</span>
 					<span style="color:#000000; margin-right:10px;">正常</span>
@@ -73,6 +73,7 @@
 
 <script>
 	import axios from 'axios'
+	import dPicker from 'vue2-datepicker'
 	import {
 		timeInit
 	} from '../../../assets/js/date.js'
@@ -83,7 +84,8 @@
 		components: {
 			depart,
 			position,
-			singleEmp
+			singleEmp,
+			dPicker,
 		},
 		data() {
 			return {
@@ -92,8 +94,8 @@
 				positionName: '0',
 				name: '',
 				jobNum: '',
-				beginDate: timeInit(''),
-				endDate: timeInit(''),
+				beginDate: this.moment('', 'YYYY-MM-DD 00:00:00.000'),
+				endDate: this.moment('', 'YYYY-MM-DD 23:59:59.000'),
 				ryKqList: [],
 			};
 		},
@@ -106,18 +108,26 @@
 			positionChange: function(positionId, positionName) {
 				this.positionName = positionName
 			},
+			//更新时间
+			dateAction: function(param) {
+				if (param == 'begin') {
+					this.beginDate = this.moment(this.beginDate, 'YYYY-MM-DD 00:00:00.000')
+				} else if (param == 'end') {
+					this.endDate = this.moment(this.endDate, 'YYYY-MM-DD 23:59:59.000')
+				}
+			},
 			//展示人员列表中单个人员的考勤情况
 			showSearchRYKQInfo: function(param) {
 				param.begDate = this.beginDate
 				param.endData = this.endDate
-				this.$children[2].showSearchRYKQInfo(param)
+				this.$children[5].showSearchRYKQInfo(param)
 				$("#myPersonalAttendance").modal('show')
 
 			},
 
 			//人员考勤汇总
 			searchRYKQInfo: function(param) {
-				var departName, pName
+				var departId, pName
 				if (param == '0') {
 					this.$children[0].departId = '0'
 					this.$children[1].positionId = '0'
@@ -125,9 +135,9 @@
 					this.jobNum = ''
 				} else {
 					if (this.departId == 0) {
-						departName = ''
+						departId = ''
 					} else {
-						departName = this.departName
+						departId = this.departId
 					}
 
 					if (this.positionName == "0") {
@@ -147,12 +157,12 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
-						departName: departName,
+						departId: departId,
 						positionName: pName,
 						name: this.name,
 						jobNum: this.jobNum,
 						beginDate: this.beginDate,
-						endDate: this.getYYYYMMDDHHMMSS_24(this.endData),
+						endDate: this.endData,
 					},
 					dataType: 'json',
 				}).then((response) => {
@@ -190,7 +200,7 @@
 						name: "",
 						jobNum: "",
 						beginDate: this.beginDate,
-						endDate: this.getYYYYMMDDHHMMSS_24(this.endDate),
+						endDate: this.endDate,
 					},
 					dataType: 'json',
 				}).then((response) => {

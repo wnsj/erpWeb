@@ -68,11 +68,11 @@
 		methods:{
 			closeCurrentPage:function(){
 				$("#myModalJoin").modal('hide')
-				this.cleanData()
 			},
 			//初始化数据
 			cleanData:function(){
-				this.$refs.baseInfo.initData()
+				console.log('cleanData')
+				this.$refs.baseInfo.initDate()
 				this.$refs.detailInfo.cleanData()
 				this.$refs.familyInfo.cleanData()
 			},
@@ -137,12 +137,10 @@
 					console.log(res)
 					if (res.retCode == '0000') {
 						alert(res.resData.message)
-						console.log('入职人员'+res)
-						this.$emit('addEmployeeInfo')
-						$("#myModalJoin").modal('hide')
-						this.cleanData()
-					} else {
-						alert(res.retMsg)
+						if(res.resData.message=='添加成功'){
+							this.$emit('addEmployeeInfo')
+							$("#myModalJoin").modal('hide')
+						}
 					}
 			
 				}).catch((error) => {

@@ -108,8 +108,8 @@
 					positiveDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
 					state:'1',
 				},
-				this.$children[0].setDpart('0')
-				this.$children[1].setPosition('0')
+				this.$children[1].setDpart('0')
+				this.$children[2].setPosition('0')
 			},
 			
 			//时间变化后格式化

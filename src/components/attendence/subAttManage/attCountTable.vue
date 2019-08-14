@@ -5,9 +5,9 @@
 				<div class="col-lg-8 mtr_a"> <span>部门：</span> <span class="com-sel">
 						<depart @departChange='departChange'></depart>
 					</span> <span>时间：</span> <span>
-						<input type="date" value="" v-model="beginDate"/>
+						<dPicker v-model="beginDate" v-on:change="dateAction('begin')"></dPicker>
 					</span> <span>&nbsp;&nbsp;&nbsp;至：</span> <span>
-						<input type="date" value="" v-model="endDate"/>
+						<dPicker v-model="endDate" v-on:change="dateAction('end')"></dPicker>
 					</span> <span class="search">
 						<button class="btn btn-warning" v-on:click="getCountKqTableList()">查询</button>
 					</span> <span class="search">
@@ -45,10 +45,12 @@
 
 <script>
 	import axios from 'axios'
+	import dPicker from 'vue2-datepicker'
 	import depart from '../../vuecommon/department.vue'
 	export default {
 		components:{
-			depart
+			depart,
+			dPicker,
 		},
 		data() {
 			return {
@@ -56,8 +58,8 @@
 				departName:'',
 				name:'',
 				jobNum:'',
-				beginDate:this.getMonthFirst,
-				endDate:this.getMonthLast,
+				beginDate: this.moment('', 'YYYY-MM-DD 00:00:00.000'),
+				endDate: this.moment('', 'YYYY-MM-DD 23:59:59.000'),
 				countKqTableList:[],
 			};
 		},
@@ -66,6 +68,14 @@
 			departChange: function(departId, departName) {
 				this.departId = departId
 				this.departName = departName
+			},
+			//更新时间
+			dateAction: function(param) {
+				if (param == 'begin') {
+					this.beginDate = this.moment(this.beginDate, 'YYYY-MM-DD 00:00:00.000')
+				} else if (param == 'end') {
+					this.endDate = this.moment(this.endDate, 'YYYY-MM-DD 23:59:59.000')
+				}
 			},
 			//考勤统计报表
 			async getCountKqTableList() {
@@ -85,7 +95,7 @@
 						name: this.name,
 						jobNum: this.jobNum,
 						beginDate: this.beginDate,
-						endDate: this.getYYYYMMDDHHMMSS_24(this.endDate),
+						endDate: this.endDate,
 					},
 					dataType: 'json',
 				}).then((response) => {

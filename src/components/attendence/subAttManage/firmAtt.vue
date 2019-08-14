@@ -15,11 +15,13 @@
 					</span> <span class="search pull-right">
 						<button class="btn btn-warning" v-on:click="searchKQInfo()">查询</button>
 					</span> </div>
-				<div class="col-lg-11 mtr_a"> <span>时间：</span> <span>
-						<input type="date" v-model="firmStartDate" />
-					</span> <span>&nbsp;&nbsp;&nbsp;至：</span> <span>
-						<input type="date" value="" v-model="firmEndDate" />
-					</span> </div>
+				<div class="col-lg-11 mtr_a"> <span>时间：</span>
+						<dPicker v-model="beginDate" v-on:change="dateAction('begin')"></dPicker>
+						<span>&nbsp;&nbsp;&nbsp;至：</span>
+						<span>
+							<dPicker v-model="endDate" v-on:change="dateAction('end')"></dPicker>
+						</span>
+				</div>
 				<div class="col-lg-11 mtr_a"> <span>注：</span> <span style="color:#FF0000; margin-right:10px;">旷工</span> <span style="color:#CD853F; margin-right:10px;">迟到/早退</span>
 					<span style="color:#000000; margin-right:10px;">正常</span>
 					<span style="color:#9370DB; margin-right:10px;">休息</span> <span style="color:#006400; margin-right:10px;">请假</span>
@@ -66,6 +68,7 @@
 
 <script>
 	import axios from 'axios'
+	import dPicker from 'vue2-datepicker'
 	import depart from '../../vuecommon/department.vue'
 	import position from '../../vuecommon/position.vue'
 	import {
@@ -75,14 +78,15 @@
 	export default {
 		components: {
 			depart,
-			position
+			position,
+			dPicker,
 		},
 		data() {
 			return {
 				departId: '0',
 				departName: '0',
-				firmStartDate: timeInit(''),
-				firmEndDate: timeInit(''),
+				beginDate: this.moment('', 'YYYY-MM-DD 00:00:00.000'),
+				endDate: this.moment('', 'YYYY-MM-DD 23:59:59.000'),
 				positionName: '0',
 				kquName: '',
 				kquJobNum: '',
@@ -99,6 +103,15 @@
 
 				this.positionName = positionName
 			},
+			//更新时间
+			dateAction: function(param) {
+				if (param == 'begin') {
+					this.beginDate = this.moment(this.beginDate, 'YYYY-MM-DD 00:00:00.000')
+				} else if (param == 'end') {
+					this.endDate = this.moment(this.endDate, 'YYYY-MM-DD 23:59:59.000')
+				}
+			},
+			//
 			searchKQInfo: function() {
 
 				var departName, pName
@@ -112,7 +125,7 @@
 				} else {
 					pName = this.positionName
 				}
-				var url = this.url + '/kqgl/searchKQInfo'
+				var url = this.url + '/kqgl/allFirmKQ'
 
 				axios({
 					method: 'post',
@@ -122,14 +135,14 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
-						departName: departName,
+						departId: this.departId,
 						positionName: pName,
 						name: this.kquName,
 						jobNum: this.kquJobNum,
-						beginDate: this.firmStartDate,
-						endDate: this.getYYYYMMDDHHMMSS_24(this.firmEndDate),
+						beginDate: this.beginDate,
+						endDate: this.endDate,
 					},
-					dataType: 'json',
+					dataType: 'json',	
 				}).then((response) => {
 					var res = response.data
 					console.log('getKqList')
@@ -165,8 +178,8 @@
 						positionName: "",
 						name: "",
 						jobNum: "",
-						beginDate: this.firmStartDate,
-						endDate: this.firmEndDate,
+						beginDate: this.beginDate,
+						endDate: this.endDate,
 					},
 					dataType: 'json',
 				}).then((response) => {

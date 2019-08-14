@@ -3,7 +3,7 @@
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 			<div class="table-responsive">
 				<div class="col-lg-10 mtr_a"> <span>
-						<input type="radio" name="xm" v-on:change="conditionChangeAction('depart')"/>
+						<input type="radio" checked="checked" name="xm"  v-on:change="conditionChangeAction('depart')"/>
 					</span> <span>部门：</span> <span class="com-sel">
 						<depart @departChange="departChange"></depart>
 					</span> <span>职位：</span> <span class="com-sel">
@@ -24,9 +24,9 @@
 					</span> <span>项目：</span> <span class="com-sel">
 						<project @projectChange="projectChange"></project>
 					</span> <span>时间：</span> <span>
-						<input type="date" value="" v-model="beginDate" />
+						<dPicker v-model="beginDate" v-on:change="dateAction('begin')"></dPicker>
 					</span> <span>&nbsp;&nbsp;&nbsp;至：</span> <span>
-						<input type="date" value="" v-model="endDate"/>
+						<dPicker v-model="endDate" v-on:change="dateAction('end')"></dPicker>
 					</span> </div>
 				<div class="col-lg-11 mtr_a"> <span>注：</span> <span style="color:#FF0000; margin-right:10px;">旷工</span> <span
 					 style="color:#CD853F; margin-right:10px;">迟到/早退</span> <span style="color:#000000; margin-right:10px;">正常</span>
@@ -64,6 +64,7 @@
 
 <script>
 	import axios from 'axios'
+	import dPicker from 'vue2-datepicker'
 	import depart from '../../vuecommon/department.vue'
 	import position from '../../vuecommon/position.vue'
 	import project from '../../vuecommon/project.vue'
@@ -72,7 +73,8 @@
 		components:{
 			depart,
 			position,
-			project
+			project,
+			dPicker,
 		},
 		data() {
 			return {
@@ -84,8 +86,8 @@
 				name:'',
 				jobNum:'',
 				
-				beginDate:timeInit(''),
-				endDate:timeInit(''),
+				beginDate: this.moment('', 'YYYY-MM-DD 00:00:00.000'),
+				endDate: this.moment('', 'YYYY-MM-DD 23:59:59.000'),
 				kqTimeList:[],
 				kqTableList:[],
 				
@@ -96,6 +98,14 @@
 			//查询变化  部门和项目 
 			conditionChangeAction:function(param){
 				this.conditionChange=param
+			},
+			//更新时间
+			dateAction: function(param) {
+				if (param == 'begin') {
+					this.beginDate = this.moment(this.beginDate, 'YYYY-MM-DD 00:00:00.000')
+				} else if (param == 'end') {
+					this.endDate = this.moment(this.endDate, 'YYYY-MM-DD 23:59:59.000')
+				}
 			},
 			//获取部门名字和id
 			departChange: function(departId, departName) {
@@ -110,9 +120,9 @@
 			},
 			//搜索考勤报表
 			searchKqTableList: function(param) {
-				var dN,pN,pId,dId,pjId
+				var dId,pN,pId,dId,pjId
 				if (param=='0'){
-					dN=''
+					dId=''
 					pN=''
 					this.name=''
 					this.jobNum=''
@@ -127,12 +137,12 @@
 					if(this.conditionChange=='depart'){
 						pjId=''
 						if (this.departId=='0'){
-							dN=''
+							dId=''
 						}else{
-							dN=this.departName
+							dId=this.departId
 						}
 					}else{
-						dN=''
+						dId=''
 						if(this.projectId=='0'){
 							pjId = ''
 						}else{
@@ -155,13 +165,13 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
-						departName:dN,
+						departId:dId,
 						positionName: pN,
 						name: this.name,
 						jobNum: this.jobNum,
 						projectId: pjId,
 						beginDate: this.beginDate,
-						endDate: this.getYYYYMMDDHHMMSS_24(this.endDate),
+						endDate: this.endDate,
 					},
 					dataType: 'json',
 				}).then((response) => {
@@ -201,7 +211,7 @@
 						name: "",
 						jobNum: "",
 						beginDate: this.beginDate,
-						endDate: this.getYYYYMMDDHHMMSS_24(this.endDate),
+						endDate: this.endDate,
 					},
 					dataType: 'json',
 				}).then((response) => {

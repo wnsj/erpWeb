@@ -69,7 +69,7 @@
 	import {isBlank} from '../../../../../assets/js/constant.js'
 	import dP from 'vue2-datepicker'
 	export default {
-		comments:{dP,},
+		components:{dP,},
 		data() {
 			return {
 				familyInfo:{},
@@ -80,9 +80,11 @@
 			childrenFEmpInfo:function(param){
 				this.familyInfo=param
 			},
+			//修改时间
 			dateAction:function(){
 				this.familyInfo.birth=this.moment(this.familyInfo.birth,'YYYY-MM-DD HH:MM:SS.000')
 			},
+			
 			//提交数据
 			submitFamilyInfo:function(){
 				if(isBlank(this.familyInfo.appellation)){

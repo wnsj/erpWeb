@@ -50,6 +50,7 @@
 
 <script>
 	import axios from 'axios'
+	import dPicker from 'vue2-datepicker'
 	import depart from '../../vuecommon/department.vue'
 	import position from '../../vuecommon/position.vue'
 	export default {
@@ -63,6 +64,14 @@
 			};
 		},
 		methods:{
+			//更新时间
+			dateAction: function(param) {
+				if (param == 'begin') {
+					this.firmStartDate = this.moment(this.firmStartDate, 'YYYY-MM-DD')
+				} else if (param == 'end') {
+					this.firmEndDate = this.moment(this.firmEndDate, 'YYYY-MM-DD')
+				}
+			},
 			showSearchRYKQInfo:function (param){
 				console.log(param)
 				$("#myPersonalAttendance").modal('show')

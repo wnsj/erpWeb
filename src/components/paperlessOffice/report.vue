@@ -8,15 +8,15 @@
     </div>
     <div class="form-group clearfix">
      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" id="date">
-				
+
         <label class="control-label text-left nopad">填写日期：</label>
-				
+
         <date-picker v-model="beginDate" type="date" class="queryDate"></date-picker>
-				
+
         <span class="nopad">~</span>
-			
+
         <date-picker v-model="endDate" type="date" class="queryDate"></date-picker>
-				
+
       </div>
 			 <!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 				<div class="input-group">
@@ -49,39 +49,6 @@
         </select>
       </div>
     </div>
-    <!--    <div class="row">-->
-    <!--      <div class="col-md-4">-->
-    <!--        <span class="select-box-title">填写日期：</span>-->
-    <!--        <date-picker v-model="beginDate" type="date" class="queryDate"></date-picker>-->
-    <!--        <span class="select-box-title">~</span>-->
-    <!--        <date-picker v-model="endDate" type="date" class="queryDate"></date-picker>-->
-    <!--      </div>-->
-    <!--      &lt;!&ndash;    </div>&ndash;&gt;-->
-    <!--      &lt;!&ndash;    <div class="row">&ndash;&gt;-->
-    <!--      <div class="col-md-3">-->
-    <!--        <div class="input-group">-->
-    <!--          <span class="input-group-addon">请假人部门</span>-->
-    <!--          <department ref="departSel" @departChange='departSelChange'></department>-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--      <div class="col-md-2">-->
-    <!--        <div class="input-group">-->
-    <!--          <span class="input-group-addon">姓名</span>-->
-    <!--          <input type="text" class="form-control" placeholder="Username" v-model="leaveName">-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--      <div class="col-md-2">-->
-    <!--        <div class="input-group">-->
-    <!--          <span class="input-group-addon">状态</span>-->
-    <!--          <select class="form-control" v-model="state">-->
-    <!--            <option v-for="(item,index) in stateList" :key="index" :value="item.value">-->
-    <!--              {{item.label}}-->
-    <!--            </option>-->
-    <!--          </select>-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--    </div>-->
-    <!--    <br>-->
     <div class="row">
       <div class="col-md-3 col-md-offset-9">
         <button type="button" class="btn btn-warning pull-right m_r_10" v-if='has(51)' @click="exportTableToExcel('reportTable','请假报备表')">
@@ -124,7 +91,9 @@
             <tbody>
             <tr v-for="(item,index) in reportList" :key="index"
                 :style="item.state == 1? {'color':'#337ab7'}:(item.state == 2? {'color':'#1cc09f'}:{'color':''})">
-              <td class="text-center">{{item.type}}</td>
+
+            <td class="text-center">{{item.type}}</td>
+
               <td class="text-center">{{item.leaveEmpName}}</td>
               <td class="text-center">{{item.leaveDepartmentName}}</td>
               <td class="text-center">{{item.startTime|dateFormat}}</td>
@@ -143,29 +112,29 @@
                 {{item.state == 1? '已销假':(item.state == 2? '已取消':'')}}
               </td>
               <td class="text-center">
-                <button type="button" class="btn btn-sm"
+                <button type="button" class="btn btn-sm btn-primary"
                         :disabled="item.state==1? true:false"
                         @click="applyReportBackBtn(item)"><b>申请销假</b>
                 </button>
               </td>
               <td class="text-center" v-if='has(51)'>
-                <button type="button" class="btn btn-sm"
+                <button type="button" class="btn btn-sm btn-info"
                         :disabled="item.checkResult==0? true:(item.checkResult == 1? true:false)"
                         @click="reportReview(item)"><b>审批</b>
                 </button>
               </td>
               <td class="text-center" v-if='has(51)'>
-                <button type="button" class="btn btn-sm"
+                <button type="button" class="btn btn-sm btn-warning"
                         :disabled="item.state==1? true:false"
                         @click="getEditInfo(item)"><b>修改</b></button>
               </td>
               <td class="text-center" v-if='has(51)'>
-                <button type="button" class="btn btn-sm"
+                <button type="button" class="btn btn-sm btn-info"
                         :disabled="item.state==1? true:false"
                         @click="reportBack(item)"><b>销假</b></button>
               </td>
               <td class="text-center" v-if='has(51)'>
-                <button type="button" class="btn btn-sm"
+                <button type="button" class="btn btn-sm btn-danger"
                         :disabled="item.state==1? true:false"
                         @click="reportCancel(item)"><b>取消</b></button>
               </td>
@@ -366,7 +335,6 @@
               <div class="form-group clearfix">
                 <label class="col-md-1 control-label text-right nopad">报备人：</label>
                 <div class="col-md-2">
-                  <!--                  <approvalLeaveAcc :accountID="reportAccount" @approvalChange='reportChange'></approvalLeaveAcc>-->
                   <select class="form-control">
                     <option>李珊珊</option>
                   </select>
@@ -623,6 +591,7 @@
 
         parentId: '',
         fillTypeId: '',
+        fillAccount: '',
 
         // 审批
         leaveTypeReviewName: '',
@@ -807,11 +776,14 @@
 
       // 加载数据
       toLoad(item) {
+        console.log("回显数据" + item)
         //  回显数据
         this.deptExamineId = ''
         this.deptCheckId = ''
+        this.deptApproveId = ''
         this.clickTimeForExamine = 0
         this.clickTimeForCheck = 0
+        this.clickTimeForApprove = 0
         this.reportId = item.id
         this.leaveAccount = item.leaveAccount
         this.leaveEmpBackName = item.leaveEmpName // 申请人姓名
@@ -836,41 +808,108 @@
         this.deptInitId = item.leaveDeptId  // 获取初始化的部门ID(请假人部门)
         this.typeId = item.typeId // 获取请假人职务级别
         this.fillTypeId = item.fillTypeId // 获取填表人职务级别
+        this.fillAccount = item.fillAccount// 填表人账户
         //  传值给子组件
         this.$refs.examine.getApplyAccount(this.leaveAccount)
         this.$refs.examine.getDeptId(this.deptInitId)
-        this.$refs.examine.getTypeId(this.typeId, this.days)
-        this.$refs.check.getDeptId(this.leaveAccount)
+        this.$refs.examine.getTypeId(this.typeId)
+        this.$refs.check.getApplyAccount(this.leaveAccount)
         this.$refs.check.getDeptId(this.deptInitId)
-        this.$refs.check.getTypeId(this.typeId, this.days)
+        this.$refs.check.getTypeId(this.typeId)
+        this.$refs.approve.getApplyAccount(this.leaveAccount)
         this.$refs.approve.getDeptId(this.deptInitId)
-        this.$refs.approve.getTypeId(this.typeId)
-        //  审查人组件
-        if (this.fillTypeId > this.typeId && this.fillTypeId == 4) {  // 当填表人职务级别大于请假人职务级别 并且填表人为组长
-          this.$refs.examine.insertCheckInfo([item.fillAccount, item.fillEmpName])
-          this.$refs.examine.changeAble();
-          this.isAbleForExamine = "disabled";
-        } else {
-          this.isAbleForExamine = false;
-          this.$refs.examine.getExamineList();
+        this.$refs.approve.getTypeId([this.typeId, this.days])
+        if(this.typeId <= 3){
+          if(this.fillTypeId ==4){
+            this.$refs.examine.insertCheckInfo([item.fillAccount, item.fillEmpName])
+            this.$refs.examine.changeAble();
+            this.isAbleForExamine = "disabled";
+          }else {
+            this.isAbleForExamine = false;
+            this.$refs.examine.getExamineList();
+          }
+          if(this.fillTypeId ==5){
+            this.$refs.check.insertCheckInfo([item.fillAccount, item.fillEmpName])
+            this.$refs.check.changeAble();
+            this.isAbleForCheck = "disabled";
+            this.$refs.approve.insertCheckInfo([item.fillAccount, item.fillEmpName])
+            this.$refs.approve.changeAble();
+            this.isAbleForApprove = "disabled";
+          }else {
+            this.isAbleForCheck = false;
+            this.$refs.check.getCheckList();
+            this.isAbleForApprove = false;
+            this.$refs.approve.getApproveList();
+          }
         }
-        // 审核人组件
-        if (this.fillTypeId > this.typeId && this.fillTypeId == 5) {  // 当填表人职务级别大于请假人职务级别 并且填表人为主管
-          this.$refs.check.insertCheckInfo([item.fillAccount, item.fillEmpName])
-          this.$refs.check.changeAble();
-          this.isAbleForCheck = "disabled";
-        } else {
-          this.isAbleForCheck = false;
-          this.$refs.check.getCheckList();
+        if(this.typeId == 4){
+          if(this.fillTypeId ==5){
+            this.$refs.examine.insertCheckInfo([item.fillAccount, item.fillEmpName])
+            this.$refs.examine.changeAble();
+            this.isAbleForExamine = "disabled";
+            this.$refs.check.insertCheckInfo([item.fillAccount, item.fillEmpName])
+            this.$refs.check.changeAble();
+            this.isAbleForCheck = "disabled";
+          }else {
+            this.isAbleForExamine = false;
+            this.$refs.examine.getExamineList();
+            this.isAbleForCheck = false;
+            this.$refs.check.getCheckList();
+          }
+          if(this.fillTypeId ==6){
+            this.$refs.approve.insertCheckInfo([item.fillAccount, item.fillEmpName])
+            this.$refs.approve.changeAble();
+            this.isAbleForApprove = "disabled";
+          }else {
+            this.isAbleForApprove = false;
+            this.$refs.approve.getApproveList();
+          }
         }
-        // 批准人组件
-        if (this.fillTypeId > this.typeId && this.fillTypeId == 6) {
-          this.$refs.approve.insertCheckInfo([item.fillAccount, item.fillEmpName])
-          this.$refs.approve.changeAble();
-          this.isAbleForApprove = "disabled";
-        } else {
-          this.isAbleForApprove = false;
-          this.$refs.approve.getApproveList();
+        if(this.typeId == 5){
+          if(this.fillTypeId ==6){
+            this.$refs.examine.insertCheckInfo([item.fillAccount, item.fillEmpName])
+            this.$refs.examine.changeAble();
+            this.isAbleForExamine = "disabled";
+            this.$refs.check.insertCheckInfo([item.fillAccount, item.fillEmpName])
+            this.$refs.check.changeAble();
+            this.isAbleForCheck = "disabled";
+          }else{
+            this.isAbleForExamine = false;
+            this.$refs.examine.getExamineList();
+            this.isAbleForCheck = false;
+            this.$refs.check.getCheckList();
+          }
+          if(this.fillAccount == 67){ // 如果填表人是副总经理
+            this.$refs.approve.insertCheckInfo([item.fillAccount, item.fillEmpName])
+            this.$refs.approve.changeAble();
+            this.isAbleForApprove = "disabled";
+          }else{
+            this.isAbleForApprove = false;
+            this.$refs.approve.getApproveList();
+          }
+        }
+        if(this.typeId == 6){
+          if(this.fillAccount == 1127){
+            this.$refs.examine.insertCheckInfo([item.fillAccount, item.fillEmpName])
+            this.$refs.examine.changeAble();
+            this.isAbleForExamine = "disabled";
+          }else{
+            this.isAbleForExamine = false;
+            this.$refs.examine.getExamineList();
+          }
+          if(this.fillAccount == 67){
+            this.$refs.check.insertCheckInfo([item.fillAccount, item.fillEmpName])
+            this.$refs.check.changeAble();
+            this.isAbleForCheck = "disabled";
+            this.$refs.approve.insertCheckInfo([item.fillAccount, item.fillEmpName])
+            this.$refs.approve.changeAble();
+            this.isAbleForApprove = "disabled";
+          }else{
+            this.isAbleForCheck = false;
+            this.$refs.check.getCheckList();
+            this.isAbleForApprove = false;
+            this.$refs.approve.getApproveList();
+          }
         }
       },
       queryEmpByDept() {
@@ -950,6 +989,8 @@
         if (this.isBlank(this.deptCheckId)) {  // 首次加载初始化参数
           this.deptCheckId = this.deptInitId // 部门
         }
+        this.clickTimeForCheck++
+        this.$refs.check.getClickTime(this.clickTimeForCheck)
         axios({
           method: 'post',
           url: this.url + '/leavePrepareController/queryParentDept',
@@ -983,20 +1024,36 @@
               }
             }
           } else {
-            this.$refs.check.getDeptId(this.parentId) // 传父级部门ID给子组件
-            this.deptCheckId = this.parentId;  // 下一轮初始的部门ID为该部门的父级部门
+            if (this.typeId <= 5) {
+              this.$refs.check.getDeptId(this.parentId) // 传父级部门ID给子组件
+              this.deptCheckId = this.parentId;  // 下一轮初始的部门ID为该部门的父级部门
+            }
+            if (this.typeId == 6) {
+              this.$refs.check.type6(6);
+              if (this.$refs.check.setClickTime() == 2) {
+                this.$refs.check.getDeptId(this.deptCheckId)
+              }
+              if (this.$refs.check.setClickTime() > 2) {
+                this.$refs.check.getDeptId(this.parentId)
+                this.deptCheckId = this.parentId;
+              }
+            }
           }
           this.$refs.check.getCheckList();  // 调用子组件方法
         }).catch(err => {
           console.log(err)
         });
       },
-
+      changeApproveAddAble() {
+        this.isAbleForApprove = "disabled"
+      },
       // 添加批准人
       addApproveOption() {
         if (this.isBlank(this.deptApproveId)) {  // 首次加载初始化参数
           this.deptApproveId = this.deptInitId // 部门
         }
+        this.clickTimeForApprove++
+        this.$refs.approve.getClickTime(this.clickTimeForApprove)
         axios({
           method: 'post',
           url: this.url + '/leavePrepareController/queryParentDept',
@@ -1015,16 +1072,44 @@
             this.$refs.approve.getDeptId(this.deptInitId) // 传初始化参数给子组件
             this.deptApproveId = this.deptInitId; // 下一轮初始的部门ID为初始参数
             this.typeApproveId = this.$refs.approve.setTypeId();
-            if (this.typeApproveId < 6) {
-              this.$refs.approve.getTypeId(this.typeApproveId);
-            }
-            if (this.typeApproveId == 6) {  // 禁用选项
-              this.$refs.approve.changeAble();
-              this.isAbleForApprove = "disabled"
+            if (this.typeApproveId <= 6) {
+              if (this.typeId <= 3) {
+                if(this.days < 3){
+                  this.$refs.approve.type3(this.typeApproveId);
+                }
+                if (this.days >= 3) {
+                  this.$refs.approve.type4(this.typeApproveId);
+                }
+              }
+              if(this.typeId == 4){
+                this.$refs.approve.type4(this.typeApproveId);
+              }
             }
           } else {
-            this.$refs.approve.getDeptId(this.parentId) // 传父级部门ID给子组件
-            this.deptApproveId = this.parentId;  // 下一轮初始的部门ID为该部门的父级部门
+            if (this.typeId <= 4) {
+              this.$refs.approve.getDeptId(this.parentId) // 传父级部门ID给子组件
+              this.deptApproveId = this.parentId;  // 下一轮初始的部门ID为该部门的父级部门
+            }
+            if (this.typeId == 5 || (this.typeId == 6 && this.days < 3)) {
+              this.$refs.approve.type5(this.typeId);
+              if (this.$refs.approve.setClickTime() == 1) {
+                this.$refs.approve.getDeptId(this.deptApproveId)
+              }
+              if (this.$refs.approve.setClickTime() > 1) {
+                this.$refs.approve.getDeptId(this.parentId) // 传父级部门ID给子组件
+                this.deptApproveId = this.parentId;  // 下一轮初始的部门ID为该部门的父级部门
+              }
+            }
+            if (this.typeId == 6 && this.days >= 3) {
+              this.$refs.approve.type6(this.typeId);
+              if (this.$refs.approve.setClickTime() == 2) {
+                this.$refs.approve.getDeptId(this.deptApproveId)
+              }
+              if (this.$refs.approve.setClickTime() > 2) {
+                this.$refs.approve.getDeptId(this.parentId) // 传父级部门ID给子组件
+                this.deptApproveId = this.parentId;  // 下一轮初始的部门ID为该部门的父级部门
+              }
+            }
           }
           this.$refs.approve.getApproveList();  // 调用子组件方法
         }).catch(err => {
@@ -1161,7 +1246,6 @@
         this.accountUpdateID = val
       },
       getEditInfo(item) {
-        console.log(item)
         if (item.fillAccount != JSON.parse(Cookies.get("accountData")).account.account_ID) {
           alert("不能修改他人的报备!")
         } else {
@@ -1384,6 +1468,7 @@
    width: 15%;
     margin-left: -50px;
   }
+  .table > tbody > tr > td{vertical-align: middle;}
 
   /*#btn {*/
   /*  margin-left: 82.6%;*/
