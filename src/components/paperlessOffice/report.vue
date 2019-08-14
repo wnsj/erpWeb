@@ -8,15 +8,15 @@
     </div>
     <div class="form-group clearfix">
      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" id="date">
-				
+
         <label class="control-label text-left nopad">填写日期：</label>
-				
+
         <date-picker v-model="beginDate" type="date" class="queryDate"></date-picker>
-				
+
         <span class="nopad">~</span>
-			
+
         <date-picker v-model="endDate" type="date" class="queryDate"></date-picker>
-				
+
       </div>
 			 <!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 				<div class="input-group">
@@ -90,8 +90,8 @@
             </thead>
             <tbody>
             <tr v-for="(item,index) in reportList" :key="index"
-                :style="item.state == 1? {'background-color':'#337ab7','color':'#fff'}:(item.state == 2? {'background-color':'#1cc09f','color':'#fff'}:{'color':''})">
-              <td class="text-center">{{item.type}}</td>
+                :style="item.state == 1? {'color':'#337ab7'}:(item.state == 2? {'color':'#1cc09f'}:{'color':''})">
+            <td class="text-center">{{item.type}}</td>
               <td class="text-center">{{item.leaveEmpName}}</td>
               <td class="text-center">{{item.leaveDepartmentName}}</td>
               <td class="text-center">{{item.startTime|dateFormat}}</td>
@@ -110,29 +110,29 @@
                 {{item.state == 1? '已销假':(item.state == 2? '已取消':'')}}
               </td>
               <td class="text-center">
-                <button type="button" class="btn btn-sm"
+                <button type="button" class="btn btn-sm btn-primary"
                         :disabled="item.state==1? true:false"
                         @click="applyReportBackBtn(item)"><b>申请销假</b>
                 </button>
               </td>
               <td class="text-center" v-if='has(51)'>
-                <button type="button" class="btn btn-sm"
+                <button type="button" class="btn btn-sm btn-info"
                         :disabled="item.checkResult==0? true:(item.checkResult == 1? true:false)"
                         @click="reportReview(item)"><b>审批</b>
                 </button>
               </td>
               <td class="text-center" v-if='has(51)'>
-                <button type="button" class="btn btn-sm"
+                <button type="button" class="btn btn-sm btn-warning"
                         :disabled="item.state==1? true:false"
                         @click="getEditInfo(item)"><b>修改</b></button>
               </td>
               <td class="text-center" v-if='has(51)'>
-                <button type="button" class="btn btn-sm"
+                <button type="button" class="btn btn-sm btn-info"
                         :disabled="item.state==1? true:false"
                         @click="reportBack(item)"><b>销假</b></button>
               </td>
               <td class="text-center" v-if='has(51)'>
-                <button type="button" class="btn btn-sm"
+                <button type="button" class="btn btn-sm btn-danger"
                         :disabled="item.state==1? true:false"
                         @click="reportCancel(item)"><b>取消</b></button>
               </td>
@@ -1466,6 +1466,7 @@
    width: 15%;
     margin-left: -50px;
   }
+  .table > tbody > tr > td{vertical-align: middle;}
 
   /*#btn {*/
   /*  margin-left: 82.6%;*/
