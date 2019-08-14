@@ -23,8 +23,13 @@
 				// alert(this.reasonId + this.reasonName)
 				this.$emit('leaveChange', this.reasonId, this.reasonName)
 			},
+			//传过来的是离职原因id
 			setLeaveId:function(param){
 				this.reasonId=param
+			},
+			//传过来的是离职原因内容
+			setLeaveName:function(param){
+				this.reasonId=this.exchangeLeaveName(param)
 			},
 			//添加前缀的部门名字兑换原来的名字
 			exchangeLeaveName: function(param) {

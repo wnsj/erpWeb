@@ -71,7 +71,7 @@
 			singleDepartAttend(param){
 				 console.log('param:'+param)
 				 $("#myDepartmentAttendance").modal('show')
-				 var url = this.url + '/kqgl/searchKQInfo'
+				 var url = this.url + '/kqgl/sdofkqList'
 				 axios({
 				 	method: 'post',
 				 	url: url,
@@ -80,10 +80,7 @@
 				 		'Access-Token': this.accessToken
 				 	},
 				 	data: {
-						departName: param.departName,
-						positionName: '',
-						name: '',
-						jobNum: '',
+						departId: param.departKQId,
 						beginDate: param.beginDate,
 						endDate: this.getYYYYMMDDHHMMSS_24(param.endDate)
 				 	},

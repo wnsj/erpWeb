@@ -94,7 +94,7 @@
 			},
 			//单个部门人员考勤信息
 			showSingleDepartAttend(param) {
-				param.departName = param.departKQName
+				param.departKQId = param.departKQId
 				param.beginDate = this.beginDate
 				param.endDate = this.endDate
 				this.$children[3].singleDepartAttend(param)

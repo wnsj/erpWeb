@@ -29,9 +29,9 @@
 			<div class="col-md-12">
 				<div class="col-md-8">
 					<button type="button" class="btn btn-info btn-sm int_pwd" v-on:click="initPassword()">初始化密码</button>
-					<button type="button" class="btn btn-info btn-sm reg_work" id="shiftPositionBtn" v-if="isShiftPosition==false && this.personalBase.state==1" v-on:click="shiftPosition()">转正</button>
-					<button type="button" class="btn btn-info btn-sm recovery" v-if="this.personalBase.state==1" v-on:click="employeeResgin()">离职</button>
-					<button type="button" class="btn btn-info btn-sm recovery" v-if="this.personalBase.state==2">恢复</button>
+					<button type="button" class="btn btn-info btn-sm reg_work" id="shiftPositionBtn" v-show="isShowPBtn" v-on:click="shiftPosition()">转正</button>
+					<button type="button" class="btn btn-info btn-sm recovery" v-if="isShow==true" v-on:click="employeeResgin('2')">离职</button>
+					<button type="button" class="btn btn-info btn-sm recovery" v-show="isShow==false" v-on:click="employeeResgin('1')">恢复</button>
 					<button type="button" class="btn btn-info btn-sm detl" v-on:click="deleteEmployee()">删除</button>
 				</div>
 				<button type="button" class="btn btn-info" v-on:click="updataEmployeeInfo()">确认</button>
@@ -65,7 +65,8 @@
 				
 				personalShift:[],
 				
-				isShiftPosition:true,
+				isShowPBtn:true,
+				isShow:true,
 				
 				accountId:'',
 				userId:'',
@@ -78,18 +79,29 @@
 				this.accountId = param.accountId
 				this.userId = param.id
 				
-				//判断是否显示转正按钮
-				if(this.isBlank(this.personalBase.positiveDate)){
-					this.isShiftPosition=true
-				}else{
-					this.isShiftPosition=false
-				}
+				this.btnShow()
+				
 				console.log('isShiftPosition'+this.isShiftPosition)
 				this.$refs.baseInfo.childrenBaseInfo(this.personalBase)
 				this.$refs.detailInfo.childrenDetailInfo(this.userId)
 				this.$refs.familyInfo.childrenFamilyInfo(this.accountId)
 				this.$refs.shiftInfo.childrenShiftInfo(this.accountId)
 				// if(this.personalBase.entryDate<)
+			},
+			//判断是否在职，在职显示转正和离职，离职显示恢复
+			btnShow:function(){
+				if(this.personalBase.state==1){
+					//判断是否显示转正按钮
+					this.isShow=true
+					if(!this.isBlank(this.personalBase.positiveDate)){
+						this.isShowPBtn=false
+					}else{
+						this.isShow=true
+					}
+				}else if(this.personalBase.state==2){
+					this.isShow=false
+					this.isShowPBtn=false
+				}
 			},
 			//初始化密码
 			initPassword:function(){
@@ -147,8 +159,8 @@
 					console.log('请求失败处理')
 				});
 			},
-			//离职
-			employeeResgin:function(){
+			//离职/恢复修改
+			employeeResgin:function(param){
 				var url = this.url + '/search/employeeResginDate'
 				
 				axios({
@@ -160,7 +172,7 @@
 					},
 					data: {
 						id: this.userId,
-						state:'2',
+						state:param,
 						resignDate:this.personalBase.resignDate
 					},
 					dataType: 'json',
