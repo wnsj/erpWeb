@@ -13,16 +13,17 @@
     name: "check",
     data() {
       return {
-        isAble: false,
         accountId: '',
-        deptId: '',
-        typeId: 0,
-        positionTypeId: '',
-        typeIds:[],
+        applyAccount: '',
         check:{},
         checkList: [], // 审查人集合
-        days: 0,
-        flag: '',
+        clickTime: 0,
+        deptId: '',
+        isAble: false,
+        positionTypeId: '',
+        round: 0,
+        typeId: 0,
+        typeIds:[],
       }
     },
     props: ['checkAccount'],
@@ -39,48 +40,46 @@
         this.isAble = "disabled"
       },
       initParam(){  // 初始化参数
+        this.isAble = false
         this.typeIds = []
         this.checkList = []
-        this.isAble = false
+        this.positionIds = []
+        this.round = 0
+        this.clickTime = 0
       },
       insertCheckInfo(val) {
         this.checkList.push({accountId:val[0], accountName:val[1]})
         this.accountId = val[0]
       },
       getTypeId(val) { // 获取初始职位级别
-        this.typeId = val[0]
-        this.days = val[1]
-        if(this.days < 3){
-          if (this.typeId <= 3) {
-            this.type3(this.typeId)
-          }
-          // if (this.typeId == 4) {
-          //   this.type4(this.typeId)
-          // }
-          // if (this.typeId == 5) {
-          //   this.type5(this.typeId)
-          // }
-          // if (this.typeId == 6) {
-          //   this.type6(this.typeId)
-          // }
+        this.typeId = val
+        if (this.typeId <= 3) {
+          this.type3(this.typeId)
         }
-        // if(this.days >= 3){
-        //   if (this.typeId <= 3) {
-        //     this.type3MoreThan3(this.typeId)
-        //   }
-        //   if (this.typeId == 4) {
-        //     this.type4MoreThan3(this.typeId)
-        //   }
-        //   if (this.typeId == 5) {
-        //     this.type5MoreThan3(this.typeId)
-        //   }
-        //   if (this.typeId == 6) {
-        //     this.type6MoreThan3(this.typeId)
-        //   }
-        // }
+        if (this.typeId == 4) {
+          this.type4(this.typeId)
+        }
+        if (this.typeId == 5) {
+          this.type5(this.typeId)
+        }
+        if (this.typeId == 6) {
+          this.type6(this.typeId)
+        }
       },
       type3(id) {
         if (id <= 3) {
+          this.positionTypeId = 5
+        }
+        if (id == 5) {
+          this.positionTypeId = ''
+          this.typeIds = ''
+        }
+        if (!this.isBlank(this.positionTypeId)) {
+          this.typeIds.push(this.positionTypeId);
+        }
+      },
+      type4(id) {
+        if (id <= 4) {
           this.positionTypeId = 5
         }
         if (id == 5) {
@@ -94,23 +93,28 @@
           this.typeIds.push(this.positionTypeId);
         }
       },
-      // type4(id) {},
-      // type5(id) {},
-      // type6(id) {},
-      // type3MoreThan3(id){
-      //
-      // },
-      // type4MoreThan3(id){
-      //
-      // },
-      // type5MoreThan3(id){
-      //
-      // },
-      // type6MoreThan3(id){
-      //
-      // },
+      type5(id) {
+        if (id == 5) {
+          this.positionTypeId = 6
+          this.typeIds.push(this.positionTypeId);
+        }
+        if (id == 6 && this.round == 1) {
+          this.positionIds.push('33')
+        }
+      },
+      type6(id) {
+        this.type = id
+      },
+      setRound() {
+        return this.round
+      },
       setTypeId(){
         return this.positionTypeId
+      },
+      initType5() {
+        this.positionTypeId = ''
+        this.typeIds = ''
+        this.positionIds = ''
       },
       getDeptId(val){
         this.deptId = val
@@ -118,8 +122,36 @@
       showCheckInfo(val){
         this.check = val
       },
+      getApplyAccount(val) {
+        this.applyAccount = val
+      },
+      getClickTime(val) {
+        this.clickTime = val
+      },
+      setClickTime() {
+        return this.clickTime
+      },
       // 查询审核人信息
       getCheckList: function () {
+        if (this.typeIds.length == 0 && this.deptId == 0) {
+          this.$parent.changeCheckAddAble()
+        }
+        if (this.deptId == 0) {
+          this.round++
+        }
+        if (this.type == 6 && this.clickTime <= 1) {
+          if(this.clickTime ==0){
+            this.deptId = null
+            this.positionIds.push('33')
+          }
+          if(this.clickTime ==1){
+            this.deptId = null
+            this.positionIds.push('34')
+          }
+        }
+        if (this.type == 6 && this.clickTime > 1) {
+          this.positionIds = []
+        }
         axios({
           method: 'post',
           url: this.url + '/leavePrepareController/queryCheckInfo',
@@ -129,24 +161,25 @@
           },
           data: {
             deptId: this.deptId,
-            typeIds: this.typeIds
+            typeIds: this.typeIds,
+            positionIds: this.positionIds
           },
           dataType: 'json',
         }).then((response) => {
           console.log(response.data.retData)
-          this.checkList = (response.data.retData);
-          if(!this.isBlank(this.check.accountId)){
-            for(let i=0; i<this.checkList.length; i++){
-              if(this.check.accountId == this.checkList[i].accountId){  // 如果获取的审查人已存在集合中
-                this.accountId = this.check.accountId;  // 默认显示获取的审查人
-                return false;
+          this.checkList = response.data.retData;
+          let arr = [];
+          for (let i = 0; i < this.checkList.length; i++) {
+            arr.push(this.checkList[i].accountId)
+          }
+          if (this.checkList.length > 0) {
+            for (let i = 0; i < this.checkList.length; i++) { // 排除申请人自己
+              if (this.applyAccount == this.checkList[i].accountId) {
+                this.checkList.splice(i, 1)
               }
             }
-            this.checkList.push(this.check);  // 如果获取的审查人不存在集合中 向集合中加入数据
-            this.accountId = this.check.accountId;  // 默认显示新增加的审查人
-          }else{
-            this.accountId = this.checkList[0].accountId;
           }
+          this.accountId = this.checkList[0].accountId;
         }).catch((error) => {
           console.log('请求失败处理')
         });

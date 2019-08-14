@@ -54,7 +54,7 @@
         this.accountId = val[0]
       },
       getTypeId(val) { // 获取初始职位级别
-        this.typeId = val[0]
+        this.typeId = val
         console.log("职位级别" + this.typeId)
         if (this.typeId <= 3) {
           this.type3(this.typeId)
@@ -77,9 +77,6 @@
           this.positionTypeId = 5
         }
         if (id == 5) {
-          this.positionTypeId = 6
-        }
-        if (id == 6) {
           this.positionTypeId = ''
           this.typeIds = ''
         }
