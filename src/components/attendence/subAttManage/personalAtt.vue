@@ -77,7 +77,7 @@
 			},
 			//个人考勤信息汇总
 			searchSingleKqList: function() {
-				var url = this.url + '/kqgl/singleKQList'
+				var url = this.url + '/kqgl/allFirmKQ'
 				axios({
 					method: 'post',
 					url: url,

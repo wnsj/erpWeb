@@ -125,7 +125,7 @@
 
 			},
 
-			//人员考勤汇总
+			//人员考勤
 			searchRYKQInfo: function(param) {
 				var departId, pName
 				if (param == '0') {
@@ -147,7 +147,7 @@
 					}
 				}
 				console.log('searchRYKQInfo--departName:' + this.departName + 'positionName:' + this.positionName)
-				var url = this.url + '/kqgl/ryKQList'
+				var url = this.url + '/kqgl/empkqList'
 
 				axios({
 					method: 'post',
