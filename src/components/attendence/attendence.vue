@@ -45,6 +45,7 @@
 							<li class="ac"><a href="#gscqtj" data-toggle="tab" v-on:click="titleBtn($event)">人员出勤统计</a></li>
 							<li class="ac"><a href="#kqbb" data-toggle="tab" v-on:click="titleBtn($event)">考勤报表</a></li>
 							<li class="ac"><a href="#kqtjbb" data-toggle="tab" v-on:click="titleBtn($event)">考勤统计报表</a></li>
+              <li class="ac"><a href="#testId" data-toggle="tab" v-on:click="titleBtn($event)">test</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -68,6 +69,7 @@
 				<scheduleManage></scheduleManage>
 				<monday></monday>
 				<deleteSchedule></deleteSchedule>
+        <test></test>
 			</div>
 		</div>
 	</div>
@@ -92,6 +94,7 @@
 	import scheduleManage from './subScheduleManage/scheduleManage.vue'
 	import monday from './subScheduleManage/subMethod/monday.vue'
 	import deleteSchedule from './subScheduleManage/subMethod/deleteSchedule.vue'
+  import test from '@/components/vuecommon/test.vue'
 
 	export default {
 		components: {
@@ -112,7 +115,8 @@
 			positionTypeManage,
 			scheduleManage,
 			monday,
-			deleteSchedule
+			deleteSchedule,
+      test
 		},
 		data() {
 			return {
@@ -121,14 +125,14 @@
 		},
 		methods: {
 			titleBtn: function(event) {
-				
+
 				$("#tresult").text(event.target.innerText);
 			},
 			changeTitle() {
 				//切换标题
 				document.onreadystatechange = function() {
 					if (document.readyState == "complete") {
-						//当页面加载状态为完全结束时进入 
+						//当页面加载状态为完全结束时进入
 						$(".ac").click(function() {
 							$("#tresult").text($(this).text());
 						});
