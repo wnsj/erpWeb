@@ -72,7 +72,6 @@
 				
 				$("#updatefamily_add").modal('hide')
 				
-				// alert(this.personalFamily.length)
 				if(this.familyInfo.type=='modify'){
 					this.cancelRFInfo(this.modifyFIIndex)
 					

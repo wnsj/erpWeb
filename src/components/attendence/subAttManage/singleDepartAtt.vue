@@ -21,7 +21,6 @@
 						<label class="checkbox-inline">
 							<input type="checkbox" id="inlineCheckbox3" value="option3"> 早退
 						</label>
-	
 						<button type="button" class="btn btn-primary pull-right">查询</button>
 					</div>
 	
@@ -67,11 +66,12 @@
 			};
 		},
 		methods:{
+			
 			//单个部门人员考勤信息
 			singleDepartAttend(param){
 				 console.log('param:'+param)
 				 $("#myDepartmentAttendance").modal('show')
-				 var url = this.url + '/kqgl/searchKQInfo'
+				 var url = this.url + '/kqgl/sdofkqList'
 				 axios({
 				 	method: 'post',
 				 	url: url,
@@ -80,10 +80,7 @@
 				 		'Access-Token': this.accessToken
 				 	},
 				 	data: {
-						departName: param.departName,
-						positionName: '',
-						name: '',
-						jobNum: '',
+						departId: param.departKQId,
 						beginDate: param.beginDate,
 						endDate: this.getYYYYMMDDHHMMSS_24(param.endDate)
 				 	},

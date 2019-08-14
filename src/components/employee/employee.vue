@@ -54,7 +54,7 @@
 			</div>
 			<div style="padding-right:1.5%;">
 				<button type="button" class="btn btn-primary pull-right m_r_10" @click="exportTableToExcel('datatable','人员管理表')">导出</button>
-				<button type="button" class="btn btn-primary pull-right m_r_10" data-toggle="modal" data-target="#myModalJoin">员工入职</button>
+				<button type="button" class="btn btn-primary pull-right m_r_10" data-toggle="modal" v-on:click="entryAction()">员工入职</button>
 				<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" v-on:click="familyBtn()">家庭成员</button>
 				<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" v-on:click="advanceAction()">高级查询</button>
 			</div>
@@ -99,10 +99,10 @@
 								<td>{{item.departName}}</td>
 								<td>{{item.positionName}}</td>
 								<td>{{item.erpaaccount}}</td>
-								<td>{{item.birth}}</td>
-								<td>{{item.entryDate}}</td>
-								<td>{{item.positiveDate}}</td>
-								<td>{{item.resignDate}}</td>
+								<td>{{item.birth | dateFormatFilter('YYYY-MM-DD')}}</td>
+								<td>{{item.entryDate | dateFormatFilter('YYYY-MM-DD')}}</td>
+								<td>{{item.positiveDate | dateFormatFilter('YYYY-MM-DD')}}</td>
+								<td>{{item.resignDate | dateFormatFilter('YYYY-MM-DD')}}</td>
 								<template>
 									<td v-if="item.state == 1">在职</td>
 									<td v-if="item.state == 2">停职</td>
@@ -127,7 +127,7 @@
 				</div>
 			</div>
 			
-					<empEntry  @addEmployeeInfo='addEmployeeInfo'></empEntry>
+					<empEntry ref='empEntry' @addEmployeeInfo='addEmployeeInfo'></empEntry>
 				
 			<div class="modal fade" id="myModalupdata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog staff_t">
@@ -339,6 +339,12 @@
 					console.log('请求失败处理')
 				});
 			},
+			//入职弹窗
+			entryAction:function(){
+				$("#myModalJoin").modal('show')
+				this.$children[4].cleanData()
+			},
+			//家庭成员弹窗
 			familyBtn:function(){
 				$("#myModalFamily").modal('show')
 				this.$children[3].cleanData()

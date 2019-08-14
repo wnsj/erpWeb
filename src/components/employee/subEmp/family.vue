@@ -66,7 +66,7 @@
 								<td>{{item.name}}</td>
 								<td>{{item.appellation}}</td>
 								<td>{{item.chname}}</td>
-								<td>{{item.birth}}</td>
+								<td>{{item.birth | dateFormatFilter('YYYY-MM-DD')}}</td>
 								<td>{{item.workaddress}}</td>
 								<td>{{item.position}}</td>
 								<td>{{item.phone}}</td>

@@ -69,18 +69,20 @@
 	import {isBlank} from '../../../../../assets/js/constant.js'
 	import dPM from 'vue2-datepicker'
 	export default {
-		comments:{dPM,},
+		components:{dPM,},
 		data() {
 			return {
 				familyInfo:{},
 			};
 		},
-		dateAction:function(){
-			this.familyInfo.birth=this.moment(this.familyInfo.birth,'YYYY-MM-DD HH:MM:SS.000')
-		},
+		
 		methods:{
 			childrenFEmpInfo:function(param){
 				this.familyInfo=param
+			},
+			dateAction:function(){
+				this.familyInfo.birth=this.moment(this.familyInfo.birth,'YYYY-MM-DD HH:MM:SS.000')
+				console.log(this.familyInfo.birth)
 			},
 			submitFamilyInfo:function(){
 				if(isBlank(this.familyInfo.appellation)){

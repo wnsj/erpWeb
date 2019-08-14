@@ -1489,7 +1489,8 @@
   /*#btn {*/
   /*  margin-left: 82.6%;*/
   /*}*/
-  /* .mx-datepicker{ width: 120px;} */
+	/* .mx-datepicker{ width: 120px;} */
+	.table > tbody > tr > td{vertical-align: middle;}
 </style>
 
 
