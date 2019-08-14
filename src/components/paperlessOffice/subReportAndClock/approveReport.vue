@@ -18,8 +18,8 @@
         approve:{},
         approveList: [],
         clickTime: 0,
+        days: 0,
         deptId: '',
-        flag: '',
         isAble: false,
         positionIds: [],
         positionTypeId: '',
@@ -55,23 +55,30 @@
         this.accountId = val[0]
       },
       getTypeId(val){
-        this.typeId = val
-        if (this.typeId <= 3) { // 当职位 <= 3
+        this.typeId = val[0]
+        this.days = val[1]
+        if (this.typeId <= 3 && this.days < 3) { // 当职位 <= 3并且请假天数小于3
           this.type3(this.typeId)
         }
-        if (this.typeId == 4) { // 当职位 = 4
+        if (this.typeId <= 3 && this.days >= 3) { // 当职位 <= 3并且请假天数大于等于3天
           this.type4(this.typeId)
         }
-        if (this.typeId == 5) { // 当职位 = 5
+        if(this.typeId == 4){
+          this.type4(this.typeId)
+        }
+        if(this.typeId == 5){
           this.type5(this.typeId)
         }
-        if (this.typeId == 6) { // 当职位 = 6
+        if(this.typeId == 6){
+          this.type5(this.typeId)
+        }
+        if(this.typeId == 6 && this.days >= 3){
           this.type6(this.typeId)
         }
       },
       type3(id){
         if (id <= 3) {
-          this.positionTypeId =5
+          this.positionTypeId = 5
         }
         if (id == 5) {
           this.positionTypeId = ''
@@ -81,8 +88,8 @@
           this.typeIds.push(this.positionTypeId);
         }
       },
-      type4(id) {
-        if (id == 4) {
+      type4(id){
+        if (id <= 4) {
           this.positionTypeId = 6
         }
         if (id == 6) {
@@ -93,11 +100,23 @@
           this.typeIds.push(this.positionTypeId);
         }
       },
-      type5(id) {
-        this.type = id
+      type5(id){
+        if (id <= 6 && this.clickTime == 0) {
+          this.deptId = null
+          this.positionIds.push('33')
+        }
       },
-      type6(id) {
-        this.type = id
+      type6(id){
+        if (id == 6 && this.clickTime <= 1) {
+          if(this.clickTime == 0){
+            this.deptId = null
+            this.positionIds.push('33')
+          }
+          if(this.clickTime == 1){
+            this.deptId = null
+            this.positionIds.push('34')
+          }
+        }
       },
       setTypeId(){
         return this.positionTypeId
@@ -122,30 +141,17 @@
       getClickTime(val) {
         this.clickTime = val
       },
-      getFlag(val) {
-        this.flag = val
+      setClickTime() {
+        return this.clickTime
       },
       // 查询审核人信息
       getApproveList: function () {
-        if (this.typeIds.length == 0 && this.deptId == 0 && this.flag == 1) {
+        if (this.typeIds.length == 0 && this.deptId == 0) {
           this.$parent.changeApproveAddAble()
-          this.$parent.changeApproveModifyAble()
         }
         if (this.deptId == 0) {
           this.round++
         }
-        if (this.type == 5 || this.type == 6) {
-          if(this.round == 0){
-            this.deptId = ''
-            this.positionIds.push('33')
-            this.round ++
-          }
-        }
-        console.log("轮数" + this.round)
-        console.log("部门" + this.deptId)
-        console.log("type" + this.type)
-        console.log("职位" + this.typeIds)
-        console.log("岗位" + this.positionIds)
         axios({
           method: 'post',
           url: this.url + '/leavePrepareController/queryCheckInfo',
@@ -174,17 +180,6 @@
             }
           }
           this.accountId = this.approveList[0].accountId;
-          //------------------------------------------修改时-----------------------------------------
-          if (!this.isBlank(this.approve.accountId)) {  // 有批准人才执行
-            if (this.clickTime == 0) {  // 第一次加载
-              if(arr.indexOf(this.approve.accountId) == -1){
-                this.approveList.push(this.approve);  // 如果获取的批准人不存在集合中 向集合中加入数据
-                this.accountId = this.approve.accountId;  // 默认显示新增加的审查人
-              }
-            } else {  // 不是首次加载 显示第一项
-              this.accountId = this.approveList[0].accountId;
-            }
-          }
         }).catch((error) => {
           console.log('请求失败处理')
         });
