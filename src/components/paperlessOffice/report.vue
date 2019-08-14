@@ -123,7 +123,7 @@
             </thead>
             <tbody>
             <tr v-for="(item,index) in reportList" :key="index"
-                :style="item.state == 1? {'background-color':'#337ab7','color':'#fff'}:(item.state == 2? {'background-color':'#1cc09f','color':'#fff'}:{'color':''})">
+                :style="item.state == 1? {'color':'#337ab7'}:(item.state == 2? {'color':'#1cc09f'}:{'color':''})">
               <td class="text-center">{{item.type}}</td>
               <td class="text-center">{{item.leaveEmpName}}</td>
               <td class="text-center">{{item.leaveDepartmentName}}</td>
@@ -1389,6 +1389,7 @@
   /*  margin-left: 82.6%;*/
   /*}*/
 	/* .mx-datepicker{ width: 120px;} */
+	.table > tbody > tr > td{vertical-align: middle;}
 </style>
 
 
