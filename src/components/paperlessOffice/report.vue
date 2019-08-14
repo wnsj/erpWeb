@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="form-group clearfix">
-     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" id="date">
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" id="date">
 
         <label class="control-label text-left nopad">填写日期：</label>
 
@@ -18,14 +18,14 @@
         <date-picker v-model="endDate" type="date" class="queryDate"></date-picker>
 
       </div>
-			 <!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-				<div class="input-group">
-				  <span class="input-group-addon"  style="border: 1px solid #ccc;border-radius: 4px;background-color: transparent;">填写日期</span>
-				  <input type="date" value="" id="firstTime" v-model="beginDate" style="border: 1px solid #ccc;border-radius: 4px; margin-right: 6px; "/></span>
-					<span style="padding: 0; line-height: 34px;">&nbsp;~&nbsp;</span>
-					<input type="date" value="" id="secondTime" v-model="endDate" style="border: 1px solid #ccc;border-radius: 4px; margin-left: 6px; "/></span>
-				</div>
-			 -->
+      <!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+       <div class="input-group">
+         <span class="input-group-addon"  style="border: 1px solid #ccc;border-radius: 4px;background-color: transparent;">填写日期</span>
+         <input type="date" value="" id="firstTime" v-model="beginDate" style="border: 1px solid #ccc;border-radius: 4px; margin-right: 6px; "/></span>
+         <span style="padding: 0; line-height: 34px;">&nbsp;~&nbsp;</span>
+         <input type="date" value="" id="secondTime" v-model="endDate" style="border: 1px solid #ccc;border-radius: 4px; margin-left: 6px; "/></span>
+       </div>
+      -->
       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
         <label class="control-label text-left nopad">请假人部门：</label>
       </div>
@@ -51,10 +51,13 @@
     </div>
     <div class="row">
       <div class="col-md-3 col-md-offset-9">
-        <button type="button" class="btn btn-warning pull-right m_r_10" v-if='has(51)' @click="exportTableToExcel('reportTable','请假报备表')">
-          导出
+        <button type="button" class="btn btn-warning pull-right m_r_10"
+                v-if='has(51)||hasPosId(33)||hasPosId(34)||hasPosId(64)||hasPosId(74)||hasPosId(94)||hasPosType(5)||hasPosType(6)'
+                @click="exportTableToExcel('reportTable','请假报备表')">导出
         </button>
-        <button type="button" class="btn btn-info pull-right m_r_10" v-if='has(51)' @click="addBtn">申请
+        <button type="button" class="btn btn-info pull-right m_r_10"
+                v-if='has(51)||hasPosId(33)||hasPosId(34)||hasPosId(64)||hasPosId(74)||hasPosId(94)||hasPosType(5)||hasPosType(6)'
+                @click="addBtn">申请
         </button>
         <button type="button" class="btn btn-primary pull-right m_r_10" @click="queryReport">查询</button>
       </div>
@@ -82,16 +85,24 @@
               <th class="text-center">审批意见</th>
               <th class="text-center">状态</th>
               <th class="text-center">申请销假</th>
-              <th class="text-center" v-if='has(51)'>审批</th>
-              <th class="text-center" v-if='has(51)'>修改</th>
-              <th class="text-center" v-if='has(51)'>销假</th>
-              <th class="text-center" v-if='has(51)'>取消</th>
+              <th class="text-center" v-if='has(51)||hasPosId(33)||hasPosId(34)||hasPosId(64)||hasPosId(74)||hasPosId(94)
+                ||hasPosType(5)||hasPosType(6)'>审批
+              </th>
+              <th class="text-center" v-if='has(51)||hasPosId(33)||hasPosId(34)||hasPosId(64)||hasPosId(74)||hasPosId(94)
+                ||hasPosType(5)||hasPosType(6)'>修改
+              </th>
+              <th class="text-center" v-if='has(51)||hasPosId(33)||hasPosId(34)||hasPosId(64)||hasPosId(74)||hasPosId(94)
+                ||hasPosType(5)||hasPosType(6)'>销假
+              </th>
+              <th class="text-center" v-if='has(51)||hasPosId(33)||hasPosId(34)||hasPosId(64)||hasPosId(74)||hasPosId(94)
+                ||hasPosType(5)||hasPosType(6)'>取消
+              </th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="(item,index) in reportList" :key="index"
                 :style="item.state == 1? {'color':'#337ab7'}:(item.state == 2? {'color':'#1cc09f'}:{'color':''})">
-            <td class="text-center">{{item.type}}</td>
+              <td class="text-center">{{item.type}}</td>
               <td class="text-center">{{item.leaveEmpName}}</td>
               <td class="text-center">{{item.leaveDepartmentName}}</td>
               <td class="text-center">{{item.startTime|dateFormat}}</td>
@@ -115,23 +126,27 @@
                         @click="applyReportBackBtn(item)"><b>申请销假</b>
                 </button>
               </td>
-              <td class="text-center" v-if='has(51)'>
+              <td class="text-center" v-if='has(51)||hasPosId(33)||hasPosId(34)||hasPosId(64)||hasPosId(74)||hasPosId(94)
+                ||hasPosType(5)||hasPosType(6)'>
                 <button type="button" class="btn btn-sm btn-info"
                         :disabled="item.checkResult==0? true:(item.checkResult == 1? true:false)"
                         @click="reportReview(item)"><b>审批</b>
                 </button>
               </td>
-              <td class="text-center" v-if='has(51)'>
+              <td class="text-center" v-if='has(51)||hasPosId(33)||hasPosId(34)||hasPosId(64)||hasPosId(74)||hasPosId(94)
+                ||hasPosType(5)||hasPosType(6)'>
                 <button type="button" class="btn btn-sm btn-warning"
                         :disabled="item.state==1? true:false"
                         @click="getEditInfo(item)"><b>修改</b></button>
               </td>
-              <td class="text-center" v-if='has(51)'>
+              <td class="text-center" v-if='has(51)||hasPosId(33)||hasPosId(34)||hasPosId(64)||hasPosId(74)||hasPosId(94)
+                ||hasPosType(5)||hasPosType(6)'>
                 <button type="button" class="btn btn-sm btn-info"
                         :disabled="item.state==1? true:false"
                         @click="reportBack(item)"><b>销假</b></button>
               </td>
-              <td class="text-center" v-if='has(51)'>
+              <td class="text-center" v-if='has(51)||hasPosId(33)||hasPosId(34)||hasPosId(64)||hasPosId(74)||hasPosId(94)
+                ||hasPosType(5)||hasPosType(6)'>
                 <button type="button" class="btn btn-sm btn-danger"
                         :disabled="item.state==1? true:false"
                         @click="reportCancel(item)"><b>取消</b></button>
@@ -817,92 +832,92 @@
         this.$refs.approve.getApplyAccount(this.leaveAccount)
         this.$refs.approve.getDeptId(this.deptInitId)
         this.$refs.approve.getTypeId([this.typeId, this.days])
-        if(this.typeId <= 3){
-          if(this.fillTypeId ==4){
+        if (this.typeId <= 3) {
+          if (this.fillTypeId == 4) {
             this.$refs.examine.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.examine.changeAble();
             this.isAbleForExamine = "disabled";
-          }else {
+          } else {
             this.isAbleForExamine = false;
             this.$refs.examine.getExamineList();
           }
-          if(this.fillTypeId ==5){
+          if (this.fillTypeId == 5) {
             this.$refs.check.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.check.changeAble();
             this.isAbleForCheck = "disabled";
             this.$refs.approve.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.approve.changeAble();
             this.isAbleForApprove = "disabled";
-          }else {
+          } else {
             this.isAbleForCheck = false;
             this.$refs.check.getCheckList();
             this.isAbleForApprove = false;
             this.$refs.approve.getApproveList();
           }
         }
-        if(this.typeId == 4){
-          if(this.fillTypeId ==5){
+        if (this.typeId == 4) {
+          if (this.fillTypeId == 5) {
             this.$refs.examine.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.examine.changeAble();
             this.isAbleForExamine = "disabled";
             this.$refs.check.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.check.changeAble();
             this.isAbleForCheck = "disabled";
-          }else {
+          } else {
             this.isAbleForExamine = false;
             this.$refs.examine.getExamineList();
             this.isAbleForCheck = false;
             this.$refs.check.getCheckList();
           }
-          if(this.fillTypeId ==6){
+          if (this.fillTypeId == 6) {
             this.$refs.approve.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.approve.changeAble();
             this.isAbleForApprove = "disabled";
-          }else {
+          } else {
             this.isAbleForApprove = false;
             this.$refs.approve.getApproveList();
           }
         }
-        if(this.typeId == 5){
-          if(this.fillTypeId ==6){
+        if (this.typeId == 5) {
+          if (this.fillTypeId == 6) {
             this.$refs.examine.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.examine.changeAble();
             this.isAbleForExamine = "disabled";
             this.$refs.check.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.check.changeAble();
             this.isAbleForCheck = "disabled";
-          }else{
+          } else {
             this.isAbleForExamine = false;
             this.$refs.examine.getExamineList();
             this.isAbleForCheck = false;
             this.$refs.check.getCheckList();
           }
-          if(this.fillAccount == 67){ // 如果填表人是副总经理
+          if (this.fillAccount == 67) { // 如果填表人是副总经理
             this.$refs.approve.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.approve.changeAble();
             this.isAbleForApprove = "disabled";
-          }else{
+          } else {
             this.isAbleForApprove = false;
             this.$refs.approve.getApproveList();
           }
         }
-        if(this.typeId == 6){
-          if(this.fillAccount == 1127){
+        if (this.typeId == 6) {
+          if (this.fillAccount == 1127) {
             this.$refs.examine.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.examine.changeAble();
             this.isAbleForExamine = "disabled";
-          }else{
+          } else {
             this.isAbleForExamine = false;
             this.$refs.examine.getExamineList();
           }
-          if(this.fillAccount == 67){
+          if (this.fillAccount == 67) {
             this.$refs.check.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.check.changeAble();
             this.isAbleForCheck = "disabled";
             this.$refs.approve.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.approve.changeAble();
             this.isAbleForApprove = "disabled";
-          }else{
+          } else {
             this.isAbleForCheck = false;
             this.$refs.check.getCheckList();
             this.isAbleForApprove = false;
@@ -1072,14 +1087,14 @@
             this.typeApproveId = this.$refs.approve.setTypeId();
             if (this.typeApproveId <= 6) {
               if (this.typeId <= 3) {
-                if(this.days < 3){
+                if (this.days < 3) {
                   this.$refs.approve.type3(this.typeApproveId);
                 }
                 if (this.days >= 3) {
                   this.$refs.approve.type4(this.typeApproveId);
                 }
               }
-              if(this.typeId == 4){
+              if (this.typeId == 4) {
                 this.$refs.approve.type4(this.typeApproveId);
               }
             }
@@ -1448,30 +1463,33 @@
   }
 
   #date {
-   width: 31%;
+    width: 31%;
     margin-left: -10px;
   }
 
   #dept {
-   width: 18.5%;
+    width: 18.5%;
     margin-left: -100px;
   }
 
   #username {
-   width: 15%;
+    width: 15%;
     margin-left: -50px;
   }
 
   #status {
-   width: 15%;
+    width: 15%;
     margin-left: -50px;
   }
-  .table > tbody > tr > td{vertical-align: middle;}
+
+  .table > tbody > tr > td {
+    vertical-align: middle;
+  }
 
   /*#btn {*/
   /*  margin-left: 82.6%;*/
   /*}*/
-	/* .mx-datepicker{ width: 120px;} */
+  /* .mx-datepicker{ width: 120px;} */
 </style>
 
 
