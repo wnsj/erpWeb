@@ -205,6 +205,12 @@ Vue.use(global_date)
 Vue.prototype.hasDept = function(param) {
   return constant.hasDept(param);
 }
+Vue.prototype.hasPosId = function(param) {
+  return constant.hasPosId(param);
+}
+Vue.prototype.hasPosType = function(param) {
+  return constant.hasPosType(param);
+}
 
 
 
