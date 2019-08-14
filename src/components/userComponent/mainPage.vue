@@ -8,7 +8,7 @@
           </div>
 					<ul id="aside-menu">
 						<li>
-							<i class="fa fa-university" aria-hidden="true"></i>人员及权限<i class="fa fa-sort-desc item-down" aria-hidden="true"></i>
+							<i class="fa fa-university" aria-hidden="true"></i>人员及权限<i class="fa fa-caret-down item-down" aria-hidden="true"></i>
 						</li>
 						<!-- 二级菜单 -->
 						<ul class="second-menu">
@@ -23,7 +23,7 @@
 							</li>
 						</ul>
 						<li>
-							<i class="fa fa-university" aria-hidden="true" id="people04"></i>人员信息表<i class="fa fa-sort-desc item-down" aria-hidden="true"></i>
+							<i class="fa fa-university" aria-hidden="true" id="people04"></i>人员信息表<i class="fa fa-caret-down item-down" aria-hidden="true"></i>
 						</li>
 						<ul class="second-menu">
 							<li>
@@ -44,7 +44,7 @@
 						</ul>
 						<li>
 							
-							<i class="fa fa-university" aria-hidden="true" id="offfice01"></i>无纸化办公<i class="fa fa-sort-desc item-down" aria-hidden="true"></i>
+							<i class="fa fa-university" aria-hidden="true" id="offfice01"></i>无纸化办公<i class="fa fa-caret-down item-down" aria-hidden="true"></i>
 						</li>
 						<ul class="second-menu">
 							<li>
