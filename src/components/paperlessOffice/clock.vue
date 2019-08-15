@@ -97,39 +97,18 @@
               <td class="text-center">{{item.reportAccountName}}</td>
               <td class="text-center">{{item.result4 == 0? '不同意':item.result4 == 1? '同意':''}}</td>
               <td class="text-center">
-                <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#clockShowModel"
-                        @click="showClock(item)"
-                        :style="item.result4 == 1? {'color':'#00ff00'}:
-                        item.resultR == 0? {'color':'#ff0000'}:
-                        item.result1 == 0? {'color':'#ff0000'}:
-                        item.result2 == 0? {'color':'#ff0000'}:
-                        item.result3 == 0? {'color':'#ff0000'}:
-                        item.result4 == 0? {'color':'#ff0000'}:
-                        {'color':''}">
+                <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#clockShowModel"
+                        @click="showClock(item)">
                   <b>查看</b>
                 </button>
               </td>
               <td class="text-center">
-                <button type="button" class="btn btn-sm btn-default" @click="editClock(item)"
-                        :style="item.result4 == 1? {'color':'#00ff00'}:
-                        item.resultR == 0? {'color':'#ff0000'}:
-                        item.result1 == 0? {'color':'#ff0000'}:
-                        item.result2 == 0? {'color':'#ff0000'}:
-                        item.result3 == 0? {'color':'#ff0000'}:
-                        item.result4 == 0? {'color':'#ff0000'}:
-                        {'color':''}">
+                <button type="button" class="btn btn-sm btn-warning" @click="editClock(item)">
                   <b>修改</b>
                 </button>
               </td>
               <td class="text-center">
-                <button type="button" class="btn btn-sm btn-default" @click="disposeClock(item)"
-                        :style="item.result4 == 1? {'color':'#00ff00'}:
-                        item.resultR == 0? {'color':'#ff0000'}:
-                        item.result1 == 0? {'color':'#ff0000'}:
-                        item.result2 == 0? {'color':'#ff0000'}:
-                        item.result3 == 0? {'color':'#ff0000'}:
-                        item.result4 == 0? {'color':'#ff0000'}:
-                        {'color':''}">
+                <button type="button" class="btn btn-sm btn-info" @click="disposeClock(item)">
                   <b>处理</b>
                 </button>
               </td>
