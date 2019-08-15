@@ -13,7 +13,7 @@ module.exports = {
 
 		proxyTable: {
 			'/api': {
-				target: 'http://172.16.2.248:8080/Erp',
+				target: 'http://172.16.56.1:8080',
 				changeOrigin: true,
 				pathRewrite: {
 					'^/api': '' //这里用‘/api’代替target里面的地址，调用'http://***:8080/user/add'，可写成‘/api/user/add’

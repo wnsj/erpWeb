@@ -6,7 +6,7 @@
     <button @click="startConection()">点击建立连接</button>
     <hr />
     <input id="text" type="text" />
-    <button onclick="send()">发送消息</button>
+    <button @click="send()">发送消息</button>
     <hr />
     <button @click="closeWebSocket()">关闭WebSocket连接</button>
     <hr />
