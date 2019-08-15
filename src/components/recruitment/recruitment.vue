@@ -5,9 +5,9 @@
       <h2 class="col-md-2">招聘管理</h2>
       <ul id="myTab" class="nav col-md-8 col-md-offset-2">
         <li class="active btn btn-default col-md-2 col-md-offset-4"><router-link to="/recruitment/recruitChannels"><a data-toggle="tab">招聘渠道管理</a></router-link></li>
+        <li class="btn btn-default col-md-2"><router-link to="/recruitment/interview"><a data-toggle="tab">面试管理</a></router-link></li>
         <li class="btn btn-default col-md-2"><router-link to="/recruitment/recruitPlan"><a data-toggle="tab">招聘计划管理</a></router-link></li>
         <li class="btn btn-default col-md-2"><router-link to="/recruitment/recruitPublish"><a data-toggle="tab">招聘发布管理</a></router-link></li>
-        <li class="btn btn-default col-md-2"><router-link to="/recruitment/interview"><a data-toggle="tab">面试信息管理</a></router-link></li>
       </ul>
     </div>
 

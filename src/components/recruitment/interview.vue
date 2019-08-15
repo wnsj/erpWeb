@@ -48,17 +48,11 @@
           </select>
         </div>
       </div>
-      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <div class="input-group">
-          <span class="input-group-addon">开始时间</span>
-          <input type="date" value="" id="firstTime" class="form-control" v-model="begDate" />
-        </div>
-      </div>
-      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <div class="input-group">
-          <span class="input-group-addon">结束时间</span>
-          <input type="date" value="" id="secondTime" class="form-control" v-model="endDate" />
-        </div>
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <label class="control-label text-left nopad">查询时间：</label>
+        <date-picker v-model="begDate" type="date" format="YYYY-MM-DD"></date-picker>
+        <span class="nopad">~</span>
+        <date-picker v-model="endDate" type="date" format="YYYY-MM-DD"></date-picker>
       </div>
       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
         <div class="input-group">
@@ -70,12 +64,13 @@
           </select>
         </div>
       </div>
-    </div><br>
+    </div>
+    <br>
     <div class="row">
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
         <div class="input-group">
           <span class="input-group-addon">姓名</span>
-          <input type="text" class="form-control" placeholder="Username"  v-model="name">
+          <input type="text" class="form-control" placeholder="Username" v-model="name">
         </div>
       </div>
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -84,7 +79,7 @@
           <input type="text" class="form-control" placeholder="电话\邮箱\QQ" v-model="phone">
         </div>
       </div>
-       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
         <div class="input-group">
           <span class="input-group-addon">性别</span>
           <select class="form-control" v-model="sex">
@@ -104,7 +99,8 @@
           </select>
         </div>
       </div>
-    </div><br>
+    </div>
+    <br>
     <div class="row">
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
         <div class="input-group">
@@ -119,7 +115,7 @@
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
         <div class="input-group">
           <span class="input-group-addon">专业</span>
-          <input type="text" class="form-control" placeholder="Profession"  v-model="profession">
+          <input type="text" class="form-control" placeholder="Profession" v-model="profession">
         </div>
       </div>
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -133,16 +129,20 @@
         </div>
       </div>
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <button type="button" class="btn btn-warning pull-right m_r_10" @click="exportTableToExcel('interviewtable','面试信息管理')">导出</button>
-        <button type="button" class="btn btn-info pull-right m_r_10" data-toggle="modal" data-target="#interviewAdd">添加</button>
-        <button type="button" class="btn btn-primary pull-right m_r_10" @click="queryInterview">查询</button>
+        <button type="button" class="btn btn-warning pull-right m_r_10" v-if="has(65)"
+                @click="exportTableToExcel('interviewTable','面试信息管理')">导出
+        </button>
+        <button type="button" class="btn btn-info pull-right m_r_10" data-toggle="modal" data-target="#interviewAdd" v-if="has(65)">添加
+        </button>
+        <button type="button" class="btn btn-primary pull-right m_r_10" v-if="has(65)" @click="queryInterview">查询</button>
       </div>
-    </div><br>
+    </div>
+    <br>
     <!-- 查询结果集 -->
     <div class="row">
       <div class="col-md-12 col-lg-12">
         <div class="pre-scrollable">
-          <table class="table table-bordered table-hover text-nowrap" id="interviewtable">
+          <table class="table table-bordered table-hover text-nowrap" id="interviewTable">
             <thead>
             <tr>
               <th class="text-center">姓名</th>
@@ -166,8 +166,8 @@
               <th class="text-center">是否合格</th>
               <th class="text-center">报销路费</th>
               <th class="text-center">入职状态</th>
-              <th class="text-center">编辑</th>
-              <!-- <th class="text-center">删除</th> -->
+              <th class="text-center" v-if="has(65)">编辑</th>
+              <th class="text-center" v-if="has(65)">删除</th>
             </tr>
             </thead>
             <tbody>
@@ -180,21 +180,29 @@
               <td class="text-center">{{item.qq}}</td>
               <td class="text-center">{{item.address}}</td>
               <td class="text-center">{{item.education}}</td>
-              <td class="text-center">{{dateFomate(item.graduation)}}</td>
+              <td class="text-center">{{item.graduation|date}}</td>
               <td class="text-center">{{item.profession}}</td>
               <td class="text-center">{{item.atSchool == 0 ? "否" : "是"}}</td>
               <td class="text-center">{{item.channelName}}</td>
               <td class="text-center">{{item.departmentName}}</td>
               <td class="text-center">{{item.positionName}}</td>
               <td class="text-center">{{item.interviewer}}</td>
-              <td class="text-center">{{dateFomate(item.invitationDate)}}</td>
-              <td class="text-center">{{dateFomate(item.recruitDate)}}</td>
+              <td class="text-center">{{item.invitationDate|date}}</td>
+              <td class="text-center">{{item.recruitDate|date}}</td>
               <td class="text-center">{{item.score}}</td>
               <td class="text-center">{{item.isQualified}}</td>
               <td class="text-center">{{item.isPay == 0 ? "否" : "是"}}</td>
               <td class="text-center">{{item.isEntry}}</td>
-              <td><center><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#interviewEdit" @click="getEditInfo(item)">编辑</button></center></td>
-              <!-- <td><center><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#interviewDelete" @click="getDelId(item)">删除</button></center></td> -->
+              <td class="text-center" v-if="has(65)">
+                <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#interviewEdit"
+                        @click="getEditInfo(item)">编辑
+                </button>
+              </td>
+              <td class="text-center" v-if="has(65)">
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#interviewDelete"
+                        @click="deleteInterview(item)">删除
+                </button>
+              </td>
             </tr>
             </tbody>
           </table>
@@ -202,40 +210,40 @@
       </div>
     </div><!-- /.row 查询页面 -->
     <div class="row row_edit">
-			<div class="modal fade" id="interviewAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-lg">
-					<interviewEntry></interviewEntry>
-				</div>
-			</div>
+      <div class="modal fade" id="interviewAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <interviewEntry></interviewEntry>
+        </div>
+      </div>
       <div class="modal fade" id="interviewEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-lg">
-					<updateInterviewEntry :interviewBase="interviewBase" :educationExprience="educationExprience"
-             :apply="apply" ref="interviewInfo">
+        <div class="modal-dialog modal-lg">
+          <updateInterviewEntry :interviewBase="interviewBase" :educationExprience="educationExprience"
+                                :apply="apply" ref="interviewInfo">
           </updateInterviewEntry>
-				</div>
-			</div>
-		</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
+  import DatePicker from 'vue2-datepicker'
   import axios from 'axios'
   import position from '../vuecommon/position.vue'
   import channel from '../vuecommon/channel.vue'
   import department from '../vuecommon/department.vue'
   import interviewEntry from '../recruitment/subInterview/interviewEntry.vue'
   import updateInterviewEntry from '../recruitment/subInterview/updateInterviewEntry.vue'
-  import { timeInit } from '../../assets/js/date'
-  import { jsGetAge } from '../../assets/js/date'
 
   export default {
     components: {
+      DatePicker,
       department,
       position,
       channel,
       interviewEntry,
       updateInterviewEntry
     },
-    data(){
+    data() {
       return {
         // 查询
         departId: '0',
@@ -243,96 +251,91 @@
         channelId: '',
         isQualified: null,
         qualifiedStatus: [
-          {value:null,label:'全部'},
-          {value:'1',label:'是'},
-          {value:'0',label:'否'},
-          {value:'2',label:'待定'},
+          {value: null, label: '全部'},
+          {value: '1', label: '是'},
+          {value: '0', label: '否'},
+          {value: '2', label: '待定'},
         ],
         dateFlag: null,
-        dateFlagList:[
-          {value:null,label:'全部'},
-          {value:'0',label:'邀约日期'},
-          {value:'1',label:'面试日期'},
+        dateFlagList: [
+          {value: null, label: '全部'},
+          {value: '0', label: '邀约日期'},
+          {value: '1', label: '面试日期'},
         ],
-        begDate: this.getCurrentDay,
-        endDate: this.getCurrentDay,
+        begDate: this.$currentDate(),
+        endDate: this.$currentDate(),
         isEntry: null,
         entryStatus: [
-          {value:null,label:'全部'},
-          {value:'0',label:'未入职'},
-          {value:'1',label:'在职'},
-          {value:'2',label:'离职'},
+          {value: null, label: '全部'},
+          {value: '0', label: '未入职'},
+          {value: '1', label: '在职'},
+          {value: '2', label: '离职'},
         ],
         name: null,
         phone: null,
         sex: null,
-        sexStatus:[
-          {value:null,label:'全部'},
-          {value:'1',label:'男'},
-          {value:'0',label:'女'},
+        sexStatus: [
+          {value: null, label: '全部'},
+          {value: '1', label: '男'},
+          {value: '0', label: '女'},
         ],
         isPay: null,
         education: null,
-        educationState:[
-          {value:null,label:'全部'},
-          {value:'0',label:'未知'},
-					{value:'1',label:'博士'},
-					{value:'2',label:'硕士研究生'},
-					{value:'3',label:'本科'},
-					{value:'4',label:'专科'},
-					{value:'5',label:'高中/中专'},
-					{value:'6',label:'初中及以下'},
+        educationState: [
+          {value: null, label: '全部'},
+          {value: '0', label: '未知'},
+          {value: '1', label: '博士'},
+          {value: '2', label: '硕士研究生'},
+          {value: '3', label: '本科'},
+          {value: '4', label: '专科'},
+          {value: '5', label: '高中/中专'},
+          {value: '6', label: '初中及以下'},
         ],
         profession: null,
         atSchool: null,
         status: [
-          {value:null,label:'全部'},
-          {value:'1',label:'是'},
-          {value:'0',label:'否'},
+          {value: null, label: '全部'},
+          {value: '1', label: '是'},
+          {value: '0', label: '否'},
         ],
-        interviewList:[],
+        interviewList: [],
 
         interviewBase: {},
-				educationExprience: {},
+        educationExprience: {},
         apply: {},
       }
     },
     methods: {
-      dateFomate(str){
-        return timeInit(str);
-      },
-      getAge(param){
-        return jsGetAge(param)
-      },
-
       // ---------------------------------------查询----------------------------------
-
-      departChange(departId){   // 部门
+      getAge(date) {
+        return this.$getAge(date)
+      },
+      departChange(departId) {   // 部门
         this.departId = departId
       },
-      positionChange(positionId){ // 职位
+      positionChange(positionId) { // 职位
         this.positionId = positionId
       },
-       channelChange(channelId){   // 渠道
+      channelChange(channelId) {   // 渠道
         this.channelId = channelId
       },
-      queryInterview(){      
-        if(this.departId == '0'){
+      queryInterview() {
+        if (this.departId == '0') {
           this.departId = null
         }
-        if(this.positionId == '0'){
+        if (this.positionId == '0') {
           this.positionId = null
         }
-        if(this.channelId == '0'){
+        if (this.channelId == '0') {
           this.channelId = null
         }
-        if(this.isBlank(this.name)){
+        if (this.isBlank(this.name)) {
           this.name = null
         }
-        if(this.isBlank(this.phone)){
+        if (this.isBlank(this.phone)) {
           this.phone = null
         }
-         if(this.isBlank(this.profession)){
+        if (this.isBlank(this.profession)) {
           this.profession = null
         }
         axios({
@@ -348,8 +351,8 @@
             channel: this.channelId,
             isQualified: this.isQualified,
             dateFlag: this.dateFlag,
-            begDate: this.begDate,
-            endDate: this.endDate,
+            begDate: this.$queryStartTime(this.begDate),
+            endDate: this.$queryEndTime(this.endDate),
             isEntry: this.isEntry,
             name: this.name,
             phone: this.phone,
@@ -359,7 +362,7 @@
             profession: this.profession,
             atSchool: this.atSchool,
 
-            interviewInfo:{}  //首页列表获取的一个人的面试信息
+            interviewInfo: {}  //首页列表获取的一个人的面试信息
           },
           dataType: 'json',
         }).then((response) => {
@@ -369,25 +372,46 @@
           console.log('请求失败处理')
         });
       },
-      
-      getEditInfo(item){
-        this.interviewInfo = Object.assign({},item)
+
+      getEditInfo(item) {
+        this.interviewInfo = Object.assign({}, item)
         this.$refs.interviewInfo.passParamToSubModule(this.interviewInfo)
-        this.interviewInfo.birth = timeInit(this.interviewInfo.birth)
-        this.interviewInfo.graduation = timeInit(this.interviewInfo.graduation)
-        this.interviewInfo.invitationDate = timeInit(this.interviewInfo.invitationDate)
-        this.interviewInfo.recruitDate = timeInit(this.interviewInfo.recruitDate)
+        this.interviewInfo.birth = this.interviewInfo.birth
+        this.interviewInfo.graduation = this.interviewInfo.graduation
+        this.interviewInfo.invitationDate = this.interviewInfo.invitationDate
+        this.interviewInfo.recruitDate = this.interviewInfo.recruitDate
       }
     },
   }
 </script>
 <style>
-  @-moz-document url-prefix(){fieldset{display: table-cell;}}
-  .user-container{background-color: #fff; width: 100%; padding: 0 20px;}
-  .user-btn-group>button{margin: 0 2px;}
-  .main-title h2{line-height: 50px;}
-  .m_r_10{margin-right:10px;}
-  input[type="date"]{line-height: 26px!important;}
+  @-moz-document url-prefix() {
+    fieldset {
+      display: table-cell;
+    }
+  }
+
+  .user-container {
+    background-color: #fff;
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  .user-btn-group > button {
+    margin: 0 2px;
+  }
+
+  .main-title h2 {
+    line-height: 50px;
+  }
+
+  .m_r_10 {
+    margin-right: 10px;
+  }
+
+  input[type="date"] {
+    line-height: 26px !important;
+  }
 </style>
 
 

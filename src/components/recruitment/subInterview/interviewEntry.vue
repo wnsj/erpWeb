@@ -4,7 +4,7 @@
 	<div class="modal-content">
 		<div class="modal-header">
 			<button type="button" data-dismiss="modal" aria-hidden="true" class="close">
-				 <span>×</span>	
+				 <span>×</span>
 			</button>
 			<h4 id="myModalLabel" class="modal-title">面试信息</h4>
 		</div>
@@ -39,7 +39,7 @@
 	import basicInfo from '../subInterview/subInterviewEntry/interviewBasic.vue'
 	import educationInfo from '../subInterview/subInterviewEntry/educationExperience.vue'
 	import applyInfo from '../subInterview/subInterviewEntry/applyInformation.vue'
-	
+
 	export default {
 		components:{
 			basicInfo,
@@ -70,6 +70,10 @@
 					alert('请选择应聘渠道');
 					return false;
 				}
+        if (this.isBlank(this.applyAdd.invitationDate)) {
+          alert('请选择邀约日期');
+          return false;
+        }
 				if(this.applyAdd.departAddId == '0') {
 					alert('请选择应聘部门');
 					return false;
@@ -78,19 +82,10 @@
 					alert('请选择应聘职位');
 					return false;
 				}
-				
-				if (this.isBlank(this.applyAdd.invitationDate)) {
-					alert('邀约时间不能为空');
-					return false;
-				}
 				if (this.isBlank(this.applyAdd.recruitDate)) {
-					alert('面试时间不能为空');
+					alert('请选择面试日期');
 					return false;
 				}
-				// console.log(this.interviewBaseAdd)
-				// console.log(this.educationExprienceAdd)
-				// console.log(this.applyAdd)
-				// console.log(this.educationExprienceAdd.education)
 				axios({
 					method: 'post',
 					url: this.url + '/zpglController/addRecruitData',
@@ -102,7 +97,7 @@
 						// -------------------基本信息-----------------
 						accountProp: this.interviewBaseAdd.accountProp == null? '':this.interviewBaseAdd.accountProp,
 						address: this.interviewBaseAdd.address == null? '':this.interviewBaseAdd.address,
-						birth: this.interviewBaseAdd.birth == null? '':this.interviewBaseAdd.birth,
+						birth: this.interviewBaseAdd.birth == null? '':this.$YYYY_MM_DD_HH_mm(this.interviewBaseAdd.birth),
 						bloodType: this.interviewBaseAdd.bloodType == null? '':this.interviewBaseAdd.bloodType,
 						height: this.interviewBaseAdd.height == null? '':this.interviewBaseAdd.height,
 						homeAddress: this.interviewBaseAdd.homeAddress == null? '':this.interviewBaseAdd.homeAddress,
@@ -122,7 +117,7 @@
 						atSchool: this.educationExprienceAdd.atSchool,
 						certificate: this.educationExprienceAdd.certificate == null? '':this.educationExprienceAdd.certificate,
 						education: this.educationExprienceAdd.education,
-						graduation: this.educationExprienceAdd.graduation == null? '':this.educationExprienceAdd.graduation,
+						graduation: this.educationExprienceAdd.graduation == null? '':this.$YYYY_MM_DD_HH_mm(this.educationExprienceAdd.graduation),
 						profession: this.educationExprienceAdd.profession == null? '':this.educationExprienceAdd.profession,
 						school: this.educationExprienceAdd.school == null? '':this.educationExprienceAdd.school,
 						workCompany: this.educationExprienceAdd.workCompany == null? '':this.educationExprienceAdd.workCompany,
@@ -132,11 +127,11 @@
 						channel: this.applyAdd.channelAddId,
 						department: this.applyAdd.departAddId,
 						interviewer: this.applyAdd.interviewer == null? '':this.applyAdd.interviewer,
-						invitationDate: this.applyAdd.invitationDate == null? '':this.applyAdd.invitationDate,
+						invitationDate: this.applyAdd.invitationDate == null? '':this.$YYYY_MM_DD_HH_mm(this.applyAdd.invitationDate),
 						isPay: this.applyAdd.isPay,
 						isQualified: this.applyAdd.isQualified,
 						position: this.applyAdd.positionAddId,
-						recruitDate: this.applyAdd.recruitDate,
+						recruitDate: this.$YYYY_MM_DD_HH_mm(this.applyAdd.recruitDate),
 						remark: this.applyAdd.remark == null? '':this.applyAdd.remark,
 						score: this.applyAdd.score == null? '':this.applyAdd.score,
 						wages: this.applyAdd.wages == null? '': this.applyAdd.wages

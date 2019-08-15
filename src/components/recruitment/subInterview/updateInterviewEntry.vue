@@ -4,7 +4,7 @@
 	<div class="modal-content">
 		<div class="modal-header">
 			<button type="button" data-dismiss="modal" aria-hidden="true" class="close">
-				 <span>×</span>	
+				 <span>×</span>
 			</button>
 			<h4 id="myModalLabel" class="modal-title">修改面试信息</h4>
 		</div>
@@ -36,7 +36,7 @@
 	import updateBasicInfo from '../subInterview/subUpdateInterviewEntry/updateInterviewBasic.vue'
 	import updateEducationInfo from '../subInterview/subUpdateInterviewEntry/updateEducationExperience.vue'
 	import updateApplyInfo from '../subInterview/subUpdateInterviewEntry/updateApplyInformation.vue'
-	
+
 	export default {
 		components:{
 			updateBasicInfo,
@@ -75,6 +75,10 @@
 					alert('请选择应聘渠道');
 					return false;
 				}
+        if (this.isBlank(this.applyEdit.invitationDate)) {
+          alert('请选择邀约日期');
+          return false;
+        }
 				if(this.applyEdit.department == '0') {
 					alert('请选择应聘部门');
 					return false;
@@ -83,16 +87,10 @@
 					alert('请选择应聘职位');
 					return false;
 				}
-				
-				if (this.isBlank(this.applyEdit.invitationDate)) {
-					alert('邀约时间不能为空');
-					return false;
-				}
 				if (this.isBlank(this.applyEdit.recruitDate)) {
-					alert('面试时间不能为空');
+					alert('请选择面试日期');
 					return false;
 				}
-				
 				axios({
 					method: 'post',
 					url: this.url + '/zpglController/updateRecruitData',
@@ -105,7 +103,7 @@
 						// -------------------基本信息-----------------
 						accountProp: this.interviewBaseEdit.accountProp == null? '':this.interviewBaseEdit.accountProp,
 						address: this.interviewBaseEdit.address == null? '':this.interviewBaseEdit.address,
-						birth: this.interviewBaseEdit.birth == null? '':this.interviewBaseEdit.birth,
+						birth: this.interviewBaseEdit.birth == null? '':this.$YYYY_MM_DD_HH_mm(this.interviewBaseEdit.birth),
 						bloodType: this.interviewBaseEdit.bloodType == null? '':this.interviewBaseEdit.bloodType,
 						height: this.interviewBaseEdit.height == null? '':this.interviewBaseEdit.height,
 						homeAddress: this.interviewBaseEdit.homeAddress == null? '':this.interviewBaseEdit.homeAddress,
@@ -125,7 +123,7 @@
 						atSchool: this.educationExprienceEdit.atSchool,
 						certificate: this.educationExprienceEdit.certificate == null? '':this.educationExprienceEdit.certificate,
 						education: this.educationExprienceEdit.education,
-						graduation: this.educationExprienceEdit.graduation == null? '':this.educationExprienceEdit.graduation,
+						graduation: this.educationExprienceEdit.graduation == null? '':this.$YYYY_MM_DD_HH_mm(this.educationExprienceEdit.graduation),
 						profession: this.educationExprienceEdit.profession == null? '':this.educationExprienceEdit.profession,
 						school: this.educationExprienceEdit.school == null? '':this.educationExprienceEdit.school,
 						workCompany: this.educationExprienceEdit.workCompany == null? '':this.educationExprienceEdit.workCompany,
@@ -135,11 +133,11 @@
 						channel: this.applyEdit.channel,
 						department: this.applyEdit.department,
 						interviewer: this.applyEdit.interviewer == null? '':this.applyEdit.interviewer,
-						invitationDate: this.applyEdit.invitationDate == null? '':this.applyEdit.invitationDate,
+						invitationDate: this.applyEdit.invitationDate == null? '':this.$YYYY_MM_DD_HH_mm(this.applyEdit.invitationDate),
 						isPay: this.applyEdit.isPay,
 						isQualified: this.applyEdit.isQualified,
 						position: this.applyEdit.position,
-						recruitDate: this.applyEdit.recruitDate,
+						recruitDate: this.$YYYY_MM_DD_HH_mm(this.applyEdit.recruitDate),
 						remark: this.applyEdit.remark == null? '':this.applyEdit.remark,
 						score: this.applyEdit.score == null? '':this.applyEdit.score,
 						wages: this.applyEdit.wages == null? '': this.applyEdit.wages
@@ -152,7 +150,7 @@
 					} else {
 						alert(response.data.retMsg);
 					}
-			
+
 				}).catch((error) => {
 					console.log('请求失败处理')
 				});

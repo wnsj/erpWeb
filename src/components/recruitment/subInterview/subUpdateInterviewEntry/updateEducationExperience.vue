@@ -17,11 +17,11 @@
 				</div>
 			</div>
 			<div class="form-group clearfix">
-				<label for="graduation" class="col-md-2 control-label text-right nopad">毕业时间：</label>
-				<div class="col-md-3">
-          			<input type="date" class="form-control"  id="graduation" v-model="eduAndExpInfo.graduation" />
-				</div>
-				<label for="birth" class="col-md-2 control-label text-right nopad">是否在学：</label>
+        <label class="col-md-2 control-label text-right nopad">毕业时间：</label>
+        <div class="col-md-3">
+          <date-picker v-model="eduAndExpInfo.graduation" type="date" format="YYYY-MM-DD"></date-picker>
+        </div>
+				<label class="col-md-2 control-label text-right nopad">是否在学：</label>
 				<div class="col-md-3">
           			<select class="form-control" v-model="eduAndExpInfo.atSchool">
 						<option v-for="(item,index) in atSchoolStatus" :key="index" :value="item.value">
@@ -60,9 +60,11 @@
 </template>
 
 <script>
-
+  import DatePicker from 'vue2-datepicker'
 	export default {
-		components:{},
+		components:{
+      DatePicker
+    },
 		data() {
 			return {
 				eduAndExpInfo:{},
