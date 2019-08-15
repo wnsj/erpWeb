@@ -37,6 +37,10 @@ const addEndTime = () =>{
 const YYYY_MM_DD_17_30 = (time) =>{
   return moment(time).format("YYYY-MM-DD 17:30")
 }
+/*计算年龄getAge*/
+const getAge = (time) =>{
+  return moment().diff(time,'years')
+}
 
 export default {
   install (Vue){
@@ -50,5 +54,6 @@ export default {
     Vue.prototype.$addStartTime = addStartTime
     Vue.prototype.$addEndTime = addEndTime
     Vue.prototype.$YYYY_MM_DD_17_30 = YYYY_MM_DD_17_30
+    Vue.prototype.$getAge = getAge
   }
 }

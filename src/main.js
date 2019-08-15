@@ -81,9 +81,6 @@ Vue.prototype.getCurrentDayAction = function(param) {
 Vue.prototype.isBlank = function(param) {
   return constant.isBlank(param)
 }
-Vue.prototype.jsGetAge = function(param) {
-  return date.jsGetAge(param)
-}
 Vue.prototype.getYYYYMMDDHHMMSS_24 = function(param) {
   return date.getYYYYMMDDHHMMSS_24(param)
 }
@@ -175,6 +172,13 @@ function consoleLogCookie(token, accoutData) {
  * 时间过滤器
  */
 Vue.filter('dateFormat', function(time, formatStr = 'YYYY-MM-DD HH:mm') {
+  if (constant.isBlank(time)) {
+    return null
+  } else {
+    return moment(time).format(formatStr)
+  }
+})
+Vue.filter('date', function(time, formatStr = 'YYYY-MM-DD') {
   if (constant.isBlank(time)) {
     return null
   } else {
