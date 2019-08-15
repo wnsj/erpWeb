@@ -39,12 +39,12 @@
 						<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu4" data-toggle="dropdown"
 						 aria-haspopup="true" aria-expanded="true"> 考勤查询 <span class="caret"></span> </button>
 						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-							<li class="ac"><a href="#gscqmx" data-toggle="tab" v-on:click="titleBtn($event)">公司出勤明细</a></li>
-							<li class="ac"><a href="#bmcqmx" data-toggle="tab" v-on:click="titleBtn($event)">部门出勤统计</a></li>
-							<li class="ac"><a href="#grcqmx" data-toggle="tab" v-on:click="titleBtn($event)">个人出勤明细</a></li>
-							<li class="ac"><a href="#gscqtj" data-toggle="tab" v-on:click="titleBtn($event)">人员出勤统计</a></li>
-							<li class="ac"><a href="#kqbb" data-toggle="tab" v-on:click="titleBtn($event)">考勤报表</a></li>
-							<li class="ac"><a href="#kqtjbb" data-toggle="tab" v-on:click="titleBtn($event)">考勤统计报表</a></li>
+							<li class="ac"><a href="#gscqmx" data-toggle="tab" v-on:click="titleBtn($event,'0')">公司出勤明细</a></li>
+							<li class="ac"><a href="#bmcqmx" data-toggle="tab" v-on:click="titleBtn($event,'1')">部门出勤统计</a></li>
+							<li class="ac"><a href="#grcqmx" data-toggle="tab" v-on:click="titleBtn($event,'2')">个人出勤明细</a></li>
+							<li class="ac"><a href="#gscqtj" data-toggle="tab" v-on:click="titleBtn($event ,'3')">人员出勤统计</a></li>
+							<li class="ac"><a href="#kqbb" data-toggle="tab" v-on:click="titleBtn($event,'4')">考勤报表</a></li>
+							<li class="ac"><a href="#kqtjbb" data-toggle="tab" v-on:click="titleBtn($event,'5')">考勤统计报表</a></li>
               <li class="ac"><a href="#testId" data-toggle="tab" v-on:click="titleBtn($event)">test</a></li>
 						</ul>
 					</li>
@@ -53,10 +53,10 @@
 			<div id="myTabContent" class="tab-content">
 				<firmAtt></firmAtt>
 				<departAtt></departAtt>
-				<attCountTable></attCountTable>
-				<attTable></attTable>
-				<employeeAtt></employeeAtt>
 				<personalAtt></personalAtt>
+				<employeeAtt></employeeAtt>
+				<attTable></attTable>
+				<attCountTable></attCountTable>
 				<singleDepartAtt></singleDepartAtt>
 				<singleEmployeeAtt></singleEmployeeAtt>
 				<holidaysTypeManage></holidaysTypeManage>
@@ -124,8 +124,8 @@
 			};
 		},
 		methods: {
-			titleBtn: function(event) {
-
+			titleBtn: function(event,param) {
+				this.$children[param].initDate()
 				$("#tresult").text(event.target.innerText);
 			},
 			changeTitle() {

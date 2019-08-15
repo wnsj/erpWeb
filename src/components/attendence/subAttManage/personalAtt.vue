@@ -34,9 +34,9 @@
 							<td>{{item.departname}}</td>
 							<td>{{item.positionName}}</td>
 							<td>{{item.classTimeName}}</td>
-							<td>{{item.shiftDate}}</td>
-							<td>{{item.firstTime}}</td>
-							<td>{{item.lastTime}}</td>
+							<td>{{item.shiftDate | dateFormatFilter('YYYY-MM-DD HH:MM')}}</td>
+							<td>{{item.firstTime | dateFormatFilter('YYYY-MM-DD HH:MM')}}</td>
+							<td>{{item.lastTime | dateFormatFilter('YYYY-MM-DD HH:MM')}}</td>
 							<td>{{item.firstTimeState}}</td>
 							<td>{{item.lastTimeState}}</td>
 							<td>{{item.status}}</td>
@@ -67,6 +67,10 @@
 			};
 		},
 		methods: {
+			initDate:function(){
+				console.log('personalAtt')
+				this.getSingleKqList()
+			},
 			//更新时间
 			dateAction: function(param) {
 				if (param == 'begin') {
@@ -100,7 +104,7 @@
 							console.log('getSingleKqList-length:' + res.resData.length)
 							this.singleKqList = res.resData
 						} else {
-							alert('没有查询到相关数据')
+							alert('没有查询到本人的考勤相关数据')
 						}
 					} else {
 						alert(res.retMsg)
@@ -143,7 +147,7 @@
 			},
 		},
 		created() {
-			this.getSingleKqList()
+			
 		}
 	}
 </script>

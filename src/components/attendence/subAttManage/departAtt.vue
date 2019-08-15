@@ -79,6 +79,10 @@
 			};
 		},
 		methods: {
+			initDate:function(){
+				console.log('departAtt')
+				this.getDepartKqList()
+			},
 			//获取部门名字和id
 			departChange: function(departId, departName) {
 				this.departId = departId
@@ -185,7 +189,7 @@
 			}
 		},
 		created() {
-			this.getDepartKqList()
+			
 		}
 	}
 </script>

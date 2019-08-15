@@ -95,6 +95,10 @@
 			};
 		},
 		methods:{
+			initDate:function(){
+				// console.log('attTable')
+				this.getKqTableList()
+			},
 			//查询变化  部门和项目 
 			conditionChangeAction:function(param){
 				this.conditionChange=param
@@ -236,9 +240,7 @@
 				});
 			}
 		},
-		created(){
-			this.getKqTableList()
-		}
+		
 	}
 </script>
 

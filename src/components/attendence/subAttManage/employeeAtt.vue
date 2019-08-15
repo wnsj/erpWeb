@@ -47,7 +47,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="(item,index) in ryKqList" :key="index" @dblclick="showSearchRYKQInfo(item)">
+						<tr v-for="(item,index) in ryKqList" :key="index" v-on:dblclick="showSearchRYKQInfo(item)">
 							<td>{{item.ryKQName}}</td>
 							<td>{{item.ryJobNum}}</td>
 							<td>{{item.ryDepartKQName}}</td>
@@ -100,6 +100,10 @@
 			};
 		},
 		methods: {
+			initDate:function(){
+				console.log('employeeAtt')
+				this.getRyKqList()
+			},
 			//获取部门名字和id
 			departChange: function(departId, departName) {
 				this.departId = departId
@@ -117,10 +121,12 @@
 				}
 			},
 			//展示人员列表中单个人员的考勤情况
-			showSearchRYKQInfo: function(param) {
-				param.begDate = this.beginDate
-				param.endData = this.endDate
-				this.$children[5].showSearchRYKQInfo(param)
+			showSearchRYKQInfo: function(item) {
+				
+				item.beginDate = this.beginDate
+				item.endDate = this.endDate
+				console.log('showSearchRYKQInfo+'+item.accountId)
+				// this.$children[4].showSearchRYKQInfo(param)
 				$("#myPersonalAttendance").modal('show')
 
 			},
@@ -162,7 +168,7 @@
 						name: this.name,
 						jobNum: this.jobNum,
 						beginDate: this.beginDate,
-						endDate: this.endData,
+						endDate: this.endDate,
 					},
 					dataType: 'json',
 				}).then((response) => {
@@ -207,7 +213,7 @@
 					var res = response.data
 					if (res.retCode == '0000') {
 						if (res.resData.length > 0) {
-							console.log('ryKqList-length:' + res.resData.length)
+							console.log('ryKqList-length:' + res.resData)
 							this.ryKqList = res.resData
 						} else {
 							alert('没有查询到相关数据')
@@ -221,7 +227,7 @@
 			},
 		},
 		created() {
-			this.getRyKqList()
+			
 		}
 	}
 </script>

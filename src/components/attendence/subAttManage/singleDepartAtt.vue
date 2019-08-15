@@ -41,9 +41,9 @@
 							<tr v-for="(item,index) in departSingleKqList" :key="index">
 								<td>{{item.name}}</td>
 								<td>{{item.classTimeName}}</td>
-								<td>{{item.shiftDate}}</td>
-								<td>{{item.firstTime}}</td>
-								<td>{{item.lastTime}}</td>
+								<td>{{item.shiftDate | dateFormatFilter('YYYY-MM-DD HH:MM')}}</td>
+								<td>{{item.firstTime | dateFormatFilter('YYYY-MM-DD HH:MM')}}</td>
+								<td>{{item.lastTime | dateFormatFilter('YYYY-MM-DD HH:MM')}}</td>
 								<td>{{item.firstTimeState}}</td>
 								<td>{{item.lastTimeState}}</td>
 								<td>{{item.status}}</td>
@@ -66,7 +66,9 @@
 			};
 		},
 		methods:{
-			
+			initDate:function(){
+				console.log('singleDepartAtt')
+			},
 			//单个部门人员考勤信息
 			singleDepartAttend(param){
 				 console.log('param:'+param)
