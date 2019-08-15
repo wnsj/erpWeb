@@ -27,7 +27,6 @@
 						</thead>
 						<tbody>
 							<tr v-for="(item,index) in rySingleKqList" :key="index">
-								<td>{{index}}</td>
 								<td>{{item.name}}</td>
 								<td>{{item.jobNum}}</td>
 								<td>{{item.departname}}</td>
@@ -38,6 +37,7 @@
 								<td>{{item.lastTime | dateFormatFilter('YYYY-MM-DD HH:MM')}}</td>
 								<td>{{item.firstTimeState}}</td>
 								<td>{{item.lastTimeState}}</td>
+								<td></td>
 							</tr>
 						</tbody>
 					</table>

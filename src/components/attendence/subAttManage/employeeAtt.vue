@@ -126,7 +126,7 @@
 				item.beginDate = this.beginDate
 				item.endDate = this.endDate
 				console.log('showSearchRYKQInfo+'+item.accountId)
-				// this.$children[4].showSearchRYKQInfo(param)
+				this.$children[4].showSearchRYKQInfo(item)
 				$("#myPersonalAttendance").modal('show')
 
 			},
@@ -136,7 +136,7 @@
 				var departId, pName
 				if (param == '0') {
 					this.$children[0].departId = '0'
-					this.$children[1].positionId = '0'
+					this.$children[1].position = '0'
 					this.name = ''
 					this.jobNum = ''
 				} else {
@@ -192,7 +192,7 @@
 			//获取人员考勤
 			async getRyKqList() {
 
-				var url = this.url + '/kqgl/ryKQList'
+				var url = this.url + '/kqgl/empkqList'
 				axios({
 					method: 'post',
 					url: url,
@@ -213,7 +213,7 @@
 					var res = response.data
 					if (res.retCode == '0000') {
 						if (res.resData.length > 0) {
-							console.log('ryKqList-length:' + res.resData)
+							console.log('ryKqList-length:' + res.resData.length)
 							this.ryKqList = res.resData
 						} else {
 							alert('没有查询到相关数据')

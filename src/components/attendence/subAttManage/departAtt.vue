@@ -109,7 +109,7 @@
 			searchDepartKQInfo: function(param) {
 
 				if (param == '0') {
-					this.departName = ""
+					this.departId = ''
 					this.$children[0].departId = '0'
 				} else {
 					if (this.departId == '0') {
