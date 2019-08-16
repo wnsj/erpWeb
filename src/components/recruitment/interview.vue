@@ -16,7 +16,7 @@
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
         <div class="input-group">
           <span class="input-group-addon">应聘职位</span>
-          <position :positionId="positionId" @positionChange="positionChange"></position>
+          <positionInfo :pid="positionId" @jobChange="positionChange" ref="position"></positionInfo>
         </div>
       </div>
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -132,7 +132,7 @@
         <button type="button" class="btn btn-warning pull-right m_r_10" v-if="has(65)"
                 @click="exportTableToExcel('interviewTable','面试信息管理')">导出
         </button>
-        <button type="button" class="btn btn-info pull-right m_r_10" data-toggle="modal" data-target="#interviewAdd" v-if="has(65)">添加
+        <button type="button" class="btn btn-info pull-right m_r_10" v-if="has(65)" @click="addModelShow">添加
         </button>
         <button type="button" class="btn btn-primary pull-right m_r_10" v-if="has(65)" @click="queryInterview">查询</button>
       </div>
@@ -212,7 +212,7 @@
     <div class="row row_edit">
       <div class="modal fade" id="interviewAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
-          <interviewEntry></interviewEntry>
+          <interviewEntry ref="addInterview"></interviewEntry>
         </div>
       </div>
       <div class="modal fade" id="interviewEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -228,7 +228,7 @@
 <script>
   import DatePicker from 'vue2-datepicker'
   import axios from 'axios'
-  import position from '../vuecommon/position.vue'
+  import positionInfo from '../vuecommon/positionInfo.vue'
   import channel from '../vuecommon/channel.vue'
   import department from '../vuecommon/department.vue'
   import interviewEntry from '../recruitment/subInterview/interviewEntry.vue'
@@ -238,7 +238,7 @@
     components: {
       DatePicker,
       department,
-      position,
+      positionInfo,
       channel,
       interviewEntry,
       updateInterviewEntry
@@ -380,7 +380,11 @@
         this.interviewInfo.graduation = this.interviewInfo.graduation
         this.interviewInfo.invitationDate = this.interviewInfo.invitationDate
         this.interviewInfo.recruitDate = this.interviewInfo.recruitDate
-      }
+      },
+      addModelShow() {
+        this.$refs.addInterview.initAdd()
+        $('#interviewAdd').modal('show')
+      },
     },
   }
 </script>

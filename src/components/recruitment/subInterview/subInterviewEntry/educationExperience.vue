@@ -13,7 +13,7 @@
         </div>
         <label class="col-md-2 control-label text-right nopad">专业：</label>
         <div class="col-md-3">
-          <input type="text" class="form-control" placeholder="Profession" v-model="eduAndExpInfo.profession"/>
+          <input type="text" class="form-control" v-model="eduAndExpInfo.profession"/>
         </div>
       </div>
       <div class="form-group clearfix">
@@ -33,26 +33,26 @@
       <div class="form-group clearfix">
         <label class="col-md-2 control-label text-right nopad">毕业学校：</label>
         <div class="col-md-4">
-          <input type="text" class="form-control" placeholder="School" v-model="eduAndExpInfo.school">
+          <input type="text" class="form-control" v-model="eduAndExpInfo.school">
         </div>
       </div>
       <div class="form-group clearfix">
         <label class="col-md-2 control-label text-right nopad">相关经验：</label>
         <div class="col-md-2">
-          <input type="text" value="0" class="form-control" placeholder="Work Exp" v-model="eduAndExpInfo.workexp">
+          <input type="text" value="0" class="form-control" v-model="eduAndExpInfo.workexp">
         </div>
         <label class="col-md-1 control-label nopad">个月</label>
       </div>
       <div class="form-group clearfix">
         <label class="col-md-2 control-label text-right nopad">工作单位：</label>
         <div class="col-md-8">
-          <input type="text" class="form-control" placeholder="Company" v-model="eduAndExpInfo.workCompany">
+          <input type="text" class="form-control" v-model="eduAndExpInfo.workCompany">
         </div>
       </div>
       <div class="form-group clearfix">
         <label class="col-md-2 control-label text-right nopad">技能证书：</label>
         <div class="col-md-8">
-          <input type="text" class="form-control" placeholder="Certificate" v-model="eduAndExpInfo.certificate">
+          <input type="text" class="form-control" v-model="eduAndExpInfo.certificate">
         </div>
       </div>
     </div>
@@ -69,7 +69,7 @@
       return {
         eduAndExpInfo: {
           education: '0',
-          atSchool: '0'
+          atSchool: '0',
         },
         educationState: [
           {value: '0', label: '未知'},
@@ -86,7 +86,11 @@
         ],
       };
     },
-    methods: {}
+    methods: {
+      initEdu(){
+        Object.assign(this.$data, this.$options.data())
+      }
+    }
   }
 </script>
 

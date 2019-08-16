@@ -8,35 +8,35 @@
 
 <script>
   import axios from 'axios'
+
   export default {
     name: "positionInfo",
-    data(){
+    data() {
       return {
-        positionId: '',
+        positionId: '0',
         positionInfoList: [],
       }
     },
     props: ['pid'],
-    watch:{
-      positionId:{
-        handler(newVal){
-          this.positionId = newVal
-          this.$emit('jobChange',newVal)
+    watch: {
+      positionId: {
+        handler(newVal) {
+          this.$emit('jobChange', newVal)
         },
         immediate: true
       },
     },
-    methods:{
-      setPositionId(val){
+    methods: {
+      setPositionId(val) {
         this.positionId = val
       },
-      getPositionInfo(){
+      getPositionInfo() {
         let url = this.url + '/computerController/queryPositionInfo'
-        axios.get(url).then((response) =>{
+        axios.get(url).then((response) => {
           console.log(response.data.retData);
           this.positionInfoList = response.data.retData;
-          if(this.isBlank(this.positionId)) {
-            this.positionId = this.positionInfoList[0].positionId;
+          if (this.positionId == '0') {
+            this.positionInfoList.splice(0, 0, {positionId: '0', positionName: '全部'})
           }
         }).catch(function (error) {
           console.log(error);
@@ -45,7 +45,9 @@
       }
     },
     created() {
-      console.log("this.positionId" + this.pid)
+      this.getPositionInfo()
+    },
+    updated() {
       this.positionId = this.pid
     }
   }
