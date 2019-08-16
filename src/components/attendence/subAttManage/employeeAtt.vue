@@ -47,7 +47,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="(item,index) in ryKqList" :key="index" @dblclick="showSearchRYKQInfo(item)">
+						<tr v-for="(item,index) in ryKqList" :key="index" v-on:dblclick="showSearchRYKQInfo(item)">
 							<td>{{item.ryKQName}}</td>
 							<td>{{item.ryJobNum}}</td>
 							<td>{{item.ryDepartKQName}}</td>
@@ -100,6 +100,10 @@
 			};
 		},
 		methods: {
+			initDate:function(){
+				console.log('employeeAtt')
+				this.getRyKqList()
+			},
 			//获取部门名字和id
 			departChange: function(departId, departName) {
 				this.departId = departId
@@ -117,20 +121,22 @@
 				}
 			},
 			//展示人员列表中单个人员的考勤情况
-			showSearchRYKQInfo: function(param) {
-				param.begDate = this.beginDate
-				param.endData = this.endDate
-				this.$children[5].showSearchRYKQInfo(param)
+			showSearchRYKQInfo: function(item) {
+				
+				item.beginDate = this.beginDate
+				item.endDate = this.endDate
+				console.log('showSearchRYKQInfo+'+item.accountId)
+				this.$children[4].showSearchRYKQInfo(item)
 				$("#myPersonalAttendance").modal('show')
 
 			},
 
-			//人员考勤汇总
+			//人员考勤
 			searchRYKQInfo: function(param) {
 				var departId, pName
 				if (param == '0') {
 					this.$children[0].departId = '0'
-					this.$children[1].positionId = '0'
+					this.$children[1].position = '0'
 					this.name = ''
 					this.jobNum = ''
 				} else {
@@ -147,7 +153,7 @@
 					}
 				}
 				console.log('searchRYKQInfo--departName:' + this.departName + 'positionName:' + this.positionName)
-				var url = this.url + '/kqgl/ryKQList'
+				var url = this.url + '/kqgl/empkqList'
 
 				axios({
 					method: 'post',
@@ -162,7 +168,7 @@
 						name: this.name,
 						jobNum: this.jobNum,
 						beginDate: this.beginDate,
-						endDate: this.endData,
+						endDate: this.endDate,
 					},
 					dataType: 'json',
 				}).then((response) => {
@@ -186,7 +192,7 @@
 			//获取人员考勤
 			async getRyKqList() {
 
-				var url = this.url + '/kqgl/ryKQList'
+				var url = this.url + '/kqgl/empkqList'
 				axios({
 					method: 'post',
 					url: url,
@@ -221,7 +227,7 @@
 			},
 		},
 		created() {
-			this.getRyKqList()
+			
 		}
 	}
 </script>

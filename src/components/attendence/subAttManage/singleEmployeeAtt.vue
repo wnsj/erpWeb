@@ -27,17 +27,17 @@
 						</thead>
 						<tbody>
 							<tr v-for="(item,index) in rySingleKqList" :key="index">
-								<td>{{index}}</td>
 								<td>{{item.name}}</td>
 								<td>{{item.jobNum}}</td>
 								<td>{{item.departname}}</td>
 								<td>{{item.positionName}}</td>
 								<td>{{item.classTimeName}}</td>
-								<td>{{item.shiftDate}}</td>
-								<td>{{item.firstTime}}</td>
-								<td>{{item.lastTime}}</td>
+								<td>{{item.shiftDate | dateFormatFilter('YYYY-MM-DD HH:MM')}}</td>
+								<td>{{item.firstTime | dateFormatFilter('YYYY-MM-DD HH:MM')}}</td>
+								<td>{{item.lastTime | dateFormatFilter('YYYY-MM-DD HH:MM')}}</td>
 								<td>{{item.firstTimeState}}</td>
 								<td>{{item.lastTimeState}}</td>
+								<td></td>
 							</tr>
 						</tbody>
 					</table>
@@ -64,18 +64,13 @@
 			};
 		},
 		methods:{
-			//更新时间
-			dateAction: function(param) {
-				if (param == 'begin') {
-					this.firmStartDate = this.moment(this.firmStartDate, 'YYYY-MM-DD')
-				} else if (param == 'end') {
-					this.firmEndDate = this.moment(this.firmEndDate, 'YYYY-MM-DD')
-				}
+			initDate:function(){
+				console.log('singleEmployeeAtt')
 			},
 			showSearchRYKQInfo:function (param){
 				console.log(param)
 				$("#myPersonalAttendance").modal('show')
-				var url = this.url + '/kqgl/singleRYKQList'
+				var url = this.url + '/kqgl/allFirmKQ'
 				axios({
 					method: 'post',
 					url: url,
@@ -84,9 +79,9 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
-						name: param.ryKQName,
-						beginData: param.beginDate,
-						endData: this.getYYYYMMDDHHMMSS_24(param.endDate),
+						accountId: param.accountId,
+						beginDate: param.beginDate,
+						endDate: param.endDate,
 					},
 					dataType: 'json',
 				}).then((response) => {

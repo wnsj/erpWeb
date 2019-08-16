@@ -51,9 +51,9 @@
 							<td>{{item.departname}}</td>
 							<td>{{item.positionName}}</td>
 							<td>{{item.classTimeName}}</td>
-							<td>{{item.shiftDate}}</td>
-							<td>{{item.firstTime}}</td>
-							<td>{{item.lastTime}}</td>
+							<td>{{item.shiftDate | dateFormatFilter('YYYY-MM-DD HH:MM')}}</td>
+							<td>{{item.firstTime | dateFormatFilter('YYYY-MM-DD HH:MM')}}</td>
+							<td>{{item.lastTime  | dateFormatFilter('YYYY-MM-DD HH:MM')}}</td>
 							<td>{{item.firstTimeState}}</td>
 							<td>{{item.lastTimeState}}</td>
 							<td>{{item.status}}</td>
@@ -94,6 +94,11 @@
 			};
 		},
 		methods: {
+			//初始化数据
+			initDate:function(){
+				console.log('firm')
+				this.getKqList()
+			},
 			//获取部门名字和id
 			departChange: function(departId, departName) {
 				this.departId = departId
@@ -200,7 +205,7 @@
 			}
 		},
 		created() {
-			this.getKqList()
+			
 		}
 
 	}
