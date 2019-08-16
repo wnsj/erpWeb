@@ -62,14 +62,51 @@ function has(param){
 //部门判断方法（包含返回true，反之false）
 function hasDept(param){
   //未传值
-  if(isBlank(param)) return false;
+  if(isBlank(param)) {
+    return false
+  };
   const jsonString = Cookies.get("accountData");
   //未登录
   if(isBlank(jsonString))return false;
   const accountData = JSON.parse(jsonString);
   const deptId = accountData.account.departId;
   const state = accountData.account.account_State;
-  if(deptId == (param) && state == "在用") return true;
+  if(deptId == (param) && state == "在用"){
+    return true;
+  } else{
+    return false;
+  }
+}
+//职位判断方法（包含返回true，反之false）
+function hasPosId(param){
+  //未传值
+  if(isBlank(param)) {
+    return false
+  };
+  const jsonString = Cookies.get("accountData");
+  //未登录
+  if(isBlank(jsonString))return false;
+  const accountData = JSON.parse(jsonString);
+  const positionId = accountData.account.position_ID;
+  const state = accountData.account.account_State;
+  if(positionId == (param) && state == "在用") {
+    return true;
+  }else {
+    return false;
+  }
+}
+
+//职位级别判断方法（包含返回true，反之false）
+function hasPosType(param){
+  //未传值
+  if(isBlank(param)) return false;
+  const jsonString = Cookies.get("accountData");
+  //未登录
+  if(isBlank(jsonString))return false;
+  const accountData = JSON.parse(jsonString);
+  const positionTypeId = accountData.account.positionTypeId;
+  const state = accountData.account.account_State;
+  if(positionTypeId == (param) && state == "在用") return true;
   return false;
 }
 
@@ -88,5 +125,7 @@ export {
 	//isBlank,
 	CallVueMethod,
 	has,
-	hasDept
+	hasDept,
+	hasPosId,
+	hasPosType
 }

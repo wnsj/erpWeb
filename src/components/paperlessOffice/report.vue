@@ -6,55 +6,69 @@
         <h2>请假报备管理</h2>
       </div>
     </div>
-    <div class="form-group clearfix">
-     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" id="date">
+    <div class="form-group clearfix col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" id="date">
 
-        <label class="control-label text-left nopad">填写日期：</label>
-
-        <date-picker v-model="beginDate" type="date" class="queryDate"></date-picker>
-
-        <span class="nopad">~</span>
-
-        <date-picker v-model="endDate" type="date" class="queryDate"></date-picker>
-
+         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="padding-left: 0;">
+            <label class="control-label text-left nopad">填写日期：</label>
+         </div>
+         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0;">
+            <date-picker v-model="beginDate" type="date" class="queryDate"></date-picker>
+         </div>
+          <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+            <span class="nopad">~</span>
+          </div>
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0;">
+            <date-picker v-model="endDate" type="date" class="queryDate"></date-picker>
+          </div>
       </div>
-			 <!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-				<div class="input-group">
-				  <span class="input-group-addon"  style="border: 1px solid #ccc;border-radius: 4px;background-color: transparent;">填写日期</span>
-				  <input type="date" value="" id="firstTime" v-model="beginDate" style="border: 1px solid #ccc;border-radius: 4px; margin-right: 6px; "/></span>
-					<span style="padding: 0; line-height: 34px;">&nbsp;~&nbsp;</span>
-					<input type="date" value="" id="secondTime" v-model="endDate" style="border: 1px solid #ccc;border-radius: 4px; margin-left: 6px; "/></span>
-				</div>
-			 -->
+      <!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+       <div class="input-group">
+         <span class="input-group-addon"  style="border: 1px solid #ccc;border-radius: 4px;background-color: transparent;">填写日期</span>
+         <input type="date" value="" id="firstTime" v-model="beginDate" style="border: 1px solid #ccc;border-radius: 4px; margin-right: 6px; "/></span>
+         <span style="padding: 0; line-height: 34px;">&nbsp;~&nbsp;</span>
+         <input type="date" value="" id="secondTime" v-model="endDate" style="border: 1px solid #ccc;border-radius: 4px; margin-left: 6px; "/></span>
+       </div>
+      -->
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <label class="control-label text-left nopad">请假人部门：</label>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" id="dept" style=" padding: 0;">
+            <department ref="departSel" @departChange='departSelChange'></department>
+        </div>
+      </div>
+
       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-        <label class="control-label text-left nopad">请假人部门：</label>
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0;">
+            <label class="control-label text-left nopad">姓名：</label>
+          </div>
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" id="username" style="padding-right: 0;">
+            <input type="text" class="form-control" placeholder="Username" v-model="leaveName">
+          </div>
       </div>
-      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="dept">
-        <department ref="departSel" @departChange='departSelChange'></department>
-      </div>
-      <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-        <label class="control-label text-left nopad">姓名：</label>
-      </div>
-      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="username">
-        <input type="text" class="form-control" placeholder="Username" v-model="leaveName">
-      </div>
-      <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-        <label class="control-label text-left nopad">状态：</label>
-      </div>
-      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="status">
-        <select class="form-control" v-model="state">
-          <option v-for="(item,index) in stateList" :key="index" :value="item.value">
-            {{item.label}}
-          </option>
-        </select>
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0;">
+              <label class="control-label text-left nopad">状态：</label>
+            </div>
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" id="status" style="padding-right: 0;">
+              <select class="form-control" v-model="state">
+                <option v-for="(item,index) in stateList" :key="index" :value="item.value">
+                  {{item.label}}
+                </option>
+              </select>
+            </div>
       </div>
     </div>
     <div class="row">
       <div class="col-md-3 col-md-offset-9">
-        <button type="button" class="btn btn-warning pull-right m_r_10" v-if='has(51)' @click="exportTableToExcel('reportTable','请假报备表')">
-          导出
+        <button type="button" class="btn btn-warning pull-right m_r_10"
+                v-if='has(51)||hasPosId(33)||hasPosId(34)||hasPosId(64)||hasPosId(74)||hasPosId(94)||hasPosType(5)||hasPosType(6)'
+                @click="exportTableToExcel('reportTable','请假报备表')">导出
         </button>
-        <button type="button" class="btn btn-info pull-right m_r_10" v-if='has(51)' @click="addBtn">申请
+        <button type="button" class="btn btn-info pull-right m_r_10"
+                v-if='has(51)||hasPosId(33)||hasPosId(34)||hasPosId(64)||hasPosId(74)||hasPosId(94)||hasPosType(5)||hasPosType(6)'
+                @click="addBtn">申请
         </button>
         <button type="button" class="btn btn-primary pull-right m_r_10" @click="queryReport">查询</button>
       </div>
@@ -82,16 +96,24 @@
               <th class="text-center">审批意见</th>
               <th class="text-center">状态</th>
               <th class="text-center">申请销假</th>
-              <th class="text-center" v-if='has(51)'>审批</th>
-              <th class="text-center" v-if='has(51)'>修改</th>
-              <th class="text-center" v-if='has(51)'>销假</th>
-              <th class="text-center" v-if='has(51)'>取消</th>
+              <th class="text-center"
+                  v-if='has(51)||hasPosId(33)||hasPosId(34)||hasPosId(64)||hasPosId(74)||hasPosId(94)||hasPosType(5)||hasPosType(6)'>审批
+              </th>
+              <th class="text-center"
+                  v-if='has(51)||hasPosId(33)||hasPosId(34)||hasPosId(64)||hasPosId(74)||hasPosId(94)||hasPosType(5)||hasPosType(6)'>修改
+              </th>
+              <th class="text-center"
+                  v-if='has(51)||hasPosId(33)||hasPosId(34)||hasPosId(64)||hasPosId(74)||hasPosId(94)||hasPosType(5)||hasPosType(6)'>销假
+              </th>
+              <th class="text-center"
+                  v-if='has(51)||hasPosId(33)||hasPosId(34)||hasPosId(64)||hasPosId(74)||hasPosId(94)||hasPosType(5)||hasPosType(6)'>取消报备
+              </th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="(item,index) in reportList" :key="index"
                 :style="item.state == 1? {'color':'#337ab7'}:(item.state == 2? {'color':'#1cc09f'}:{'color':''})">
-            <td class="text-center">{{item.type}}</td>
+              <td class="text-center">{{item.type}}</td>
               <td class="text-center">{{item.leaveEmpName}}</td>
               <td class="text-center">{{item.leaveDepartmentName}}</td>
               <td class="text-center">{{item.startTime|dateFormat}}</td>
@@ -115,26 +137,33 @@
                         @click="applyReportBackBtn(item)"><b>申请销假</b>
                 </button>
               </td>
-              <td class="text-center" v-if='has(51)'>
+              <td class="text-center"
+                  v-if='has(51)||hasPosId(33)||hasPosId(34)||hasPosId(64)||hasPosId(74)||hasPosId(94)||hasPosType(5)||hasPosType(6)'>
                 <button type="button" class="btn btn-sm btn-info"
                         :disabled="item.checkResult==0? true:(item.checkResult == 1? true:false)"
                         @click="reportReview(item)"><b>审批</b>
                 </button>
               </td>
-              <td class="text-center" v-if='has(51)'>
+              <td class="text-center"
+                  v-if='has(51)||hasPosId(33)||hasPosId(34)||hasPosId(64)||hasPosId(74)||hasPosId(94)||hasPosType(5)||hasPosType(6)'>
                 <button type="button" class="btn btn-sm btn-warning"
                         :disabled="item.state==1? true:false"
-                        @click="getEditInfo(item)"><b>修改</b></button>
+                        @click="getEditInfo(item)"><b>修改</b>
+                </button>
               </td>
-              <td class="text-center" v-if='has(51)'>
+              <td class="text-center"
+                  v-if='has(51)||hasPosId(33)||hasPosId(34)||hasPosId(64)||hasPosId(74)||hasPosId(94)||hasPosType(5)||hasPosType(6)'>
                 <button type="button" class="btn btn-sm btn-info"
                         :disabled="item.state==1? true:false"
-                        @click="reportBack(item)"><b>销假</b></button>
+                        @click="reportBack(item)"><b>销假</b>
+                </button>
               </td>
-              <td class="text-center" v-if='has(51)'>
+              <td class="text-center"
+                  v-if='has(51)||hasPosId(33)||hasPosId(34)||hasPosId(64)||hasPosId(74)||hasPosId(94)||hasPosType(5)||hasPosType(6)'>
                 <button type="button" class="btn btn-sm btn-danger"
                         :disabled="item.state==1? true:false"
-                        @click="reportCancel(item)"><b>取消</b></button>
+                        @click="reportCancel(item)"><b>取消报备</b>
+                </button>
               </td>
             </tr>
             </tbody>
@@ -599,6 +628,7 @@
         leaveReviewRemark: '',
         checkRemark: '',
         id: '',
+        ids:[],
 
         // 修改
         editId: '',
@@ -754,27 +784,41 @@
       applyReportBackBtn(item) {
         if (JSON.parse(Cookies.get("accountData")).account.account_ID != item.leaveAccount) {
           alert("不能为他人申请销假")
-        } else {
-          if (item.type == '倒休') {
-            alert("倒休不能申请销假,需要人工手动销假")
-          } else {
-            if (item.checkResult != 1) {
-              alert("该报备未审批或未通过,不能申请销假")
-            } else {
-              this.$refs.examine.initParam();  //  初始化参数
-              this.$refs.check.initParam();
-              this.$refs.approve.initParam();
-              this.$refs.agent.initParamNull();
-              this.toLoad(item);  //  加载数据
-              $('#reportBackApplyModel').modal('show');  //  弹框
-            }
-          }
+          return false;
         }
+        if (item.type == '倒休') {
+          alert("倒休不能申请销假,需要人工手动销假")
+          return false;
+        }
+        if (item.checkResult != 1) {
+          alert("该报备未审批或未通过,不能申请销假")
+          return false;
+        }
+        this.id = item.id
+        this.getIds(item);
       },
-
+      getIds:function (item) {
+        const url = this.url + '/leavePrepareController/queryIdsForLeave'
+        axios.get(url).then((response) =>{
+          console.log(response.data.retData);
+          this.ids = response.data.retData;
+          if(this.ids.indexOf(this.id) > -1){
+            alert("该报备已提交过申请，请查看【请假】状态！")
+            return false;
+          }
+          this.$refs.examine.initParam();  //  初始化参数
+          this.$refs.check.initParam();
+          this.$refs.approve.initParam();
+          this.$refs.agent.initParamNull();
+          this.toLoad(item);  //  加载数据
+          $('#reportBackApplyModel').modal('show');  //  弹框
+        }).catch(function (error) {
+          console.log(error);
+          alert("get请求失败");
+        })
+      },
       // 加载数据
       toLoad(item) {
-        console.log("回显数据" + item)
         //  回显数据
         this.deptExamineId = ''
         this.deptCheckId = ''
@@ -817,92 +861,92 @@
         this.$refs.approve.getApplyAccount(this.leaveAccount)
         this.$refs.approve.getDeptId(this.deptInitId)
         this.$refs.approve.getTypeId([this.typeId, this.days])
-        if(this.typeId <= 3){
-          if(this.fillTypeId ==4){
+        if (this.typeId <= 3) {
+          if (this.fillTypeId == 4) {
             this.$refs.examine.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.examine.changeAble();
             this.isAbleForExamine = "disabled";
-          }else {
+          } else {
             this.isAbleForExamine = false;
             this.$refs.examine.getExamineList();
           }
-          if(this.fillTypeId ==5){
+          if (this.fillTypeId == 5) {
             this.$refs.check.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.check.changeAble();
             this.isAbleForCheck = "disabled";
             this.$refs.approve.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.approve.changeAble();
             this.isAbleForApprove = "disabled";
-          }else {
+          } else {
             this.isAbleForCheck = false;
             this.$refs.check.getCheckList();
             this.isAbleForApprove = false;
             this.$refs.approve.getApproveList();
           }
         }
-        if(this.typeId == 4){
-          if(this.fillTypeId ==5){
+        if (this.typeId == 4) {
+          if (this.fillTypeId == 5) {
             this.$refs.examine.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.examine.changeAble();
             this.isAbleForExamine = "disabled";
             this.$refs.check.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.check.changeAble();
             this.isAbleForCheck = "disabled";
-          }else {
+          } else {
             this.isAbleForExamine = false;
             this.$refs.examine.getExamineList();
             this.isAbleForCheck = false;
             this.$refs.check.getCheckList();
           }
-          if(this.fillTypeId ==6){
+          if (this.fillTypeId == 6) {
             this.$refs.approve.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.approve.changeAble();
             this.isAbleForApprove = "disabled";
-          }else {
+          } else {
             this.isAbleForApprove = false;
             this.$refs.approve.getApproveList();
           }
         }
-        if(this.typeId == 5){
-          if(this.fillTypeId ==6){
+        if (this.typeId == 5) {
+          if (this.fillTypeId == 6) {
             this.$refs.examine.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.examine.changeAble();
             this.isAbleForExamine = "disabled";
             this.$refs.check.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.check.changeAble();
             this.isAbleForCheck = "disabled";
-          }else{
+          } else {
             this.isAbleForExamine = false;
             this.$refs.examine.getExamineList();
             this.isAbleForCheck = false;
             this.$refs.check.getCheckList();
           }
-          if(this.fillAccount == 67){ // 如果填表人是副总经理
+          if (this.fillAccount == 67) { // 如果填表人是副总经理
             this.$refs.approve.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.approve.changeAble();
             this.isAbleForApprove = "disabled";
-          }else{
+          } else {
             this.isAbleForApprove = false;
             this.$refs.approve.getApproveList();
           }
         }
-        if(this.typeId == 6){
-          if(this.fillAccount == 1127){
+        if (this.typeId == 6) {
+          if (this.fillAccount == 1127) {
             this.$refs.examine.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.examine.changeAble();
             this.isAbleForExamine = "disabled";
-          }else{
+          } else {
             this.isAbleForExamine = false;
             this.$refs.examine.getExamineList();
           }
-          if(this.fillAccount == 67){
+          if (this.fillAccount == 67) {
             this.$refs.check.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.check.changeAble();
             this.isAbleForCheck = "disabled";
             this.$refs.approve.insertCheckInfo([item.fillAccount, item.fillEmpName])
             this.$refs.approve.changeAble();
             this.isAbleForApprove = "disabled";
-          }else{
+          } else {
             this.isAbleForCheck = false;
             this.$refs.check.getCheckList();
             this.isAbleForApprove = false;
@@ -1072,14 +1116,14 @@
             this.typeApproveId = this.$refs.approve.setTypeId();
             if (this.typeApproveId <= 6) {
               if (this.typeId <= 3) {
-                if(this.days < 3){
+                if (this.days < 3) {
                   this.$refs.approve.type3(this.typeApproveId);
                 }
                 if (this.days >= 3) {
                   this.$refs.approve.type4(this.typeApproveId);
                 }
               }
-              if(this.typeId == 4){
+              if (this.typeId == 4) {
                 this.$refs.approve.type4(this.typeApproveId);
               }
             }
@@ -1157,27 +1201,31 @@
       reportReview(item) {
         if (item.checkAccount != JSON.parse(Cookies.get("accountData")).account.account_ID) {
           alert("无权对此条报备进行审批")
-        } else {
-          if (item.state == 2) {
-            alert("该报备已取消,无需进行审批")
-          } else {
-            // 数据回显
-            this.id = item.id
-            this.leaveTypeReviewName = item.type
-            this.$refs.departReview.setDpart(item.leaveDeptId)
-            this.deptReviewEmpName = item.leaveEmpName
-            this.startReviewTime = item.startTime
-            this.endReviewTime = item.endTime
-            this.leaveReviewRemark = item.leaveRemark
-            this.$refs.approvalLeaveAccReview.setAccountId(item.checkAccount)
-            // 组件禁用方法
-            this.$refs.departReview.changeAble()
-            this.$refs.leaveTypeReview.changeAble()
-            this.$refs.approvalLeaveAccReview.changeAble()
-            // 弹框
-            $('#reviewReportModel').modal('show');
-          }
+          return false;
         }
+        if (item.state == 1) {
+          alert("该报备已销假,无需进行审批")
+          return false;
+        }
+        if (item.state == 2) {
+          alert("该报备已取消,无需进行审批")
+          return false;
+        }
+        // 数据回显
+        this.id = item.id
+        this.leaveTypeReviewName = item.type
+        this.$refs.departReview.setDpart(item.leaveDeptId)
+        this.deptReviewEmpName = item.leaveEmpName
+        this.startReviewTime = item.startTime
+        this.endReviewTime = item.endTime
+        this.leaveReviewRemark = item.leaveRemark
+        this.$refs.approvalLeaveAccReview.setAccountId(item.checkAccount)
+        // 组件禁用方法
+        this.$refs.departReview.changeAble()
+        this.$refs.leaveTypeReview.changeAble()
+        this.$refs.approvalLeaveAccReview.changeAble()
+        // 弹框
+        $('#reviewReportModel').modal('show');
       },
       agree() { // 同意审批
         axios({
@@ -1326,36 +1374,40 @@
 
       // ---------------------------------------销假----------------------------------
       reportBack(item) {
+        if (!this.has(51)) {
+          alert("没有请假报备管理权限，不能销假！")
+          return false;
+        }
         if (item.checkResult != 1) {
           alert("该报备未审批或未通过,不能申请销假")
-        } else {
-          this.editId = item.id
-          let msg = confirm("确认销假?")
-          if (msg) {
-            axios({
-              method: 'post',
-              url: this.url + '/leavePrepareController/updateLeavePrepare',
-              headers: {
-                'Content-Type': this.contentType,
-                'Access-Token': this.accessToken
-              },
-              data: {
-                id: this.editId,
-                updateTime: this.getCurrentYYYY_MM_DD_HH_MM_SS(),
-                state: '1'
-              },
-              dataType: 'json',
-            }).then((response) => {
-              if (response.data.retCode == '0000') {
-                this.queryReport();
-                console.log('销假操作成功')
-              } else {
-                console.log('销假操作失败')
-              }
-            }).catch((error) => {
-              console.log('销假请求失败')
-            });
-          }
+          return false;
+        }
+        this.editId = item.id
+        let msg = confirm("确认销假?")
+        if (msg) {
+          axios({
+            method: 'post',
+            url: this.url + '/leavePrepareController/updateLeavePrepare',
+            headers: {
+              'Content-Type': this.contentType,
+              'Access-Token': this.accessToken
+            },
+            data: {
+              id: this.editId,
+              updateTime: this.getCurrentYYYY_MM_DD_HH_MM_SS(),
+              state: '1'
+            },
+            dataType: 'json',
+          }).then((response) => {
+            if (response.data.retCode == '0000') {
+              alert('销假操作成功')
+              this.queryReport();
+            } else {
+              alert('销假操作失败')
+            }
+          }).catch((error) => {
+            console.log('销假请求失败')
+          });
         }
       },
 
@@ -1398,7 +1450,8 @@
           }
         }
       }
-    },
+    }
+    ,
     mounted() {
       this.queryReport();
     }
@@ -1410,7 +1463,7 @@
       display: table-cell;
     }
   }
-
+ .form-control{ width: 100% !important;}
   .nopad {
     padding-left: 0;
     padding-right: 0;
@@ -1444,34 +1497,38 @@
   .queryDate {
     position: relative;
     display: inline-block;
-    width: 120px;
+    width: 100% !important;
   }
 
-  #date {
-   width: 31%;
+ /* #date {
+    width: 31%;
     margin-left: -10px;
-  }
+  } */
 
-  #dept {
-   width: 18.5%;
+ /* #dept {
+    width: 18.5%;
     margin-left: -100px;
-  }
+  } */
 
-  #username {
-   width: 15%;
+  /* #username {
+    width: 15%;
     margin-left: -50px;
   }
 
   #status {
-   width: 15%;
+    width: 15%;
     margin-left: -50px;
   }
-  .table > tbody > tr > td{vertical-align: middle;}
+ */
+  .table > tbody > tr > td {
+    vertical-align: middle;
+  }
 
   /*#btn {*/
   /*  margin-left: 82.6%;*/
   /*}*/
-	/* .mx-datepicker{ width: 120px;} */
+  /* .mx-datepicker{ width: 120px;} */
+  .table > tbody > tr > td {
+    vertical-align: middle;
+  }
 </style>
-
-

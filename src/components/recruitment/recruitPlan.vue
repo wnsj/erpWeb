@@ -8,6 +8,12 @@
     </div>
     <div class="row">
       <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+<!--        <div class="col-md-4" id="date">-->
+<!--          <label class="control-label text-left nopad">申请日期：</label>-->
+<!--          <date-picker v-model="beginDate" type="date" format="YYYY-MM-DD" class="queryDate"></date-picker>-->
+<!--          <span class="nopad">~</span>-->
+<!--          <date-picker v-model="endDate" type="date" format="YYYY-MM-DD" class="queryDate"></date-picker>-->
+<!--        </div>-->
         <div class="col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">
           <p>计划月份：</p>
         </div>
@@ -86,15 +92,15 @@
                 <td class="text-center">{{item.phoneNum}}</td>
                 <td><center><button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#planEdit" @click="getEditInfo(item)">编辑</button></center></td>
                 <td class="text-center">
-                  <button type="button" 
-                    :class="item.isYes==1?'btn btn-sm btn-success':'btn btn-sm btn-info'" 
+                  <button type="button"
+                    :class="item.isYes==1?'btn btn-sm btn-success':'btn btn-sm btn-info'"
                     :disabled="item.isYes==1?true:false" @click="changeIsYes(item)">
                     {{item.isYes==1?'已完成':'点击完成'}}
                   </button>
                 </td>
                 <td class="text-center">
-                  <button type="button" 
-                    :class="item.isBack==1?'btn btn-sm btn-inverse':'btn btn-sm btn-info'" 
+                  <button type="button"
+                    :class="item.isBack==1?'btn btn-sm btn-inverse':'btn btn-sm btn-info'"
                     :disabled="item.isBack==1?true:false" @click="changeIsBack(item)">
                     {{item.isBack==1?'已撤销':'点击撤销'}}
                   </button>

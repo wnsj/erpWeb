@@ -38,15 +38,15 @@ function setClick() {
 
 		$(menuArray[0]).on("click", function() {
 			$(secondMenuArray[0]).slideToggle();
-			$(this).children("i.fa-sort-desc").toggleClass("fa-sort-asc");
+			$(this).children("i.fa-caret-down").toggleClass("fa-caret-right");
 		} )
 		$(menuArray[1]).on("click", function() {
 			$(secondMenuArray[1]).slideToggle();
-			$(this).children("i.fa-sort-desc").toggleClass("fa-sort-asc");
+			$(this).children("i.fa-caret-down").toggleClass("fa-caret-right");
 		})
 		$(menuArray[2]).on("click", function() {
 			$(secondMenuArray[2]).slideToggle();
-			$(this).children("i.fa-sort-desc").toggleClass("fa-sort-asc");
+			$(this).children("i.fa-caret-down").toggleClass("fa-caret-right");
 		})
 
 		$(secondMenuItems[0]).on("click", function() {

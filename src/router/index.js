@@ -9,9 +9,9 @@ import recruitment from '../components/recruitment/recruitment.vue'
 
 //招聘管理
 import recruitChannels from '../components/recruitment/recruitChannels.vue'
+import interview from '../components/recruitment/interview.vue'
 import recruitPlan from '../components/recruitment/recruitPlan.vue'
 import recruitPublish from '../components/recruitment/recruitPublish.vue'
-import interview from '../components/recruitment/interview.vue'
 
 //人员信息类
 import poresonnel from '../components/perAnalysis/poresonnel.vue'
@@ -75,6 +75,11 @@ export default new Router({
 							name: 'recruitChannels',
 							component: recruitChannels
 						},
+            {
+              path: '/recruitment/interview',
+              name: 'interview',
+              component: interview
+            },
 						{
 							path: '/recruitment/recruitPlan',
 							name: 'recruitPlan',
@@ -84,11 +89,6 @@ export default new Router({
 							path: '/recruitment/recruitPublish',
 							name: 'recruitPublish',
 							component: recruitPublish
-						},
-						{
-							path: '/recruitment/interview',
-							name: 'interview',
-							component: interview
 						}
 					],
 					redirect: '/recruitment/recruitChannels'

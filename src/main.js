@@ -81,9 +81,6 @@ Vue.prototype.getCurrentDayAction = function(param) {
 Vue.prototype.isBlank = function(param) {
   return constant.isBlank(param)
 }
-Vue.prototype.jsGetAge = function(param) {
-  return date.jsGetAge(param)
-}
 Vue.prototype.getYYYYMMDDHHMMSS_24 = function(param) {
   return date.getYYYYMMDDHHMMSS_24(param)
 }
@@ -181,6 +178,13 @@ Vue.filter('dateFormat', function(time, formatStr = 'YYYY-MM-DD HH:mm') {
     return moment(time).format(formatStr)
   }
 })
+Vue.filter('date', function(time, formatStr = 'YYYY-MM-DD') {
+  if (constant.isBlank(time)) {
+    return null
+  } else {
+    return moment(time).format(formatStr)
+  }
+})
 
 /*
 时间过滤器可返回任何格式的时间
@@ -204,6 +208,12 @@ Vue.use(global_date)
 
 Vue.prototype.hasDept = function(param) {
   return constant.hasDept(param);
+}
+Vue.prototype.hasPosId = function(param) {
+  return constant.hasPosId(param);
+}
+Vue.prototype.hasPosType = function(param) {
+  return constant.hasPosType(param);
 }
 
 
