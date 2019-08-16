@@ -12,5 +12,5 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
-config/
+config/dev.env.js
 build/
