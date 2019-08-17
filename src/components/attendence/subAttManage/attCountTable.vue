@@ -33,7 +33,14 @@
 						<tr v-for="(item,index) in countKqTableList" :key="index">
 							<td>{{item.ryDepartKQName}}</td>
 							<td>{{item.ryKQName}}</td>
-							<td>{{item.kqTableCount}}</td>
+							<td>
+								{{item.ryNotPA>0 ? item.ryNotPA+'次未排班（原因包括忘打卡或打卡机故障）,' : ''}}
+								{{item.ryLaterTimes>0 ? item.ryLaterTimes+'次迟到,' : ''}}
+								{{item.ryLeaveEarlyTimes>0 ? item.ryLeaveEarlyTimes+'次早退,' : ''}}
+								{{item.ryMinersTimes>0 ? item.ryMinersTimes+'次旷工,' : ''}}
+								{{item.ryOnPA>0 || item.ryDownPA>0 ? item.ryOnPA+item.ryDownPA+'次打卡异常（原因包括忘打卡或打卡机故障）,' : ''}}
+								{{item.notEntry=='入职' ? item.ryEnteryTime+',' : ''}}
+							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -84,7 +91,7 @@
 			//考勤统计报表
 			async getCountKqTableList() {
 				// var url= 'http://172.16.2.40:8080/Erp1.1/search/testList'
-				var url = this.url + '/kqgl/kqTableCountList'
+				var url = this.url + '/kqgl/kqCountTable'
 				// alert(url)
 				axios({
 					method: 'post',
