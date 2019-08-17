@@ -5,7 +5,7 @@
       <div class="form-group clearfix">
         <label class="col-md-2 control-label text-right nopad">应聘渠道：</label>
         <div class="col-md-3">
-          <channel :channelId="apply.channelAddId" @channelChange='getChannelAddId'></channel>
+          <channel :channelId="apply.channelAddId" ref="channel" @channelChange='getChannelAddId'></channel>
         </div>
         <label class="col-md-2 control-label text-right nopad">邀约时间：</label>
         <div class="col-md-3">
@@ -15,24 +15,24 @@
       <div class="form-group clearfix">
         <label class="col-md-2 control-label text-right nopad">应聘部门：</label>
         <div class="col-md-3">
-          <department @departChange='getDepartAddId'></department>
+          <department @departChange='getDepartAddId' ref="dept"></department>
         </div>
         <label class="col-md-2 control-label text-right nopad">应聘职位：</label>
         <div class="col-md-3">
-          <position :positionId="apply.positionAddId" @positionChange='getPositionAddId'></position>
+          <positionInfo :pid="apply.positionAddId" ref="position" @jobChange='getPositionAddId'></positionInfo>
         </div>
       </div>
       <div class="form-group clearfix">
-        <label for="wages" class="col-md-2 control-label text-right nopad">期望薪资：</label>
+        <label class="col-md-2 control-label text-right nopad">期望薪资：</label>
         <div class="col-md-3">
-          <input type="text" class="form-control" id="wages" placeholder="Salary" value="0" v-model="apply.wages">
+          <input type="text" class="form-control" value="0" v-model="apply.wages">
         </div>
         <label class="col-md-1 control-label nopad">元</label>
       </div>
       <div class="form-group clearfix">
-        <label for="interviewer" class="col-md-2 control-label text-right nopad">面试官：</label>
+        <label class="col-md-2 control-label text-right nopad">面试官：</label>
         <div class="col-md-3">
-          <input type="text" class="form-control" id="interviewer" placeholder="Interviewer" v-model="apply.interviewer">
+          <input type="text" class="form-control" v-model="apply.interviewer">
         </div>
         <label class="col-md-2 control-label text-right nopad">面试时间：</label>
         <div class="col-md-3">
@@ -42,7 +42,7 @@
       <div class="form-group clearfix">
         <label class="col-md-2 control-label text-right nopad">面试得分：</label>
         <div class="col-md-3">
-          <input type="text" class="form-control" placeholder="Score" value="0" min="0" max="100" v-model="apply.score">
+          <input type="text" class="form-control" value="0" min="0" max="100" v-model="apply.score">
         </div>
         <label class="col-md-2 control-label text-right nopad">是否合格：</label>
         <div class="col-md-3">
@@ -75,26 +75,28 @@
 </template>
 
 <script>
+  import moment from 'moment'
   import DatePicker from 'vue2-datepicker'
-  import position from '../../../vuecommon/position.vue'
+  import positionInfo from '../../../vuecommon/positionInfo.vue'
   import channel from '../../../vuecommon/channel.vue'
   import department from '../../../vuecommon/department.vue'
 
   export default {
     components: {
+      moment,
       DatePicker,
       channel,
       department,
-      position
+      positionInfo
     },
     data() {
       return {
         apply: {
+          channelAddId:'',
           departAddId: '0',
-          positionAddId: '',
-          channelAddId: '',
           isQualified: '2',
           isPay: '0',
+          positionAddId: '',
         },
         qualifiedStatus: [
           {value: '2', label: '待定'},
@@ -108,15 +110,23 @@
       };
     },
     methods: {
-      getChannelAddId(channelId) {   // 渠道
-        this.apply.channelAddId = channelId
+      getChannelAddId(val) {   // 渠道
+        this.apply.channelAddId = val
       },
-      getDepartAddId(departId) {   // 部门
-        this.apply.departAddId = departId
+      getDepartAddId(val) {   // 部门
+        this.apply.departAddId = val
       },
       getPositionAddId(positionId) { // 职位
         this.apply.positionAddId = positionId
       },
+      initApply() {
+        Object.assign(this.$data, this.$options.data())
+        this.$refs.channel.getChannel()
+        this.$refs.channel.setChannelId('')
+        this.$refs.dept.setDpart(0)
+        this.$refs.position.getPositionInfo()
+        this.$refs.position.setPositionId('')
+      }
     }
   }
 </script>

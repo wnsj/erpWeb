@@ -1,10 +1,10 @@
+<!-- author:dingdong -->
+<!-- 渠道 -->
 <template>
-  <select class="form-control" v-model="chanId"  v-on:change="channelChange">
-    <option value="0">---请选择---</option>
-    <option v-for="(item,index) in channelList" :key="index" v-bind:value="item.recruitChannelId">{{item.recruitChannelName}}</option>
+  <select class="form-control" v-model="chanId">
+    <option v-for="(item,index) in channelList" :key="index" :value="item.recruitChannelId">{{item.recruitChannelName}}</option>
   </select>
 </template>
-
 <script>
   import axios from 'axios'
   export default {
@@ -12,51 +12,31 @@
     data() {
       return {
         chanId: '0',
-        channelName:'',
-        channelList:[]
-      };
+        channelList:[],
+      }
     },
     props: ['channelId'],
     watch:{
-      channelId:function(){
-        console.log("监听props域channelId的值："+ this.channelId)
-        if(this.channelId == null) {
-          console.log("赋值为0")
-          this.chanId = '0'
-        }else{
-          console.log("开始给chanId赋值")
-          this.chanId = this.channelId
-        }
-        console.log("监听props域channel的值："+ this.chanId)
-      },
-      chanId:function(val){
-        this.$emit('channelChange',val,this.channelName)
-        console.log("监听data域position的值："+ val)
+      chanId:{
+        handler(val){
+          this.$emit('channelChange', val)
+        },
+        immediate: true
       }
     },
     methods:{
-      // 提交渠道名称和ID
-      channelChange: function(event) {
-        this.channelName = this.exchangeChannelName(this.chanId)
-        // console.log("chanId" + this.chanId)
-        // console.log(this.channelList.recruitChannelId)
+      //设置初始值
+      setChannelId(val){
+        this.chanId = val
       },
-      // 添加前缀的渠道名字兑换原来的名字
-      exchangeChannelName: function(param) {
-        var res = {}
-        for (var i = 0; i < this.channelList.length; i++) {
-          res = this.channelList[i]
-          if (res.recruitChannelId == param) {
-            return res.recruitChannelName
-          }
-        }
+      changeFlag(){
+        this.flag = true
       },
       // 查询渠道信息
       getChannel: function() {
-        var url = this.url + '/zpglController/queryRecruitChannel'
         axios({
           method: 'post',
-          url: url,
+          url: this.url + '/zpglController/queryRecruitChannel',
           headers: {
             'Content-Type': this.contentType,
             'Access-Token': this.accessToken
@@ -65,15 +45,19 @@
           },
           dataType: 'json',
         }).then((response) => {
-          this.channelList = response.data.retData;
+          console.log(response.data.retData)
+          this.channelList = response.data.retData
+          if(this.chanId == '0'){
+            this.channelList.splice(0,0,{recruitChannelId:'0', recruitChannelName:'全部'})
+          }
         }).catch((error) => {
           console.log('请求失败处理')
         });
       },
     },
-    created() {
+    created(){
       this.getChannel()
-    }
+    },
   }
 </script>
 

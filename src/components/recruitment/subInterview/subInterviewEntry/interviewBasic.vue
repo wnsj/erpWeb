@@ -5,7 +5,7 @@
       <div class="form-group clearfix">
         <label class="col-md-2 control-label text-right nopad">姓名：</label>
         <div class="col-md-3">
-          <input type="text" class="form-control" placeholder="Name" v-model="interviewBase.name">
+          <input type="text" class="form-control" v-model="interviewBase.name">
         </div>
         <label class="col-md-2 control-label text-right nopad">性别：</label>
         <div class="col-md-3">
@@ -19,7 +19,7 @@
       <div class="form-group clearfix">
         <label class="col-md-2 control-label text-right nopad">民族：</label>
         <div class="col-md-3">
-          <nation @nationChange='nationChange'></nation>
+          <nation @nationChange='nationChange' ref="nation"></nation>
         </div>
         <label class="col-md-2 control-label text-right nopad">出生日期：</label>
         <div class="col-md-3">
@@ -29,7 +29,7 @@
       <div class="form-group clearfix">
         <label class="col-md-2 control-label text-right nopad">电话：</label>
         <div class="col-md-3">
-          <input type="text" class="form-control" placeholder="Phone No." v-model="interviewBase.phone">
+          <input type="text" class="form-control" v-model="interviewBase.phone">
         </div>
         <label class="col-md-2 control-label text-right nopad">政治面貌：</label>
         <div class="col-md-3">
@@ -43,17 +43,17 @@
       <div class="form-group clearfix">
         <label class="col-md-2 control-label text-right nopad">邮箱：</label>
         <div class="col-md-3">
-          <input type="text" class="form-control" placeholder="e-mail" v-model="interviewBase.mail">
+          <input type="text" class="form-control" v-model="interviewBase.mail">
         </div>
         <label class="col-md-2 ontrol-label text-right nopad">身份证号：</label>
         <div class="col-md-3">
-          <input type="text" class="form-control" placeholder="ID No." v-model="interviewBase.idNum">
+          <input type="text" class="form-control" v-model="interviewBase.idNum">
         </div>
       </div>
       <div class="form-group clearfix">
         <label class="col-md-2 control-label text-right nopad">QQ：</label>
         <div class="col-md-3">
-          <input type="text" class="form-control" placeholder="QQ" v-model="interviewBase.qq">
+          <input type="text" class="form-control" v-model="interviewBase.qq">
         </div>
         <label class="col-md-2 control-label text-right nopad">婚姻：</label>
         <div class="col-md-3">
@@ -97,19 +97,19 @@
       <div class="form-group clearfix">
         <label class="col-md-2 control-label text-right nopad">籍贯：</label>
         <div class="col-md-4">
-          <input type="text" class="form-control" placeholder="Native Place" v-model="interviewBase.homeTown">
+          <input type="text" class="form-control" v-model="interviewBase.homeTown">
         </div>
       </div>
       <div class="form-group clearfix">
         <label class="col-md-2 control-label text-right nopad">现住址：</label>
         <div class="col-md-8">
-          <input type="text" class="form-control" placeholder="Address" v-model="interviewBase.address">
+          <input type="text" class="form-control" v-model="interviewBase.address">
         </div>
       </div>
       <div class="form-group clearfix">
         <label class="col-md-2 control-label text-right nopad">家庭住址：</label>
         <div class="col-md-8">
-          <input type="text" class="form-control" placeholder="HomeAddress" v-model="interviewBase.homeAddress">
+          <input type="text" class="form-control" v-model="interviewBase.homeAddress">
         </div>
       </div>
     </form>
@@ -128,31 +128,21 @@
     data() {
       return {
         interviewBase: {
-          sex: '',
-          ploitical: '',
-          marital: '',
-          bloodType: '',
-          accountProp: '',
-          birth: '',
         },
         sexStatus: [
-          {value: '', label: ''},
           {value: '1', label: '男'},
           {value: '0', label: '女'},
         ],
         ploiticalState: [
-          {value: '', label: ''},
           {value: '0', label: '群众'},
           {value: '1', label: '团员'},
           {value: '2', label: '党员'},
         ],
         maritalStatus: [
-          {value: '', label: ''},
           {value: '0', label: '未婚'},
           {value: '1', label: '已婚'},
         ],
         bloodTypes: [
-          {value: '', label: ''},
           {value: '0', label: 'A'},
           {value: '1', label: 'B'},
           {value: '2', label: 'O'},
@@ -160,13 +150,16 @@
           {value: '4', label: '特殊'}
         ],
         accountPropState: [
-          {value: '', label: ''},
           {value: '0', label: '农业'},
           {value: '1', label: '非农业'},
         ]
       };
     },
     methods: {
+      initBasic(){
+        Object.assign(this.$data, this.$options.data())
+        this.$refs.nation.setNation('')
+      },
       nationChange: function (nationName) {
         this.interviewBase.uNationName = nationName
       }

@@ -5,7 +5,7 @@
       <div class="form-group clearfix">
         <label class="col-md-2 control-label text-right nopad">应聘渠道：</label>
         <div class="col-md-3">
-          <channel :channelId="apply.channel" @channelChange='getChannelEditId'></channel>
+          <channel :channelId="apply.channel" ref="channel" @channelChange='getChannelEditId'></channel>
         </div>
         <label class="col-md-2 control-label text-right nopad">邀约时间：</label>
         <div class="col-md-3">
@@ -104,7 +104,6 @@
     methods: {
       childApply(val) {
         this.apply = val
-        console.log("渠道" + this.apply.channel)
         this.$refs.department.setDpart(this.apply.department);
       },
       getChannelEditId(channelId) {
