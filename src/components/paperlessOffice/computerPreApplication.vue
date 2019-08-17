@@ -458,12 +458,12 @@
         $('#preAppAddModel').modal('show')
       },
       clearAddModel() {
-        this.$refs.dept.setDpart(0), // 组件显示默认值
-          this.computerForAdd.deptId = 0, // data里默认值
-          this.computerForAdd.userName = '',
-          this.computerForAdd.useTime = this.$currentHHmm(),
-          this.computerForAdd.lid = '',
-          this.$refs.leader.setDeptId(0)
+        this.$refs.dept.setDpart(0) // 组件显示默认值
+        this.computerForAdd.deptId = 0 // data里默认值
+        this.computerForAdd.userName = ''
+        this.computerForAdd.useTime = this.$currentHHmm()
+        this.computerForAdd.lid = ''
+        this.$refs.leader.setDeptId(0)
       },
       queryLeaderBtn() {
         if (this.computerForAdd.deptId == 0) {
