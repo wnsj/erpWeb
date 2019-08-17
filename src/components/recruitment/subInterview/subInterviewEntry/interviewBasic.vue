@@ -67,7 +67,7 @@
       <div class="form-group clearfix">
         <label class="col-md-2 control-label text-right nopad">身高：</label>
         <div class="col-md-2">
-          <input type="number" class="form-control" value="0" min="0" max="200" v-model="interviewBase.height">
+          <input type="number" class="form-control" min="0" max="200" v-model="interviewBase.height">
         </div>
         <label class="col-md-1 control-label nopad">cm</label>
         <label class="col-md-2 ontrol-label text-right nopad">体重：</label>
@@ -160,8 +160,8 @@
         Object.assign(this.$data, this.$options.data())
         this.$refs.nation.setNation('')
       },
-      nationChange: function (nationName) {
-        this.interviewBase.uNationName = nationName
+      nationChange: function (val) {
+        this.interviewBase.nationality = val
       }
     }
   }

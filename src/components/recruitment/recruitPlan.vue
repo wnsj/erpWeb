@@ -8,20 +8,10 @@
     </div>
     <div class="row">
       <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-<!--        <div class="col-md-4" id="date">-->
-<!--          <label class="control-label text-left nopad">申请日期：</label>-->
-<!--          <date-picker v-model="beginDate" type="date" format="YYYY-MM-DD" class="queryDate"></date-picker>-->
-<!--          <span class="nopad">~</span>-->
-<!--          <date-picker v-model="endDate" type="date" format="YYYY-MM-DD" class="queryDate"></date-picker>-->
-<!--        </div>-->
-        <div class="col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">
-          <p>计划月份：</p>
-        </div>
-        <div class="col-md-10 col-lg-10">
-          <span><input type="date" value="" id="firstTime" v-model="beginDate" /></span>
-          <span>&nbsp;~&nbsp;</span>
-          <span><input type="date" value="" id="secondTime" v-model="endDate" /></span>
-        </div>
+          <label class="control-label text-left nopad">计划月份：</label>
+          <date-picker v-model="beginMonth" type="month" format="YYYY-MM"></date-picker>
+          <span class="nopad">~</span>
+          <date-picker v-model="endMonth" type="month" format="YYYY-MM"></date-picker>
       </div>
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
         <div class="input-group">
@@ -200,7 +190,7 @@
               <div class="form-group clearfix">
                 <label class="col-md-2 control-label text-right nopad">计划月份：</label>
                 <div class="col-md-5 input-group date form_date">
-                  <input type="date" class="form-control" id="time" v-model="planEditDate">
+                  <input type="date" class="form-control" v-model="planEditDate">
                   <div class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                   </div>
@@ -239,12 +229,13 @@
 </template>
 
 <script>
+  import DatePicker from 'vue2-datepicker'
   import axios from 'axios'
   import department from '../vuecommon/department.vue'
   import position from '../vuecommon/position.vue'
-  // import * as Types from '../../store/mutations-type'
   export default {
     components: {
+      DatePicker,
       department,
       position
     },
@@ -255,8 +246,8 @@
         // 查询
         departId: '0',
         positionId: '',
-        beginDate: this.getCurrentDay,
-        endDate: this.getCurrentDay,
+        beginMonth: this.$currentMonth(),
+        endMonth: this.$currentMonth(),
         recruitPlanList: [],
         isYes: null,
         isBack: null,
@@ -285,11 +276,11 @@
     methods: {
       msg(){},
       // ---------------------------------------查询----------------------------------
-      departChange(departId){   // 渠道
-        this.departId = departId
+      departChange(val){   // 渠道
+        this.departId = val
       },
-      positionChange(positionId){ // 职位
-        this.positionId = positionId
+      positionChange(val){ // 职位
+        this.positionId = val
       },
       queryRecruitPlan(){      // 查询招聘发布信息
         if(this.departId == '0'){
@@ -298,10 +289,6 @@
         if(this.positionId == '0'){
           this.positionId = null
         }
-
-        console.log("是否完成：" + this.isYes)
-        console.log("是否撤销：" + this.isBack)
-
         axios({
           method: 'post',
           url: this.url + '/zpglController/queryZpPlan',
@@ -312,17 +299,17 @@
           data: {
             department: this.departId,
             position: this.positionId,
-            begDate: this.beginDate,
-            endDate: this.endDate,
+            begDate: this.$queryStartMonth(this.beginMonth),
+            endDate: this.$queryEndMonth(this.endMonth),
             isYes: this.isYes,
             isBack: this.isBack
           },
           dataType: 'json',
-        }).then((response) => {
-          this.recruitPlanList = response.data.retData
+        }).then(response => {
           console.log(this.recruitPlanList)
-        }).catch((error) => {
-          console.log('请求失败处理')
+          this.recruitPlanList = response.data.retData
+        }).catch(error => {
+          console.log(error)
         });
       },
 
@@ -371,10 +358,10 @@
             phoneNum:this.phoneAddNum
           },
           dataType: 'json',
-        }).then((response) => {
+        }).then(response => {
           this.queryRecruitPlan()
           console.log('添加成功')
-        }).catch((error) => {
+        }).catch(error => {
           console.log('请求失败处理')
         });
         this.deptAddId = '0',

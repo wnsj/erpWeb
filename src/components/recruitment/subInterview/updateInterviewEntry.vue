@@ -32,6 +32,7 @@
   </div>
 </template>
 <script>
+  import Cookies from 'js-cookie'
   import axios from 'axios'
   import updateBasicInfo from '../subInterview/subUpdateInterviewEntry/updateInterviewBasic.vue'
   import updateEducationInfo from '../subInterview/subUpdateInterviewEntry/updateEducationExperience.vue'
@@ -62,6 +63,10 @@
         this.interviewBaseEdit = this.$refs.updateBasic.interviewBase
         this.educationExprienceEdit = this.$refs.updateEducation.eduAndExpInfo
         this.applyEdit = this.$refs.updateApply.apply
+        for (let index in this.interviewBaseEdit){
+          console.log(index);
+          console.log(this.interviewBaseEdit[index]);
+        }
         console.log(this.interviewBaseEdit.id)
         if (this.isBlank(this.interviewBaseEdit.name)) {
           alert('姓名不能为空');
@@ -112,7 +117,7 @@
             ploitical: this.interviewBaseEdit.ploitical == null ? '' : this.interviewBaseEdit.ploitical,
             qq: this.interviewBaseEdit.qq == null ? '' : this.interviewBaseEdit.qq,
             sex: this.interviewBaseEdit.sex == null ? '' : this.interviewBaseEdit.sex,
-            nationality: this.interviewBaseEdit.uNationName == null ? '' : this.interviewBaseEdit.uNationName,
+            nationality: this.interviewBaseEdit.nationality == null ? '' : this.interviewBaseEdit.nationality,
             weight: this.interviewBaseEdit.weight == null ? '' : this.interviewBaseEdit.weight,
 
             // -------------------学历经验-----------------
@@ -136,7 +141,10 @@
             recruitDate: this.$YYYY_MM_DD_HH_mm(this.applyEdit.recruitDate),
             remark: this.applyEdit.remark == null ? '' : this.applyEdit.remark,
             score: this.applyEdit.score == null ? '' : this.applyEdit.score,
-            wages: this.applyEdit.wages == null ? '' : this.applyEdit.wages
+            wages: this.applyEdit.wages == null ? '' : this.applyEdit.wages,
+
+            updateDate: this.$currentTime(),
+            updateAccount: JSON.parse(Cookies.get("accountData")).account.account_ID
           },
           dataType: 'json',
         }).then(response => {

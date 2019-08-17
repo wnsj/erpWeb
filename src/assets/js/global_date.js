@@ -11,6 +11,10 @@ const currentHHmm =() => {
 const currentDate =() => {
   return moment().format("YYYY-MM-DD")
 }
+/*获取当前月份*/
+const currentMonth =() => {
+  return moment().format("YYYY-MM")
+}
 /*格式化YYYY_MM_DD_HH_mm*/
 const YYYY_MM_DD_HH_mm =(time) => {
   return moment(time).format("YYYY-MM-DD HH:mm")
@@ -25,6 +29,13 @@ const queryStartTime =(time) => {
 }
 const queryEndTime =(time) => {
   return moment(time).format("YYYY-MM-DD 23:59:59")
+}
+/*查询月份转换*/
+const queryStartMonth =(month) => {
+  return moment(month).startOf('month').format("YYYY-MM-DD 00:00:00")
+}
+const queryEndMonth =(month) => {
+  return moment(month).endOf('month').format("YYYY-MM-DD 23:59:59")
 }
 /*初始化添加时间*/
 const addStartTime = () =>{
@@ -47,10 +58,13 @@ export default {
     Vue.prototype.$currentTime = currentTime
     Vue.prototype.$currentHHmm = currentHHmm
     Vue.prototype.$currentDate = currentDate
+    Vue.prototype.$currentMonth = currentMonth
     Vue.prototype.$YYYY_MM_DD_HH_mm = YYYY_MM_DD_HH_mm
     Vue.prototype.$YYYY_MM_DD_HH_mm_ss = YYYY_MM_DD_HH_mm_ss
     Vue.prototype.$queryStartTime = queryStartTime
     Vue.prototype.$queryEndTime = queryEndTime
+    Vue.prototype.$queryStartMonth = queryStartMonth
+    Vue.prototype.$queryEndMonth = queryEndMonth
     Vue.prototype.$addStartTime = addStartTime
     Vue.prototype.$addEndTime = addEndTime
     Vue.prototype.$YYYY_MM_DD_17_30 = YYYY_MM_DD_17_30
