@@ -27,9 +27,9 @@
         </div>
       </div>
       <div class="form-group clearfix">
-        <label for="phone" class="col-md-2 control-label text-right nopad">电话：</label>
+        <label class="col-md-2 control-label text-right nopad">电话：</label>
         <div class="col-md-3">
-          <input type="text" class="form-control" id="phone" placeholder="Phone No." v-model="interviewBase.phone">
+          <input type="text" class="form-control" v-model="interviewBase.phone">
         </div>
         <label class="col-md-2 ontrol-label text-right nopad">政治面貌：</label>
         <div class="col-md-3">
@@ -163,11 +163,10 @@
     methods: {
       childBasicInfo(val) {
         this.interviewBase = val
-        console.log(this.interviewBase)
         this.$refs.nation.setNation(this.interviewBase.nationality)
       },
       nationChange: function (val) {
-        this.interviewBase.uNationName = val
+        this.interviewBase.nationality = val
       },
     }
   }
