@@ -8,7 +8,7 @@
     </div>
     <div class="row">
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-md-offset-9">
-        <button type="button" class="btn btn-info pull-right" v-if="has(65)" @click="addModel">添加</button>
+        <button type="button" class="btn btn-info pull-right" @click="addModel">添加</button>
       </div>
     </div>
     <br>
@@ -19,22 +19,22 @@
           <table class="table table-bordered table-hover text-nowrap" id="datatable">
             <thead>
             <tr>
-              <th class="text-center" v-if="has(65)">序号</th>
-              <th class="text-center" v-if="has(65)">名称</th>
-              <th class="text-center" v-if="has(65)">修改</th>
-              <th class="text-center" v-if="has(65)">删除</th>
+              <th class="text-center">序号</th>
+              <th class="text-center">名称</th>
+              <th class="text-center">修改</th>
+              <th class="text-center">删除</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="(item,index) in recruitmentChannelsList" :key="index">
-              <td class="text-center" v-if="has(65)">{{index+1}}</td>
-              <td class="text-center" v-if="has(65)">{{item.recruitChannelName}}</td>
-              <td class="text-center" v-if="has(65)">
+              <td class="text-center">{{index+1}}</td>
+              <td class="text-center">{{item.recruitChannelName}}</td>
+              <td class="text-center">
                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#channelEdit"
                         @click="getRecruitChannelInfo(item)">修改
                 </button>
               </td>
-              <td class="text-center" v-if="has(65)">
+              <td class="text-center">
                 <button type="button" class="btn btn-danger btn-sm" @click="deleteChannel(item)">删除</button>
               </td>
             </tr>

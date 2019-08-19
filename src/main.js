@@ -185,6 +185,13 @@ Vue.filter('date', function(time, formatStr = 'YYYY-MM-DD') {
     return moment(time).format(formatStr)
   }
 })
+Vue.filter('month', function(time, formatStr = 'YYYY-MM') {
+  if (constant.isBlank(time)) {
+    return null
+  } else {
+    return moment(time).format(formatStr)
+  }
+})
 
 /*
 时间过滤器可返回任何格式的时间
