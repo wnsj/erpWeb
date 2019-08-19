@@ -1,6 +1,10 @@
 <!-- author:dingdong -->
 <!-- author:2019-8-19 -->
-<!-- author:2019-8-19第二遍查看冲突-->
+
+<!-- author:2019-8-19第二遍查看冲1突-->
+
+<!-- date:2019-8-30 -->
+
 <template>
   <div class="container user-container" id="report-app" v-cloak>
     <div class="row">
