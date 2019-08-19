@@ -33,12 +33,12 @@
 						<tr v-for="(item,index) in countKqTableList" :key="index">
 							<td>{{item.ryDepartKQName}}</td>
 							<td>{{item.ryKQName}}</td>
-							<td>
+							<td>{{ryKQContentAction(item)}}
 								{{item.ryNotPA>0 ? item.ryNotPA+'次未排班（原因包括忘打卡或打卡机故障）,' : ''}}
 								{{item.ryLaterTimes>0 ? item.ryLaterTimes+'次迟到,' : ''}}
 								{{item.ryLeaveEarlyTimes>0 ? item.ryLeaveEarlyTimes+'次早退,' : ''}}
 								{{item.ryMinersTimes>0 ? item.ryMinersTimes+'次旷工,' : ''}}
-								{{item.ryOnPA>0 || item.ryDownPA>0 ? item.ryOnPA+item.ryDownPA+'次打卡异常（原因包括忘打卡或打卡机故障）,' : ''}}
+								{{item.ryOnPA>0? item.ryOnPA+'次打卡异常（原因包括忘打卡或打卡机故障）,' : ''}}
 								{{item.notEntry=='入职' ? item.ryEnteryTime+',' : ''}}
 							</td>
 						</tr>
@@ -68,6 +68,8 @@
 				beginDate: this.moment('', 'YYYY-MM-DD 00:00:00.000'),
 				endDate: this.moment('', 'YYYY-MM-DD 23:59:59.000'),
 				countKqTableList:[],
+				
+				ryKQContent:''//考勤统计的内容
 			};
 		},
 		methods:{
@@ -88,6 +90,39 @@
 					this.endDate = this.moment(this.endDate, 'YYYY-MM-DD 23:59:59.000')
 				}
 			},
+			//考勤统计的内容
+// 			{{item.ryNotPA>0 ? item.ryNotPA+'次未排班（原因包括忘打卡或打卡机故障）,' : ''}}
+// 			{{item.ryLaterTimes>0 ? item.ryLaterTimes+'次迟到,' : ''}}
+// 			{{item.ryLeaveEarlyTimes>0 ? item.ryLeaveEarlyTimes+'次早退,' : ''}}
+// 			{{item.ryMinersTimes>0 ? item.ryMinersTimes+'次旷工,' : ''}}
+// 			{{item.ryOnPA>0? item.ryOnPA+'次打卡异常（原因包括忘打卡或打卡机故障）,' : ''}}
+// 			{{item.notEntry=='入职' ? item.ryEnteryTime+',' : ''}}
+			ryKQContentAction:function(item){
+				
+				if(item.ryLaterTimes>0){
+					this.ryKQContent = this.ryKQContent+item.ryLaterTimes+'次迟到,'
+				}
+				if(item.ryLeaveEarlyTimes>0){
+					this.ryKQContent = this.ryKQContent+item.ryLeaveEarlyTimes+'次早退,'
+				}
+				if(item.ryMinersTimes>0){
+					this.ryKQContent = this.ryKQContent+item.ryMinersTimes+'次旷工,'
+				}
+				if(item.ryOnPA>0){
+					this.ryKQContent = this.ryKQContent+item.ryOnPA+'次打卡异常,'
+				}
+				if(item.ryOnPA>0){
+					this.ryKQContent = this.ryKQContent+item.ryOnPA+'次打卡异常,'
+				}
+				if(item.ryOnPA>0){
+					this.ryKQContent = this.ryKQContent+item.ryOnPA+'次打卡异常,'
+				}
+				if(item.ryLaterTimes<=0 && item.ryLeaveEarlyTimes<=0 && item.ryLeaveEarlyTimes <= 0 
+				&& item.ryLeaveEarlyTimes<=0 &&item.ryNotPA <= 0){
+					this.ryKQContent = '全勤'
+				}
+				return this.ryKQContent
+			},
 			//考勤统计报表
 			async getCountKqTableList() {
 				// var url= 'http://172.16.2.40:8080/Erp1.1/search/testList'
@@ -103,7 +138,7 @@
 					data: {
 						departName:this.departName,
 						departId:this.departId,
-						name: this.name,
+						accountName: this.name,
 						jobNum: this.jobNum,
 						beginDate: this.beginDate,
 						endDate: this.endDate,

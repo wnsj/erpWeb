@@ -1,6 +1,7 @@
 <!-- author:dingdong -->
 <template>
   <div class="container user-container" id="report-app" v-cloak>
+		<div></div>
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 main-title">
         <h2>请假报备管理</h2>
@@ -74,6 +75,7 @@
       </div>
     </div>
     <br>
+		<div></div>
     <!-- 查询结果集 -->
     <div class="row">
       <div class="col-md-12">
@@ -170,6 +172,7 @@
           </table>
         </div>
       </div>
+			<div></div>
     </div><!-- /.row 查询页面-->
     <!--模态对话框-->
     <!-- 请假报备申请 -->

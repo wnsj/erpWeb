@@ -12,10 +12,10 @@
 				</div>
 				<div class="col-md-10 col-lg-10">
 					<span class="leavespan">
-						<input type="date" value="" class="form-control" v-model="beginDate" />
+						<dPicker v-model="beginDate" v-on:change="dateAction('begin')"></dPicker>
 					</span> <span class="leavespan01">&nbsp;&nbsp;&nbsp;至：</span>
 					<span class="leavespan">
-						<input type="date" value="" class="form-control" v-model="endDate" />
+						<dPicker v-model="endDate" v-on:change="dateAction('end')"></dPicker>
 					</span>
 				</div>
 			</div>
@@ -60,7 +60,7 @@
 			</div>
 
 			<button type="button" class="btn btn-primary pull-right" @click="dowmelxe('请假表')">导出</button>
-			<button type="button" class="btn btn-primary pull-right m_r_10" data-toggle="modal" v-on:click="showRestInfo('','1')">申请</button>
+			<button type="button" class="btn btn-primary pull-right m_r_10" data-toggle="modal" v-on:click="showRestInfo('','3')">申请</button>
 
 			<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" v-on:click="restDownList()">查询</button>
 
@@ -113,11 +113,11 @@
 								<td class="text-center">{{item.accountName4}}</td>
 								<td class="text-center">{{item.result4}}</td>
 								<td class="text-center"><button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal"
-									 data-target="#myModalJoin_check" v-on:click="showRestInfo(item,'2')">查看</button></td>
+									 data-target="#myModalJoin_check" v-on:click="showRestInfo(item,'4')">查看</button></td>
 								<td class="text-center"><button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal"
-									 data-target="#myModalJoin_revise" v-on:click="showRestInfo(item,'3')">修改</button></td>
+									 data-target="#myModalJoin_revise" v-on:click="showRestInfo(item,'5')">修改</button></td>
 								<td class="text-center"><button type="button" class="btn btn-warning pull-right m_r_10" 
-								v-on:click="showRestInfo(item,'4')">处理</button></td>
+								v-on:click="showRestInfo(item,'6')">处理</button></td>
 							</tr>
 						</tbody>
 					</table>
@@ -140,9 +140,10 @@
 	import rdModify from '../paperlessOffice/subRD/RdInfoOfModify.vue'
 
 	import depart from '../vuecommon/department.vue'
-	
+	import dPicker from 'vue2-datepicker'
 	export default {
 		components:{
+			dPicker,
 			depart,
 			rdInfo,
 			rdCheck,
@@ -165,11 +166,11 @@
 		methods:{
 			showRestInfo:function(rdInfo,param){
 					
-					if(param=='1'){
+					if(param=='3'){
 						$("#rdApplyModal").modal('show')
-					}else if(param=='2'){
+					}else if(param=='4'){
 						$("#rdCheckModal").modal('show')
-					}else if(param=='3'){
+					}else if(param=='5'){
 						console.log(rdInfo.leaveAccount+' == '+this.accountInfo().account_ID)
 						if(rdInfo.leaveAccount == this.accountInfo().account_ID){
 							$("#rdModifyModal").modal('show')
@@ -177,7 +178,7 @@
 							alert(this.notHaveRule)
 						}
 					}
-					else if(param=='4'){
+					else if(param=='6'){
 						if(!this.isBlank(rdInfo.result4)||rdInfo.result4==''){
 							alert('处理完成，无法在进行处理')
 							return
@@ -187,16 +188,16 @@
 						|| this.accountId==rdInfo.account3
 						|| this.accountId==rdInfo.account4){
 							if(this.accountId==rdInfo.account1){
-								this.$children[4].showROHEmp('check')
+								this.$children[6].showROHEmp('check')
 							}
 							if(this.accountId==rdInfo.account2){
-								this.$children[4].showROHEmp('verify')
+								this.$children[6].showROHEmp('verify')
 							}
 							if(this.accountId==rdInfo.account3){
-								this.$children[4].showROHEmp('approval')
+								this.$children[6].showROHEmp('approval')
 							}
 							if(this.accountId==rdInfo.account4){
-								this.$children[4].showROHEmp('report')
+								this.$children[6].showROHEmp('report')
 							}
 							$("#rdHandleModal").modal('show')
 						}else{
@@ -217,7 +218,14 @@
 				}
 				this.restDownList()
 			},
-			
+			//更新时间
+			dateAction: function(param) {
+				if (param == 'begin') {
+					this.beginDate = this.moment(this.beginDate, 'YYYY-MM-DD 00:00:00.000')
+				} else if (param == 'end') {
+					this.endDate = this.moment(this.endDate, 'YYYY-MM-DD 23:59:59.000')
+				}
+			},
 			//查看倒休列表
 			restDownList: function() {
 				
