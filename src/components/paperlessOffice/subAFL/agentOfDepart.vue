@@ -72,8 +72,15 @@
 			};
 		},
 		methods:{
+			//初始化
+			initData:function(){
+				this.$children[0].departId=this.accountInfo().departId
+				this.departId=this.accountInfo().departId
+				this.empList()
+			},
 			departChange:function(param1,param2){
 				this.departId=param1
+				this.empList()
 			},
 			backAciton:function(item){
 				this.$emit('backAciton', item)

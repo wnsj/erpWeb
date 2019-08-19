@@ -13,10 +13,10 @@
 				</div>
 				<div class="col-md-11 col-lg-11">
 					<span class="leavespan">
-						<input type="date" value="" class="form-control" v-model="beginDate"/>
+						<dPicker v-model="beginDate" v-on:change="dateAction('begin')"></dPicker>
 					</span> <span class="leavespan01">&nbsp;&nbsp;&nbsp;至：</span>
 					<span class="leavespan">
-						<input type="date" value="" class="form-control" v-model="endDate" />
+						<dPicker v-model="endDate" v-on:change="dateAction('end')"></dPicker>
 					</span>
 				</div>
 			</div>
@@ -60,7 +60,7 @@
 			</div>
 
 			<button type="button" class="btn btn-primary pull-right" @click="dowmelxe('请假表')">导出</button>
-			<button type="button" class="btn btn-primary pull-right m_r_10" data-toggle="modal" v-on:click="showLeaveInfo('','1')">申请</button>
+			<button type="button" class="btn btn-primary pull-right m_r_10" data-toggle="modal" v-on:click="showLeaveInfo('','3')">申请</button>
 
 			<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" v-on:click="askOfLeaveList()">查询</button>
 
@@ -114,11 +114,11 @@
 								<td class="text-center">{{item.accountName4}}</td>
 								<td class="text-center">{{item.result4}}</td>
 								<td class="text-center"><button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal"
-									 	 v-on:click="showLeaveInfo(item,'2')">查看</button></td>
+									 	 v-on:click="showLeaveInfo(item,'4')">查看</button></td>
 								<td class="text-center"><button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal"
-									 v-on:click="showLeaveInfo(item,'4')">修改</button></td>
+									 v-on:click="showLeaveInfo(item,'5')">修改</button></td>
 								<td class="text-center"><button type="button" class="btn btn-warning pull-right m_r_10" 
-								v-on:click="showLeaveInfo(item,'3')">处理</button></td>
+								v-on:click="showLeaveInfo(item,'6')">处理</button></td>
 							</tr>
 
 						</tbody>
@@ -138,16 +138,17 @@
 					<lioc></lioc>
 				</div>
 			</div>
-			<div class="modal fade" id="lioh" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog staff_t">
-					<lioh @submitAskForLeaveModify='submitAFLASuccess'></lioh>
-				</div>
-			</div>
 			<div class="modal fade" id="liom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog staff_t">
 					<liom @submitAskForLeaveApply='submitAFLASuccess'></liom>
 				</div>
 			</div>
+			<div class="modal fade" id="lioh" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog staff_t">
+					<lioh @submitAskForLeaveModify='submitAFLASuccess'></lioh>
+				</div>
+			</div>
+			
 			<div class="modal fade" id="myModalJoin_add" tabindex="3" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 			</div>
@@ -160,6 +161,7 @@
 <script>
 	import axios from 'axios'
 	
+	import dPicker from 'vue2-datepicker'
 	import lioa from '../paperlessOffice/subAFL/LeaveInfoOfApply.vue'
 	import lioc from '../paperlessOffice/subAFL/LeaveInfoOfCheck.vue'
 	import lioh from '../paperlessOffice/subAFL/LeaveInfoOfHandle.vue'
@@ -167,6 +169,7 @@
 	import depart from '../vuecommon/department.vue'
 	export default {
 		components:{
+			dPicker,
 			lioa,
 			lioc,
 			lioh,
@@ -194,32 +197,32 @@
 			},
 			showLeaveInfo:function(lInfo,param){
 				
-				if(param=='1'){
+				if(param=='3'){
 					$("#lioa").modal('show')
-				}else if(param=='2'){
+				}else if(param=='4'){
 					$("#lioc").modal('show')
-				}else if(param=='3'){
+				}else if(param=='5'){
 					if(!this.isBlank(lInfo.result3)||lInfo.result3==''){
 						alert('处理完成，无法在进行处理')
 						return
 					}
 					if(this.accountId==lInfo.account1){
-						this.$children[3].showCVAREmp('check')
+						this.$children[param].showCVAREmp('check')
 						$("#lioh").modal('show')
 					}else if(this.accountId==lInfo.account2){
-						this.$children[3].showCVAREmp('verify')
+						this.$children[param].showCVAREmp('verify')
 						$("#lioh").modal('show')
 					}else if(this.accountId==lInfo.account3){
-						this.$children[3].showCVAREmp('approval')
+						this.$children[param].showCVAREmp('approval')
 						$("#lioh").modal('show')
 					}else if(this.accountId==lInfo.account4){
-						this.$children[3].showCVAREmp('report')
+						this.$children[param].showCVAREmp('report')
 						$("#lioh").modal('show')
 					}else{
 						alert(this.notHaveRule)
 					}
 					
-				}else if(param=='4'){
+				}else if(param=='6'){
 					if(lInfo.leaveAccount == this.accountInfo().account_ID){
 						$("#liom").modal('show')
 					}else{
@@ -239,7 +242,14 @@
 				}
 				this.askOfLeaveList()
 			},
-			
+			//更新时间
+			dateAction: function(param) {
+				if (param == 'begin') {
+					this.beginDate = this.moment(this.beginDate, 'YYYY-MM-DD 00:00:00.000')
+				} else if (param == 'end') {
+					this.endDate = this.moment(this.endDate, 'YYYY-MM-DD 23:59:59.000')
+				}
+			},
 			timeChange:function(){
 				console.log('begin:'+this.beginDate)
 			},
