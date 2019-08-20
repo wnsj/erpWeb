@@ -372,7 +372,6 @@
         });
       },
       getEditInfo(item) {
-        console.log(item)
         this.interviewInfo = Object.assign({}, item)
         this.$refs.interviewInfo.passParamToSubModule(this.interviewInfo)
       },

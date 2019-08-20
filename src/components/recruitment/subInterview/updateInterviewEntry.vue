@@ -63,11 +63,6 @@
         this.interviewBaseEdit = this.$refs.updateBasic.interviewBase
         this.educationExprienceEdit = this.$refs.updateEducation.eduAndExpInfo
         this.applyEdit = this.$refs.updateApply.apply
-        for (let index in this.interviewBaseEdit){
-          console.log(index);
-          console.log(this.interviewBaseEdit[index]);
-        }
-        console.log(this.interviewBaseEdit.id)
         if (this.isBlank(this.interviewBaseEdit.name)) {
           alert('姓名不能为空');
           return false;

@@ -65,7 +65,6 @@
               <th class="text-center">计划月份</th>
               <th class="text-center">缺编人数</th>
               <th class="text-center">计划招聘人数</th>
-              <th class="text-center">邀约人数</th>
               <th class="text-center" v-if="has(67)">编辑</th>
               <th class="text-center" v-if="has(67)">点击完成</th>
               <th class="text-center" v-if="has(67)">点击撤销</th>
@@ -78,11 +77,10 @@
               <td class="text-center">{{item.planDate|month}}</td>
               <td class="text-center">{{item.lackNum}}</td>
               <td class="text-center">{{item.planNum}}</td>
-              <td class="text-center">{{item.phoneNum}}</td>
               <td class="text-center" v-if="has(67)">
-                  <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#planEdit"
-                          @click="getEditInfo(item)">编辑
-                  </button>
+                <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#planEdit"
+                        @click="getEditInfo(item)">编辑
+                </button>
               </td>
               <td class="text-center" v-if="has(67)">
                 <button type="button"
@@ -172,22 +170,19 @@
               <div class="form-group clearfix">
                 <label class="col-md-2 control-label text-right nopad">部门：</label>
                 <div class="col-md-5">
-                  <department ref="department" @departChange="getDeptEditId"></department>
+                  <department ref="deptEdit" @departChange="getDeptEditId"></department>
                 </div>
               </div>
               <div class="form-group clearfix">
                 <label class="col-md-2 control-label text-right nopad">职位：</label>
                 <div class="col-md-5">
-                  <positionInfo :positionId="positionEditId" @jobChange="getPositionEditId"></positionInfo>
+                  <positionInfo :pid="positionEditId" ref="positionEdit" @jobChange="getPositionEditId"></positionInfo>
                 </div>
               </div>
               <div class="form-group clearfix">
-                <label class="col-md-2 control-label text-right nopad">计划月份：</label>
                 <div class="col-md-5 input-group date form_date">
-                  <input type="date" class="form-control" v-model="planEditDate">
-                  <div class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                  </div>
+                  <label class="control-label text-left nopad">计划月份：</label>
+                  <date-picker v-model="planEditDate" type="month" format="YYYY-MM"></date-picker>
                 </div>
               </div>
               <div class="form-group clearfix">
@@ -200,12 +195,6 @@
                 <label class="col-md-2 control-label text-right nopad">计划招聘：</label>
                 <div class="col-md-5">
                   <input type="number" class="form-control" value="0" min="0" max="999" v-model="planEditNum">
-                </div>
-              </div>
-              <div class="form-group clearfix">
-                <label class="col-md-2 control-label text-right nopad">邀约人数：</label>
-                <div class="col-md-5">
-                  <input type="number" class="form-control" value="0" min="0" max="999" v-model="phoneEditNum">
                 </div>
               </div>
             </form>
@@ -263,8 +252,7 @@
         positionEditId: '',
         planEditDate: '',
         lackEditNum: '',
-        planEditNum: '',
-        phoneEditNum: ''
+        planEditNum: ''
       }
     },
     methods: {
@@ -335,8 +323,14 @@
           alert('日期还没有选择');
           return false;
         }
-        const msg = confirm("确认添加?")
-        if(msg){
+        if (this.isBlank(this.lackAddNum) || this.lackAddNum < 0) {
+          this.lackAddNum = 0
+        }
+        if (this.isBlank(this.planAddNum) || this.planAddNum < 0) {
+          this.planAddNum = 0
+        }
+        const msg = confirm("确认添加？")
+        if (msg) {
           axios({
             method: 'post',
             url: this.url + '/zpglController/addZpPlan',
@@ -365,80 +359,75 @@
 
       // ---------------------------------------编辑----------------------------------
 
-      getDeptEditId(departId) {
-        this.deptEditId = departId
+      getDeptEditId(val) {
+        console.log("部门" + val)
+        this.deptEditId = val
       },
-      getPositionEditId(positionId) {
-        this.positionEditId = positionId
+      getPositionEditId(val) {
+        console.log("职位" + val)
+        this.positionEditId = val
       },
       // 点击编辑获取招聘发布详细信息
       getEditInfo(item) {
         this.planId = item.planId
-        this.$refs.department.setDpart(item.department);
         this.deptEditId = item.department
         this.positionEditId = item.position
-        this.planEditDate = this.getCurrentDayAction(item.planDate)
+        this.planEditDate = item.planDate
         this.lackEditNum = item.lackNum
         this.planEditNum = item.planNum
-        this.phoneEditNum = item.phoneNum;
+        this.$refs.deptEdit.setDpart(item.department);
+        this.$refs.positionEdit.setPositionId(item.position)
+        this.$refs.positionEdit.getPositionInfo()
       },
       editRecruitPlan() {   // 编辑招聘发布信息
-        if (this.positionEditId == '' || this.positionEditId == '0') {
+        if (this.isBlank(this.positionEditId)) {
           alert('职位还没有选择');
           return false;
         }
-        if (this.planEditDate == '') {
+        if (this.isBlank(this.planEditDate)) {
           alert('日期还没有选择');
           return false;
         }
-        if (this.lackEditNum == '' || this.planEditNum < 0) {
-          alert('缺编人数不能小于0');
-          return false;
+        if (this.isBlank(this.lackEditNum) || this.lackEditNum < 0) {
+          this.lackEditNum = 0
         }
-        if (this.planEditNum == '' || this.planEditNum < 0) {
-          alert('计划招聘人数不能小于0');
-          return false;
+        if (this.isBlank(this.planEditNum) || this.planEditNum < 0) {
+          this.planEditNum = 0
         }
-        if (this.phoneEditNum == '' || this.phoneEditNum < 0) {
-          alert('邀约人数不能小于0');
-          return false;
+        const msg = confirm("确认修改？")
+        if (msg) {
+          axios({
+            method: 'post',
+            url: this.url + '/zpglController/updateZpPlan',
+            headers: {
+              'Content-Type': this.contentType,
+              'Access-Token': this.accessToken
+            },
+            data: {
+              planId: this.planId,
+              department: this.deptEditId,
+              position: this.positionEditId,
+              planDate: this.planEditDate,
+              lackNum: this.lackEditNum,
+              planNum: this.planEditNum
+            },
+            dataType: 'json',
+          }).then(response => {
+            alert("修改成功")
+            $('#planEdit').modal('hide');
+            this.queryRecruitPlan()
+          }).catch(error => {
+            console.log(error)
+          });
         }
-
-        console.log("第一个planId:" + this.planId)
-        console.log("deptEditId:" + this.deptEditId)
-        console.log("positionEditId:" + this.positionEditId)
-        console.log("planEditDate:" + this.planEditDate)
-        console.log("lackEditNum:" + this.lackEditNum)
-        console.log("planEditNum:" + this.planEditNum)
-        console.log("phoneEditNum:" + this.phoneEditNum)
-        axios({
-          method: 'post',
-          url: this.url + '/zpglController/updateZpPlan',
-          headers: {
-            'Content-Type': this.contentType,
-            'Access-Token': this.accessToken
-          },
-          data: {
-            planId: this.planId,
-            department: this.deptEditId,
-            position: this.positionEditId,
-            planDate: this.planEditDate,
-            lackNum: this.lackEditNum,
-            planNum: this.planEditNum,
-            phoneNum: this.phoneEditNum,
-          },
-          dataType: 'json',
-        }).then((response) => {
-          this.queryRecruitPlan()
-          console.log("修改成功")
-        }).catch((error) => {
-          console.log('请求失败处理')
-        });
-        $('#planEdit').modal('hide');
       },
       changeIsYes(item) {
-        const msg = "您真的确定要完成吗?";
-        if (confirm(msg) == true) {
+        if (item.isBack == 1) {
+          alert('已经撤销！')
+          return false
+        }
+        const msg = confirm('确认完成？')
+        if (msg) {
           axios({
             method: 'post',
             url: this.url + '/zpglController/updateZpPlan',
@@ -451,21 +440,21 @@
               isYes: '1'
             },
             dataType: 'json',
-          }).then((response) => {
+          }).then(response => {
+            alert('已完成')
             this.queryRecruitPlan()
-            return true;
-            console.log("修改状态成功")
-          }).catch((error) => {
-            return false;
-            console.log('请求失败处理')
+          }).catch(error => {
+            console.log(error)
           });
-        } else {
-          return false;
         }
       },
       changeIsBack(item) {
-        const msg = "您真的确定要注销吗?一旦注销无法恢复!";
-        if (confirm(msg) == true) {
+        if (item.isYes == 1) {
+          alert('已完成,不可撤销！')
+          return false
+        }
+        const msg = confirm('确认撤销？')
+        if (msg) {
           axios({
             method: 'post',
             url: this.url + '/zpglController/updateZpPlan',
@@ -478,16 +467,12 @@
               isBack: '1'
             },
             dataType: 'json',
-          }).then((response) => {
+          }).then(response => {
+            alert('撤销成功')
             this.queryRecruitPlan()
-            return true;
-            console.log("修改状态成功")
-          }).catch((error) => {
-            return false;
-            console.log('请求失败处理')
+          }).catch(error => {
+            console.log(error)
           });
-        } else {
-          return false;
         }
       },
     }
