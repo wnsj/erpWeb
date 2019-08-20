@@ -60,15 +60,11 @@
               <td class="text-center">{{item.publishDate|date}}</td>
               <td class="text-center">{{item.publishNum}}</td>
               <td class="text-center">{{item.phoneNum}}</td>
-              <td class="text-center">
-                <button type="button" class="btn btn-warning btn-sm"
-                        @click="getEditInfo(item)" v-if="has(65)">编辑
-                </button>
+              <td class="text-center" v-if="has(65)">
+                <button type="button" class="btn btn-warning btn-sm" @click="getEditInfo(item)">编辑</button>
               </td>
-              <td class="text-center">
-                <button type="button" class="btn btn-danger btn-sm"
-                        @click="getDelId(item)" v-if="has(65)">删除
-                </button>
+              <td class="text-center" v-if="has(65)">
+                <button type="button" class="btn btn-danger btn-sm" @click="getDelId(item)">删除</button>
               </td>
             </tr>
             </tbody>
