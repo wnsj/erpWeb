@@ -73,11 +73,10 @@
               <th class="text-center" v-if="has('71')">配接单</th>
               <th class="text-center" v-if="has('71')">是否进行</th>
               <th class="text-center" v-if="has('71')">点击接单</th>
-              <th class="text-center">查看详情</th>
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(item,index) in preAppList" :key="index">
+            <tr v-for="(item,index) in preAppList" :key="index" @dblclick="showInfoBtn(item)">
               <td class="text-center">{{item.id}}</td>
               <td class="text-center">{{item.deptName}}</td>
               <td class="text-center">{{item.submitTime|dateFormat}}</td>
@@ -104,7 +103,7 @@
                 }}
               </td>
               <td class="text-center">{{item.handName == null? '未交接':item.handName}}</td>
-              <td class="text-center" v-if="has('71')">{{item.handId == null? '未指配':item.handId}} </td>
+              <td class="text-center" v-if="has('71')">{{item.handId == null? '未指配':item.handId}}</td>
               <td class="text-center" v-if="has('71')">
                 <button type="button" class="btn btn-sm btn-default" @click="continueBtn(item)"
                         :disabled="item.status == null? false:'disabled'">
@@ -113,9 +112,6 @@
               </td>
               <td class="text-center" v-if="has('71')">
                 <button type="button" class="btn btn-sm btn-default"> 点击接单</button>
-              </td>
-              <td class="text-center">
-                <b><button type="button" class="btn btn-sm btn-default" @click="showInfoBtn(item)">查看详情</button></b>
               </td>
             </tr>
             </tbody>
@@ -184,8 +180,8 @@
               </div>
               <label class="col-md-2 control-label text-right nopad">意见：</label>
               <div class="col-md-3 col-md-offset-1">
-                <button type="button" class="btn btn-sm btn-dark" disabled="disabled">同意</button>
-                <button type="button" class="btn btn-sm btn-dark" disabled="disabled">不同意</button>
+                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">同意</button>
+                <button type="button" class="btn btn-sm btn-warning" disabled="disabled">不同意</button>
               </div>
             </div>
             <div class="form-group clearfix">
@@ -199,14 +195,15 @@
               <div class="col-md-3">
                 <input type="text" class="form-control" disabled="disabled">
               </div>
-              <div class="col-md-2 col-md-offset-3">
-                <button type="button" class="btn btn-sm btn-block" disabled="disabled">完成</button>
+              <label class="col-md-2 control-label text-right nopad">对接：</label>
+              <div class="col-md-2 col-md-offset-1">
+                <button type="button" class="btn btn-sm btn-warning btn-block" disabled="disabled">完成</button>
               </div>
             </div>
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">实际使用人：</label>
               <div class="col-md-3">
-                <select class="form-control">
+                <select class="form-control" disabled="disabled">
                   <option></option>
                 </select>
               </div>
@@ -214,15 +211,16 @@
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">主管：</label>
               <div class="col-md-3">
-                <leader :lid="computerForAdd.lid" ref="leader" @leaderChange="leaderChange"></leader>
+                <select class="form-control" disabled="disabled">
+                  <option></option>
+                </select>
               </div>
               <div class="col-md-1">
-                <button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-plus" aria-hidden="true"
-                        data-toggle="modal" @click="queryLeaderBtn">
+                <button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-plus" aria-hidden="true" disabled="disabled">
                 </button>
               </div>
               <div class="col-md-2 col-md-offset-2">
-                <button type="button" class="btn btn-sm btn-block" disabled="disabled">确定</button>
+                <button type="button" class="btn btn-sm btn-warning btn-block" disabled="disabled">确定</button>
               </div>
             </div>
           </div><!-- /.modal-body -->
@@ -237,7 +235,15 @@
             <button type="button" class="close" data-dismiss="modal">
               <span>×</span>
             </button>
-            <h4 class="modal-title">电脑预申请</h4>
+            <div class="row">
+              <div class="col-md-2">
+                <h4 class="modal-title">电脑预申请</h4>
+              </div>
+              <div class="col-md-5 col-md-offset-2">
+                <b><label class="col-md-4 control-label text-right nopad idNum">单号：</label>
+                  <span class="idNum nopad">{{computerForUpdate.id}}</span></b>
+              </div>
+            </div>
           </div><!-- /.modal-header -->
           <div class="modal-body">
             <legend><h5>电脑用品需求单</h5></legend>
@@ -261,7 +267,7 @@
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">预备使用人：</label>
               <div class="col-md-3">
-                <input type="text" class="form-control" placeholder="UserName" :disabled="computerForUpdate.isAble"
+                <input type="text" class="form-control" :disabled="computerForUpdate.isAble"
                        v-model="computerForUpdate.userName">
               </div>
               <label class="col-md-2 control-label text-right nopad">使用时间：</label>
@@ -274,8 +280,7 @@
           </div><!-- /.modal-body -->
           <div class="modal-footer">
             <div class="text-center">
-              <button type="button" class="btn btn-sm btn-warning"
-                      :disabled="computerForUpdate.isAble" @click="modifyPreApp">修改
+              <button type="button" class="btn btn-sm btn-warning" :disabled="computerForUpdate.isAble" @click="modifyPreApp">修改
               </button>
             </div>
           </div> <!-- /.modal-footer -->
@@ -290,14 +295,15 @@
               </div>
               <label class="col-md-2 control-label text-right nopad">意见：</label>
               <div class="col-md-1">
-                <span class="nopad">
-                  <b>{{this.computerForUpdate.principalAudit == 2? '不同意':
-                        this.computerForUpdate.principalAudit == 1? '同意':''}}
+                <span class="nopad"><b>
+                  {{computerForUpdate.principalAudit == 0? '未审批':
+                    computerForUpdate.principalAudit == 1? '同意':
+                    computerForUpdate.principalAudit == 2? '不同意': ''}}
                   </b></span>
               </div>
-              <div class="col-md-3 col-md-offset-1">
-                <button type="button" class="btn btn-sm btn-warning" @click="agreePreApp"
-                        :disabled="computerForUpdate.isAbleForCheck"><b>同意</b>
+              <div class="col-md-3">
+                <button type="button" class="btn btn-sm btn-warning"
+                        :disabled="computerForUpdate.isAbleForCheck" @click="agreePreApp"><b>同意</b>
                 </button>
                 <button type="button" class="btn btn-sm btn-warning"
                         :disabled="computerForUpdate.isAbleForCheck" @click="disagreePreApp"><b>不同意</b>
@@ -307,7 +313,7 @@
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
-                <textarea class="textarea" v-model="computerForUpdate.remark"
+                <textarea class="textarea" v-model="computerForUpdate.remark" placeholder="负责人说明"
                           :disabled="computerForUpdate.isAbleForCheck">
                 </textarea>
               </div>
@@ -315,10 +321,11 @@
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">对接人：</label>
               <div class="col-md-3">
-                <hand :hid="computerForUpdate.hid" ref="hand" @handChange="handChange"></hand>
+                <hand :hid="computerForUpdate.hid" ref="hand" @handChange="handChange"
+                      :disabled="computerForUpdate.isAbleForCheck"></hand>
               </div>
               <label class="col-md-2 control-label text-right nopad">对接：</label>
-              <div class="col-md-2 col-md-offset-2">
+              <div class="col-md-2 col-md-offset-1">
                 <button type="button" :disabled="!hasDept('23')" class="btn btn-sm btn-warning btn-block"
                         @click="finishDocking">
                   <b>完成</b>
@@ -328,7 +335,7 @@
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">实际使用人：</label>
               <div class="col-md-3">
-                <select class="form-control">
+                <select class="form-control" disabled="disabled">
                   <option></option>
                 </select>
               </div>
@@ -336,15 +343,16 @@
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">主管：</label>
               <div class="col-md-3">
-                <leader :lid="computerForUpdate.lid" ref="leaderUpdate" @leaderChange="leaderChangeForUpdate"></leader>
+                <select class="form-control" disabled="disabled">
+                  <option></option>
+                </select>
               </div>
               <div class="col-md-1">
-                <button type="button" data-toggle="modal" @click="updateLeaderBtn">
-                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                <button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-plus" aria-hidden="true" disabled="disabled">
                 </button>
               </div>
-              <div class="col-md-2 col-md-offset-3">
-                <button type="button" class="btn btn-sm btn-block">确定</button>
+              <div class="col-md-2 col-md-offset-2">
+                <button type="button" class="btn btn-sm btn-warning btn-block" disabled="disabled">确定</button>
               </div>
             </div>
           </div><!-- /.modal-body -->
@@ -455,9 +463,6 @@
       jobChange(val) {
         this.computerForAdd.pid = val
       },
-      leaderChange(val) {
-        this.computerForAdd.lid = val
-      },
       preAppBtn() {
         this.clearAddModel()
         this.$refs.job.setPositionId('')
@@ -469,15 +474,6 @@
         this.computerForAdd.deptId = 0 // data里默认值
         this.computerForAdd.userName = ''
         this.computerForAdd.useTime = this.$currentHHmm()
-        this.computerForAdd.lid = ''
-        this.$refs.leader.setDeptId(0)
-      },
-      queryLeaderBtn() {
-        if (this.computerForAdd.deptId == 0) {
-          alert("请选择部门！")
-        } else {
-          this.$refs.leader.setDeptId(this.computerForAdd.deptId);
-        }
       },
       addPreApp() {
         if (this.isBlank(this.computerForAdd.pid)) {
@@ -489,7 +485,7 @@
           return false;
         }
         const msg = confirm('是否提交需求单？')
-        if(msg){
+        if (msg) {
           axios({
             method: 'post',
             url: this.url + '/computerController/addPreApplication',
@@ -523,26 +519,12 @@
       jobChangeForUpdate(val) {
         this.computerForUpdate.pid = val
       },
-      leaderChangeForUpdate(val) {
-        this.computerForUpdate.lid = val
-      },
       handChange(val) {
         this.computerForUpdate.hid = val[0]
         this.computerForUpdate.handName = val[1]
       },
-      updateLeaderBtn() {
-        if (this.computerForUpdate.deptId == 0) {
-          alert("请选择部门!")
-        } else {
-          this.$refs.leaderUpdate.setDeptId(this.computerForUpdate.deptId);
-        }
-      },
-      clearUpdateModel() {
-        this.$refs.leaderUpdate.setDeptId('0')
-        this.computerForUpdate.isAble = 'disabled'
-      },
       showInfoBtn(item) {
-        this.clearUpdateModel()
+        this.computerForUpdate.isAble = 'disabled'
         const loginAccount = JSON.parse(Cookies.get("accountData")).account.account_ID
         if (loginAccount == item.applyId) {
           this.computerForUpdate.isAble = false
@@ -551,6 +533,7 @@
           this.computerForUpdate.isAbleForCheck = false
         }
         this.computerForUpdate.id = item.id
+        console.log(this.computerForUpdate.id)
         this.computerForUpdate.applyId = item.applyId
         this.computerForUpdate.deptId = item.deptId
         this.computerForUpdate.pid = item.positionId
@@ -725,5 +708,10 @@
     resize: none;
     width: 100%;
     height: 60px;
+  }
+
+  .idNum {
+    color: #B34D61;
+    font-size: 15px;
   }
 </style>
