@@ -33,6 +33,7 @@
 </template>
 
 <script>
+  import Cookies from 'js-cookie'
   import axios from 'axios'
   import basicInfo from '../subInterview/subInterviewEntry/interviewBasic.vue'
   import educationInfo from '../subInterview/subInterviewEntry/educationExperience.vue'
@@ -74,7 +75,7 @@
           return false;
         }
         if (this.isBlank(this.applyAdd.invitationDate)) {
-          alert('请选择邀约日期');
+          alert('请选择邀约时间');
           return false;
         }
         if (this.applyAdd.departAddId == '0') {
@@ -86,7 +87,7 @@
           return false;
         }
         if (this.isBlank(this.applyAdd.recruitDate)) {
-          alert('请选择面试日期');
+          alert('请选择面试时间');
           return false;
         }
         axios({
@@ -113,7 +114,7 @@
             ploitical: this.interviewBaseAdd.ploitical == null ? '' : this.interviewBaseAdd.ploitical,
             qq: this.interviewBaseAdd.qq == null ? '' : this.interviewBaseAdd.qq,
             sex: this.interviewBaseAdd.sex == null ? '' : this.interviewBaseAdd.sex,
-            nationality: this.interviewBaseAdd.uNationName == null ? '' : this.interviewBaseAdd.uNationName,
+            nationality: this.interviewBaseAdd.nationality == null ? '' : this.interviewBaseAdd.nationality,
             weight: this.interviewBaseAdd.weight == null ? '' : this.interviewBaseAdd.weight,
 
             // -------------------学历经验-----------------
@@ -137,7 +138,10 @@
             recruitDate: this.$YYYY_MM_DD_HH_mm(this.applyAdd.recruitDate),
             remark: this.applyAdd.remark == null ? '' : this.applyAdd.remark,
             score: this.applyAdd.score == null ? '' : this.applyAdd.score,
-            wages: this.applyAdd.wages == null ? '' : this.applyAdd.wages
+            wages: this.applyAdd.wages == null ? '' : this.applyAdd.wages,
+
+            updateDate: this.$currentTime(),
+            updateAccount: JSON.parse(Cookies.get("accountData")).account.account_ID
           },
           dataType: 'json',
         }).then(response => {

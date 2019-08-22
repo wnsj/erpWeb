@@ -15,7 +15,7 @@
       <div class="col-md-3">
         <div class="input-group">
           <span class="input-group-addon">预计使用人：</span>
-          <input type="text" class="form-control" placeholder="UserName" v-model="computer.userName">
+          <input type="text" class="form-control" v-model="computer.userName">
         </div>
       </div>
       <div class="col-md-3">
@@ -38,9 +38,9 @@
         </div>
       </div>
       <div class="col-md-5">
-        <date-picker v-model="computer.beginDate" type="date" format="YYYY-MM-DD" confirm></date-picker>
+        <date-picker v-model="computer.beginDate" type="date" format="YYYY-MM-DD"></date-picker>
         <span class="select-box-title">~</span>
-        <date-picker v-model="computer.endDate" type="date" format="YYYY-MM-DD" confirm></date-picker>
+        <date-picker v-model="computer.endDate" type="date" format="YYYY-MM-DD"></date-picker>
       </div>
       <div class="col-md-3 col-md-offset-1">
         <button type="button" class="btn btn-warning pull-right m_r_10">导出</button>
@@ -70,7 +70,9 @@
               <th class="text-center">负责人</th>
               <th class="text-center">负责人意见</th>
               <th class="text-center">对接人</th>
-              <th class="text-center" v-if="hasDept('23')">是否进行</th>
+              <th class="text-center" v-if="has('71')">配接单</th>
+              <th class="text-center" v-if="has('71')">是否进行</th>
+              <th class="text-center" v-if="has('71')">点击接单</th>
               <th class="text-center">查看详情</th>
             </tr>
             </thead>
@@ -101,15 +103,19 @@
                 item.principalAudit == 2? '不同意':''
                 }}
               </td>
-              <td class="text-center">{{item.handName}}</td>
-              <td class="text-center" v-if="hasDept('23')">
+              <td class="text-center">{{item.handName == null? '未交接':item.handName}}</td>
+              <td class="text-center" v-if="has('71')">{{item.handId == null? '未指配':item.handId}} </td>
+              <td class="text-center" v-if="has('71')">
                 <button type="button" class="btn btn-sm btn-default" @click="continueBtn(item)"
                         :disabled="item.status == null? false:'disabled'">
                   <b>{{item.status == 1? '进行中':item.status == 2? '已完成':'点击进行'}}</b>
                 </button>
               </td>
+              <td class="text-center" v-if="has('71')">
+                <button type="button" class="btn btn-sm btn-default"> 点击接单</button>
+              </td>
               <td class="text-center">
-                <button type="button" class="btn btn-sm btn-default" @click="showInfoBtn(item)">查看详情</button>
+                <b><button type="button" class="btn btn-sm btn-default" @click="showInfoBtn(item)">查看详情</button></b>
               </td>
             </tr>
             </tbody>
@@ -154,7 +160,7 @@
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">预备使用人：</label>
               <div class="col-md-3">
-                <input type="text" class="form-control" placeholder="UserName" v-model="computerForAdd.userName">
+                <input type="text" class="form-control" v-model="computerForAdd.userName">
               </div>
               <label class="col-md-2 control-label text-right nopad">使用时间：</label>
               <div class="col-md-3">
@@ -211,8 +217,8 @@
                 <leader :lid="computerForAdd.lid" ref="leader" @leaderChange="leaderChange"></leader>
               </div>
               <div class="col-md-1">
-                <button type="button" data-toggle="modal" @click="queryLeaderBtn">
-                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                <button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-plus" aria-hidden="true"
+                        data-toggle="modal" @click="queryLeaderBtn">
                 </button>
               </div>
               <div class="col-md-2 col-md-offset-2">
@@ -260,7 +266,7 @@
               </div>
               <label class="col-md-2 control-label text-right nopad">使用时间：</label>
               <div class="col-md-3">
-                <date-picker v-model="computerForUpdate.useTime" type="datetime" format="YYYY-MM-DD HH:mm" confirm
+                <date-picker v-model="computerForUpdate.useTime" type="datetime" format="YYYY-MM-DD HH:mm"
                              :disabled="computerForUpdate.isAble">
                 </date-picker>
               </div>
@@ -425,8 +431,8 @@
             'Access-Token': this.accessToken
           },
           data: {
-            accountId: this.has(72) ? '' : JSON.parse(Cookies.get("accountData")).account.account_ID,
-            accountName: this.has(72) ? '' : JSON.parse(Cookies.get("accountData")).account.account_Name,
+            accountId: this.has(71) ? '' : JSON.parse(Cookies.get("accountData")).account.account_ID,
+            accountName: this.has(71) ? '' : JSON.parse(Cookies.get("accountData")).account.account_Name,
             timeType: this.computer.timeType,
             beginTime: this.$queryStartTime(this.computer.beginDate),
             endTime: this.$queryEndTime(this.computer.endDate),
@@ -453,8 +459,9 @@
         this.computerForAdd.lid = val
       },
       preAppBtn() {
-        this.clearAddModel();
-        this.$refs.job.getPositionInfo();
+        this.clearAddModel()
+        this.$refs.job.setPositionId('')
+        this.$refs.job.getPositionInfo()
         $('#preAppAddModel').modal('show')
       },
       clearAddModel() {
@@ -467,15 +474,22 @@
       },
       queryLeaderBtn() {
         if (this.computerForAdd.deptId == 0) {
-          alert("请选择部门!")
+          alert("请选择部门！")
         } else {
           this.$refs.leader.setDeptId(this.computerForAdd.deptId);
         }
       },
       addPreApp() {
+        if (this.isBlank(this.computerForAdd.pid)) {
+          alert("岗位不能为空！")
+          return false;
+        }
         if (this.$YYYY_MM_DD_HH_mm_ss(this.computerForAdd.useTime) < this.$currentTime()) {
-          alert("使用时间不得小于当前时间")
-        } else {
+          alert("使用时间不得小于当前时间！")
+          return false;
+        }
+        const msg = confirm('是否提交需求单？')
+        if(msg){
           axios({
             method: 'post',
             url: this.url + '/computerController/addPreApplication',
@@ -494,7 +508,7 @@
             },
             dataType: 'json',
           }).then(response => {
-            console.log(response.data.retData);
+            alert("您已提交成功,请耐心等待审核")
             $('#preAppAddModel').modal('hide');
             this.queryPreApp();
           }).catch(err => {
@@ -634,7 +648,7 @@
           alert('请点击查看详情,点击完成按钮后再操作此处')
           return false;
         } else {
-          let msg = confirm("是否进行？")
+          const msg = confirm("是否进行？")
           axios({
             method: 'post',
             url: this.url + '/computerController/checkPreApp',

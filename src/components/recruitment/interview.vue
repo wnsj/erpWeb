@@ -70,7 +70,7 @@
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
         <div class="input-group">
           <span class="input-group-addon">姓名</span>
-          <input type="text" class="form-control" placeholder="Username" v-model="name">
+          <input type="text" class="form-control" v-model="name">
         </div>
       </div>
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -299,10 +299,10 @@
           {value: '0', label: '否'},
         ],
         interviewList: [],
-
         interviewBase: {},
         educationExprience: {},
         apply: {},
+        id: ''
       }
     },
     methods: {
@@ -361,7 +361,6 @@
             education: this.education,
             profession: this.profession,
             atSchool: this.atSchool,
-
             interviewInfo: {}  //首页列表获取的一个人的面试信息
           },
           dataType: 'json',
@@ -372,18 +371,35 @@
           console.log('请求失败处理')
         });
       },
-
       getEditInfo(item) {
         this.interviewInfo = Object.assign({}, item)
         this.$refs.interviewInfo.passParamToSubModule(this.interviewInfo)
-        this.interviewInfo.birth = this.interviewInfo.birth
-        this.interviewInfo.graduation = this.interviewInfo.graduation
-        this.interviewInfo.invitationDate = this.interviewInfo.invitationDate
-        this.interviewInfo.recruitDate = this.interviewInfo.recruitDate
       },
       addModelShow() {
         this.$refs.addInterview.initAdd()
         $('#interviewAdd').modal('show')
+      },
+      deleteInterview(item){
+        const msg = confirm("确定删除？")
+        if(msg){
+          this.id = item.id
+          axios({
+            method: 'post',
+            url: this.url + '/zpglController/updateRecruitDataById',
+            headers: {
+              'Content-Type': this.contentType,
+              'Access-Token': this.accessToken
+            },
+            data: {
+              id: this.id
+            }
+          }).then(response => {
+            alert('删除成功!')
+            this.queryInterview()
+          }).catch(error =>{
+            console.log('删除失败!')
+          });
+        }
       },
     },
   }

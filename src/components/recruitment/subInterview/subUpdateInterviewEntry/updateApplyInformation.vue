@@ -19,7 +19,7 @@
         </div>
         <label class="col-md-2 control-label text-right nopad">应聘职位：</label>
         <div class="col-md-3">
-          <position :positionId="apply.position" @positionChange='getPositionEditId'></position>
+          <position :pid="apply.position" ref="position" @jobChange='getPositionEditId'></position>
         </div>
       </div>
       <div class="form-group clearfix">
@@ -77,7 +77,7 @@
 <script>
   import DatePicker from 'vue2-datepicker'
   import channel from '../../../vuecommon/channel.vue'
-  import position from '../../../vuecommon/position.vue'
+  import position from '../../../vuecommon/positionInfo.vue'
   import department from '../../../vuecommon/department.vue'
 
   export default {
@@ -105,10 +105,11 @@
       childApply(val) {
         this.apply = val
         this.$refs.department.setDpart(this.apply.department);
+        this.$refs.channel.setChannelId(this.apply.channel);
+        this.$refs.position.setPositionId(this.apply.position);
       },
       getChannelEditId(channelId) {
         this.apply.channel = channelId
-        console.log("渠道编辑时的数据:" + this.apply.channel)
       },
       getDepartEditId(departId) {   // 部门
         this.apply.department = departId

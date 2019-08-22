@@ -27,10 +27,9 @@
 			// 获取所有项目
 			getNation: function() {
 				var url = this.url + '/search/nationList'
-			
+
 				axios.get(url).then((response) => {
 						this.nationList = response.data
-						// console.log(response.data)
 					})
 					.catch((error) => {
 						console.log(error)

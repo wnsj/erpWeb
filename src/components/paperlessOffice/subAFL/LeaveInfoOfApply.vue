@@ -3,7 +3,6 @@
 		<div class="modal-header">
 			<button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
 			<h1 class="modal-title">请假</h1>
-			<DatePicker v-on:click="vOnChange()"></DatePicker>
 		</div>
 		<div class="modal-header">
 			<h4 id="myModalLabel" class="modal-title"><span>申请人姓名：<i>{{lInfo.account_Name}}</i></span>
@@ -36,7 +35,7 @@
 
 			<div class="col-md-1">
 
-				<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" data-target="#myModalJoin_add">+</button>
+				<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" v-on:click="addBtnAction()">+</button>
 				<div class="modal fade" id="myModalJoin_add" tabindex="3" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					<div class="modal-dialog">
 						<agent @backAciton='agentAction' @closex='closeModal'></agent>
@@ -288,6 +287,7 @@
 				this.lInfo.positionId = this.accountInfo().position_ID
 				this.lInfo.addTime = this.moment()
 				this.lInfo.step = '0'
+				this.lInfo.leaveType='病假'
 
 
 				//清空数据
@@ -309,6 +309,11 @@
 			},
 			levelStype: function(param) {
 				this.lInfo.leaveType = param
+			},
+			//代理人添加弹窗
+			addBtnAction:function(){
+				this.$children[1].initData()
+				$("#myModalJoin_add").modal("show")
 			},
 			//代理人数据返回
 			agentAction: function(param) {

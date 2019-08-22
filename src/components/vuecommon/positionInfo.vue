@@ -35,6 +35,7 @@
         axios.get(url).then((response) => {
           console.log(response.data.retData);
           this.positionInfoList = response.data.retData;
+          console.log("职位id" + this.positionId)
           if (this.positionId == '0') {
             this.positionInfoList.splice(0, 0, {positionId: '0', positionName: '全部'})
           }
