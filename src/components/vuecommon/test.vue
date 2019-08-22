@@ -11,7 +11,7 @@
     <button @click="closeWebSocket()">关闭WebSocket连接</button>
     <hr />
     <div id="message"></div>
-    <button id="button">有人想加你为好友</button>
+    <button id="button" @click="sendFMesg">有人想加你为好友</button>
     <p id="text"></p>
   </center>
 </template>
@@ -38,8 +38,8 @@
       },
       startConection() {
         //判断当前浏览器是否支持WebSocket
-        var url = this.url.replace("http", 'ws').concat("/websocket/").concat(this.accountId);
-        //var url = "ws://172.16.56.1:8080/websocket/" + this.accountId;
+        //var url = this.url.replace("http", 'wss').concat("/websocket/").concat(this.accountId);
+        var url = "ws://172.16.213.210:8080/ERP/websocket/" + this.accountId;
         if ('WebSocket' in window) {
           this.websocket = new WebSocket(url);
         } else if ('MozWebSocket' in window) {
@@ -145,6 +145,44 @@
         setInterval(this.checkHeart(), 10 * 1000);
       },
       initDate() {},
+      popNotice() {
+        if (!window.Notification) {
+          alert('浏览器不支持Notification');
+          return;
+        }
+        //var button = document.getElementById('button');
+        var text = document.getElementById('text');
+        var title = "Hi，帅哥：";
+        var context = {
+          body: '可以加你为好友吗？',
+          icon: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565946516414&di=2f925456dfc0bbfc8ba457c6e38fb0ce&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201607%2F13%2F20160713110827_vyiPR.thumb.700_0.png'
+        }
+        // 检查用户是否同意接受通知
+        if (Notification.permission == "granted") {
+          var notification = new Notification(title, context);
+          notification.onclick = function() {
+            text.innerHTML = '张小姐已于' + new Date().toTimeString().split(' ')[0] + '加你为好友！';
+            window.open("https://172.16.213.210/ERP/dist/index.html#/perAnalysis/poresonnel");
+            notification.close();
+          };
+        } else if (Notification.permission !== 'denied') {
+          // 否则我们需要向用户获取权限
+          Notification.requestPermission(function(permission) {
+            // 如果用户同意，就可以向他们发送通知
+            if (permission === "granted") {
+              var notification = new Notification(title, context);
+              notification.onclick = function() {
+                text.innerHTML = '张小姐已于' + new Date().toTimeString().split(' ')[0] + '加你为好友！';
+                window.open("http://www.baidu.com");
+                notification.close();
+              };
+            }
+          });
+        }
+      },
+      sendFMesg() {
+        this.popNotice();
+      }
     },
     mounted() {
       //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
@@ -152,52 +190,6 @@
         this.closeWebSocket();
       }
       this.startConection();
-      if (window.Notification) {
-        var button = document.getElementById('button'),
-          text = document.getElementById('text');
-
-        var popNotice = function() {
-          var title = "Hi，帅哥：";
-          var context = {
-            body: '可以加你为好友吗？',
-            icon: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565946516414&di=2f925456dfc0bbfc8ba457c6e38fb0ce&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201607%2F13%2F20160713110827_vyiPR.thumb.700_0.png'
-          }
-          // 检查用户是否同意接受通知
-          if (Notification.permission == "granted") {
-            var notification = new Notification(title, context);
-            notification.onclick = function() {
-              text.innerHTML = '张小姐已于' + new Date().toTimeString().split(' ')[0] + '加你为好友！';
-              window.open("http://www.baidu.com");
-              notification.close();
-            };
-          } else if (Notification.permission !== 'denied') {
-            // 否则我们需要向用户获取权限
-            Notification.requestPermission(function(permission) {
-              // 如果用户同意，就可以向他们发送通知
-              if (permission === "granted") {
-                var notification = new Notification(title, context);
-                notification.onclick = function() {
-                  text.innerHTML = '张小姐已于' + new Date().toTimeString().split(' ')[0] + '加你为好友！';
-                  window.open("http://www.baidu.com");
-                  notification.close();
-                };
-              }
-            });
-          }
-        };
-
-        button.onclick = function() {
-          if (Notification.permission == "granted") {
-            popNotice();
-          } else if (Notification.permission != "denied") {
-            Notification.requestPermission(function(permission) {
-              popNotice();
-            });
-          }
-        };
-      } else {
-        alert('浏览器不支持Notification');
-      }
     }
 
   }
