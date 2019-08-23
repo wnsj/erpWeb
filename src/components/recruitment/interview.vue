@@ -379,9 +379,9 @@
         this.$refs.addInterview.initAdd()
         $('#interviewAdd').modal('show')
       },
-      deleteInterview(item){
+      deleteInterview(item) {
         const msg = confirm("确定删除？")
-        if(msg){
+        if (msg) {
           this.id = item.id
           axios({
             method: 'post',
@@ -396,7 +396,7 @@
           }).then(response => {
             alert('删除成功!')
             this.queryInterview()
-          }).catch(error =>{
+          }).catch(error => {
             console.log('删除失败!')
           });
         }

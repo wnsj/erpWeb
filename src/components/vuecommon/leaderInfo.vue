@@ -33,19 +33,29 @@
         console.log("部门ID" + val)
         this.getLeaderInfo();
       },
-      getLeaderInfo:function () {
-        let url = this.url + '/computerController/queryLeaderInfo?deptId=' + this.deptId
-        axios.get(url).then((response) =>{
+      // 查询渠道信息
+      getLeaderInfo: function() {
+        axios({
+          method: 'post',
+          url: this.url + '/computerController/queryLeaderInfo',
+          headers: {
+            'Content-Type': this.contentType,
+            'Access-Token': this.accessToken
+          },
+          data: {
+            deptId: this.deptId
+          },
+          dataType: 'json',
+        }).then(response => {
           console.log(response.data.retData);
           this.leaderInfoList = response.data.retData;
           if(this.leaderInfoList != null && this.leaderInfoList.length > 0){
             this.leaderId = this.leaderInfoList[0].leaderId;
           }
-        }).catch(function (error) {
-          console.log(error);
-          alert("get请求失败");
-        })
-      }
+        }).catch(error => {
+          console.log(error)
+        });
+      },
     },
     created() {
       this.leaderId = this.lid
