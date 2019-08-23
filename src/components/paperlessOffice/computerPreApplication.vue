@@ -103,7 +103,9 @@
                 }}
               </td>
               <td class="text-center">{{item.handName == null? '未交接':item.handName}}</td>
-              <td class="text-center" v-if="has('71')">{{item.handId == null? '未指配':item.handId}}</td>
+              <td class="text-center" id="showing" v-if="has('71')">
+                {{(item.handId == null||item.handId == 0)? '未指配':item.peiJieName}}
+              </td>
               <td class="text-center" v-if="has('71')">
                 <button type="button" class="btn btn-sm btn-default" @click="continueBtn(item)"
                         :disabled="item.status == null? false:'disabled'">
@@ -111,7 +113,7 @@
                 </button>
               </td>
               <td class="text-center" v-if="has('71')">
-                <button type="button" class="btn btn-sm btn-default"> 点击接单</button>
+                <button type="button" class="btn btn-sm btn-default">点击接单</button>
               </td>
             </tr>
             </tbody>
@@ -250,13 +252,13 @@
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">部门：</label>
               <div class="col-md-3">
-                <department ref="deptUpdate" :disabled="computerForUpdate.isAble" @departChange='deptChangeForUpdate'></department>
+                <department ref="deptUpdate" :disabled="computerForUpdate.isAbleForDept" @departChange='deptChangeForUpdate'></department>
               </div>
             </div>
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">岗位：</label>
               <div class="col-md-3">
-                <job :pid="computerForUpdate.pid" :disabled="computerForUpdate.isAble" ref="jobUpdate"
+                <job :pid="computerForUpdate.pid" :disabled="computerForUpdate.isAbleForJob" ref="jobUpdate"
                      @jobChange="jobChangeForUpdate"></job>
               </div>
               <label class="col-md-2 control-label text-right nopad">用品：</label>
@@ -273,7 +275,7 @@
               <label class="col-md-2 control-label text-right nopad">使用时间：</label>
               <div class="col-md-3">
                 <date-picker v-model="computerForUpdate.useTime" type="datetime" format="YYYY-MM-DD HH:mm"
-                             :disabled="computerForUpdate.isAble">
+                             confirm :disabled="computerForUpdate.isAble">
                 </date-picker>
               </div>
             </div>
@@ -407,6 +409,7 @@
           applyId: '',
           deptId: '',
           pid: '',
+          hid: '',
           userName: '',
           handId: '',
           handName: '',
@@ -414,9 +417,14 @@
           remark: '',
           lid: '',
           isAble: 'disabled',
+          isAbleForDept: 'disabled',
+          isAbleForJob: 'disabled',
           isAbleForCheck: 'disabled',
           principalAudit: '',
           finishTime: '',
+        },
+        computerForSelect: {
+          hid: '',
         },
         preAppList: {},
       }
@@ -528,6 +536,12 @@
         const loginAccount = JSON.parse(Cookies.get("accountData")).account.account_ID
         if (loginAccount == item.applyId) {
           this.computerForUpdate.isAble = false
+          this.computerForUpdate.isAbleForDept = false
+          this.computerForUpdate.isAbleForJob = false
+          if (item.principalAudit == 1) {
+            this.computerForUpdate.isAbleForDept = 'disabled'
+            this.computerForUpdate.isAbleForJob = 'disabled'
+          }
         }
         if (loginAccount == 666) {
           this.computerForUpdate.isAbleForCheck = false
@@ -552,78 +566,90 @@
         $('#preAppUpdateModel').modal('show')
       },
       modifyPreApp() {
-        axios({
-          method: 'post',
-          url: this.url + '/computerController/updatePreApplication',
-          headers: {
-            'Content-Type': this.contentType,
-            'Access-Token': this.accessToken
-          },
-          data: {
-            id: this.computerForUpdate.id,
-            deptId: this.computerForUpdate.deptId,
-            positionId: this.computerForUpdate.pid,
-            userName: this.computerForUpdate.userName,
-            useTime: this.$YYYY_MM_DD_HH_mm(this.computerForUpdate.useTime),
-            submitTime: this.$currentTime()
-          },
-          dataType: 'json',
-        }).then(response => {
-          console.log(response.data.retData);
-          $('#preAppUpdateModel').modal('hide');
-          this.queryPreApp();
-        }).catch(err => {
-          console.log(err)
-        });
+        if (this.$YYYY_MM_DD_HH_mm_ss(this.computerForUpdate.useTime) < this.$currentTime()) {
+          alert("使用时间不得小于当前时间！")
+          return false;
+        }
+        const msg = confirm('是否提交需求单？');
+        if (msg) {
+          axios({
+            method: 'post',
+            url: this.url + '/computerController/updatePreApplication',
+            headers: {
+              'Content-Type': this.contentType,
+              'Access-Token': this.accessToken
+            },
+            data: {
+              id: this.computerForUpdate.id,
+              deptId: this.computerForUpdate.deptId,
+              positionId: this.computerForUpdate.pid,
+              userName: this.computerForUpdate.userName,
+              useTime: this.$YYYY_MM_DD_HH_mm(this.computerForUpdate.useTime),
+              submitTime: this.$currentTime()
+            },
+            dataType: 'json',
+          }).then(response => {
+            alert('您已修改成功,请耐心等待审核')
+            $('#preAppUpdateModel').modal('hide');
+            this.queryPreApp();
+          }).catch(err => {
+            console.log(err)
+          });
+        }
       },
       // ---------------------------------------负责人审批----------------------------------
       agreePreApp() {
-        axios({
-          method: 'post',
-          url: this.url + '/computerController/checkPreApp',
-          headers: {
-            'Content-Type': this.contentType,
-            'Access-Token': this.accessToken
-          },
-          data: {
-            id: this.computerForUpdate.id,
-            handId: this.computerForUpdate.hid,
-            handName: this.computerForUpdate.handName,
-            remark: this.computerForUpdate.remark,
-            principalAudit: '1',
-            principalIsSee: '1'
-          },
-          dataType: 'json',
-        }).then(response => {
-          console.log(response.data.retData);
-          $('#preAppUpdateModel').modal('hide');
-          this.queryPreApp();
-        }).catch(err => {
-          console.log(err)
-        });
+        const msg = confirm('是否确认？')
+        if (msg) {
+          axios({
+            method: 'post',
+            url: this.url + '/computerController/checkPreApp',
+            headers: {
+              'Content-Type': this.contentType,
+              'Access-Token': this.accessToken
+            },
+            data: {
+              id: this.computerForUpdate.id,
+              handId: this.computerForUpdate.hid == null ? '0' : this.computerForUpdate.hid,
+              remark: this.computerForUpdate.remark,
+              principalAudit: '1',
+              principalIsSee: '1'
+            },
+            dataType: 'json',
+          }).then(response => {
+            alert('审核完成')
+            $('#preAppUpdateModel').modal('hide');
+            this.queryPreApp();
+          }).catch(err => {
+            console.log(err)
+          });
+        }
       },
       disagreePreApp() {
-        axios({
-          method: 'post',
-          url: this.url + '/computerController/checkPreApp',
-          headers: {
-            'Content-Type': this.contentType,
-            'Access-Token': this.accessToken
-          },
-          data: {
-            id: this.computerForUpdate.id,
-            remark: this.computerForUpdate.remark,
-            principalAudit: '2',
-            principalIsSee: '1'
-          },
-          dataType: 'json',
-        }).then(response => {
-          console.log(response.data.retData);
-          $('#preAppUpdateModel').modal('hide');
-          this.queryPreApp();
-        }).catch(err => {
-          console.log(err)
-        });
+        const msg = confirm('是否确认？')
+        if (msg) {
+          axios({
+            method: 'post',
+            url: this.url + '/computerController/checkPreApp',
+            headers: {
+              'Content-Type': this.contentType,
+              'Access-Token': this.accessToken
+            },
+            data: {
+              id: this.computerForUpdate.id,
+              remark: this.computerForUpdate.remark,
+              principalAudit: '2',
+              principalIsSee: '1'
+            },
+            dataType: 'json',
+          }).then(response => {
+            console.log(response.data.retData);
+            $('#preAppUpdateModel').modal('hide');
+            this.queryPreApp();
+          }).catch(error => {
+            console.log(error)
+          });
+        }
       },
       // ---------------------------------------对接----------------------------------
       continueBtn(item) {
