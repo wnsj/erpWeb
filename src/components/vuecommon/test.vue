@@ -189,7 +189,7 @@
       window.onbeforeunload = function() {
         this.closeWebSocket();
       }
-      this.startConection();
+      //this.startConection();
     }
 
   }
