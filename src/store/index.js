@@ -38,10 +38,10 @@ const store = new Vuex.Store({
 		}
 	},
 	//实时监听state值的变化(最新状态)
-	getters : {   
+	getters : {
 		//方法名随意,主要是用来承载变化的accountInfo的值
-		//外部使用this.$store.getters.getAccountData调用 
-		getAccountData(state){ 
+		//外部使用this.$store.getters.getAccountData调用
+		getAccountData(state){
 		   return state.accountInfo;
 		}
 	},
