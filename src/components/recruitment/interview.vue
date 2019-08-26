@@ -384,9 +384,9 @@
       getEditInfo(item) {
         alert(item.isEntry)
         if (this.has(65)) {
-          if(item.isEntry == '未入职'){
+          if (item.isEntry == '未入职') {
             this.$refs.interviewInfo.isEntryBtn = true
-          }else if(item.isEntry == '在职' || item.isEntry == '离职'){
+          } else if (item.isEntry == '在职' || item.isEntry == '离职') {
             this.$refs.interviewInfo.isShowBtn = true
           }
           $('#interviewEdit').modal('show')
@@ -436,7 +436,7 @@
         }
       },
       relate(item) {
-        const msg = ('确定关联吗？')
+        const msg = confirm('确定关联吗？')
         if (msg) {
           axios({
             method: 'post',
@@ -450,9 +450,11 @@
               account: this.account
             },
             dataType: 'json',
-          }).then(respones => {
+          }).then(response => {
             alert('关联成功')
+            this.$router.push('/employee')
           }).then(error => {
+            alert('关联失败')
             console.log(error)
           })
         }

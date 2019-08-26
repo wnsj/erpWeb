@@ -1,53 +1,53 @@
 <template>
   <!--修改员工弹出-->
-	<div class="modal fade" id="myModalupdata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog staff_t">
-	
-  <div class="modal-content">
-    <div class="modal-header">
-      <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
-      <h4 id="myModalLabel" class="modal-title">员工信息修改</h4>
-    </div>
-    <div class="modal-body">
-      <ul class="nav nav-tabs martop">
-        <li class="active"><a href="#updatabasic" data-toggle="tab">基本信息</a></li>
-        <li><a href="#updatadetailed" data-toggle="tab">详细信息</a></li>
-        <li><a href="#updatafamily" data-toggle="tab">家庭成员</a></li>
-        <li><a href="#updatarecord" data-toggle="tab">调动记录</a></li>
-        <li class="pull-right" id="lookms">
-          <a href="" data-toggle="tab">
-            <button @click="relateToInterview">查看面试</button>
-          </a></li>
-      </ul>
-      <div class="tab-content" style=" height:600px; overflow-y:scroll;">
-        <!-- 人员基本信息 -->
-        <baseInfo ref='baseInfo'></baseInfo>
-        <!-- 人员详细信息 -->
-        <detailInfo ref='detailInfo'></detailInfo>
-        <!--家庭成员-->
-        <familyInfo ref='familyInfo'></familyInfo>
-        <!--调动记录-->
-        <shiftInfo ref='shiftInfo'></shiftInfo>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <!--按钮-->
-      <div class="col-md-12">
-        <div class="col-md-8">
-          <button type="button" class="btn btn-info btn-sm int_pwd" v-on:click="initPassword()">初始化密码</button>
-          <button type="button" class="btn btn-info btn-sm reg_work" id="shiftPositionBtn" v-show="isShowPBtn" v-on:click="shiftPosition()">
-            转正
-          </button>
-          <button type="button" class="btn btn-info btn-sm recovery" v-if="isShow==true" v-on:click="employeeResgin('2')">离职</button>
-          <button type="button" class="btn btn-info btn-sm recovery" v-show="isShow==false" v-on:click="employeeResgin('1')">恢复</button>
-          <button type="button" class="btn btn-info btn-sm detl" v-on:click="deleteEmployee()">删除</button>
+  <div class="modal fade" id="myModalupdata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog staff_t">
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
+          <h4 id="myModalLabel" class="modal-title">员工信息修改</h4>
         </div>
-        <button type="button" class="btn btn-info" v-on:click="updataEmployeeInfo()">确认</button>
-        <button type="button" data-dismiss="modal" class="btn btn-info">返回</button>
+        <div class="modal-body">
+          <ul class="nav nav-tabs martop">
+            <li class="active"><a href="#updatabasic" data-toggle="tab">基本信息</a></li>
+            <li><a href="#updatadetailed" data-toggle="tab">详细信息</a></li>
+            <li><a href="#updatafamily" data-toggle="tab">家庭成员</a></li>
+            <li><a href="#updatarecord" data-toggle="tab">调动记录</a></li>
+            <li class="pull-right" id="lookms">
+              <a href="javascript:void(0)" data-toggle="tab" @click="relateToInterview">查看面试</a>
+            </li>
+          </ul>
+          <div class="tab-content" style=" height:600px; overflow-y:scroll;">
+            <!-- 人员基本信息 -->
+            <baseInfo ref='baseInfo'></baseInfo>
+            <!-- 人员详细信息 -->
+            <detailInfo ref='detailInfo'></detailInfo>
+            <!--家庭成员-->
+            <familyInfo ref='familyInfo'></familyInfo>
+            <!--调动记录-->
+            <shiftInfo ref='shiftInfo'></shiftInfo>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <!--按钮-->
+          <div class="col-md-12">
+            <div class="col-md-8">
+              <button type="button" class="btn btn-info btn-sm int_pwd" v-on:click="initPassword()">初始化密码</button>
+              <button type="button" class="btn btn-info btn-sm reg_work" id="shiftPositionBtn" v-show="isShowPBtn"
+                      v-on:click="shiftPosition()">
+                转正
+              </button>
+              <button type="button" class="btn btn-info btn-sm recovery" v-if="isShow==true" v-on:click="employeeResgin('2')">离职</button>
+              <button type="button" class="btn btn-info btn-sm recovery" v-show="isShow==false" v-on:click="employeeResgin('1')">恢复</button>
+              <button type="button" class="btn btn-info btn-sm detl" v-on:click="deleteEmployee()">删除</button>
+            </div>
+            <button type="button" class="btn btn-info" v-on:click="updataEmployeeInfo()">确认</button>
+            <button type="button" data-dismiss="modal" class="btn btn-info">返回</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
- </div>
   </div>
 
 
@@ -284,26 +284,28 @@
         this.$emit('submitBackUpPage')
       },
       // 关联面试
-      relateToInterview(){
-				//判断是否有面试记录
-				console.log('recruitDataID-1:'+this.personalBase.recruitDataID)
-				if(this.isBlank(this.personalBase.recruitDataID)){
-					// 如果有对应的面试记录查询
-					const msg = confirm('没有对应的面试记录是否关联？')
-					if(msg){
-					  this.$router.push({
-					    name:'interview',
-					    params:{account: this.accountId, name:this.personalBase.erpaaccount}
-					  })
-					}
-				}else{
-						this.$router.push({
-						  name:'interview',
-						  params:{account: this.accountId, name:this.personalBase.erpaaccount}
-						})
-				}
-				
-        
+
+      relateToInterview() {
+        //判断是否有面试记录
+        alert(this.personalBase.recruitDataID)
+        if (this.isBlank(this.personalBase.recruitDataID)) {
+          // 如果有对应的面试记录查询
+          const msg = confirm('没有对应的面试记录是否关联？')
+          if (msg) {
+            this.$router.push({
+              name: 'interview',
+              params: {account: this.accountId, name: this.personalBase.erpaaccount}
+            })
+          }
+        } else {
+          alert("有对应的面试记录")
+          // this.$router.push({
+          //   name: 'interview',
+          //   params: {account: this.accountId, name: this.personalBase.erpaaccount}
+          // })
+        }
+
+
       },
     }
 
