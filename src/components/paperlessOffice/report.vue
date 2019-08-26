@@ -1,9 +1,6 @@
 <!-- author:dingdong -->
-
-
 <template>
   <div class="container user-container" id="report-app" v-cloak>
-		<div></div>
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 main-title">
         <h2>请假报备管理</h2>

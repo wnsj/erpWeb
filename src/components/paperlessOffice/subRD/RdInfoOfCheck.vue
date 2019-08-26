@@ -35,7 +35,7 @@
 						</div>
 						<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 change_01">
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 change_date">
-								<option v-for="(item,index) in dateList" :key='index' v-on:click="selectedDate(index)">{{item}}</option>
+								<option v-for="(item,index) in dateList" :disabled="true" :key='index' v-on:click="selectedDate(index)">{{item}}</option>
 							</div>
 						</div>
 						<!-- 使用吴松的办法将按钮放在input标签上，用样式将input标签和内容隐藏 -->
@@ -50,10 +50,10 @@
 							<p>加班累积：</p>
 						</div>
 						<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 change_right">
-							<input class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0; line-height: 34px;" v-model="totleNum">
+							<input class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0; line-height: 34px;" disabled="ture" v-model="totleNum">
 							<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 change_01 offday_add">
-								<button class="btn btn-default" type="button"><i class="fa fa-caret-up" disabled="ture" v-on:click="cumulative('+')"></i></button>
-								<button class="btn btn-default" type="button"><i class="fa fa-caret-down" disabled="ture" v-on:click="cumulative('-')"></i></button>
+								<button class="btn btn-default" type="button" disabled="ture"><i class="fa fa-caret-up" disabled="ture" v-on:click="cumulative('+')"></i></button>
+								<button class="btn btn-default" type="button" disabled="ture"><i class="fa fa-caret-down" disabled="ture" v-on:click=""></i></button>
 							</div>
 
 						</div>
@@ -288,7 +288,6 @@
 		},
 		methods: {
 			initInfo:function(rdInfo){
-				alert('check:')
 				this.rdInfo = rdInfo
 				this.departId = this.accountInfo().departId
 				this.positionId = this.accountInfo().position_ID
@@ -307,6 +306,10 @@
 				}else{
 					this.dateList.push(this.rdInfo.workTime)
 				}
+				console.log('workTotal:'+this.rdInfo.workTotal)
+				//分隔加班天数和单位
+				this.totleNum=this.rdInfo.workTotal.slice(0,1)
+				this.totleName=this.rdInfo.workTotal.slice(1,2)
 			},
 		},
 		mounted: function() {

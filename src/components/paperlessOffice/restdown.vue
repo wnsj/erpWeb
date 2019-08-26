@@ -11,12 +11,9 @@
 					<p>申请日期：</p>
 				</div>
 				<div class="col-md-10 col-lg-10">
-					<span class="leavespan">
-						<dPicker v-model="beginDate" v-on:change="dateAction('begin')"></dPicker>
-					</span> <span class="leavespan01">&nbsp;&nbsp;&nbsp;至：</span>
-					<span class="leavespan">
-						<dPicker v-model="endDate" v-on:change="dateAction('end')"></dPicker>
-					</span>
+					<dPicker v-model="beginDate" v-on:change="dateAction('begin')"></dPicker>
+					<span>&nbsp;&nbsp;&nbsp;至：</span>
+					<dPicker v-model="endDate" v-on:change="dateAction('end')"></dPicker>
 				</div>
 			</div>
 			<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -24,7 +21,7 @@
 					<p>部门：</p>
 				</div>
 				<div class="col-md-10 col-lg-10">
-					<depart></depart>
+					<depart @departChange="departChange"></depart>
 				</div>
 			</div>
 			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
@@ -126,7 +123,7 @@
 		</div>
 			<rdInfo @restDownApply='rdInfoBack'></rdInfo>
 			<rdCheck></rdCheck>
-			<rdModify></rdModify>
+			<rdModify @restDownApply='rdInfoBack'></rdModify>
 			<rdHandle @submitROHModify='rdInfoBack'></rdHandle>
 			
 	</div>
@@ -187,18 +184,6 @@
 						|| this.accountId==rdInfo.account2
 						|| this.accountId==rdInfo.account3
 						|| this.accountId==rdInfo.account4){
-							if(this.accountId==rdInfo.account1){
-								this.$children[6].showROHEmp('check')
-							}
-							if(this.accountId==rdInfo.account2){
-								this.$children[6].showROHEmp('verify')
-							}
-							if(this.accountId==rdInfo.account3){
-								this.$children[6].showROHEmp('approval')
-							}
-							if(this.accountId==rdInfo.account4){
-								this.$children[6].showROHEmp('report')
-							}
 							$("#rdHandleModal").modal('show')
 						}else{
 							alert(this.notHaveRule)
@@ -210,13 +195,18 @@
 			
 			//申请及其他返回
 			rdInfoBack:function(param){
-				alert(param)
 				if(param=='apply'){
 					$("#rdApplyModal").modal('hide')
+				}else if(param=='modify'){
+					$("#rdModifyModal").modal('hide')
 				}else if(param=='handle'){
 					$("#rdHandleModal").modal('hide')
 				}
 				this.restDownList()
+			},
+			departChange:function(departId,departName){
+				this.departId=departId
+				this.departName=departName
 			},
 			//更新时间
 			dateAction: function(param) {
@@ -237,11 +227,6 @@
 				}else{
 					aId=this.accountId
 				}
-				if(this.departId=='0'){
-					dpId=''
-				}else{
-					dpId=this.departId
-				}
 				if(this.handleState=='全部'){
 					hState=''
 				}else{
@@ -260,7 +245,7 @@
 						name: this.name,
 						beginDate: this.getYYYYMMDDHHMMSS_00(this.beginDate),
 						endDate: this.getYYYYMMDDHHMMSS_24(this.endDate),
-						departId: dpId,
+						departId: this.departId,
 						handleState: hState,
 						accountId:aId,
 					},
@@ -270,17 +255,16 @@
 					if (res.retCode == '0000') {
 						if (res.resData.length > 0) {
 							this.rdLsit = res.resData
-							console.log('restDownList:'+this.rdList.toString())
 							$("#myModalQuery").modal('hide');
 						} else {
-							alert('没有查询到相关数据')
+							alert('没有查询到更多相关数据')
 						}
 					} else {
 						alert(res.retMsg)
 					}
 			
 				}).catch((error) => {
-					console.log('请求失败处理')
+					console.log('倒休数据处理失败')
 				});
 			},
 		},

@@ -58,6 +58,7 @@ Vue.prototype.notHaveRule = '您没有此项功能操作的权限'
 
 /*------------------------------------------公共方法-----------------------------------------------------------*/
 Vue.prototype.accountInfo = function() {
+	// console.log(constant.accountInfo())
   return constant.accountInfo()
 }
 Vue.prototype.getNowFormatDate = function() {
@@ -131,7 +132,7 @@ Vue.directive('has', {
   }
 });
 
-//路由卫士
+// 路由卫士
 router.beforeEach((to, from, next) => {
   consolelog(to, from);
   if (to.path == '/login' && from.path == '/mainPage') {

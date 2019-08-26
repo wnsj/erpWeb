@@ -48,7 +48,7 @@
         var accountId = document.getElementById('accountId').value;
         //判断当前浏览器是否支持WebSocket
         if ('WebSocket' in window) {
-          this.websocket = new WebSocket("ws://172.16.56.1:8080/websocket/" + accountId);
+          this.websocket = new WebSocket("ws://172.16.2.248:8080/websocket/" + accountId);
         } else if ('MozWebSocket' in window) {
           this.websocket = new MozWebSocket("ws://172.16.56.1:8080/websocket/" + accountId);
         } else {
@@ -68,6 +68,7 @@
 
         //接收到消息的回调方法
         this.websocket.onmessage = function(event) {
+					console.log('this-websocket-onmessage')
           let innerHTML = event.data;
           document.getElementById('message').innerHTML += innerHTML + '<br/>';
         }
@@ -78,6 +79,9 @@
           document.getElementById('message').innerHTML += innerHTML + '<br/>';
         }
       },
+			paramAction:function(param){
+				console.log('param:'+param)
+			},
       //将消息显示在网页上
       setMessageInnerHTML(innerHTML) {
         document.getElementById('message').innerHTML += innerHTML + '<br/>';
@@ -109,7 +113,6 @@
 </style>
 <!-- accountInfo:{"permission":["1","2","3","4","5","6","7","70","72","74"],
 "accessToken":"624d10794d40e33d7d81328e1aeba12f",
-"account":{"departId":"55","departName":"开发组",
-"positionName":"研发组长","account_State":"在用",
-"account_Name":"王杰林","account_ID":"239","account_Pwd":"",
-"position_ID":"73","account_Mac":null}} -->
+"account":{account_ID:"1105",account_Mac:null,account_Name:"王蕊",account_Pwd:"",account_State:"在用",
+departId:"39",departLevel:"1",departName:"人力综合办",positionName:"行政专员",positionTypeId:"1"
+position_ID:"55"}} -->

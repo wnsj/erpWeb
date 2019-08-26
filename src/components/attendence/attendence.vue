@@ -69,7 +69,7 @@
 				<scheduleManage></scheduleManage>
 				<monday></monday>
 				<deleteSchedule></deleteSchedule>
-        <!-- <test></test> -->
+				<test></test>
 			</div>
 		</div>
 	</div>

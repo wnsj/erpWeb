@@ -202,29 +202,21 @@
 				}else if(param=='4'){
 					$("#lioc").modal('show')
 				}else if(param=='5'){
-					if(!this.isBlank(lInfo.result3)||lInfo.result3==''){
-						alert('处理完成，无法在进行处理')
-						return
-					}
-					if(this.accountId==lInfo.account1){
-						this.$children[param].showCVAREmp('check')
-						$("#lioh").modal('show')
-					}else if(this.accountId==lInfo.account2){
-						this.$children[param].showCVAREmp('verify')
-						$("#lioh").modal('show')
-					}else if(this.accountId==lInfo.account3){
-						this.$children[param].showCVAREmp('approval')
-						$("#lioh").modal('show')
-					}else if(this.accountId==lInfo.account4){
-						this.$children[param].showCVAREmp('report')
-						$("#lioh").modal('show')
+					if(lInfo.leaveAccount == this.accountInfo().account_ID){
+						$("#liom").modal('show')
 					}else{
 						alert(this.notHaveRule)
 					}
-					
 				}else if(param=='6'){
-					if(lInfo.leaveAccount == this.accountInfo().account_ID){
-						$("#liom").modal('show')
+					if(!this.isBlank(lInfo.result4)||lInfo.result4==''){
+						alert('处理完成，无法在进行处理')
+						return
+					}
+					if(	this.accountId==lInfo.account1
+						||this.accountId==lInfo.account2
+						||this.accountId==lInfo.account3
+						||this.accountId==lInfo.account4){
+						$("#lioh").modal('show')
 					}else{
 						alert(this.notHaveRule)
 					}

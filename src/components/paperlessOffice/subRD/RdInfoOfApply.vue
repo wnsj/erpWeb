@@ -104,7 +104,7 @@
 
 					<div class="col-md-5">
 						<br />
-						<button type="button" class="btn btn-warning pull-right m_r_10">取消</button>
+						<button type="button" class="btn btn-warning pull-right m_r_10" v-on:click="closeBtnAction()">取消</button>
 						<button type="button" class="btn btn-warning pull-right m_r_10" v-on:click="restDownApply()">确定</button>
 					</div>
 				</div>
@@ -125,7 +125,7 @@
 							</div>
 							<div class="col-xs-1 col-sm-1 col-md-1">
 
-								<button type="button" class="btn btn-warning pull-left m_r_10" v-on:click="addEmp('check')">+</button>
+								<button type="button" class="btn btn-warning pull-left m_r_10" :disabled="isClickCheckBtn" v-on:click="addEmp('check')">+</button>
 
 							</div>
 						</div>
@@ -157,7 +157,7 @@
 							</div>
 							<div class="col-md-1">
 
-								<button type="button" class="btn btn-warning pull-left m_r_10" v-on:click="addEmp('verify')">+</button>
+								<button type="button" class="btn btn-warning pull-left m_r_10" :disabled="isClickVerifyBtn" v-on:click="addEmp('verify')">+</button>
 
 							</div>
 						</div>
@@ -189,7 +189,7 @@
 							</div>
 							<div class="col-md-1">
 
-								<button type="button" class="btn btn-warning pull-left m_r_10" v-on:click="addEmp('approval')">+</button>
+								<button type="button" class="btn btn-warning pull-left m_r_10" :disabled="isClickApprovalBtn" v-on:click="addEmp('approval')">+</button>
 
 							</div>
 						</div>
@@ -274,13 +274,16 @@
 
 				empList_check: [],
 				empListCheckTimes: 0,
-				levelCheck: '0',
+				levelCheck: '0', //0代表审核，1代表审查
+				isClickCheckBtn:false,
 				empList_verify: [],
 				empListVerifyTimes: 0,
-				levelVerify: '0',
+				levelVerify: '1',
+				isClickVerifyBtn:false,
 				empList_approval: [],
 				empListApprovalTimes: 0,
-				levelApproval: '0',
+				levelApproval: '1',
+				isClickApprovalBtn:false,
 
 
 				dateList: []
@@ -288,7 +291,6 @@
 		},
 		methods: {
 			initInfo:function(){
-				alert('apply:')
 				this.rdInfo = this.accountInfo()
 				this.departId = this.accountInfo().departId
 				this.positionId = this.accountInfo().position_ID
@@ -297,18 +299,21 @@
 				this.rdInfo.departId = this.accountInfo().departId
 				this.rdInfo.positionId = this.accountInfo().position_ID
 				this.rdInfo.addTime = this.moment()
-				
+				this.rdInfo.account4='1127'
 				
 				//清空数据
 				this.empList_check = []
-					this.empListCheckTimes = 0
-					this.levelCheck = '0'
-					this.empList_verify = []
-					this.empListVerifyTimes = 0
-					this.levelVerify = '0'
-					this.empList_approval = []
-					this.empListApprovalTimes = 0
-					this.levelApproval = '0'
+				this.empListCheckTimes = 0
+				this.levelCheck = '0'
+				this.isClickCheckBtn=false
+				this.empList_verify = []
+				this.empListVerifyTimes = 0
+				this.levelVerify = '0'
+				this.isClickVerifyBtn=false
+				this.empList_approval = []
+				this.empListApprovalTimes = 0
+				this.levelApproval = '0'
+				this.isClickApprovalBtn=false
 				
 				
 				this.addEmp('check')
@@ -358,52 +363,51 @@
 			//'+'被点击的方法
 			addEmp: function(param) {
 				if (param == 'check') {
-					if (this.empListCheckTimes == 9) {
-						this.empListCheckTimes = 0
-					}
-					if (this.empListCheckTimes == 0) {
-						this.levelCheck = '0'
-					} else if (this.empListCheckTimes == 3) {
-						this.levelCheck = '1'
-					} else if (this.empListCheckTimes == 6) {
-						this.levelCheck = '2'
-					}
+					
+					this.levelCheck = '0'
 					this.checkEmpList(param, this.levelCheck, this.empListCheckTimes)
 					this.empListCheckTimes++
+					if (this.empListCheckTimes == 9) {
+						this.isClickCheckBtn = true
+					}
 				} else if (param == 'verify') {
-					if (this.empListVerifyTimes == 6) {
-						this.empListVerifyTimes = 0
-					}
-					if (this.empListVerifyTimes == 0) {
-						this.levelVerify = '1'
-					} else if (this.empListVerifyTimes == 3) {
-						this.levelVerify = '2'
-					}
+					this.levelVerify = '1'
+			
 					this.checkEmpList(param, this.levelVerify, this.empListVerifyTimes)
 					this.empListVerifyTimes++
+					if (this.empListVerifyTimes == 9) {
+						this.isClickVerifyBtn = true
+					}
 				} else if (param == 'approval') {
-					if (this.empListApprovalTimes == 6) {
-						this.empListApprovalTimes = 0
+					
+					if(this.accountInfo().positionTypeId==6){
+						this.empListApprovalTimes=5
 					}
-					if (this.empListApprovalTimes == 0) {
-						this.levelApproval = '1'
-					} else if (this.empListApprovalTimes == 1) {
-						this.levelApproval = '2'
-					}
+			
 					this.checkEmpList(param, this.levelApproval, this.empListApprovalTimes)
 					this.empListApprovalTimes++
+					if (this.empListApprovalTimes == 9) {
+						this.isClickApprovalBtn = true
+					}
 				}
 			},
 			//查询不同类型审核人员
 			checkEmpList: function(param, level, clickTimes) {
-				var url = this.url + '/wzbg/checkOfEmpList'
+				var url = ''
+				if (param == 'check') {
+					url = this.url + '/wzbg/checkOfEmpList'
+				} else if (param == 'verify') {
+					url = this.url + '/wzbg/verifyOfEmpList'
+				} else if (param == 'approval') {
+					url = this.url + '/wzbg/approveOfEmpList'
+				}
 				console.log('checkEmpList:' + url)
 				console.log('positionId:' + this.positionId)
 				if (this.isBlank(this.positionId)) {
 					this.positionId = '1'
 				}
 				var clickTimes = clickTimes.toString()
-
+			
 				axios({
 					method: 'post',
 					url: url,
@@ -412,8 +416,9 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
+						accountId:this.accountInfo().account_ID,
 						clickTimes: clickTimes,
-						level: level,
+						// level: level,
 						positionId: this.positionId,
 						departId: this.departId,
 					},
@@ -425,22 +430,23 @@
 							if (param == 'check') {
 								this.empList_check = {}
 								this.empList_check = res.resData
+								this.rdInfo.account1 = this.empList_check[0].accountId
 							} else if (param == 'verify') {
 								this.empList_verify = {}
 								this.empList_verify = res.resData
+								this.rdInfo.account2 = this.empList_verify[0].accountId
 							} else if (param == 'approval') {
 								this.empList_approval = {}
 								this.empList_approval = res.resData
+								this.rdInfo.account3 = this.empList_approval[0].accountId
 							}
-
+			
 							$("#myModalQuery").modal('hide');
-						} else {
-							// alert('已经没有更多的数据了')
 						}
 					} else {
 						alert(res.retMsg)
 					}
-
+			
 				}).catch((error) => {
 					console.log('请求失败处理')
 				});
@@ -518,6 +524,9 @@
 				}).catch((error) => {
 					console.log('请求失败处理')
 				});
+			},
+			closeBtnAction:function(){
+				$("#rdApplyModal").modal('hide')
 			},
 		},
 		mounted: function() {
