@@ -57,7 +57,7 @@
 				<employeeAtt></employeeAtt>
 				<attTable></attTable>
 				<attCountTable></attCountTable>
-        <test></test>
+        <!-- <test></test> -->
 				<singleDepartAtt></singleDepartAtt>
 				<singleEmployeeAtt></singleEmployeeAtt>
 				<holidaysTypeManage></holidaysTypeManage>

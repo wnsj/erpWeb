@@ -91,17 +91,12 @@
 				this.$refs.shiftInfo.childrenShiftInfo(this.accountId)
 				// if(this.personalBase.entryDate<)
 			},
+			//查看面试
 			checkInterView:function(){
-				const msg = confirm("员工添加成功,是否需要申请电脑？")
-				if (msg) {
-					this.$router.push({
-						// path:'/paperlessOffice/computerPreApplication',
-						// query:{userName: this.personalBase.erpaaccount}
-						name: 'recruitPlan',
-						params: {
-							userName: this.personalBase.erpaaccount
-						}
-					});
+				if(this.isBlank(this.personalBase.recruitDataID)){
+					confirm('没有对应的面试记录，/n,是否进行关联')
+				}else{
+					console.log('recruitDataID:'+this.personalBase.recruitDataID)
 				}
 			
 			},	

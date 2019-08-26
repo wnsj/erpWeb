@@ -26,9 +26,11 @@
     <div class="modal-footer">
       <div class="col-md-12">
         <button type="button" class="btn btn-warning" @click="editInterview">确认</button>
+				<button type="button" class="btn btn-warning" @click="checkEntry()">查看入职</button>
         <button type="button" data-dismiss="modal" class="btn btn-info">返回</button>
       </div>
     </div>
+		<cee></cee>
   </div>
 </template>
 <script>
@@ -37,12 +39,13 @@
   import updateBasicInfo from '../subInterview/subUpdateInterviewEntry/updateInterviewBasic.vue'
   import updateEducationInfo from '../subInterview/subUpdateInterviewEntry/updateEducationExperience.vue'
   import updateApplyInfo from '../subInterview/subUpdateInterviewEntry/updateApplyInformation.vue'
-
+	import cee from '../../recruitment/checkEntryInfo/checkEmpEntry.vue'
   export default {
     components: {
       updateBasicInfo,
       updateEducationInfo,
-      updateApplyInfo
+      updateApplyInfo,
+			cee
     },
     data() {
       return {
@@ -58,6 +61,9 @@
         this.$refs.updateEducation.childBasicEduAndExp(val)
         this.$refs.updateApply.childApply(val)
       },
+			checkEntry:function(){
+				$("#REModalupdata").modal('show')
+			},
       // ---------------------------------------编辑----------------------------------
       editInterview() {
         this.interviewBaseEdit = this.$refs.updateBasic.interviewBase
