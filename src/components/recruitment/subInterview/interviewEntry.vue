@@ -90,67 +90,70 @@
           alert('请选择面试时间');
           return false;
         }
-        axios({
-          method: 'post',
-          url: this.url + '/zpglController/addRecruitData',
-          headers: {
-            'Content-Type': this.contentType,
-            'Access-Token': this.accessToken
-          },
-          data: {
-            // -------------------基本信息-----------------
-            accountProp: this.interviewBaseAdd.accountProp == null ? '' : this.interviewBaseAdd.accountProp,
-            address: this.interviewBaseAdd.address == null ? '' : this.interviewBaseAdd.address,
-            birth: this.interviewBaseAdd.birth == null ? '' : this.$YYYY_MM_DD_HH_mm(this.interviewBaseAdd.birth),
-            bloodType: this.interviewBaseAdd.bloodType == null ? '' : this.interviewBaseAdd.bloodType,
-            height: this.interviewBaseAdd.height == null ? '' : this.interviewBaseAdd.height,
-            homeAddress: this.interviewBaseAdd.homeAddress == null ? '' : this.interviewBaseAdd.homeAddress,
-            homeTown: this.interviewBaseAdd.homeTown == null ? '' : this.interviewBaseAdd.homeTown,
-            idNum: this.interviewBaseAdd.idNum == null ? '' : this.interviewBaseAdd.idNum,
-            mail: this.interviewBaseAdd.mail == null ? '' : this.interviewBaseAdd.mail,
-            marital: this.interviewBaseAdd.marital == null ? '' : this.interviewBaseAdd.marital,
-            name: this.interviewBaseAdd.name,
-            phone: this.interviewBaseAdd.phone == null ? '' : this.interviewBaseAdd.phone,
-            ploitical: this.interviewBaseAdd.ploitical == null ? '' : this.interviewBaseAdd.ploitical,
-            qq: this.interviewBaseAdd.qq == null ? '' : this.interviewBaseAdd.qq,
-            sex: this.interviewBaseAdd.sex == null ? '' : this.interviewBaseAdd.sex,
-            nationality: this.interviewBaseAdd.nationality == null ? '' : this.interviewBaseAdd.nationality,
-            weight: this.interviewBaseAdd.weight == null ? '' : this.interviewBaseAdd.weight,
+        const msg = confirm('确认添加吗？')
+        if(msg){
+          axios({
+            method: 'post',
+            url: this.url + '/zpglController/addRecruitData',
+            headers: {
+              'Content-Type': this.contentType,
+              'Access-Token': this.accessToken
+            },
+            data: {
+              // -------------------基本信息-----------------
+              accountProp: this.interviewBaseAdd.accountProp == null ? '' : this.interviewBaseAdd.accountProp,
+              address: this.interviewBaseAdd.address == null ? '' : this.interviewBaseAdd.address,
+              birth: this.interviewBaseAdd.birth == null ? '' : this.$YYYY_MM_DD_HH_mm(this.interviewBaseAdd.birth),
+              bloodType: this.interviewBaseAdd.bloodType == null ? '' : this.interviewBaseAdd.bloodType,
+              height: this.interviewBaseAdd.height == null ? '' : this.interviewBaseAdd.height,
+              homeAddress: this.interviewBaseAdd.homeAddress == null ? '' : this.interviewBaseAdd.homeAddress,
+              homeTown: this.interviewBaseAdd.homeTown == null ? '' : this.interviewBaseAdd.homeTown,
+              idNum: this.interviewBaseAdd.idNum == null ? '' : this.interviewBaseAdd.idNum,
+              mail: this.interviewBaseAdd.mail == null ? '' : this.interviewBaseAdd.mail,
+              marital: this.interviewBaseAdd.marital == null ? '' : this.interviewBaseAdd.marital,
+              name: this.interviewBaseAdd.name,
+              phone: this.interviewBaseAdd.phone == null ? '' : this.interviewBaseAdd.phone,
+              ploitical: this.interviewBaseAdd.ploitical == null ? '' : this.interviewBaseAdd.ploitical,
+              qq: this.interviewBaseAdd.qq == null ? '' : this.interviewBaseAdd.qq,
+              sex: this.interviewBaseAdd.sex == null ? '' : this.interviewBaseAdd.sex,
+              nationality: this.interviewBaseAdd.nationality == null ? '' : this.interviewBaseAdd.nationality,
+              weight: this.interviewBaseAdd.weight == null ? '' : this.interviewBaseAdd.weight,
 
-            // -------------------学历经验-----------------
-            atSchool: this.educationExprienceAdd.atSchool,
-            certificate: this.educationExprienceAdd.certificate == null ? '' : this.educationExprienceAdd.certificate,
-            education: this.educationExprienceAdd.education,
-            graduation: this.educationExprienceAdd.graduation == null ? '' : this.$YYYY_MM_DD_HH_mm(this.educationExprienceAdd.graduation),
-            profession: this.educationExprienceAdd.profession == null ? '' : this.educationExprienceAdd.profession,
-            school: this.educationExprienceAdd.school == null ? '' : this.educationExprienceAdd.school,
-            workCompany: this.educationExprienceAdd.workCompany == null ? '' : this.educationExprienceAdd.workCompany,
-            workexp: this.educationExprienceAdd.workexp == null ? '' : this.educationExprienceAdd.workexp,
+              // -------------------学历经验-----------------
+              atSchool: this.educationExprienceAdd.atSchool,
+              certificate: this.educationExprienceAdd.certificate == null ? '' : this.educationExprienceAdd.certificate,
+              education: this.educationExprienceAdd.education,
+              graduation: this.educationExprienceAdd.graduation == null ? '' : this.$YYYY_MM_DD_HH_mm(this.educationExprienceAdd.graduation),
+              profession: this.educationExprienceAdd.profession == null ? '' : this.educationExprienceAdd.profession,
+              school: this.educationExprienceAdd.school == null ? '' : this.educationExprienceAdd.school,
+              workCompany: this.educationExprienceAdd.workCompany == null ? '' : this.educationExprienceAdd.workCompany,
+              workexp: this.educationExprienceAdd.workexp == null ? '' : this.educationExprienceAdd.workexp,
 
-            // -------------------应聘信息-----------------
-            channel: this.applyAdd.channelAddId,
-            department: this.applyAdd.departAddId,
-            interviewer: this.applyAdd.interviewer == null ? '' : this.applyAdd.interviewer,
-            invitationDate: this.applyAdd.invitationDate == null ? '' : this.$YYYY_MM_DD_HH_mm(this.applyAdd.invitationDate),
-            isPay: this.applyAdd.isPay,
-            isQualified: this.applyAdd.isQualified,
-            position: this.applyAdd.positionAddId,
-            recruitDate: this.$YYYY_MM_DD_HH_mm(this.applyAdd.recruitDate),
-            remark: this.applyAdd.remark == null ? '' : this.applyAdd.remark,
-            score: this.applyAdd.score == null ? '' : this.applyAdd.score,
-            wages: this.applyAdd.wages == null ? '' : this.applyAdd.wages,
+              // -------------------应聘信息-----------------
+              channel: this.applyAdd.channelAddId,
+              department: this.applyAdd.departAddId,
+              interviewer: this.applyAdd.interviewer == null ? '' : this.applyAdd.interviewer,
+              invitationDate: this.applyAdd.invitationDate == null ? '' : this.$YYYY_MM_DD_HH_mm(this.applyAdd.invitationDate),
+              isPay: this.applyAdd.isPay,
+              isQualified: this.applyAdd.isQualified,
+              position: this.applyAdd.positionAddId,
+              recruitDate: this.$YYYY_MM_DD_HH_mm(this.applyAdd.recruitDate),
+              remark: this.applyAdd.remark == null ? '' : this.applyAdd.remark,
+              score: this.applyAdd.score == null ? '' : this.applyAdd.score,
+              wages: this.applyAdd.wages == null ? '' : this.applyAdd.wages,
 
-            updateDate: this.$currentTime(),
-            updateAccount: JSON.parse(Cookies.get("accountData")).account.account_ID
-          },
-          dataType: 'json',
-        }).then(response => {
-          console.log('添加成功')
-          $('#interviewAdd').modal('hide');
-          this.$parent.queryInterview();
-        }).catch(error => {
-          console.log(error)
-        });
+              updateDate: this.$currentTime(),
+              updateAccount: JSON.parse(Cookies.get("accountData")).account.account_ID
+            },
+            dataType: 'json',
+          }).then(response => {
+            console.log('添加成功')
+            $('#interviewAdd').modal('hide');
+            this.$parent.queryInterview();
+          }).catch(error => {
+            console.log(error)
+          });
+        }
       }
     }
   }
