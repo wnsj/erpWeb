@@ -25,9 +25,15 @@
     </div>
     <div class="modal-footer">
       <div class="col-md-12">
-        <button type="button" class="btn btn-warning" @click="editInterview">确认</button>
-				<button type="button" class="btn btn-warning" @click="checkEntry()">查看入职</button>
-        <button type="button" data-dismiss="modal" class="btn btn-info">返回</button>
+
+        <div class="col-md-7 col-md-offset-3">
+          <button type="button" class="btn btn-warning" @click="editInterview">确认</button>
+          <button type="button" data-dismiss="modal" class="btn btn-warning">返回</button>
+        </div>
+        <div class="col-md-2">
+          <button type="button" class="btn btn-info" v-if="isEntryBtn">入职</button>
+          <button type="button" class="btn btn-info" v-if="isShowBtn">查看入职</button>
+        </div>
       </div>
     </div>
 		<cee></cee>
@@ -52,7 +58,9 @@
         // -----基本信息-----
         interviewBaseEdit: {},
         educationExprienceEdit: {},
-        applyEdit: {}
+        applyEdit: {},
+        isEntryBtn: false,
+        isShowBtn: false
       }
     },
     methods: {

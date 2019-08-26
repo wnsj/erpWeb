@@ -5,7 +5,7 @@
       <div class="form-group clearfix">
         <label class="col-md-2 control-label text-right nopad">姓名：</label>
         <div class="col-md-3">
-          <input type="text" class="form-control" placeholder="Name" v-model="interviewBase.name">
+          <input type="text" class="form-control" v-model="interviewBase.name">
         </div>
         <label class="col-md-2 ontrol-label text-right nopad">性别：</label>
         <div class="col-md-3">
@@ -41,19 +41,19 @@
         </div>
       </div>
       <div class="form-group clearfix">
-        <label for="mail" class="col-md-2 control-label text-right nopad">邮箱：</label>
+        <label class="col-md-2 control-label text-right nopad">邮箱：</label>
         <div class="col-md-3">
-          <input type="text" class="form-control" id="mail" placeholder="e-mail" v-model="interviewBase.mail">
+          <input type="text" class="form-control" v-model="interviewBase.mail">
         </div>
-        <label for="idNum" class="col-md-2 ontrol-label text-right nopad">身份证号：</label>
+        <label class="col-md-2 ontrol-label text-right nopad">身份证号：</label>
         <div class="col-md-3">
-          <input type="text" class="form-control" id="idNum" placeholder="ID No." v-model="interviewBase.idNum">
+          <input type="text" class="form-control" v-model="interviewBase.idNum">
         </div>
       </div>
       <div class="form-group clearfix">
-        <label for="qq" class="col-md-2 control-label text-right nopad">QQ：</label>
+        <label class="col-md-2 control-label text-right nopad">QQ：</label>
         <div class="col-md-3">
-          <input type="text" class="form-control" id="qq" placeholder="QQ" v-model="interviewBase.qq">
+          <input type="text" class="form-control" v-model="interviewBase.qq">
         </div>
         <label class="col-md-2 ontrol-label text-right nopad">婚姻：</label>
         <div class="col-md-3">
@@ -65,14 +65,14 @@
         </div>
       </div>
       <div class="form-group clearfix">
-        <label for="height" class="col-md-2 control-label text-right nopad">身高：</label>
+        <label class="col-md-2 control-label text-right nopad">身高：</label>
         <div class="col-md-2">
-          <input type="number" class="form-control" id="height" value="0" min="0" max="200" v-model="interviewBase.height">
+          <input type="number" class="form-control" value="0" min="0" max="200" v-model="interviewBase.height">
         </div>
         <label class="col-md-1 control-label nopad">cm</label>
-        <label for="weight" class="col-md-2 ontrol-label text-right nopad">体重：</label>
+        <label class="col-md-2 ontrol-label text-right nopad">体重：</label>
         <div class="col-md-2">
-          <input type="number" class="form-control" id="weight" value="0" min="0" max="200" v-model="interviewBase.weight">
+          <input type="number" class="form-control" value="0" min="0" max="200" v-model="interviewBase.weight">
         </div>
         <label class="col-md-1 control-label nopad">kg</label>
       </div>
@@ -95,21 +95,21 @@
         </div>
       </div>
       <div class="form-group clearfix">
-        <label for="homeTown" class="col-md-2 control-label text-right nopad">籍贯：</label>
+        <label class="col-md-2 control-label text-right nopad">籍贯：</label>
         <div class="col-md-4">
-          <input type="text" class="form-control" id="homeTown" placeholder="Native Place" v-model="interviewBase.homeTown">
+          <input type="text" class="form-control" placeholder="Native Place" v-model="interviewBase.homeTown">
         </div>
       </div>
       <div class="form-group clearfix">
-        <label for="address" class="col-md-2 control-label text-right nopad">现住址：</label>
+        <label class="col-md-2 control-label text-right nopad">现住址：</label>
         <div class="col-md-8">
-          <input type="text" class="form-control" id="address" placeholder="Address" v-model="interviewBase.address">
+          <input type="text" class="form-control" v-model="interviewBase.address">
         </div>
       </div>
       <div class="form-group clearfix">
-        <label for="homeAddress" class="col-md-2 control-label text-right nopad">家庭住址：</label>
+        <label class="col-md-2 control-label text-right nopad">家庭住址：</label>
         <div class="col-md-8">
-          <input type="text" class="form-control" id="homeAddress" placeholder="HomeAddress" v-model="interviewBase.homeAddress">
+          <input type="text" class="form-control" v-model="interviewBase.homeAddress">
         </div>
       </div>
     </form>

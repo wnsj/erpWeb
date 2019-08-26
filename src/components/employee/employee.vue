@@ -348,7 +348,7 @@
 			},
 			// 双击弹出员工修改框
 			showEmployeeInfo: function(item) {
-
+				
 				$("#myModalupdata").modal('show')
 				this.accountId = item.accountId
 				this.personalInfo = Object.assign({}, item)

@@ -129,12 +129,15 @@
         </div>
       </div>
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <button type="button" class="btn btn-warning pull-right m_r_10" v-if="has(65)"
+        <button type="button" class="btn btn-warning pull-right m_r_10" v-if="has(65)&&btnDisplay"
                 @click="exportTableToExcel('interviewTable','面试信息管理')">导出
         </button>
-        <button type="button" class="btn btn-info pull-right m_r_10" v-if="has(65)" @click="addModelShow">添加
+        <button type="button" class="btn btn-info pull-right m_r_10"
+                v-if="has(65)&&btnDisplay" @click="addModelShow">添加
         </button>
-        <button type="button" class="btn btn-primary pull-right m_r_10" v-if="has(65)" @click="queryInterview">查询</button>
+        <button type="button" class="btn btn-primary pull-right m_r_10"
+                v-if="has(65)" @click="queryInterview">查询
+        </button>
       </div>
     </div>
     <br>
@@ -145,6 +148,7 @@
           <table class="table table-bordered table-hover text-nowrap" id="interviewTable">
             <thead>
             <tr>
+              <th class="text-center" :style="display">关联</th>
               <th class="text-center">姓名</th>
               <th class="text-center">性别</th>
               <th class="text-center">年龄</th>
@@ -166,12 +170,14 @@
               <th class="text-center">是否合格</th>
               <th class="text-center">报销路费</th>
               <th class="text-center">入职状态</th>
-              <th class="text-center" v-if="has(65)">编辑</th>
-              <th class="text-center" v-if="has(65)">删除</th>
+              <th class="text-center" v-if="has(65)&&btnDisplay">删除</th>
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(item,index) in interviewList" :key="index">
+            <tr v-for="(item,index) in interviewList" :key="index" @dblclick="getEditInfo(item)">
+              <th class="text-center" :style="display">
+                <button type="button" class="btn btn-sm btn-info" @click="relate(item)">关联</button>
+              </th>
               <td class="text-center">{{item.name}}</td>
               <td class="text-center">{{item.sex}}</td>
               <td class="text-center">{{getAge(item.birth)}}</td>
@@ -193,13 +199,8 @@
               <td class="text-center">{{item.isQualified}}</td>
               <td class="text-center">{{item.isPay == 0 ? "否" : "是"}}</td>
               <td class="text-center">{{item.isEntry}}</td>
-              <td class="text-center" v-if="has(65)">
-                <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#interviewEdit"
-                        @click="getEditInfo(item)">编辑
-                </button>
-              </td>
-              <td class="text-center" v-if="has(65)">
-                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#interviewDelete"
+              <td class="text-center" v-if="has(65)&&btnDisplay">
+                <button type="button" class="btn btn-danger btn-sm"
                         @click="deleteInterview(item)">删除
                 </button>
               </td>
@@ -209,6 +210,11 @@
         </div>
       </div>
     </div><!-- /.row 查询页面 -->
+    <div class="row hint">
+      <div class="col-md-2 col-lg-offset-10">
+        <label>双击可查看详细信息</label>
+      </div>
+    </div>
     <div class="row row_edit">
       <div class="modal fade" id="interviewAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -235,6 +241,7 @@
   import updateInterviewEntry from '../recruitment/subInterview/updateInterviewEntry.vue'
 
   export default {
+    name: "interview",
     components: {
       DatePicker,
       department,
@@ -302,7 +309,10 @@
         interviewBase: {},
         educationExprience: {},
         apply: {},
-        id: ''
+        id: '',
+        display: 'display:none',
+        btnDisplay: true,
+        account: ''
       }
     },
     methods: {
@@ -364,16 +374,25 @@
             interviewInfo: {}  //首页列表获取的一个人的面试信息
           },
           dataType: 'json',
-        }).then((response) => {
+        }).then(response => {
           this.interviewList = response.data.retData
           console.log(response.data.retData)
-        }).catch((error) => {
-          console.log('请求失败处理')
+        }).catch(error => {
+          console.log(error)
         });
       },
       getEditInfo(item) {
-        this.interviewInfo = Object.assign({}, item)
-        this.$refs.interviewInfo.passParamToSubModule(this.interviewInfo)
+        alert(item.isEntry)
+        if (this.has(65)) {
+          if(item.isEntry == '未入职'){
+            this.$refs.interviewInfo.isEntryBtn = true
+          }else if(item.isEntry == '在职' || item.isEntry == '离职'){
+            this.$refs.interviewInfo.isShowBtn = true
+          }
+          $('#interviewEdit').modal('show')
+          this.interviewInfo = Object.assign({}, item)
+          this.$refs.interviewInfo.passParamToSubModule(this.interviewInfo)
+        }
       },
       addModelShow() {
         this.$refs.addInterview.initAdd()
@@ -401,7 +420,47 @@
           });
         }
       },
+      // ---------------------------------------关联----------------------------------
+      getEntryInfo() {
+        const account = this.$route.params.account
+        const name = this.$route.params.name
+        if (account != undefined && name != undefined) {
+          this.display = 'display:table-cell'
+          this.btnDisplay = false
+          this.account = account
+          this.name = name
+          $(".modal-backdrop").remove();
+          this.queryInterview();
+        } else {
+          this.queryInterview();
+        }
+      },
+      relate(item) {
+        const msg = ('确定关联吗？')
+        if (msg) {
+          axios({
+            method: 'post',
+            url: this.url + '/zpglController/relateRecruitData',
+            headers: {
+              'Content-Type': this.contentType,
+              'Access-Token': this.accessToken
+            },
+            data: {
+              id: item.id,
+              account: this.account
+            },
+            dataType: 'json',
+          }).then(respones => {
+            alert('关联成功')
+          }).then(error => {
+            console.log(error)
+          })
+        }
+      }
     },
+    created() {
+      this.getEntryInfo()
+    }
   }
 </script>
 <style>
@@ -431,6 +490,11 @@
 
   input[type="date"] {
     line-height: 26px !important;
+  }
+
+  .hint {
+    color: #F2A203;
+    margin-left: 150px;
   }
 </style>
 
