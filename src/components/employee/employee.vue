@@ -349,10 +349,13 @@
 			// 双击弹出员工修改框
 			showEmployeeInfo: function(item) {
 				
+				
 				$("#myModalupdata").modal('show')
 				this.accountId = item.accountId
 				this.personalInfo = Object.assign({}, item)
+				console.log('recruitDataID:'+this.personalInfo.recruitDataID)
 				this.$refs.mEE.paramDevliverToSubModel(this.personalInfo)
+				
 				this.personalInfo.entryDate = timeInit(this.personalInfo.entryDate)
 				this.personalInfo.positiveDate = timeInit(this.personalInfo.positiveDate)
 				this.personalInfo.resignDate = timeInit(this.personalInfo.resignDate)

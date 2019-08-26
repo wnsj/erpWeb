@@ -87,7 +87,9 @@
     methods: {
       //传对应的参数给子模块
       paramDevliverToSubModel: function (param) {
+				console.log('recruitDataID:'+param.recruitDataID)
         this.personalBase = param
+				console.log('recruitDataID:'+this.personalBase.recruitDataID)
         this.accountId = param.accountId
         this.userId = param.id
 
@@ -284,6 +286,7 @@
       // 关联面试
       relateToInterview(){
 				//判断是否有面试记录
+				console.log('recruitDataID-1:'+this.personalBase.recruitDataID)
 				if(this.isBlank(this.personalBase.recruitDataID)){
 					// 如果有对应的面试记录查询
 					const msg = confirm('没有对应的面试记录是否关联？')
