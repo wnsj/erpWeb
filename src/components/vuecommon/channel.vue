@@ -7,33 +7,34 @@
 </template>
 <script>
   import axios from 'axios'
+
   export default {
-    name:'channel',
+    name: 'channel',
     data() {
       return {
         chanId: '0',
-        channelList:[],
+        channelList: [],
       }
     },
     props: ['channelId'],
-    watch:{
-      chanId:{
-        handler(val){
+    watch: {
+      chanId: {
+        handler(val) {
           this.$emit('channelChange', val)
         },
         immediate: true
       }
     },
-    methods:{
+    methods: {
       //设置初始值
-      setChannelId(val){
+      setChannelId(val) {
         this.chanId = val
       },
-      changeFlag(){
+      changeFlag() {
         this.flag = true
       },
       // 查询渠道信息
-      getChannel: function() {
+      getChannel: function () {
         axios({
           method: 'post',
           url: this.url + '/zpglController/queryRecruitChannel',
@@ -41,21 +42,20 @@
             'Content-Type': this.contentType,
             'Access-Token': this.accessToken
           },
-          data: {
-          },
+          data: {},
           dataType: 'json',
         }).then((response) => {
           console.log(response.data.retData)
           this.channelList = response.data.retData
-          if(this.chanId == '0'){
-            this.channelList.splice(0,0,{recruitChannelId:'0', recruitChannelName:'全部'})
+          if (this.chanId == '0') {
+            this.channelList.splice(0, 0, {recruitChannelId: '0', recruitChannelName: '全部'})
           }
         }).catch((error) => {
           console.log('请求失败处理')
         });
       },
     },
-    created(){
+    created() {
       this.getChannel()
     },
   }

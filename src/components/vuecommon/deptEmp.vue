@@ -1,35 +1,36 @@
 <template>
-  <select class="form-control" v-model="empAccountId"  v-on:change="deptEmpChange">
+  <select class="form-control" v-model="empAccountId" v-on:change="deptEmpChange">
     <option v-for="(item,index) in deptEmpList" :key="index" v-bind:value="item.account">{{item.name}}</option>
   </select>
 </template>
 
 <script>
   import axios from 'axios'
+
   export default {
-    name:'deptEmp',
+    name: 'deptEmp',
     data() {
       return {
         empAccountId: '',
         deptId: '',
-        empName:'',
-        deptEmpList:[],
+        empName: '',
+        deptEmpList: [],
       };
     },
     props: ['deptEmpId'],
-    watch:{
-      deptEmpId:function(){
-          this.empAccountId = this.deptEmpId
+    watch: {
+      deptEmpId: function () {
+        this.empAccountId = this.deptEmpId
       },
-      empAccountId:function(val){
-        this.$emit('deptEmpChange',val, this.empName)
+      empAccountId: function (val) {
+        this.$emit('deptEmpChange', val, this.empName)
       }
     },
-    methods:{
-      deptEmpChange: function(event) {
+    methods: {
+      deptEmpChange: function (event) {
         this.empName = this.exchangeDeptEmpName(this.empAccountId)
       },
-      exchangeDeptEmpName: function(param) {
+      exchangeDeptEmpName: function (param) {
         var res = {}
         for (var i = 0; i < this.deptEmpList.length; i++) {
           res = this.deptEmpList[i]
@@ -38,12 +39,12 @@
           }
         }
       },
-      getDeptId(val){
+      getDeptId(val) {
         this.deptId = val;
         this.getDeptEmp();
       },
       // 查询部门下的员工信息
-      getDeptEmp: function() {
+      getDeptEmp: function () {
         var url = this.url + '/leavePrepareController/queryEmpInfoByDept'
         axios({
           method: 'post',
@@ -53,7 +54,7 @@
             'Access-Token': this.accessToken
           },
           data: {
-            departmentId: this.deptId  == 0 ? '' : this.deptId
+            departmentId: this.deptId == 0 ? '' : this.deptId
           },
           dataType: 'json',
         }).then((response) => {

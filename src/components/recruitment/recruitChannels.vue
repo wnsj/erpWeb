@@ -30,7 +30,7 @@
               <td class="text-center">{{index+1}}</td>
               <td class="text-center">{{item.recruitChannelName}}</td>
               <td class="text-center">
-                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#channelEdit"
+                <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#channelEdit"
                         @click="getRecruitChannelInfo(item)">修改
                 </button>
               </td>
