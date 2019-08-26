@@ -127,14 +127,11 @@
 				</div>
 			</div>
 			
-					<empEntry ref='empEntry' @addEmployeeInfo='addEmployeeInfo'></empEntry>
-				
-			<div class="modal fade" id="myModalupdata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog staff_t">
-					<mEE ref='mEE' :personalBase='personalBase' :personalDetail='personalDetail' :personalFamily='personalFamily'
+			<empEntry ref='empEntry' @addEmployeeInfo='addEmployeeInfo'></empEntry>
+			
+			<mEE ref='mEE' :personalBase='personalBase' :personalDetail='personalDetail' :personalFamily='personalFamily'
 					 :personalShift='personalShift' @submitBackUpPage='receivePersonalBase'></mEE>
-				</div>
-			</div>
+				
 		</div>
 	</div>
 

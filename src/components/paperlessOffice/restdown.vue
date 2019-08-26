@@ -40,11 +40,11 @@
 				</div>
 				<div class="col-md-8 col-lg-8">
 					<select class="form-control" v-model="handleState">
-						<option value="0">全部</option>
-						<option value="1">待处理</option>
-						<option value="2">处理中</option>
-						<option value="3">已通过</option>
-						<option value="4">未通过</option>
+						<option value="全部">全部</option>
+						<option value="待处理">待处理</option>
+						<option value="处理中">处理中</option>
+						<option value="已通过">已通过</option>
+						<option value="未通过">未通过</option>
 					</select>
 				</div>
 			</div>
@@ -56,7 +56,7 @@
 				<p>项目：</p>
 			</div>
 
-			<button type="button" class="btn btn-primary pull-right" @click="dowmelxe('请假表')">导出</button>
+			<button type="button" class="btn btn-primary pull-right" @click="exportTableToExcel('datatable','倒休列表')">导出</button>
 			<button type="button" class="btn btn-primary pull-right m_r_10" data-toggle="modal" v-on:click="showRestInfo('','3')">申请</button>
 
 			<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" v-on:click="restDownList()">查询</button>
@@ -151,8 +151,8 @@
 			return {
 				name:'',
 				handleState:'0',
-				beginDate:this.getCurrentDay,
-				endDate:this.getCurrentDay,
+				beginDate:this.moment('', 'YYYY-MM-DD 00:00:00.000'),
+				endDate:this.moment('', 'YYYY-MM-DD 00:00:00.000'),
 				departId:'0',
 				departName:'',
 				accountId:this.accountInfo().account_ID,
@@ -227,11 +227,7 @@
 				}else{
 					aId=this.accountId
 				}
-				if(this.handleState=='全部'){
-					hState=''
-				}else{
-					hState=this.handleState
-				}
+				
 				
 				var url = this.url + '/wzbg/restDownList'
 				axios({
@@ -243,10 +239,10 @@
 					},
 					data: {
 						name: this.name,
-						beginDate: this.getYYYYMMDDHHMMSS_00(this.beginDate),
-						endDate: this.getYYYYMMDDHHMMSS_24(this.endDate),
+						beginDate: this.beginDate,
+						endDate: this.endDate,
 						departId: this.departId,
-						handleState: hState,
+						handleState: this.handleState,
 						accountId:aId,
 					},
 					dataType: 'json',

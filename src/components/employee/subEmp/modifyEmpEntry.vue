@@ -1,5 +1,7 @@
 <template>
 	<!--修改员工弹出-->
+	<div class="modal fade" id="myModalupdata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog staff_t">
 	<div class="modal-content">
 		<div class="modal-header">
 			<button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
@@ -11,7 +13,7 @@
 				<li><a href="#updatadetailed" data-toggle="tab">详细信息</a></li>
 				<li><a href="#updatafamily" data-toggle="tab">家庭成员</a></li>
 				<li><a href="#updatarecord" data-toggle="tab">调动记录</a></li>
-				<li class="pull-right" id="lookms"><a href="" data-toggle="tab">查看面试</a></li>
+				<li class="pull-right" id="lookms"><a href="" data-toggle="tab" v-on:click="checkInterView()">查看面试</a></li>
 			</ul>
 			<div class="tab-content" style=" height:600px; overflow-y:scroll;">
 				<!-- 人员基本信息 -->
@@ -39,7 +41,8 @@
 			</div>
 		</div>
 	</div>
-
+</div>
+</div>
 
 </template>
 
@@ -88,6 +91,20 @@
 				this.$refs.shiftInfo.childrenShiftInfo(this.accountId)
 				// if(this.personalBase.entryDate<)
 			},
+			checkInterView:function(){
+				const msg = confirm("员工添加成功,是否需要申请电脑？")
+				if (msg) {
+					this.$router.push({
+						// path:'/paperlessOffice/computerPreApplication',
+						// query:{userName: this.personalBase.erpaaccount}
+						name: 'recruitPlan',
+						params: {
+							userName: this.personalBase.erpaaccount
+						}
+					});
+				}
+			
+			},	
 			//判断是否在职，在职显示转正和离职，离职显示恢复
 			btnShow:function(){
 				if(this.personalBase.state==1){

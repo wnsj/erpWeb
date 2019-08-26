@@ -45,10 +45,10 @@
 				<div class="col-md-8 col-lg-8">
 					<select class="form-control" v-model="handleState">
 						<option >全部</option>
-						<option >待处理</option>
-						<option >处理中</option>
-						<option >已通过</option>
-						<option >未通过</option>
+						<option value="待处理">待处理</option>
+						<option value="处理中">处理中</option>
+						<option value="已通过">已通过</option>
+						<option value="未通过">未通过</option>
 					</select>
 				</div>
 			</div>
@@ -59,7 +59,7 @@
 				<p>项目：</p>
 			</div>
 
-			<button type="button" class="btn btn-primary pull-right" @click="dowmelxe('请假表')">导出</button>
+			<button type="button" class="btn btn-primary pull-right" @click="exportTableToExcel('datatable','请假列表')">导出</button>
 			<button type="button" class="btn btn-primary pull-right m_r_10" data-toggle="modal" v-on:click="showLeaveInfo('','3')">申请</button>
 
 			<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" v-on:click="askOfLeaveList()">查询</button>

@@ -1,44 +1,44 @@
 <template>
 	<!--员工入职弹出-->
-<div class="modal fade" id="myModalJoin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog staff_t">
-	<div class="modal-content">
-		<div class="modal-header">
-			<button type="button" aria-hidden="true" class="close" v-on:click="closeCurrentPage()">×</button>
-			<h4 id="myModalLabel" class="modal-title">员工入职</h4>
-		</div>
-		<div class="modal-body  pos_r">
-			<ul class="nav nav-tabs martop" id="inforElement">
-				<li class="active"><a href="#basic" data-toggle="tab">基本信息</a></li>
-				<li><a href="#detailed" data-toggle="tab">详细信息</a></li>
-				<li><a href="#family" data-toggle="tab">家庭成员</a></li>
-			</ul>
-			<div class="tab-content" style=" height:400px; overflow-y:scroll;">
-				<!-- 人员基本信息 -->
-				<baseInfo ref='baseInfo'></baseInfo>
-				<!-- 人员详细信息 -->
-				<detailInfo ref='detailInfo'></detailInfo>
-				<!--家庭成员-->
-				<familyInfo ref='familyInfo'></familyInfo>
-				<!--调动记录-->
-				<!-- <shiftInfo ref='shiftInfo'></shiftInfo> -->
-			</div>
-		
-		</div>
-		<div class="modal-footer">
-			<!--按钮 -->
-			<div class="col-md-12">
-				<div class="col-md-8" style="display: none">
-					<button type="button" class="btn btn-info btn-sm int_pwd">初始化密码</button>
-					<button type="button" class="btn btn-info btn-sm reg_work">转正</button>
-					<button type="button" class="btn btn-info btn-sm recovery">离职</button>
-					<button type="button" class="btn btn-info btn-sm detl">删除</button>
+	<div class="modal fade" id="myModalJoin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog staff_t">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" aria-hidden="true" class="close" v-on:click="closeCurrentPage()">×</button>
+					<h4 id="myModalLabel" class="modal-title">员工入职</h4>
 				</div>
-				<button type="button" class="btn btn-info" v-on:click="addEmployeeInfo()">确认</button>
-				<button type="button" data-dismiss="modal" class="btn btn-info">返回</button>
+				<div class="modal-body  pos_r">
+					<ul class="nav nav-tabs martop" id="inforElement">
+						<li class="active"><a href="#basic" data-toggle="tab">基本信息</a></li>
+						<li><a href="#detailed" data-toggle="tab">详细信息</a></li>
+						<li><a href="#family" data-toggle="tab">家庭成员</a></li>
+					</ul>
+					<div class="tab-content" style=" height:400px; overflow-y:scroll;">
+						<!-- 人员基本信息 -->
+						<baseInfo ref='baseInfo'></baseInfo>
+						<!-- 人员详细信息 -->
+						<detailInfo ref='detailInfo'></detailInfo>
+						<!--家庭成员-->
+						<familyInfo ref='familyInfo'></familyInfo>
+						<!--调动记录-->
+						<!-- <shiftInfo ref='shiftInfo'></shiftInfo> -->
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<!--按钮 -->
+					<div class="col-md-12">
+						<div class="col-md-8" style="display: none">
+							<button type="button" class="btn btn-info btn-sm int_pwd">初始化密码</button>
+							<button type="button" class="btn btn-info btn-sm reg_work">转正</button>
+							<button type="button" class="btn btn-info btn-sm recovery">离职</button>
+							<button type="button" class="btn btn-info btn-sm detl">删除</button>
+						</div>
+						<button type="button" class="btn btn-info" v-on:click="addEmployeeInfo()">确认</button>
+						<button type="button" data-dismiss="modal" class="btn btn-info">返回</button>
+					</div>
+				</div>
 			</div>
-		</div>
-		</div>
 		</div>
 	</div>
 
@@ -52,7 +52,7 @@
 	import familyInfo from '../subEmp/subEmpEntry/empFamily.vue'
 	import shiftInfo from '../subEmp/subEmpEntry/empShift.vue'
 	export default {
-		components:{
+		components: {
 			baseInfo,
 			detailInfo,
 			familyInfo,
@@ -60,61 +60,61 @@
 		},
 		data() {
 			return {
-				personalBase:{},
-				personalDetail:{},
-				personalFamily:[],
+				personalBase: {},
+				personalDetail: {},
+				personalFamily: [],
 			};
 		},
-		methods:{
-			closeCurrentPage:function(){
+		methods: {
+			closeCurrentPage: function() {
 				$("#myModalJoin").modal('hide')
 			},
 			//初始化数据
-			cleanData:function(){
+			cleanData: function() {
 				console.log('cleanData')
 				this.$refs.baseInfo.initDate()
 				this.$refs.detailInfo.cleanData()
 				this.$refs.familyInfo.cleanData()
 			},
 			addEmployeeInfo: function() {
-				
+
 				// 修改基本信息
 				this.personalBase = this.$refs.baseInfo.personalBase
 				this.personalBase.isDelete = '0'
 				this.personalBase.state = '1'
 				this.personalBase.createUser = this.accountInfo().account_ID
-				
-				
+
+
 				this.personalDetail = this.$refs.detailInfo.personalDetail
 				this.personalFamily = this.$refs.familyInfo.personalFamily
-	
+
 				var url = this.url + '/search/insertUserInfo'
-			
-				if(this.isBlank(this.personalBase.name)){
+
+				if (this.isBlank(this.personalBase.name)) {
 					alert("添加人员的姓名不能为空")
 					return
 				}
-				if(this.isBlank(this.personalBase.sex)){
+				if (this.isBlank(this.personalBase.sex)) {
 					alert("添加人员的性别不能为空")
 					return
 				}
-				if(this.isBlank(this.personalBase.jobNum)){
+				if (this.isBlank(this.personalBase.jobNum)) {
 					alert("添加人员的工号不能为空")
 					return
 				}
-				if(this.isBlank(this.personalBase.erpaaccount)){
+				if (this.isBlank(this.personalBase.erpaaccount)) {
 					alert("添加人员的ERP账号不能为空")
 					return
 				}
-				if(this.isBlank(this.personalBase.departId) || this.personalBase.departId == '0'){
+				if (this.isBlank(this.personalBase.departId) || this.personalBase.departId == '0') {
 					alert("必须选择部门")
 					return
 				}
-				if(this.isBlank(this.personalBase.positionId)||this.personalBase.positionId == '0'){
+				if (this.isBlank(this.personalBase.positionId) || this.personalBase.positionId == '0') {
 					alert("必须选择岗位")
 					return
 				}
-				
+
 				axios({
 					method: 'post',
 					url: url,
@@ -126,7 +126,7 @@
 						//基本信息
 						userBase: this.personalBase,
 						//详细信息
-						userDetail:this.personalDetail,
+						userDetail: this.personalDetail,
 						//家庭信息
 						userFamily: this.personalFamily,
 					},
@@ -137,31 +137,34 @@
 					console.log(res)
 					if (res.retCode == '0000') {
 						alert(res.resData.message)
-						if(res.resData.message=='添加成功'){
+						if (res.resData.message == '添加成功') {
 							this.$emit('addEmployeeInfo')
 							$("#myModalJoin").modal('hide')
 						}
 					}
-			
+
 				}).catch((error) => {
 					console.log('请求失败处理')
 				});
 
 			},
-			goToUrl(){
-			  const msg = confirm("员工添加成功,是否需要申请电脑？")
-			  if(msg){
-          this.$router.push({
-            // path:'/paperlessOffice/computerPreApplication',
-            // query:{userName: this.personalBase.erpaaccount}
-            name:'preApplication',
-            params:{userName: this.personalBase.erpaaccount}
-          });
-			  }
+			goToUrl() {
+				const msg = confirm("员工添加成功,是否需要申请电脑？")
+				if (msg) {
+					this.$router.push({
+						// path:'/paperlessOffice/computerPreApplication',
+						// query:{userName: this.personalBase.erpaaccount}
+						name: 'preApplication',
+						params: {
+							userName: this.personalBase.erpaaccount
+						}
+					});
+				}
 
-			}
+			},
+			
 		}
-		
+
 	}
 </script>
 

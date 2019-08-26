@@ -75,11 +75,11 @@ export default new Router({
 							name: 'recruitChannels',
 							component: recruitChannels
 						},
-            {
-              path: '/recruitment/interview',
-              name: 'interview',
-              component: interview
-            },
+						{
+							path: '/recruitment/interview',
+							name: 'interview',
+							component: interview
+						},
 						{
 							path: '/recruitment/recruitPlan',
 							name: 'recruitPlan',
@@ -146,8 +146,8 @@ export default new Router({
 				},
 				{
 					path: '/paperlessOffice/computerPreApplication',
-          name: 'preApplication',
-          component: preApplication
+					name: 'preApplication',
+					component: preApplication
 				},
 				{
 					path: '/paperlessOffice/empRequire',
