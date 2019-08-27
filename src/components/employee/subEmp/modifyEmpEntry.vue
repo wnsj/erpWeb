@@ -15,7 +15,7 @@
             <li><a href="#updatafamily" data-toggle="tab">家庭成员</a></li>
             <li><a href="#updatarecord" data-toggle="tab">调动记录</a></li>
             <li class="pull-right" id="lookms">
-              <a href="javascript:void(0)" data-toggle="tab" @click="relateToInterview">查看面试</a>
+              <button type="button" class="btn btn-sm btn-info btn-block" @click="relateToInterview">查看面试</button>
             </li>
           </ul>
           <div class="tab-content" style=" height:600px; overflow-y:scroll;">
@@ -87,9 +87,9 @@
     methods: {
       //传对应的参数给子模块
       paramDevliverToSubModel: function (param) {
-				console.log('recruitDataID:'+param.recruitDataID)
+        console.log('recruitDataID:' + param.recruitDataID)
         this.personalBase = param
-				console.log('recruitDataID:'+this.personalBase.recruitDataID)
+        console.log('recruitDataID:' + this.personalBase.recruitDataID)
         this.accountId = param.accountId
         this.userId = param.id
 
@@ -287,9 +287,7 @@
 
       relateToInterview() {
         //判断是否有面试记录
-        alert(this.personalBase.recruitDataID)
         if (this.isBlank(this.personalBase.recruitDataID)) {
-          // 如果有对应的面试记录查询
           const msg = confirm('没有对应的面试记录是否关联？')
           if (msg) {
             this.$router.push({
@@ -304,14 +302,10 @@
           //   params: {account: this.accountId, name: this.personalBase.erpaaccount}
           // })
         }
-
-
       },
     }
 
   }
 </script>
-
 <style>
-
 </style>

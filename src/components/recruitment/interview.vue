@@ -382,17 +382,19 @@
         });
       },
       getEditInfo(item) {
-        alert(item.isEntry)
-        if (this.has(65)) {
+        this.$refs.interviewInfo.initBtn()
+        if (this.has(65)&&this.btnDisplay) {
           if (item.isEntry == '未入职') {
             this.$refs.interviewInfo.isEntryBtn = true
           } else if (item.isEntry == '在职' || item.isEntry == '离职') {
             this.$refs.interviewInfo.isShowBtn = true
           }
-          $('#interviewEdit').modal('show')
-          this.interviewInfo = Object.assign({}, item)
-          this.$refs.interviewInfo.passParamToSubModule(this.interviewInfo)
+        }else if(!this.btnDisplay){
+          this.$refs.interviewInfo.isShow = false
         }
+        $('#interviewEdit').modal('show')
+        this.interviewInfo = Object.assign({}, item)
+        this.$refs.interviewInfo.passParamToSubModule(this.interviewInfo)
       },
       addModelShow() {
         this.$refs.addInterview.initAdd()
@@ -416,7 +418,8 @@
             alert('删除成功!')
             this.queryInterview()
           }).catch(error => {
-            console.log('删除失败!')
+            alert('删除失败!')
+            console.log(error)
           });
         }
       },
@@ -453,7 +456,7 @@
           }).then(response => {
             alert('关联成功')
             this.$router.push('/employee')
-          }).then(error => {
+          }).catch(error => {
             alert('关联失败')
             console.log(error)
           })

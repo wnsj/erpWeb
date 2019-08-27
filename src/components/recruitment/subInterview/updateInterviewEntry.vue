@@ -27,7 +27,7 @@
       <div class="col-md-12">
 
         <div class="col-md-7 col-md-offset-3">
-          <button type="button" class="btn btn-warning" @click="editInterview">确认</button>
+          <button type="button" class="btn btn-warning" v-if="isShow" @click="editInterview">确认</button>
           <button type="button" data-dismiss="modal" class="btn btn-warning">返回</button>
         </div>
         <div class="col-md-2">
@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-		<cee></cee>
+    <cee></cee>
   </div>
 </template>
 <script>
@@ -45,13 +45,14 @@
   import updateBasicInfo from '../subInterview/subUpdateInterviewEntry/updateInterviewBasic.vue'
   import updateEducationInfo from '../subInterview/subUpdateInterviewEntry/updateEducationExperience.vue'
   import updateApplyInfo from '../subInterview/subUpdateInterviewEntry/updateApplyInformation.vue'
-	import cee from '../../recruitment/checkEntryInfo/checkEmpEntry.vue'
+  import cee from '../../recruitment/checkEntryInfo/checkEmpEntry.vue'
+
   export default {
     components: {
       updateBasicInfo,
       updateEducationInfo,
       updateApplyInfo,
-			cee
+      cee
     },
     data() {
       return {
@@ -59,8 +60,9 @@
         interviewBaseEdit: {},
         educationExprienceEdit: {},
         applyEdit: {},
+        isShow: true,
         isEntryBtn: false,
-        isShowBtn: false
+        isShowBtn: false,
       }
     },
     methods: {
@@ -69,9 +71,14 @@
         this.$refs.updateEducation.childBasicEduAndExp(val)
         this.$refs.updateApply.childApply(val)
       },
-			checkEntry:function(){
-				$("#REModalupdata").modal('show')
-			},
+      checkEntry: function () {
+        $("#REModalupdata").modal('show')
+      },
+      initBtn() {
+        this.isShow = true
+        this.isEntryBtn = false
+        this.isShowBtn = false
+      },
       // ---------------------------------------编辑----------------------------------
       editInterview() {
         this.interviewBaseEdit = this.$refs.updateBasic.interviewBase
