@@ -33,11 +33,11 @@ import forgetPunchProof from '../components/paperlessOffice/forgetPunchProof.vue
 import conferenceRoomManage from '../components/paperlessOffice/conferenceRoomManage.vue'
 import officeSuppliesManage from '../components/paperlessOffice/officeSuppliesManage.vue'
 import computerSupplies from '../components/paperlessOffice/computerSupplies.vue'
-import computerAdvanceApplication from '../components/paperlessOffice/computerAdvanceApplication.vue'
 import empRequire from '../components/paperlessOffice/empRequire.vue'
 import report from '../components/paperlessOffice/report.vue'
 import clock from '../components/paperlessOffice/clock.vue'
 import preApplication from '../components/paperlessOffice/computerPreApplication.vue'
+import leaveOffice from '../components/paperlessOffice/leaveOffice.vue'
 
 
 Vue.use(Router)
@@ -62,13 +62,11 @@ export default new Router({
 			children: [{
 					path: '/employee',
 					component: employee,
-					children:[
-						{
-							path: '/employee/empEntry',
-							name:'empEntry',
-							component: empEntry
-						},
-						]
+					children: [{
+						path: '/employee/empEntry',
+						name: 'empEntry',
+						component: empEntry
+					}, ]
 				},
 				{
 					path: '/attendence',
@@ -149,6 +147,8 @@ export default new Router({
 				},
 
 
+
+
 				{
 					path: '/paperlessOffice/conferenceRoomManage',
 					component: conferenceRoomManage
@@ -161,7 +161,12 @@ export default new Router({
 				{
 					path: '/paperlessOffice/empRequire',
 					component: empRequire
-				}
+				},
+				{
+					path: '/paperlessOffice/leaveOffice',
+					component: leaveOffice
+				},
+
 
 			],
 			redirect: '/employee'

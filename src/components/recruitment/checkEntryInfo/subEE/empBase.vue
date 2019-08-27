@@ -103,6 +103,7 @@
 		methods:{
 			//员工入职
 			initDate:function(param){
+				
 				if(!this.isBlank(param)){
 					this.personalBase=param
 					this.personalBase.entryDate=this.moment('','YYYY-MM-DD HH:MM:SS.000')
