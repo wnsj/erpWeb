@@ -48,9 +48,8 @@
         </div>
       </div>
     </div>
+    <interviewShow ref="interview"></interviewShow>
   </div>
-
-
 </template>
 
 <script>
@@ -59,10 +58,11 @@
   import detailInfo from '../subEmp/subModifyEE/modifyEmpDetail.vue'
   import familyInfo from '../subEmp/subModifyEE/modifyEmpFamily.vue'
   import shiftInfo from '../subEmp/subModifyEE/modifyEmpShift.vue'
-
+  import interviewShow from '../../recruitment/interview.vue'
 
   export default {
     components: {
+      interviewShow,
       baseInfo,
       detailInfo,
       familyInfo,
@@ -82,6 +82,7 @@
 
         accountId: '',
         userId: '',
+        name: '',
       };
     },
     methods: {
@@ -92,6 +93,7 @@
         console.log('recruitDataID:' + this.personalBase.recruitDataID)
         this.accountId = param.accountId
         this.userId = param.id
+        this.name = param.name
 
         this.btnShow()
 
@@ -292,15 +294,11 @@
           if (msg) {
             this.$router.push({
               name: 'interview',
-              params: {account: this.accountId, name: this.personalBase.erpaaccount}
+              params: {account: this.accountId, name: this.name}
             })
           }
         } else {
-          alert("有对应的面试记录")
-          // this.$router.push({
-          //   name: 'interview',
-          //   params: {account: this.accountId, name: this.personalBase.erpaaccount}
-          // })
+          this.$refs.interview.showInterviewInfo(this.accountId)
         }
       },
     }

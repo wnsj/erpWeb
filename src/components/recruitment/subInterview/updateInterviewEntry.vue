@@ -6,7 +6,7 @@
       <button type="button" data-dismiss="modal" aria-hidden="true" class="close">
         <span>×</span>
       </button>
-      <h4 id="myModalLabel" class="modal-title">修改面试信息</h4>
+      <h4 id="myModalLabel" class="modal-title">面试信息</h4>
     </div>
     <div class="modal-body">
       <ul class="nav nav-tabs martop">
@@ -25,7 +25,6 @@
     </div>
     <div class="modal-footer">
       <div class="col-md-12">
-
         <div class="col-md-7 col-md-offset-3">
           <button type="button" class="btn btn-warning" v-if="isShow" @click="editInterview">确认</button>
           <button type="button" data-dismiss="modal" class="btn btn-warning">返回</button>
@@ -73,6 +72,9 @@
       },
       checkEntry: function () {
         $("#REModalupdata").modal('show')
+      },
+      changeBtn() {
+        this.isShow = false
       },
       initBtn() {
         this.isShow = true
