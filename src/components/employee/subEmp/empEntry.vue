@@ -1,7 +1,7 @@
 <template>
 	<!--员工入职弹出-->
-	<!-- <div class="modal fade" id="myModalJoin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog staff_t"> -->
+	<div class="modal fade" id="myModalJoin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog staff_t">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" aria-hidden="true" class="close" v-on:click="closeCurrentPage()">×</button>
@@ -41,8 +41,8 @@
 					</div>
 				</div>
 			</div>
-		<!-- </div>
-	</div> -->
+		</div>
+	</div>
 
 
 </template>

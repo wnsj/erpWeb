@@ -307,12 +307,14 @@
         ],
         interviewList: [],
         interviewBase: {},
+        interviewInfo: {}, //首页列表获取的一个人的面试信息
         educationExprience: {},
         apply: {},
         id: '',
         display: 'display:none',
         btnDisplay: true,
-        account: ''
+        account: '',
+
       }
     },
     methods: {
@@ -371,7 +373,6 @@
             education: this.education,
             profession: this.profession,
             atSchool: this.atSchool,
-            interviewInfo: {}  //首页列表获取的一个人的面试信息
           },
           dataType: 'json',
         }).then(response => {
@@ -382,17 +383,19 @@
         });
       },
       getEditInfo(item) {
-        alert(item.isEntry)
-        if (this.has(65)) {
+        this.$refs.interviewInfo.initBtn()
+        if (this.has(65)&&this.btnDisplay) {
           if (item.isEntry == '未入职') {
             this.$refs.interviewInfo.isEntryBtn = true
           } else if (item.isEntry == '在职' || item.isEntry == '离职') {
             this.$refs.interviewInfo.isShowBtn = true
           }
-          $('#interviewEdit').modal('show')
-          this.interviewInfo = Object.assign({}, item)
-          this.$refs.interviewInfo.passParamToSubModule(this.interviewInfo)
+        }else if(!this.btnDisplay){
+          this.$refs.interviewInfo.isShow = false
         }
+        $('#interviewEdit').modal('show')
+        this.interviewInfo = Object.assign({}, item)
+        this.$refs.interviewInfo.passParamToSubModule(this.interviewInfo)
       },
       addModelShow() {
         this.$refs.addInterview.initAdd()
@@ -416,7 +419,8 @@
             alert('删除成功!')
             this.queryInterview()
           }).catch(error => {
-            console.log('删除失败!')
+            alert('删除失败!')
+            console.log(error)
           });
         }
       },
@@ -436,7 +440,14 @@
         }
       },
       relate(item) {
-        const msg = confirm('确定关联吗？')
+        let msg;
+        if(item.isEntry == '未入职'){
+          msg = confirm('确定关联吗？')
+        }else if (item.isEntry == '在职'){
+          msg = confirm('该面试信息已关联在职人员,确定关联吗？')
+        }else if(item.isEntry == '离职'){
+          msg = confirm('该面试信息已关联离职人员,确定关联吗？')
+        }
         if (msg) {
           axios({
             method: 'post',
@@ -453,11 +464,34 @@
           }).then(response => {
             alert('关联成功')
             this.$router.push('/employee')
-          }).then(error => {
+          }).catch(error => {
             alert('关联失败')
             console.log(error)
           })
         }
+      },
+      // ------------------------------------查看面试信息-----------------------------
+      showInterviewInfo(val){
+        this.$refs.interviewInfo.initBtn()
+        axios({
+          method: 'post',
+          url: this.url + '/zpglController/queryRecruitData',
+          headers: {
+            'Content-Type': this.contentType,
+            'Access-Token': this.accessToken
+          },
+          data: {
+            account: val
+          },
+          dataType: 'json',
+        }).then(response => {
+          this.interviewInfo = response.data.retData[0]
+          this.$refs.interviewInfo.passParamToSubModule(this.interviewInfo)
+          $('#interviewEdit').modal('show')
+          this.$refs.interviewInfo.changeBtn()
+        }).catch(error => {
+          console.log(error)
+        });
       }
     },
     created() {

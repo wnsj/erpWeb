@@ -97,7 +97,7 @@
       <div class="form-group clearfix">
         <label class="col-md-2 control-label text-right nopad">籍贯：</label>
         <div class="col-md-4">
-          <input type="text" class="form-control" placeholder="Native Place" v-model="interviewBase.homeTown">
+          <input type="text" class="form-control" v-model="interviewBase.homeTown">
         </div>
       </div>
       <div class="form-group clearfix">

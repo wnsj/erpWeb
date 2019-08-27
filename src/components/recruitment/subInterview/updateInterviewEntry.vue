@@ -6,7 +6,7 @@
       <button type="button" data-dismiss="modal" aria-hidden="true" class="close">
         <span>×</span>
       </button>
-      <h4 id="myModalLabel" class="modal-title">修改面试信息</h4>
+      <h4 id="myModalLabel" class="modal-title">面试信息</h4>
     </div>
     <div class="modal-body">
       <ul class="nav nav-tabs martop">
@@ -25,9 +25,8 @@
     </div>
     <div class="modal-footer">
       <div class="col-md-12">
-
         <div class="col-md-7 col-md-offset-3">
-          <button type="button" class="btn btn-warning" @click="editInterview">确认</button>
+          <button type="button" class="btn btn-warning" v-if="isShow" @click="editInterview">确认</button>
           <button type="button" data-dismiss="modal" class="btn btn-warning">返回</button>
         </div>
         <div class="col-md-2">
@@ -37,12 +36,7 @@
       </div>
     </div>
 		<cee ref="cee"></cee>
-		<div class="modal fade" id="recruitEntry" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog staff_t">
-				<ee ref="ee"></ee>
-			</div>
-		</div>
-		
+		<ee ref="ee"></ee>
   </div>
 </template>
 <script>
@@ -67,8 +61,9 @@
         interviewBaseEdit: {},
         educationExprienceEdit: {},
         applyEdit: {},
+        isShow: true,
         isEntryBtn: false,
-        isShowBtn: false
+        isShowBtn: false,
       }
     },
     methods: {
@@ -99,7 +94,17 @@
 				this.$refs.cee.paramDevliverToSubModel(this.interviewBaseEdit.id)
 				$("#REModalupdata").modal('show')
 			},
-			
+      checkEntry: function () {
+        $("#REModalupdata").modal('show')
+      },
+      changeBtn() {
+        this.isShow = false
+      },
+      initBtn() {
+        this.isShow = true
+        this.isEntryBtn = false
+        this.isShowBtn = false
+      },
       // ---------------------------------------编辑----------------------------------
       editInterview() {
         this.interviewBaseEdit = this.$refs.updateBasic.interviewBase

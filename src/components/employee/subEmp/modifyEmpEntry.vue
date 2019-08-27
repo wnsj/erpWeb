@@ -15,7 +15,7 @@
             <li><a href="#updatafamily" data-toggle="tab">家庭成员</a></li>
             <li><a href="#updatarecord" data-toggle="tab">调动记录</a></li>
             <li class="pull-right" id="lookms">
-              <a href="javascript:void(0)" data-toggle="tab" @click="relateToInterview">查看面试</a>
+              <button type="button" class="btn btn-sm btn-info btn-block" @click="relateToInterview">查看面试</button>
             </li>
           </ul>
           <div class="tab-content" style=" height:600px; overflow-y:scroll;">
@@ -48,9 +48,8 @@
         </div>
       </div>
     </div>
+    <interviewShow ref="interview"></interviewShow>
   </div>
-
-
 </template>
 
 <script>
@@ -59,10 +58,11 @@
   import detailInfo from '../subEmp/subModifyEE/modifyEmpDetail.vue'
   import familyInfo from '../subEmp/subModifyEE/modifyEmpFamily.vue'
   import shiftInfo from '../subEmp/subModifyEE/modifyEmpShift.vue'
-
+  import interviewShow from '../../recruitment/interview.vue'
 
   export default {
     components: {
+      interviewShow,
       baseInfo,
       detailInfo,
       familyInfo,
@@ -82,16 +82,18 @@
 
         accountId: '',
         userId: '',
+        name: '',
       };
     },
     methods: {
       //传对应的参数给子模块
       paramDevliverToSubModel: function (param) {
-				console.log('recruitDataID:'+param.recruitDataID)
+        console.log('recruitDataID:' + param.recruitDataID)
         this.personalBase = param
-				console.log('recruitDataID:'+this.personalBase.recruitDataID)
+        console.log('recruitDataID:' + this.personalBase.recruitDataID)
         this.accountId = param.accountId
         this.userId = param.id
+        this.name = param.name
 
         this.btnShow()
 
@@ -287,31 +289,21 @@
 
       relateToInterview() {
         //判断是否有面试记录
-        alert(this.personalBase.recruitDataID)
         if (this.isBlank(this.personalBase.recruitDataID)) {
-          // 如果有对应的面试记录查询
           const msg = confirm('没有对应的面试记录是否关联？')
           if (msg) {
             this.$router.push({
               name: 'interview',
-              params: {account: this.accountId, name: this.personalBase.erpaaccount}
+              params: {account: this.accountId, name: this.name}
             })
           }
         } else {
-          alert("有对应的面试记录")
-          // this.$router.push({
-          //   name: 'interview',
-          //   params: {account: this.accountId, name: this.personalBase.erpaaccount}
-          // })
+          this.$refs.interview.showInterviewInfo(this.accountId)
         }
-
-
       },
     }
 
   }
 </script>
-
 <style>
-
 </style>
