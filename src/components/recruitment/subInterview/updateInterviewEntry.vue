@@ -45,8 +45,8 @@
   import updateBasicInfo from '../subInterview/subUpdateInterviewEntry/updateInterviewBasic.vue'
   import updateEducationInfo from '../subInterview/subUpdateInterviewEntry/updateEducationExperience.vue'
   import updateApplyInfo from '../subInterview/subUpdateInterviewEntry/updateApplyInformation.vue'
-	import cee from '../../recruitment/checkEntryInfo/checkEmpEntry.vue'
-	import ee from '../../employee/subEmp/empEntry.vue'
+	import cee from '../../recruitment/checkEntryInfo/checkEmpEntry.vue'//查看入职
+	import ee from '../../recruitment/checkEntryInfo/empEntry.vue'//入职
   export default {
     components: {
       updateBasicInfo,
@@ -79,6 +79,7 @@
 				
 				//赋值基本信息和详细信息
 				var entryBaseInfo={},entryDetialInfo={}
+				entryBaseInfo.recruitDataID=this.interviewBaseEdit.id
 				entryBaseInfo.name=this.interviewBaseEdit.name
 				entryBaseInfo.sex=this.interviewBaseEdit.sex
 				entryBaseInfo.birth=this.interviewBaseEdit.birth

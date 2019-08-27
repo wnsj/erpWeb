@@ -1,6 +1,6 @@
 <template>
 	<!--员工入职弹出-->
-	<div class="modal fade" id="myModalJoin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="recruitEntry" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog staff_t">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -9,9 +9,9 @@
 				</div>
 				<div class="modal-body  pos_r">
 					<ul class="nav nav-tabs martop" id="inforElement">
-						<li class="active"><a href="#basic" data-toggle="tab">基本信息</a></li>
-						<li><a href="#detailed" data-toggle="tab">详细信息</a></li>
-						<li><a href="#family" data-toggle="tab">家庭成员</a></li>
+						<li class="active"><a href="#cBasic" data-toggle="tab">基本信息</a></li>
+						<li><a href="#cDetailed" data-toggle="tab">详细信息</a></li>
+						<li><a href="#cFamily" data-toggle="tab">家庭成员</a></li>
 					</ul>
 					<div class="tab-content" style=" height:400px; overflow-y:scroll;">
 						<!-- 人员基本信息 -->
@@ -22,8 +22,7 @@
 						<detailInfo ref='detailInfo'></detailInfo>
 						<!--家庭成员-->
 						<familyInfo ref='familyInfo'></familyInfo>
-						<!--调动记录-->
-						<shiftInfo ref='shiftInfo'></shiftInfo>
+						
 					</div>
 
 				</div>
@@ -49,16 +48,14 @@
 
 <script>
 	import axios from 'axios'
-	import baseInfo from '../subEmp/subEmpEntry/empBase.vue'
-	import detailInfo from '../subEmp/subEmpEntry/empDetail.vue'
-	import familyInfo from '../subEmp/subEmpEntry/empFamily.vue'
-	import shiftInfo from '../subEmp/subEmpEntry/empShift.vue'
+	import baseInfo from '../checkEntryInfo/subEE/empBase.vue'
+	import detailInfo from '../checkEntryInfo/subEE/empDetail.vue'
+	import familyInfo from '../checkEntryInfo/subEE/empFamily.vue'
 	export default {
 		components: {
 			baseInfo,
 			detailInfo,
 			familyInfo,
-			shiftInfo,
 		},
 		data() {
 			return {
@@ -69,7 +66,6 @@
 		},
 		methods: {
 			closeCurrentPage: function() {
-				$("#myModalJoin").modal('hide')
 				$("#recruitEntry").modal('hide')
 			},
 			//初始化数据
@@ -149,7 +145,7 @@
 						alert(res.resData.message)
 						if (res.resData.message == '添加成功') {
 							this.$emit('addEmployeeInfo')
-							$("#myModalJoin").modal('hide')
+							$("#recruitEntry").modal('hide')
 						}
 					}
 
