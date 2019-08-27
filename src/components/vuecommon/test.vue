@@ -21,7 +21,8 @@
   import {
     CallVueMethod
   } from '@/assets/js/constant'
-
+	
+	var change=1
   export default {
     data() {
       return {
@@ -46,7 +47,7 @@
         } else if ('MozWebSocket' in window) {
           this.websocket = new MozWebSocket(url);
         } else {
-          this.websocket = new SockJS("http://172.16.56.1:8080/websocket/" + this.accountId);
+          this.websocket = new SockJS("http://172.16.2.248:8080/websocket/" + this.accountId);
         }
         this.setWebSocket();
 
@@ -65,6 +66,7 @@
 
         //接收到消息的回调方法
         this.websocket.onmessage = function(event) {
+					console.log('change:'+change)
 					console.log('this-websocket-onmessage')
           let innerHTML = event.data;
           this.lockReconnect = false;

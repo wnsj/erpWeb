@@ -126,9 +126,11 @@
 					<family></family>
 				</div>
 			</div>
-			
-			<empEntry ref='empEntry' @addEmployeeInfo='addEmployeeInfo'></empEntry>
-			
+			<div class="modal fade" id="myModalJoin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog staff_t">
+					<empEntry ref='empEntry' @addEmployeeInfo='addEmployeeInfo'></empEntry>
+				</div>
+			</div>
 			<mEE ref='mEE' :personalBase='personalBase' :personalDetail='personalDetail' :personalFamily='personalFamily'
 					 :personalShift='personalShift' @submitBackUpPage='receivePersonalBase'></mEE>
 				
@@ -353,9 +355,7 @@
 				$("#myModalupdata").modal('show')
 				this.accountId = item.accountId
 				this.personalInfo = Object.assign({}, item)
-				console.log('recruitDataID:'+this.personalInfo.recruitDataID)
 				this.$refs.mEE.paramDevliverToSubModel(this.personalInfo)
-				
 				this.personalInfo.entryDate = timeInit(this.personalInfo.entryDate)
 				this.personalInfo.positiveDate = timeInit(this.personalInfo.positiveDate)
 				this.personalInfo.resignDate = timeInit(this.personalInfo.resignDate)

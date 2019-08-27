@@ -1,7 +1,7 @@
 <template>
 	<!--员工入职弹出-->
-	<div class="modal fade" id="myModalJoin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog staff_t">
+	<!-- <div class="modal fade" id="myModalJoin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog staff_t"> -->
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" aria-hidden="true" class="close" v-on:click="closeCurrentPage()">×</button>
@@ -15,7 +15,9 @@
 					</ul>
 					<div class="tab-content" style=" height:400px; overflow-y:scroll;">
 						<!-- 人员基本信息 -->
+						<!-- <div class="tab-pane fade in active martop" id="basic"> -->
 						<baseInfo ref='baseInfo'></baseInfo>
+						<!-- </div> -->
 						<!-- 人员详细信息 -->
 						<detailInfo ref='detailInfo'></detailInfo>
 						<!--家庭成员-->
@@ -39,8 +41,8 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
+		<!-- </div>
+	</div> -->
 
 
 </template>
@@ -68,6 +70,7 @@
 		methods: {
 			closeCurrentPage: function() {
 				$("#myModalJoin").modal('hide')
+				$("#recruitEntry").modal('hide')
 			},
 			//初始化数据
 			cleanData: function() {
@@ -75,6 +78,13 @@
 				this.$refs.baseInfo.initDate()
 				this.$refs.detailInfo.cleanData()
 				this.$refs.familyInfo.cleanData()
+			},
+			//面试传信息
+			receiveRecruitmentInfo:function(baseInfo,detailInfo){
+				this.$refs.baseInfo.initDate(baseInfo)
+				this.$refs.detailInfo.initData(detailInfo)
+				console.log("接收面试信息:"+detailInfo.name)
+				
 			},
 			addEmployeeInfo: function() {
 

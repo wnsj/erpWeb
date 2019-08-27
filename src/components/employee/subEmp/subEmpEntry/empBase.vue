@@ -101,13 +101,18 @@
 			};
 		},
 		methods:{
-			initDate:function(){
-				this.personalBase={
-					birth:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
-					entryDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
-					positiveDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
-					state:'1',
-				},
+			//员工入职
+			initDate:function(param){
+				if(!this.isBlank(param)){
+					this.personalBase=param
+				}else{
+					this.personalBase={
+						birth:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
+						entryDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
+						positiveDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
+						state:'1',
+					}
+				}
 				this.$children[1].setDpart('0')
 				this.$children[2].setPosition('0')
 			},

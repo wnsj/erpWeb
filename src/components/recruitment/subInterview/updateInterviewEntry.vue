@@ -31,12 +31,18 @@
           <button type="button" data-dismiss="modal" class="btn btn-warning">返回</button>
         </div>
         <div class="col-md-2">
-          <button type="button" class="btn btn-info" v-if="isEntryBtn">入职</button>
-          <button type="button" class="btn btn-info" v-if="isShowBtn">查看入职</button>
+          <button type="button" class="btn btn-info" v-if="isEntryBtn" v-on:click="entry()">入职</button>
+          <button type="button" class="btn btn-info" v-if="isShowBtn" v-on:click="checkEntry()">查看入职</button>
         </div>
       </div>
     </div>
-		<cee></cee>
+		<cee ref="cee"></cee>
+		<div class="modal fade" id="recruitEntry" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog staff_t">
+				<ee ref="ee"></ee>
+			</div>
+		</div>
+		
   </div>
 </template>
 <script>
@@ -46,12 +52,14 @@
   import updateEducationInfo from '../subInterview/subUpdateInterviewEntry/updateEducationExperience.vue'
   import updateApplyInfo from '../subInterview/subUpdateInterviewEntry/updateApplyInformation.vue'
 	import cee from '../../recruitment/checkEntryInfo/checkEmpEntry.vue'
+	import ee from '../../employee/subEmp/empEntry.vue'
   export default {
     components: {
       updateBasicInfo,
       updateEducationInfo,
       updateApplyInfo,
-			cee
+			cee,
+			ee
     },
     data() {
       return {
@@ -69,9 +77,29 @@
         this.$refs.updateEducation.childBasicEduAndExp(val)
         this.$refs.updateApply.childApply(val)
       },
+			//入职按钮
+			entry:function(){
+				this.interviewBaseEdit = this.$refs.updateBasic.interviewBase
+				this.educationExprienceEdit = this.$refs.updateEducation.eduAndExpInfo
+				
+				//赋值基本信息和详细信息
+				var entryBaseInfo={},entryDetialInfo={}
+				entryBaseInfo.name=this.interviewBaseEdit.name
+				entryBaseInfo.sex=this.interviewBaseEdit.sex
+				entryBaseInfo.birth=this.interviewBaseEdit.birth
+				entryDetialInfo=Object.assign(this.interviewBaseEdit,this.educationExprienceEdit)
+				
+				console.log('entryInfo:'+entryDetialInfo.name+entryDetialInfo.education)
+				$("#recruitEntry").modal('show')
+				this.$refs.ee.receiveRecruitmentInfo(entryBaseInfo,entryDetialInfo)
+			},
+			//查看入职
 			checkEntry:function(){
+				this.interviewBaseEdit = this.$refs.updateBasic.interviewBase
+				this.$refs.cee.paramDevliverToSubModel(this.interviewBaseEdit.id)
 				$("#REModalupdata").modal('show')
 			},
+			
       // ---------------------------------------编辑----------------------------------
       editInterview() {
         this.interviewBaseEdit = this.$refs.updateBasic.interviewBase

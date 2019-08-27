@@ -59,13 +59,14 @@
 		methods: {
 			//传对应的参数给子模块
 			paramDevliverToSubModel:function(param){
-				console.log('isShiftPosition'+this.accountId)
-				this.$refs.baseInfo.childrenBaseInfo(this.accountId)
-				this.$refs.detailInfo.childrenDetailInfo(this.accountId)
-				this.$refs.familyInfo.getEmpFamilyInfo(this.accountId)
-				this.$refs.shiftInfo.childrenShiftInfo(this.accountId)
+				console.log('recruitDataID:'+param)
+				this.$refs.baseInfo.childrenBaseInfo(param)
+				this.$refs.detailInfo.childrenDetailInfo(param)
+				this.$refs.familyInfo.getEmpFamilyInfo(param)
+				this.$refs.shiftInfo.childrenShiftInfo(param)
 			},
 			closeBtn:function(){
+				console.log('关按钮')
 				$("#REModalupdata").modal('hide')
 			},
 		}

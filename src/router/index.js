@@ -4,6 +4,7 @@ import App from '../App.vue'
 
 //人员管理
 import employee from '../components/employee/employee.vue'
+import empEntry from '../components/employee/subEmp/empEntry.vue'
 import attendence from '../components/attendence/attendence.vue'
 import recruitment from '../components/recruitment/recruitment.vue'
 
@@ -42,121 +43,128 @@ import preApplication from '../components/paperlessOffice/computerPreApplication
 Vue.use(Router)
 
 export default new Router({
-  // mode: 'history', //在生产环境下生成虚拟路径，再次刷新，路径将会改变，导致404错误
-  mode: 'hash',
-  linkActiveClass: 'open active',
-  scrollBehavior: () => ({
-    y: 0
-  }),
-  routes: [{
-    path: '/login',
-    component: login,
-    hidden: true
-  },
-    {
-      path: '/mainPage',
-      name: '首页',
-      component: mainPage,
-      hidden: false,
-      children: [{
-        path: '/employee',
-        component: employee
-      },
-        {
-          path: '/attendence',
-          component: attendence
-        },
-        //招聘
-        {
-          path: '/recruitment',
-          component: recruitment,
-          children: [{
-            path: '/recruitment/recruitChannels',
-            name: 'recruitChannels',
-            component: recruitChannels
-          },
-            {
-              path: '/recruitment/interview',
-              name: 'interview',
-              component: interview
-            },
-            {
-              path: '/recruitment/recruitPlan',
-              name: 'recruitPlan',
-              component: recruitPlan
-            },
-            {
-              path: '/recruitment/recruitPublish',
-              name: 'recruitPublish',
-              component: recruitPublish
-            }
-          ],
-          redirect: '/recruitment/recruitChannels'
-        },
-        //人员分析
-        {
-          path: '/perAnalysis/poresonnel',
-          component: poresonnel
-        },
-        {
-          path: '/perAnalysis/abnormal',
-          component: abnormal
-        },
-        {
-          path: '/perAnalysis/separation',
-          component: separation
-        },
-        {
-          path: '/perAnalysis/effectiveness',
-          component: effectiveness
-        },
-        {
-          path: '/perAnalysis/uilization',
-          component: uilization
-        },
+	// mode: 'history', //在生产环境下生成虚拟路径，再次刷新，路径将会改变，导致404错误
+	mode: 'hash',
+	linkActiveClass: 'open active',
+	scrollBehavior: () => ({
+		y: 0
+	}),
+	routes: [{
+			path: '/login',
+			component: login,
+			hidden: true
+		},
+		{
+			path: '/mainPage',
+			name: '首页',
+			component: mainPage,
+			hidden: false,
+			children: [{
+					path: '/employee',
+					component: employee,
+					children:[
+						{
+							path: '/employee/empEntry',
+							name:'empEntry',
+							component: empEntry
+						},
+						]
+				},
+				{
+					path: '/attendence',
+					component: attendence
+				},
+				//招聘
+				{
+					path: '/recruitment',
+					component: recruitment,
+					children: [{
+							path: '/recruitment/recruitChannels',
+							name: 'recruitChannels',
+							component: recruitChannels
+						},
+						{
+							path: '/recruitment/interview',
+							name: 'interview',
+							component: interview
+						},
+						{
+							path: '/recruitment/recruitPlan',
+							name: 'recruitPlan',
+							component: recruitPlan
+						},
+						{
+							path: '/recruitment/recruitPublish',
+							name: 'recruitPublish',
+							component: recruitPublish
+						}
+					],
+					redirect: '/recruitment/recruitChannels'
+				},
+				//人员分析
+				{
+					path: '/perAnalysis/poresonnel',
+					component: poresonnel
+				},
+				{
+					path: '/perAnalysis/abnormal',
+					component: abnormal
+				},
+				{
+					path: '/perAnalysis/separation',
+					component: separation
+				},
+				{
+					path: '/perAnalysis/effectiveness',
+					component: effectiveness
+				},
+				{
+					path: '/perAnalysis/uilization',
+					component: uilization
+				},
 
-        // 无纸化办公
+				// 无纸化办公
 
-        {
-          path: '/paperlessOffice/report',
-          component: report
-        },
-        {
-          path: '/paperlessOffice/clock',
-          component: clock
-        },
+				{
+					path: '/paperlessOffice/report',
+					component: report
+				},
+				{
+					path: '/paperlessOffice/clock',
+					component: clock
+				},
 
-        {
-          path: '/paperlessOffice/askForLeave',
-          component: askForLeave
-        },
+				{
+					path: '/paperlessOffice/askForLeave',
+					component: askForLeave
+				},
 
-        {
-          path: '/paperlessOffice/restdown',
-          component: restdown
-        },
-        {
-          path: '/paperlessOffice/officeSuppliesManage',
-          component: officeSuppliesManage
-        },
+				{
+					path: '/paperlessOffice/restdown',
+					component: restdown
+				},
+				{
+					path: '/paperlessOffice/officeSuppliesManage',
+					component: officeSuppliesManage
+				},
 
 
-        {
-          path: '/paperlessOffice/conferenceRoomManage',
-          component: conferenceRoomManage
-        },
-        {
-          path: '/paperlessOffice/computerPreApplication',
-          name: 'preApplication',
-          component: preApplication
-        },
-        {
-          path: '/paperlessOffice/empRequire',
-          component: empRequire
-        }
+				{
+					path: '/paperlessOffice/conferenceRoomManage',
+					component: conferenceRoomManage
+				},
+				{
+					path: '/paperlessOffice/computerPreApplication',
+					name: 'preApplication',
+					component: preApplication
+				},
+				{
+					path: '/paperlessOffice/empRequire',
+					component: empRequire
+				}
 
-      ],
-      redirect: '/employee'
-    }
-  ]
+			],
+			redirect: '/employee'
+		}
+	]
 });
