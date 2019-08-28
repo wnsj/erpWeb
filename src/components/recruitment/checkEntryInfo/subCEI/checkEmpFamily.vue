@@ -1,9 +1,7 @@
 <template>
 	<!--家庭成员-->
 	<div class="tab-pane fade" id="checkFamily">
-		<div class="col-md-2 col-md-offset-10 clearfix martop pos_a">
-			<button type="button" class="btn btn-warning" data-toggle="modal" v-on:click="popupFamilyInfo()">添加</button>
-		</div>
+		
 		<div class="col-md-12 clearfix nopad addbord martop mt50">
 			<table class="table table-bordered table-responsive" id="addTable">
 				<thead>
@@ -57,8 +55,7 @@
 			// 获取家庭信息
 			getEmpFamilyInfo: function(param) {
 				
-				this.familyInfo.accountId = param
-				
+			
 				var ufmUrl = this.url + '/search/singlefamilyList'
 				
 				//家庭信息
@@ -70,15 +67,13 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
-						uAccountId: param,
+						recruitDataID: param,
 					},
 					dataType: 'json',
 				}).then((response) => {
 					console.log('personalFamily')
 					if (response.data.retCode == '0000') {
 						this.personalFamily = response.data.resData
-					} else {
-						alert(response.data.retMsg)
 					}
 				}).catch((error) => {
 					console.log('请求失败处理')

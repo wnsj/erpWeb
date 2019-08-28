@@ -157,12 +157,12 @@
 			};
 		},
 		methods:{
-			childrenDetailInfo:function(userId){
-				this.personalDetail.uEmployeeBasicID = this.userId
-				this.getEmpDetail(userId)
+			childrenDetailInfo:function(param){
+				
+				this.getEmpDetail(param)
 			},
 			getEmpDetail:function (param) {
-				var uDetailUrl = this.url + '/search/singleUDInfo'
+				var uDetailUrl = this.url + '/search/detailInfo'
 				//个人详细信息
 				axios({
 					method: 'post',
@@ -172,13 +172,15 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
-						userId: param,
+						recruitDataID: param,
 					},
 					dataType: 'json',
 				}).then((response) => {
-					console.log('personalDetail')
-					this.personalDetail = Object.assign({},response.data[0])
-					console.log(this.personalDetail)
+					var res = response.data
+					if (res.retCode == '0000') {
+						this.personalDetail=res.resData[0]
+						console.log('personalBase:'+this.personalDetail.uIdNum)
+					}
 				}).catch((error) => {
 					console.log('请求失败处理')
 				});

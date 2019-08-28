@@ -17,11 +17,7 @@
 				
 				<label class="col-md-2 control-label text-right nopad">出生年月：</label>
 				<dPicker v-model="personalBase.birth" v-on:change="dateAction('0')"></dPicker>
-				<!-- <div class="col-md-5 input-group date form_date">
-					
-					<input type="date" class="form-control" v-model="personalBase.birth" value="">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-				</div> -->
+				
 			</div>
 			<div class="form-group clearfix">
 				<label for="gh" class="col-md-2 control-label text-right nopad">工号：</label>
@@ -50,16 +46,10 @@
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">入职日期：</label>
 				<dPicker v-model="personalBase.entryDate" v-on:change="dateAction('1')"></dPicker>
-				<!-- <div class="col-md-5 input-group date form_date">
-					<input type="date" class="form-control" v-model="personalBase.entryDate" value="">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> </div> -->
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">转正日期：</label>
 				<dPicker v-model="personalBase.positiveDate" v-on:change="dateAction('2')"></dPicker>
-				<!-- <div class="col-md-5 input-group date form_date">
-					<input type="date" class="form-control" v-model="personalBase.positiveDate" value="">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> </div> -->
 			</div>
 			
 			<div class="form-group clearfix">

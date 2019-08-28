@@ -85,19 +85,15 @@
 				entryBaseInfo.birth=this.interviewBaseEdit.birth
 				entryDetialInfo=Object.assign(this.interviewBaseEdit,this.educationExprienceEdit)
 				
-				console.log('entryInfo:'+entryDetialInfo.name+entryDetialInfo.education)
 				$("#recruitEntry").modal('show')
 				this.$refs.ee.receiveRecruitmentInfo(entryBaseInfo,entryDetialInfo)
 			},
 			//查看入职
 			checkEntry:function(){
 				this.interviewBaseEdit = this.$refs.updateBasic.interviewBase
-				this.$refs.cee.paramDevliverToSubModel(this.interviewBaseEdit.id)
 				$("#REModalupdata").modal('show')
+				this.$refs.cee.paramDevliverToSubModel(this.interviewBaseEdit.id)
 			},
-      checkEntry: function () {
-        $("#REModalupdata").modal('show')
-      },
       changeBtn() {
         this.isShow = false
       },

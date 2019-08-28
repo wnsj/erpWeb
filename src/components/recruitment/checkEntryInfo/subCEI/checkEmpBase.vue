@@ -18,7 +18,7 @@
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">出生年月：</label>
-				<dPicker v-model="personalBase.birth" v-on:change="dateChange('0')"></dPicker>
+				<dPicker v-model="personalBase.birth"></dPicker>
 			</div>
 			<div class="form-group clearfix">
 				<label for="gh" class="col-md-2 control-label text-right nopad">工号：</label>
@@ -43,22 +43,21 @@
 				<div class="col-md-5">
 					<input type="text" class="form-control" v-model="personalBase.positionName" disabled>
 				</div>
-				<button type="button" class="btn btn-warning" data-toggle="modal" v-on:click="positionShiftAction()">岗位调动</button>
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">入职日期：</label>
-				<dPicker v-model="personalBase.entryDate" v-on:change="dateChange('1')"></dPicker>
+				<dPicker v-model="personalBase.entryDate"></dPicker>
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">转正日期：</label>
-				<dPicker v-model="personalBase.positiveDate" v-on:change="dateChange('2')"></dPicker>
+				<dPicker v-model="personalBase.positiveDate"></dPicker>
 				<template>
 					<div class="col-md-3 text-primary linhet" v-if="personalBase.positiveDate == ''">非转正员工</div>
 				</template>
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">离职日期：</label>
-				<dPicker v-model="personalBase.resignDate" v-on:change="dateChange('3')"></dPicker>
+				<dPicker v-model="personalBase.resignDate"></dPicker>
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">离职类型：</label>
@@ -73,9 +72,8 @@
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">离职原因：</label>
 				<div class="col-md-5">
-					<lReason @leaveChange="leaveChange"></lReason>
+					<lReason></lReason>
 				</div>
-				<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#Cause_management" >原因管理</button>
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">状态：</label>
@@ -116,43 +114,34 @@
 		},
 		methods:{
 			childrenBaseInfo:function(param){
-				this.personalBase = param
-				this.setleaveId()
+				console.log('BaseInfo:'+param)
+				this.getEmpBase(param)
 			},
-			//接收返回的离职原因
-			leaveChange:function(reasonId,reasonName){
-				console.log('leaveChange'+reasonId+reasonName)
-				this.personalBase.resignReason=reasonId
-			},
-			//设置离职原因
-			setleaveId:function(){
-				this.$children[4].setLeaveId(this.personalBase.resignReasonId)
-			},
-			//时间格式化
-			dateChange:function(param){
-				if(param=='0'){
-					this.personalBase.birth=this.moment(this.personalBase.birth,'YYYY-MM-DD HH:MM:SS.000')
-				}else if(param=='1'){
-					this.personalBase.entryDate=this.moment(this.personalBase.entryDate,'YYYY-MM-DD HH:MM:SS.000')
-				}else if(param=='2'){
-					this.personalBase.positiveDate=this.moment(this.personalBase.positiveDate,'YYYY-MM-DD HH:MM:SS.000')
-				}else if(param=='3'){
-					this.personalBase.resignDate=this.moment(this.personalBase.resignDate,'YYYY-MM-DD HH:MM:SS.000')
-				}
-			},
-			//清空岗位调动信息
-			positionShiftAction:function(){
-				this.$children[2].initData(this.personalBase)
-				$("#Post_transfer").modal('show')
-			},
-			//接收岗位调动信息
-			positionShift:function (positionShiftInfo){
-				this.personalBase.departName = positionShiftInfo.departName
-				this.personalBase.departId = positionShiftInfo.departId
-				this.personalBase.positionName = positionShiftInfo.positionName
-				this.personalBase.positionId = positionShiftInfo.positionId
-				$("#Post_transfer").modal('hide')
-			},
+		
+			getEmpBase:function (param) {
+				var uDetailUrl = this.url + '/search/allList'
+				//个人详细信息
+				axios({
+					method: 'post',
+					url: uDetailUrl,
+					headers: {
+						'Content-Type': this.contentType,
+						'Access-Token': this.accessToken
+					},
+					data: {
+						recruitDataID: param,
+					},
+					dataType: 'json',
+				}).then((response) => {
+					var res = response.data
+					if (res.retCode == '0000') {
+						this.personalBase=res.resData[0]
+						console.log('personalBase:'+this.personalBase.name)
+					}
+				}).catch((error) => {
+					console.log('请求失败处理')
+				});
+			}
 			
 		},
 		

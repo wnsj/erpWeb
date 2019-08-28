@@ -35,8 +35,8 @@
 			};
 		},
 		methods:{
-			childrenShiftInfo:function(accountId,userId){
-				this.postionShift(accountId)
+			childrenShiftInfo:function(param){
+				this.postionShift(param)
 			},
 			postionShift:function(param){
 				var uPositionUrl = this.url + '/search/positionShifts'
@@ -49,7 +49,7 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
-						accountId: param,
+						recruitDataID: param,
 					},
 					dataType: 'json',
 				}).then((response) => {
