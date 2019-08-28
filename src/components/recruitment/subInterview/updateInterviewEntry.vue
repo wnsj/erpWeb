@@ -36,7 +36,7 @@
       </div>
     </div>
 		<cee ref="cee"></cee>
-		<ee ref="ee"></ee>
+		<ee ref="ee" @addEmployeeInfo='closeUIEAction'></ee>
   </div>
 </template>
 <script>
@@ -94,6 +94,11 @@
 				$("#REModalupdata").modal('show')
 				this.$refs.cee.paramDevliverToSubModel(this.interviewBaseEdit.id)
 			},
+			//关闭当前窗口
+			closeUIEAction:function(){
+				this.$emit('closeUIEAction')
+			},
+			
       changeBtn() {
         this.isShow = false
       },

@@ -224,7 +224,7 @@
       <div class="modal fade" id="interviewEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <updateInterviewEntry :interviewBase="interviewBase" :educationExprience="educationExprience"
-                                :apply="apply" ref="interviewInfo">
+                                :apply="apply" @closeUIEAction='closeUIEAction' ref="interviewInfo">
           </updateInterviewEntry>
         </div>
       </div>
@@ -319,6 +319,11 @@
     },
     methods: {
       // ---------------------------------------查询----------------------------------
+			//关闭面试的修改接口，返回刷新
+			closeUIEAction:function(){
+				this.queryInterview()
+				$("#interviewEdit").modal('hide')
+			},
       getAge(date) {
         return this.$getAge(date)
       },
