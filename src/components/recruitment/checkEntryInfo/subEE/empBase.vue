@@ -45,11 +45,11 @@
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">入职日期：</label>
-				<dPicker v-model="personalBase.entryDate" v-on:change="dateAction('1')"></dPicker>
+				<dPicker v-model="entryDate" v-on:change="dateAction('1')"></dPicker>
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">转正日期：</label>
-				<dPicker v-model="personalBase.positiveDate" v-on:change="dateAction('2')"></dPicker>
+				<dPicker v-model="positiveDate" v-on:change="dateAction('2')"></dPicker>
 			</div>
 			
 			<div class="form-group clearfix">
@@ -80,35 +80,24 @@
 		components:{department,position,dPicker},
 		data() {
 			return {
-				personalBase:{
-					birth:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
-					entryDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
-					positiveDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
-					state:'1',
-				},
+				personalBase:{},
 				departmentList:[],
 				positionList:[],
+				entryDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
+				positiveDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
 			};
 		},
 		methods:{
 			//员工入职
 			initDate:function(param){
 				
-				if(!this.isBlank(param)){
-					this.personalBase=param
-					this.personalBase.entryDate=this.moment('','YYYY-MM-DD HH:MM:SS.000')
-					this.personalBase.positiveDate=this.moment('','YYYY-MM-DD HH:MM:SS.000')
-					this.personalBase.state='1'
-				}else{
-					this.personalBase={
-						birth:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
-						entryDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
-						positiveDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
-						state:'1',
-					}
-				}
+				
+				this.personalBase=param
+				this.personalBase.state='1'
 				this.$children[1].setDpart('0')
 				this.$children[2].setPosition('0')
+				this.personalBase.entryDate=this.moment(this.entryDate,'YYYY-MM-DD HH:MM:SS.000')
+				this.personalBase.positiveDate=this.moment(this.positiveDate,'YYYY-MM-DD HH:MM:SS.000')
 			},
 			
 			//时间变化后格式化
@@ -116,9 +105,9 @@
 				if(type=='0'){
 					this.personalBase.birth=this.moment(this.personalBase.birth,'YYYY-MM-DD HH:MM:SS.000')
 				}else if(type=='1'){
-					this.personalBase.entryDate=this.moment(this.personalBase.entryDate,'YYYY-MM-DD HH:MM:SS.000')
+					this.personalBase.entryDate=this.moment(this.entryDate,'YYYY-MM-DD HH:MM:SS.000')
 				}else if(type=='2'){
-					this.personalBase.positiveDate=this.moment(this.personalBase.positiveDate,'YYYY-MM-DD HH:MM:SS.000')
+					this.personalBase.positiveDate=this.moment(this.positiveDate,'YYYY-MM-DD HH:MM:SS.000')
 				}
 			},
 			//获取部门名字和id

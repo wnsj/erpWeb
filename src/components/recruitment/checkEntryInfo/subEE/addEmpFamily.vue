@@ -91,7 +91,7 @@
 					alert('称谓不能为空')
 					return
 				}
-				if(isBlank(this.familyInfo.chname)){
+				if(this.isBlank(this.familyInfo.chname)){
 					alert('名字不能为空')
 					return
 				}

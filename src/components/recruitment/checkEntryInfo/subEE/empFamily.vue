@@ -36,7 +36,7 @@
 				</tbody>
 			</table>
 		</div>
-		<!-- <familyEmp ref='fEmp' @submitFamilyInfo='popbackFamilyInfo'></familyEmp> -->
+		<familyEmp ref='fEmp' @submitFamilyInfo='popbackFamilyInfo'></familyEmp>
 	</div>
 	
 </template>
@@ -44,7 +44,7 @@
 <script>
 	import familyEmp from '../subEE/addEmpFamily.vue'
 	export default {
-		// components:{familyEmp},
+		components:{familyEmp},
 		
 		data() {
 			return {
@@ -63,13 +63,14 @@
 			},
 			//添加家庭成员
 			popupFamilyInfo:function(){
+				console.log('popupFamilyInfo')
 				this.familyInfo = {}
 				this.familyInfo.type='add'
 				this.$refs.fEmp.childrenFEmpInfo(this.familyInfo)
 				$("#familyAdd").modal('show')
 			},
 			popbackFamilyInfo:function(familyInfo){
-				
+				console.log('popbackFamilyInfo')
 				$("#familyAdd").modal('hide')
 				
 				if(this.familyInfo.type=='modify'){
@@ -78,11 +79,13 @@
 					this.personalFamily.push(familyInfo)
 				}
 				if(this.familyInfo.type=='add'){
+					console.log('familyInfo'+this.familyInfo.type)
 					this.personalFamily.push(familyInfo)
 				}
 			},
 			//修改家庭成员
 			modifyFamilyInfo:function(item,index){
+				console.log('modifyFamilyInfo')
 				this.familyInfo = {}
 				this.familyInfo=Object.assign({},item)
 				this.modifyFIIndex = index
@@ -92,6 +95,7 @@
 			},
 			//删除家庭成员
 			cancelRFInfo:function(index){
+				console.log('cancelRFInfo')
 				this.personalFamily.splice(index, 1)
 			},			
 			
