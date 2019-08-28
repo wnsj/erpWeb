@@ -115,7 +115,7 @@
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
         <div class="input-group">
           <span class="input-group-addon">专业</span>
-          <input type="text" class="form-control" placeholder="Profession" v-model="profession">
+          <input type="text" class="form-control" v-model="profession">
         </div>
       </div>
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -349,6 +349,12 @@
         }
         if (this.isBlank(this.profession)) {
           this.profession = null
+        }
+        if(this.dateFlag == 0 || this.dateFlag == 1){
+          if(this.begDate == null || this.endDate == null){
+            alert('查询时间不能为空')
+            return false;
+          }
         }
         axios({
           method: 'post',
