@@ -272,7 +272,6 @@
         if (this.positionId == '0') {
           this.positionId = null
         }
-        alert(this.beginMonth)
         axios({
           method: 'post',
           url: this.url + '/zpglController/queryZpPlan',
