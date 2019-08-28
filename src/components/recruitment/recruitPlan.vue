@@ -282,8 +282,8 @@
           data: {
             department: this.departId,
             position: this.positionId,
-            begDate: this.$queryStartMonth(this.beginMonth),
-            endDate: this.$queryEndMonth(this.endMonth),
+            begDate: this.beginMonth == null? '':this.$queryStartMonth(this.beginMonth),
+            endDate: this.endMonth == null? '':this.$queryEndMonth(this.endMonth),
             isYes: this.isYes,
             isBack: this.isBack
           },

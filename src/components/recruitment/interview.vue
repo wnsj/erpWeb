@@ -115,7 +115,7 @@
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
         <div class="input-group">
           <span class="input-group-addon">专业</span>
-          <input type="text" class="form-control" placeholder="Profession" v-model="profession">
+          <input type="text" class="form-control" v-model="profession">
         </div>
       </div>
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -368,8 +368,8 @@
             channel: this.channelId,
             isQualified: this.isQualified,
             dateFlag: this.dateFlag,
-            begDate: this.$queryStartTime(this.begDate),
-            endDate: this.$queryEndTime(this.endDate),
+            begDate: this.begDate == null? '':this.$queryStartTime(this.begDate),
+            endDate: this.endDate == null? '':this.$queryEndTime(this.endDate),
             isEntry: this.isEntry,
             name: this.name,
             phone: this.phone,

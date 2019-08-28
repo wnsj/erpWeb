@@ -242,8 +242,8 @@
           data: {
             channel: this.channelId,
             position: this.positionId,
-            begDate: this.$queryStartTime(this.beginDate),
-            endDate: this.$queryEndTime(this.endDate)
+            begDate: this.beginDate == null? '':this.$queryStartTime(this.beginDate),
+            endDate: this.endDate == null? '':this.$queryEndTime(this.endDate)
           },
           dataType: 'json',
         }).then((response) => {
