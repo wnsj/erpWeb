@@ -350,12 +350,6 @@
         if (this.isBlank(this.profession)) {
           this.profession = null
         }
-        if(this.dateFlag == 0 || this.dateFlag == 1){
-          if(this.begDate == null || this.endDate == null){
-            alert('查询时间不能为空')
-            return false;
-          }
-        }
         axios({
           method: 'post',
           url: this.url + '/zpglController/queryRecruitData',
@@ -369,8 +363,8 @@
             channel: this.channelId,
             isQualified: this.isQualified,
             dateFlag: this.dateFlag,
-            begDate: this.$queryStartTime(this.begDate),
-            endDate: this.$queryEndTime(this.endDate),
+            begDate: this.begDate == null? '':this.$queryStartTime(this.begDate),
+            endDate: this.endDate == null? '':this.$queryEndTime(this.endDate),
             isEntry: this.isEntry,
             name: this.name,
             phone: this.phone,
