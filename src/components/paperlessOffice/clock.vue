@@ -40,7 +40,7 @@
       <div class="col-md-3 col-md-offset-9" id="btn">
         <button type="button" class="btn btn-primary  m_r_10" @click="queryClock">查询</button>
         <button type="button" class="btn btn-info  m_r_10" data-toggle="modal" @click="applyClock">申请</button>
-        <button type="button" class="btn btn-warning  m_r_10">导出</button>
+        <button type="button" class="btn btn-warning  m_r_10" @click="exportTableToExcel('clockTable','忘打卡证明表')">导出</button>
       </div>
     </div>
     <!-- 查询结果集 -->

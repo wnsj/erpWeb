@@ -43,7 +43,7 @@
         <date-picker v-model="computer.endDate" type="date" format="YYYY-MM-DD"></date-picker>
       </div>
       <div class="col-md-3 col-md-offset-1">
-        <button type="button" class="btn btn-warning pull-right m_r_10">导出</button>
+        <button type="button" class="btn btn-warning pull-right m_r_10" @click="exportTableToExcel('preAppTable','电脑预申请表')">导出</button>
         <button type="button" class="btn btn-info pull-right m_r_10" @click="preAppBtn" v-if='has(72)'>预申请</button>
         <button type="button" class="btn btn-primary pull-right m_r_10" @click="queryPreApp">查询</button>
       </div>
