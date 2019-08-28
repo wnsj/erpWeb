@@ -944,8 +944,8 @@
           },
           data: {
             accountId: this.has(51) ? '' : JSON.parse(Cookies.get("accountData")).account.account_ID,
-            beginDate: this.$queryStartTime(this.beginDate),
-            endDate: this.$queryEndTime(this.endDate),
+            beginDate: this.beginDate == null? '':this.$queryStartTime(this.beginDate),
+            endDate: this.endDate == null? '':this.$queryEndTime(this.endDate),
             leaveDeptId: this.deptQueryId,
             leaveAccountName: this.accountName,
             state: this.state

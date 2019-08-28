@@ -452,8 +452,8 @@
             accountId: this.has(71) ? '' : JSON.parse(Cookies.get("accountData")).account.account_ID,
             accountName: this.has(71) ? '' : JSON.parse(Cookies.get("accountData")).account.account_Name,
             timeType: this.computer.timeType,
-            beginTime: this.$queryStartTime(this.computer.beginDate),
-            endTime: this.$queryEndTime(this.computer.endDate),
+            beginTime: this.computer.beginDate == null? '':this.$queryStartTime(this.computer.beginDate),
+            endTime: this.computer.endDate == null? '':this.$queryEndTime(this.computer.endDate),
             deptId: this.computer.deptId,
             userName: this.computer.userName,
             handName: this.computer.handName

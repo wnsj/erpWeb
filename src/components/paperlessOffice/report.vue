@@ -679,8 +679,8 @@
             'Access-Token': this.accessToken
           },
           data: {
-            startTime: this.$queryStartTime(this.beginDate),
-            endTime: this.$queryEndTime(this.endDate),
+            startTime: this.beginDate == null? '':this.$queryStartTime(this.beginDate),
+            endTime: this.endDate == null? '':this.$queryEndTime(this.endDate),
             leaveDeptId: this.departSelId,
             leaveEmpName: this.leaveName,
             accountId: this.has(51) ? '' : JSON.parse(Cookies.get("accountData")).account.account_ID,
