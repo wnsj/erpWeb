@@ -85,6 +85,7 @@
 				entryBaseInfo.birth=this.interviewBaseEdit.birth
 				entryDetialInfo=Object.assign(this.interviewBaseEdit,this.educationExprienceEdit)
 				
+				// this.$refs.ee.receiveRecruitmentInfo(entryBaseInfo,entryDetialInfo)
 				$("#recruitEntry").modal('show')
 				this.$refs.ee.receiveRecruitmentInfo(entryBaseInfo,entryDetialInfo)
 			},

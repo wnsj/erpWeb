@@ -25,7 +25,7 @@
 			<div class="form-group col-md-6 clearfix">
 				<label class="col-md-4 control-label text-right nopad">民族：</label>
 				<div class="col-md-8">
-					<nation></nation>
+					<nation ref='nation'></nation>
 				</div>
 			</div>
 			<div class="form-group col-md-6 clearfix">
@@ -179,6 +179,7 @@
 					var res = response.data
 					if (res.retCode == '0000') {
 						this.personalDetail=res.resData[0]
+						this.$refs.nation.setNation(this.personalDetail.uNationality)
 						console.log('personalBase:'+this.personalDetail.uIdNum)
 					}
 				}).catch((error) => {

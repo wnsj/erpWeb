@@ -14,10 +14,10 @@
 				</div>
 			</div>
 			<div class="form-group clearfix">
-				
+
 				<label class="col-md-2 control-label text-right nopad">出生年月：</label>
 				<dPicker v-model="personalBase.birth" v-on:change="dateAction('0')"></dPicker>
-				
+
 			</div>
 			<div class="form-group clearfix">
 				<label for="gh" class="col-md-2 control-label text-right nopad">工号：</label>
@@ -45,13 +45,13 @@
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">入职日期：</label>
-				<dPicker v-model="entryDate" v-on:change="dateAction('1')"></dPicker>
+				<dPicker v-model="eDate" v-on:change="dateAction('1')"></dPicker>
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">转正日期：</label>
-				<dPicker v-model="positiveDate" v-on:change="dateAction('2')"></dPicker>
+				<dPicker v-model="pDate" v-on:change="dateAction('2')"></dPicker>
 			</div>
-			
+
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">状态：</label>
 				<div class="col-md-5 input-group date form_date">
@@ -69,7 +69,7 @@
 			</div>
 		</form>
 	</div>
-	
+
 </template>
 
 <script>
@@ -77,37 +77,70 @@
 	import position from '../../../vuecommon/position.vue'
 	import dPicker from 'vue2-datepicker'
 	export default {
-		components:{department,position,dPicker},
+		components: {
+			department,
+			position,
+			dPicker
+		},
 		data() {
 			return {
-				personalBase:{},
-				departmentList:[],
-				positionList:[],
-				entryDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
-				positiveDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
+				personalBase: {
+					name: '',
+					sex: '',
+					birth: '',
+					jobNum: '',
+					erpaaccount: '',
+					entryDate: '',
+					positiveDate: '',
+					state: '',
+					remark: '',
+					recruitDataID: '',
+				},
+
+				eDate: this.moment('', 'YYYY-MM-DD HH:MM:SS.000'),
+				pDate: this.moment('', 'YYYY-MM-DD HH:MM:SS.000'),
 			};
 		},
-		methods:{
+		methods: {
 			//员工入职
-			initDate:function(param){
-				
-				
-				this.personalBase=param
-				this.personalBase.state='1'
+			initDate: function(param) {
+
+				this.personalBase.name = param.name
+				this.personalBase.birth = param.birth
+				this.personalBase.sex = param.sex
+				this.personalBase.recruitDataID = param.id
+				this.personalBase.state = '1'
+				this.eDate = this.moment('', 'YYYY-MM-DD HH:MM:SS.000')
+				this.pDate = this.moment('', 'YYYY-MM-DD HH:MM:SS.000')
+				this.personalBase.entryDate = this.moment('', 'YYYY-MM-DD HH:MM:SS.000')
+				this.personalBase.positiveDate = this.moment('', 'YYYY-MM-DD HH:MM:SS.000')
+				// 				
+
 				this.$children[1].setDpart('0')
 				this.$children[2].setPosition('0')
-				this.personalBase.entryDate=this.moment(this.entryDate,'YYYY-MM-DD HH:MM:SS.000')
-				this.personalBase.positiveDate=this.moment(this.positiveDate,'YYYY-MM-DD HH:MM:SS.000')
 			},
-			
+
 			//时间变化后格式化
-			dateAction:function(type){
-				if(type=='0'){
-					this.personalBase.birth=this.moment(this.personalBase.birth,'YYYY-MM-DD HH:MM:SS.000')
-				}else if(type=='1'){
-					this.personalBase.entryDate=this.moment(this.entryDate,'YYYY-MM-DD HH:MM:SS.000')
-				}else if(type=='2'){
-					this.personalBase.positiveDate=this.moment(this.positiveDate,'YYYY-MM-DD HH:MM:SS.000')
+			dateAction: function(type) {
+
+				if (type == '0') {
+					if (!this.isBlank(this.personalBase.birth)) {
+						this.personalBase.birth = this.moment(this.personalBase.birth, 'YYYY-MM-DD HH:MM:SS.000')
+					} else {
+						this.personalBase.birth = this.moment('', 'YYYY-MM-DD HH:MM:SS.000')
+					}
+				} else if (type == '1') {
+					if (!this.isBlank(eDate)) {
+						this.personalBase.entryDate = this.moment(eDate, 'YYYY-MM-DD HH:MM:SS.000')
+					} else {
+						this.personalBase.entryDate = this.moment('', 'YYYY-MM-DD HH:MM:SS.000')
+					}
+				} else if (type == '2') {
+					if (!this.isBlank(pDate)) {
+						this.personalBase.positiveDate = this.moment(pDate, 'YYYY-MM-DD HH:MM:SS.000')
+					} else {
+						this.personalBase.positiveDate = this.moment('', 'YYYY-MM-DD HH:MM:SS.000')
+					}
 				}
 			},
 			//获取部门名字和id
@@ -115,7 +148,7 @@
 				this.personalBase.departId = departId
 				this.personalBase.departName = departName
 			},
-			positionChange:function (positionId,positionName){
+			positionChange: function(positionId, positionName) {
 				this.personalBase.positionId = positionId
 				this.personalBase.positionName = positionName
 			}

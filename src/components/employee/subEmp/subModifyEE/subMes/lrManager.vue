@@ -138,13 +138,12 @@
 
 			//修改离职原因确定还是返回
 			confirmButton: function() {
-				alert(this.addOrUpdate)
 				if (this.addOrUpdate == 'add') {
 					this.addLeaveReason()
 				} else {
-					alert(this.resignReason)
+					console.log(this.resignReason)
 					this.$set(this.lrList[this.lrIndex], 'reasonName', this.resignReason)
-					alert(this.lrList[this.lrIndex].reasonName)
+					console.log(this.lrList[this.lrIndex].reasonName)
 					this.updateModifyLeaveReason()
 				}
 				$("#Cause_management_changne").modal('hide')
@@ -175,7 +174,6 @@
 			// 获取所有离职原因
 			getLeaveReason: function() {
 				var url = this.url + '/search/leaveReasonList'
-				// alert(url)
 				axios({
 					method: 'get',
 					url: url,

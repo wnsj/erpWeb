@@ -94,7 +94,7 @@
 			</div>
 		</form>
 		<lrManager></lrManager>
-		<positionShift  @shiftChange = 'positionShift'></positionShift>
+		<positionShift ref='pShift'  @shiftChange = 'positionShift'></positionShift>
 	</div>
 </template>
 
@@ -146,7 +146,7 @@
 			},
 			//清空岗位调动信息
 			positionShiftAction:function(){
-				this.$children[2].initData(this.personalBase)
+				this.$refs.pShift.initData(this.personalBase)
 				$("#Post_transfer").modal('show')
 			},
 			//接收岗位调动信息
