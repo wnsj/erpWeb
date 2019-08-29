@@ -29,10 +29,7 @@
 						<option v-for="(item,index) in emps" :key="index" v-bind:value="item.employeeId">{{item.employeeName}}</option>
 					</select>
 				</div>
-
-
 			</div>
-
 			<div class="col-md-1">
 
 				<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" v-on:click="addBtnAction()">+</button>
@@ -48,21 +45,9 @@
 					<p>请假时间：</p>
 				</div>
 				<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-					<div class='input-group date datetimePicker'>
-
-						<input ref="startTime" type='text' class="form-control" v-model="beginDate" />
-						<span class="input-group-addon">
-							<span class="glyphicon glyphicon-calendar"></span>
-						</span>
-					</div>
-					<span class="leavespan01">&nbsp;&nbsp;&nbsp;至：</span>
-					<div class='input-group date datetimePicker'>
-
-						<input ref="endTime" type='text' class="form-control" v-model="endDate" />
-						<span class="input-group-addon">
-							<span class="glyphicon glyphicon-calendar"></span>
-						</span>
-					</div>
+					<DatePicker v-model="beginDate" v-on:change="dateAction('begin')"></DatePicker>
+					<span>&nbsp;&nbsp;&nbsp;至：</span>
+					<DatePicker v-model="endDate" v-on:change="dateAction('end')"></DatePicker>
 				</div>
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -94,7 +79,7 @@
 				</div>
 				<div class="col-xs-1 col-sm-1 col-md-1">
 
-					<button type="button" class="btn btn-warning pull-left m_r_10" v-on:click="addEmp('check')">+</button>
+					<button type="button" class="btn btn-warning pull-left m_r_10"	:disabled="isClickCheckBtn" v-on:click="addEmp('check')">+</button>
 
 				</div>
 			</div>
@@ -126,7 +111,7 @@
 				</div>
 				<div class="col-md-1">
 
-					<button type="button" class="btn btn-warning pull-left m_r_10" v-on:click="addEmp('verify')">+</button>
+					<button type="button" class="btn btn-warning pull-left m_r_10":disabled="isClickVerifyBtn" v-on:click="addEmp('verify')">+</button>
 
 				</div>
 			</div>
@@ -153,12 +138,12 @@
 				</div>
 				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 					<select class="form-control" v-model="lInfo.account3">
-						<option value="0" v-for="(item , index) in empList_approval" :key="index" v-bind:value="item.accountId">{{item.accountName}}</option>
+						<option v-for="(item , index) in empList_approval" :key="index" v-bind:value="item.accountId">{{item.accountName}}</option>
 					</select>
 				</div>
 				<div class="col-md-1">
 
-					<button type="button" class="btn btn-warning pull-left m_r_10" v-on:click="addEmp('approval')">+</button>
+					<button type="button" class="btn btn-warning pull-left m_r_10" :disabled="isClickApprovalBtn" v-on:click="addEmp('approval')">+</button>
 
 				</div>
 			</div>
@@ -209,12 +194,6 @@
 
 		<div class="modal-footer">
 			<!--按钮-->
-			<div class="col-md-12">
-
-				<button type="button" class="btn btn-info" v-on:click="submitAskForLeaveApply()">确认</button>
-				<button type="button" data-dismiss="modal" class="btn btn-info">返回</button>
-			</div>
-
 			<div class="beihzu">
 
 				<i>按钮用来扩大选择其他人员</i>
@@ -251,20 +230,24 @@
 				delgateEMP: [], //代理人
 				cEmpList: [],
 				emps: [], //人员列表
-
+				
 				empList_check: [],
 				empListCheckTimes: 0,
-				levelCheck: '0',
+				levelCheck: '0', //0代表审核，1代表审查
+				isClickCheckBtn:false,
 				empList_verify: [],
 				empListVerifyTimes: 0,
-				levelVerify: '0',
+				levelVerify: '1',
+				isClickVerifyBtn:false,
 				empList_approval: [],
 				empListApprovalTimes: 0,
-				levelApproval: '0',
+				levelApproval: '1',
+				isClickApprovalBtn:false,
 
 
 				beginDate: this.moment('', 'YYYY-MM-DD 08:30'),
 				endDate: this.moment('', 'YYYY-MM-DD 17:30'),
+				dayNum:'0',
 
 				isModify: '',
 				isModify_1: true,
@@ -277,6 +260,28 @@
 			vOnChange: function() {
 				console.log("adsfdsfsafdas")
 			},
+			//sDate1和sDate2是2006-12-18格式
+			datedifference:function(sDate1, sDate2) {
+				var dateSpan,
+					tempDate,
+					iDays;
+				sDate1 = Date.parse(sDate1);
+				sDate2 = Date.parse(sDate2);
+				dateSpan = sDate2 - sDate1;
+				dateSpan = Math.abs(dateSpan);
+				iDays = Math.floor(dateSpan / (24 * 3600 * 1000));
+				return iDays
+			},
+			//更新时间
+			dateAction: function(param) {
+				if (param == 'begin') {
+					this.beginDate = this.moment(this.beginDate, 'YYYY-MM-DD 00:00:00.000')
+				} else if (param == 'end') {
+					this.endDate = this.moment(this.endDate, 'YYYY-MM-DD 23:59:59.000')
+				}
+				this.addEmp('approval')
+				this.empListApprovalTimes--
+			},
 			showLInfo: function(lInfo, param) {
 				this.lInfo = this.accountInfo()
 				this.departId = this.accountInfo().departId
@@ -285,24 +290,29 @@
 				this.lInfo.leaveAccount = this.accountInfo().account_ID
 				this.lInfo.departId = this.accountInfo().departId
 				this.lInfo.positionId = this.accountInfo().position_ID
+				this.lInfo.positionTypeId = this.accountInfo().positionTypeId
 				this.lInfo.addTime = this.moment()
 				this.lInfo.step = '0'
-				this.lInfo.leaveType='病假'
-
+				this.lInfo.leaveType = '病假'
+				this.lInfo.account4='1127'
+				this.lInfo.dayNum='0'//是否大于三天，大于等于三天 为1，否则为 0
 
 				//清空数据
-				this.empList_check = [],
-					this.empListCheckTimes = 0,
-					this.levelCheck = '0',
-					this.empList_verify = [],
-					this.empListVerifyTimes = 0,
-					this.levelVerify = '0',
-					this.empList_approval = [],
-					this.empListApprovalTimes = 0,
-					this.levelApproval = '0',
+				this.empList_check = []
+				this.empListCheckTimes = 0
+				this.levelCheck = '0'
+				this.isClickCheckBtn=false
+				this.empList_verify = []
+				this.empListVerifyTimes = 0
+				this.levelVerify = '0'
+				this.isClickVerifyBtn=false
+				this.empList_approval = []
+				this.empListApprovalTimes = 0
+				this.levelApproval = '0'
+				this.isClickApprovalBtn=false
 
 
-					this.empList()
+				this.empList()
 				this.addEmp('check')
 				this.addEmp('verify')
 				this.addEmp('approval')
@@ -311,7 +321,7 @@
 				this.lInfo.leaveType = param
 			},
 			//代理人添加弹窗
-			addBtnAction:function(){
+			addBtnAction: function() {
 				this.$children[1].initData()
 				$("#myModalJoin_add").modal("show")
 			},
@@ -332,47 +342,54 @@
 			//'+'被点击的方法
 			addEmp: function(param) {
 				if (param == 'check') {
-					if (this.empListCheckTimes == 9) {
-						this.empListCheckTimes = 0
-					}
-					if (this.empListCheckTimes == 0) {
-						this.levelCheck = '0'
-					} else if (this.empListCheckTimes == 3) {
-						this.levelCheck = '1'
-					} else if (this.empListCheckTimes == 6) {
-						this.levelCheck = '2'
-					}
+					
+					this.levelCheck = '0'
 					this.checkEmpList(param, this.levelCheck, this.empListCheckTimes)
 					this.empListCheckTimes++
+					if (this.empListCheckTimes == 9) {
+						this.isClickCheckBtn = true
+					}
 				} else if (param == 'verify') {
-					if (this.empListVerifyTimes == 6) {
-						this.empListVerifyTimes = 0
-					}
-					if (this.empListVerifyTimes == 0) {
-						this.levelVerify = '1'
-					} else if (this.empListVerifyTimes == 3) {
-						this.levelVerify = '2'
-					}
+					this.levelVerify = '1'
+
 					this.checkEmpList(param, this.levelVerify, this.empListVerifyTimes)
 					this.empListVerifyTimes++
+					if (this.empListVerifyTimes == 9) {
+						this.isClickVerifyBtn = true
+					}
 				} else if (param == 'approval') {
-					if (this.empListApprovalTimes == 6) {
-						this.empListApprovalTimes = 0
+					var bDate,eDate,dn
+					bDate=this.moment(this.beginDate, 'YYYY-MM-DD')
+					eDate=this.moment(this.endDate, 'YYYY-MM-DD')
+					dn=this.datedifference(eDate,bDate)//开始时间和结束时间的差值
+					if(dn>1){
+						this.dayNum='1'
+					}else{
+						this.dayNum='0'
 					}
-					if (this.empListApprovalTimes == 0) {
-						this.levelApproval = '1'
-					} else if (this.empListApprovalTimes == 1) {
-						this.levelApproval = '2'
+					if(this.accountInfo().positionTypeId==6 ||(this.accountInfo().positionTypeId<5 && dn>1)){
+						this.empListApprovalTimes=5
+					}else{
+						this.empListApprovalTimes=0
 					}
+
 					this.checkEmpList(param, this.levelApproval, this.empListApprovalTimes)
 					this.empListApprovalTimes++
+					if (this.empListApprovalTimes == 9) {
+						this.isClickApprovalBtn = true
+					}
 				}
 			},
 			//查询不同类型审核人员
 			checkEmpList: function(param, level, clickTimes) {
-				var url = this.url + '/wzbg/checkOfEmpList'
-				console.log('checkEmpList:' + url)
-				console.log('positionId:' + this.positionId)
+				var url = ''
+				if (param == 'check') {
+					url = this.url + '/wzbg/checkOfEmpList'
+				} else if (param == 'verify') {
+					url = this.url + '/wzbg/verifyOfEmpList'
+				} else if (param == 'approval') {
+					url = this.url + '/wzbg/approveOfEmpList'
+				}
 				if (this.isBlank(this.positionId)) {
 					this.positionId = '1'
 				}
@@ -386,8 +403,10 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
+						accountId:this.accountInfo().account_ID,
 						clickTimes: clickTimes,
-						level: level,
+						// level: level,
+						dayNum:this.dayNum,
 						positionId: this.positionId,
 						departId: this.departId,
 					},
@@ -399,17 +418,18 @@
 							if (param == 'check') {
 								this.empList_check = {}
 								this.empList_check = res.resData
+								this.lInfo.account1 = this.empList_check[0].accountId
 							} else if (param == 'verify') {
 								this.empList_verify = {}
 								this.empList_verify = res.resData
+								this.lInfo.account2 = this.empList_verify[0].accountId
 							} else if (param == 'approval') {
 								this.empList_approval = {}
 								this.empList_approval = res.resData
+								this.lInfo.account3 = this.empList_approval[0].accountId
 							}
 
 							$("#myModalQuery").modal('hide');
-						} else {
-							alert('已经没有更多的数据了')
 						}
 					} else {
 						alert(res.retMsg)
@@ -437,14 +457,12 @@
 				}).then((response) => {
 					var res = response.data
 					if (res.retCode == '0000') {
-						// alert('LeaveInfoOfApply:' + res.resData.length)
-						console.log('empList-modify:' + res.resData)
+						console.log('LeaveInfoOfApply:' + res.resData.length)
 						if (res.resData.length > 0) {
 							this.emps = res.resData
+							this.lInfo.agentAccount =this.emps[0].employeeId
 							$("#myModalQuery").modal('hide');
-						} else {
-							alert('已经没有更多的数据了')
-						}
+						} 
 					} else {
 						alert(res.retMsg)
 					}
@@ -455,8 +473,22 @@
 			},
 			submitAskForLeaveApply: function() {
 				var url = this.url + '/wzbg/insertLeaveApplication'
-				this.lInfo.startTime = this.$refs.startTime.value
-				this.lInfo.endTime = this.$refs.endTime.value
+				
+				var bDate,eDate,cDate
+				cDate=this.moment('', 'YYYY-MM-DD')
+				bDate=this.moment(this.beginDate, 'YYYY-MM-DD')
+				eDate=this.moment(this.endDate, 'YYYY-MM-DD')
+				if(bDate<=cDate){
+					alert('开始时间必须大于当前日期')
+					return
+				}
+				if(this.endDate<this.beginDate){
+					alert('结束日期必须大于等于开始日期')
+					return
+				}
+				this.lInfo.startTime = this.beginDate
+				this.lInfo.endTime = this.endDate
+				console.log(this.lInfo.startTime+'+结束时间：'+this.lInfo.endTime)
 				if (this.isBlank(this.lInfo.account_ID)) {
 					alert('提交请假账户数据异常')
 					return
@@ -499,13 +531,11 @@
 				}).then((response) => {
 					var res = response.data
 					if (res.retCode == '0000') {
-						alert('LeaveInfoOfApply:' + res.resData.length)
-						console.log('LeaveInfoOfApply:' + res.resData)
+						console.log('LeaveInfoOfApply:' + res.resData.length)
+						// console.log('LeaveInfoOfApply:' + res.resData)
 						if (res.resData == 1) {
 							alert('请假成功')
 							this.$emit('submitAskForLeaveApply', 'apply')
-						} else {
-							alert('已经没有更多的数据了')
 						}
 					} else {
 						alert(res.retMsg)

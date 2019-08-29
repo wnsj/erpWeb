@@ -11,6 +11,7 @@
 		</div>
 		<div class="modal-header modal_header_leave">
 			<h6>请假</h6>
+
 			<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
 				<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">
 					<p>类型：</p>
@@ -34,14 +35,12 @@
 
 			<div class="col-md-1">
 
-				<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" data-target="#myModalJoin_modify">+</button>
-				<div class="modal fade" id="myModalJoin_modify" tabindex="3" role="dialog" aria-labelledby="myModalLabel"
-				 aria-hidden="true">
+				<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" v-on:click="addBtnAction()">+</button>
+				<div class="modal fade" id="myModalJoin_modify" tabindex="3" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					<div class="modal-dialog">
 						<agent @backAciton='agentAction' @closex='closeModal'></agent>
 					</div>
 				</div>
-
 			</div>
 
 			<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
@@ -49,21 +48,9 @@
 					<p>请假时间：</p>
 				</div>
 				<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-					<div class='input-group date datetimePicker'>
-
-						<input ref="startTime" type='text' class="form-control" v-model="beginDate" />
-						<span class="input-group-addon">
-							<span class="glyphicon glyphicon-calendar"></span>
-						</span>
-					</div>
-					<span class="leavespan01">&nbsp;&nbsp;&nbsp;至：</span>
-					<div class='input-group date datetimePicker'>
-
-						<input ref="endTime" type='text' class="form-control" v-model="endDate" />
-						<span class="input-group-addon">
-							<span class="glyphicon glyphicon-calendar"></span>
-						</span>
-					</div>
+					<DatePicker v-model="beginDate" v-on:change="dateAction('begin')"></DatePicker>
+					<span>&nbsp;&nbsp;&nbsp;至：</span>
+					<DatePicker v-model="endDate" v-on:change="dateAction('end')"></DatePicker>
 				</div>
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -77,7 +64,7 @@
 				<div class="col-md-5">
 					<br />
 					<button type="button" class="btn btn-warning pull-right m_r_10">取消</button>
-					<button type="button" class="btn btn-warning pull-right m_r_10" v-on:click="submitAskForLeaveModify()">确定</button>
+					<button type="button" class="btn btn-warning pull-right m_r_10" v-on:click="submitAskForLeaveApply()">确定</button>
 				</div>
 			</div>
 		</div>
@@ -95,7 +82,7 @@
 				</div>
 				<div class="col-xs-1 col-sm-1 col-md-1">
 
-					<button type="button" class="btn btn-warning pull-left m_r_10" v-on:click="addEmp('check')">+</button>
+					<button type="button" class="btn btn-warning pull-left m_r_10"	:disabled="isClickCheckBtn" v-on:click="addEmp('check')">+</button>
 
 				</div>
 			</div>
@@ -127,7 +114,7 @@
 				</div>
 				<div class="col-md-1">
 
-					<button type="button" class="btn btn-warning pull-left m_r_10" v-on:click="addEmp('verify')">+</button>
+					<button type="button" class="btn btn-warning pull-left m_r_10":disabled="isClickVerifyBtn" v-on:click="addEmp('verify')">+</button>
 
 				</div>
 			</div>
@@ -154,12 +141,12 @@
 				</div>
 				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 					<select class="form-control" v-model="lInfo.account3">
-						<option value="0" v-for="(item , index) in empList_approval" :key="index" v-bind:value="item.accountId">{{item.accountName}}</option>
+						<option v-for="(item , index) in empList_approval" :key="index" v-bind:value="item.accountId">{{item.accountName}}</option>
 					</select>
 				</div>
 				<div class="col-md-1">
 
-					<button type="button" class="btn btn-warning pull-left m_r_10" v-on:click="addEmp('approval')">+</button>
+					<button type="button" class="btn btn-warning pull-left m_r_10" :disabled="isClickApprovalBtn" v-on:click="addEmp('approval')">+</button>
 
 				</div>
 			</div>
@@ -209,18 +196,9 @@
 
 
 		<div class="modal-footer">
-			<!--按钮-->
-			<div class="col-md-12">
-
-				<button type="button" class="btn btn-info" v-on:click="submitAskForLeaveApply()">确认</button>
-				<button type="button" data-dismiss="modal" class="btn btn-info">返回</button>
-			</div>
-
 			<div class="beihzu">
-
 				<i>按钮用来扩大选择其他人员</i>
 				<div class="col-md-1">
-
 					<button type="button" class="btn btn-warning pull-left m_r_10" disabled="true">+</button>
 
 				</div>
@@ -232,6 +210,7 @@
 
 <script>
 	import axios from 'axios'
+	import DatePicker from 'vue2-datepicker'
 	import depart from '../../vuecommon/department.vue'
 	import leave from '../../vuecommon/leaveTypes.vue'
 	import agent from '../subAFL/agentOfDepart.vue'
@@ -239,7 +218,8 @@
 		components: {
 			depart,
 			leave,
-			agent
+			agent,
+			DatePicker
 		},
 		data() {
 			return {
@@ -253,13 +233,16 @@
 
 				empList_check: [],
 				empListCheckTimes: 0,
-				levelCheck: '0',
+				levelCheck: '0', //0代表审核，1代表审查
+				isClickCheckBtn:false,
 				empList_verify: [],
 				empListVerifyTimes: 0,
-				levelVerify: '0',
+				levelVerify: '1',
+				isClickVerifyBtn:false,
 				empList_approval: [],
 				empListApprovalTimes: 0,
-				levelApproval: '0',
+				levelApproval: '1',
+				isClickApprovalBtn:false,
 
 
 				beginDate: this.moment('', 'YYYY-MM-DD 08:30'),
@@ -273,43 +256,75 @@
 			};
 		},
 		methods: {
+			vOnChange: function() {
+				console.log("adsfdsfsafdas")
+			},
 			showLInfo: function(lInfo, param) {
 				this.lInfo = lInfo
-				this.departId = lInfo.departId
-				this.positionId = lInfo.position_ID
-				this.accountId = lInfo.account_ID
-				this.lInfo.updateTime = this.moment()
-				this.lInfo.step = '0'
+				this.departId = this.lInfo.departId
+				this.positionId = this.lInfo.positionId
+				this.accountId = this.lInfo.leaveAccount
+				this.beginDate=this.lInfo.startTime
+				this.endDate=this.lInfo.endTime
+// 				this.lInfo.step = '0'
+				this.lInfo.leaveType = '病假'
+				this.lInfo.account4='1127'
 
 				//清空数据
-				this.empList_check = [],
-					this.empListCheckTimes = 0,
-					this.levelCheck = '0',
-					this.empList_verify = [],
-					this.empListVerifyTimes = 0,
-					this.levelVerify = '0',
-					this.empList_approval = [],
-					this.empListApprovalTimes = 0,
-					this.levelApproval = '0',
+				this.empList_check = []
+				this.empList_check.push({
+					accountId:this.lInfo.account1,
+					accountName:this.lInfo.accountName1
+				})
+				this.empListCheckTimes = 0
+				this.levelCheck = '0'
+				this.isClickCheckBtn=false
+				this.empList_verify = []
+				this.empList_verify.push({
+					accountId:this.lInfo.account2,
+					accountName:this.lInfo.accountName2
+				})
+				this.empListVerifyTimes = 0
+				this.levelVerify = '0'
+				this.isClickVerifyBtn=false
+				this.empList_approval = []
+				this.empList_approval.push({
+					accountId:this.lInfo.account3,
+					accountName:this.lInfo.accountName3
+				})
+				this.empListApprovalTimes = 0
+				this.levelApproval = '0'
+				this.isClickApprovalBtn=false
 
-
-					this.empList()
-				this.addEmp('check')
-				this.addEmp('verify')
-				this.addEmp('approval')
+				this.empList()
+				
+				
+			},
+			//更新时间
+			dateAction: function(param) {
+				if (param == 'begin') {
+					this.beginDate = this.moment(this.beginDate, 'YYYY-MM-DD 00:00:00.000')
+				} else if (param == 'end') {
+					this.endDate = this.moment(this.endDate, 'YYYY-MM-DD 23:59:59.000')
+				}
 			},
 			levelStype: function(param) {
 				this.lInfo.leaveType = param
 			},
+			//代理人添加弹窗
+			addBtnAction: function() {
+				this.$children[1].initData()
+				$("#myModalJoin_modify").modal("show")
+			},
 			//代理人数据返回
 			agentAction: function(param) {
 				console.log('agentActionId:' + param.employeeId)
-				$("#myModalJoin_modify").modal('hide')
+				$("#myModalJoin_add").modal('hide')
 				this.emps.push(param)
 				this.lInfo.agentAccount = param.employeeId
 			},
-			closeModal:function(){
-				$("#myModalJoin_modify").modal('hide')
+			closeModal: function() {
+				$("#myModalJoin_add").modal('hide')
 			},
 			//代理人弹窗
 			showSelectEmp: function() {
@@ -318,45 +333,44 @@
 			//'+'被点击的方法
 			addEmp: function(param) {
 				if (param == 'check') {
-					if (this.empListCheckTimes == 9) {
-						this.empListCheckTimes = 0
-					}
-					if (this.empListCheckTimes == 0) {
-						this.levelCheck = '0'
-					} else if (this.empListCheckTimes == 3) {
-						this.levelCheck = '1'
-					} else if (this.empListCheckTimes == 6) {
-						this.levelCheck = '2'
-					}
+					
+					this.levelCheck = '0'
 					this.checkEmpList(param, this.levelCheck, this.empListCheckTimes)
 					this.empListCheckTimes++
+					if (this.empListCheckTimes == 9) {
+						this.isClickCheckBtn = true
+					}
 				} else if (param == 'verify') {
-					if (this.empListVerifyTimes == 6) {
-						this.empListVerifyTimes = 0
-					}
-					if (this.empListVerifyTimes == 0) {
-						this.levelVerify = '1'
-					} else if (this.empListVerifyTimes == 3) {
-						this.levelVerify = '2'
-					}
+					this.levelVerify = '1'
+
 					this.checkEmpList(param, this.levelVerify, this.empListVerifyTimes)
 					this.empListVerifyTimes++
+					if (this.empListVerifyTimes == 9) {
+						this.isClickVerifyBtn = true
+					}
 				} else if (param == 'approval') {
-					if (this.empListApprovalTimes == 6) {
-						this.empListApprovalTimes = 0
+					
+					if(this.accountInfo().positionTypeId==6){
+						this.empListApprovalTimes=5
 					}
-					if (this.empListApprovalTimes == 0) {
-						this.levelApproval = '1'
-					} else if (this.empListApprovalTimes == 1) {
-						this.levelApproval = '2'
-					}
+
 					this.checkEmpList(param, this.levelApproval, this.empListApprovalTimes)
 					this.empListApprovalTimes++
+					if (this.empListApprovalTimes == 9) {
+						this.isClickApprovalBtn = true
+					}
 				}
 			},
 			//查询不同类型审核人员
 			checkEmpList: function(param, level, clickTimes) {
-				var url = this.url + '/wzbg/checkOfEmpList'
+				var url = ''
+				if (param == 'check') {
+					url = this.url + '/wzbg/checkOfEmpList'
+				} else if (param == 'verify') {
+					url = this.url + '/wzbg/verifyOfEmpList'
+				} else if (param == 'approval') {
+					url = this.url + '/wzbg/approveOfEmpList'
+				}
 				console.log('checkEmpList:' + url)
 				console.log('positionId:' + this.positionId)
 				if (this.isBlank(this.positionId)) {
@@ -372,8 +386,9 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
+						accountId:this.accountInfo().account_ID,
 						clickTimes: clickTimes,
-						level: level,
+						// level: level,
 						positionId: this.positionId,
 						departId: this.departId,
 					},
@@ -385,17 +400,18 @@
 							if (param == 'check') {
 								this.empList_check = {}
 								this.empList_check = res.resData
+								this.lInfo.account1 = this.empList_check[0].accountId
 							} else if (param == 'verify') {
 								this.empList_verify = {}
 								this.empList_verify = res.resData
+								this.lInfo.account2 = this.empList_verify[0].accountId
 							} else if (param == 'approval') {
 								this.empList_approval = {}
 								this.empList_approval = res.resData
+								this.lInfo.account3 = this.empList_approval[0].accountId
 							}
 
 							$("#myModalQuery").modal('hide');
-						} else {
-							alert('已经没有更多的数据了')
 						}
 					} else {
 						alert(res.retMsg)
@@ -405,10 +421,9 @@
 					console.log('请求失败处理')
 				});
 			},
-			//查询代理人
 			empList: function() {
 				var url = this.url + '/wzbg/departOfEmpList'
-				console.log('checkEmpList:' + url)
+				console.log('empList-modify:' + this.lInfo.departId)
 				axios({
 					method: 'post',
 					url: url,
@@ -418,20 +433,18 @@
 					},
 					data: {
 						departId: this.lInfo.departId,
-						accountId: this.lInfo.account_ID
+						accountId: this.lInfo.leaveAccount
 					},
 					dataType: 'json',
 				}).then((response) => {
 					var res = response.data
 					if (res.retCode == '0000') {
-						// alert('LeaveInfoOfApply:' + res.resData.length)
-						console.log('LeaveInfoOfApply:' + res.resData)
+						console.log('LeaveInfoOfApply:' + res.resData.length)
 						if (res.resData.length > 0) {
 							this.emps = res.resData
+							this.lInfo.agentAccount =this.emps[0].employeeId
 							$("#myModalQuery").modal('hide');
-						} else {
-							alert('已经没有更多的数据了')
-						}
+						} 
 					} else {
 						alert(res.retMsg)
 					}
@@ -440,7 +453,7 @@
 					console.log('请求失败处理')
 				});
 			},
-			submitAskForLeaveModify: function() {
+			submitAskForLeaveApply: function() {
 				var url = this.url + '/wzbg/updateLeaveApplication'
 				this.lInfo.startTime = this.$refs.startTime.value
 				this.lInfo.endTime = this.$refs.endTime.value
@@ -483,13 +496,11 @@
 				}).then((response) => {
 					var res = response.data
 					if (res.retCode == '0000') {
-						alert('submitAskForLeaveModify:' + res.resData.length)
-						console.log('submitAskForLeaveModify:' + res.resData)
+						console.log('LeaveInfoOfApply:' + res.resData.length)
+						// console.log('LeaveInfoOfApply:' + res.resData)
 						if (res.resData == 1) {
-							alert('请假修改成功')
-							this.$emit('submitAskForLeaveModify','modify')
-						} else {
-							alert('已经没有更多的数据了')
+							alert('请假成功')
+							this.$emit('submitAskForLeaveApply', 'apply')
 						}
 					} else {
 						alert(res.retMsg)

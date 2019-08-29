@@ -11,12 +11,9 @@
 					<p>申请日期：</p>
 				</div>
 				<div class="col-md-10 col-lg-10">
-					<span class="leavespan">
-						<dPicker v-model="beginDate" v-on:change="dateAction('begin')"></dPicker>
-					</span> <span class="leavespan01">&nbsp;&nbsp;&nbsp;至：</span>
-					<span class="leavespan">
-						<dPicker v-model="endDate" v-on:change="dateAction('end')"></dPicker>
-					</span>
+					<dPicker v-model="beginDate" v-on:change="dateAction('begin')"></dPicker>
+					<span>&nbsp;&nbsp;&nbsp;至：</span>
+					<dPicker v-model="endDate" v-on:change="dateAction('end')"></dPicker>
 				</div>
 			</div>
 			<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -24,7 +21,7 @@
 					<p>部门：</p>
 				</div>
 				<div class="col-md-10 col-lg-10">
-					<depart></depart>
+					<depart @departChange="departChange"></depart>
 				</div>
 			</div>
 			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
@@ -43,11 +40,11 @@
 				</div>
 				<div class="col-md-8 col-lg-8">
 					<select class="form-control" v-model="handleState">
-						<option value="0">全部</option>
-						<option value="1">待处理</option>
-						<option value="2">处理中</option>
-						<option value="3">已通过</option>
-						<option value="4">未通过</option>
+						<option value="全部">全部</option>
+						<option value="待处理">待处理</option>
+						<option value="处理中">处理中</option>
+						<option value="已通过">已通过</option>
+						<option value="未通过">未通过</option>
 					</select>
 				</div>
 			</div>
@@ -59,7 +56,7 @@
 				<p>项目：</p>
 			</div>
 
-			<button type="button" class="btn btn-primary pull-right" @click="dowmelxe('请假表')">导出</button>
+			<button type="button" class="btn btn-primary pull-right" @click="exportTableToExcel('datatable','倒休列表')">导出</button>
 			<button type="button" class="btn btn-primary pull-right m_r_10" data-toggle="modal" v-on:click="showRestInfo('','3')">申请</button>
 
 			<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" v-on:click="restDownList()">查询</button>
@@ -126,7 +123,7 @@
 		</div>
 			<rdInfo @restDownApply='rdInfoBack'></rdInfo>
 			<rdCheck></rdCheck>
-			<rdModify></rdModify>
+			<rdModify @restDownApply='rdInfoBack'></rdModify>
 			<rdHandle @submitROHModify='rdInfoBack'></rdHandle>
 			
 	</div>
@@ -154,8 +151,8 @@
 			return {
 				name:'',
 				handleState:'0',
-				beginDate:this.getCurrentDay,
-				endDate:this.getCurrentDay,
+				beginDate:this.moment('', 'YYYY-MM-DD 00:00:00.000'),
+				endDate:this.moment('', 'YYYY-MM-DD 00:00:00.000'),
 				departId:'0',
 				departName:'',
 				accountId:this.accountInfo().account_ID,
@@ -187,18 +184,6 @@
 						|| this.accountId==rdInfo.account2
 						|| this.accountId==rdInfo.account3
 						|| this.accountId==rdInfo.account4){
-							if(this.accountId==rdInfo.account1){
-								this.$children[6].showROHEmp('check')
-							}
-							if(this.accountId==rdInfo.account2){
-								this.$children[6].showROHEmp('verify')
-							}
-							if(this.accountId==rdInfo.account3){
-								this.$children[6].showROHEmp('approval')
-							}
-							if(this.accountId==rdInfo.account4){
-								this.$children[6].showROHEmp('report')
-							}
 							$("#rdHandleModal").modal('show')
 						}else{
 							alert(this.notHaveRule)
@@ -210,13 +195,18 @@
 			
 			//申请及其他返回
 			rdInfoBack:function(param){
-				alert(param)
 				if(param=='apply'){
 					$("#rdApplyModal").modal('hide')
+				}else if(param=='modify'){
+					$("#rdModifyModal").modal('hide')
 				}else if(param=='handle'){
 					$("#rdHandleModal").modal('hide')
 				}
 				this.restDownList()
+			},
+			departChange:function(departId,departName){
+				this.departId=departId
+				this.departName=departName
 			},
 			//更新时间
 			dateAction: function(param) {
@@ -237,16 +227,7 @@
 				}else{
 					aId=this.accountId
 				}
-				if(this.departId=='0'){
-					dpId=''
-				}else{
-					dpId=this.departId
-				}
-				if(this.handleState=='全部'){
-					hState=''
-				}else{
-					hState=this.handleState
-				}
+				
 				
 				var url = this.url + '/wzbg/restDownList'
 				axios({
@@ -258,10 +239,10 @@
 					},
 					data: {
 						name: this.name,
-						beginDate: this.getYYYYMMDDHHMMSS_00(this.beginDate),
-						endDate: this.getYYYYMMDDHHMMSS_24(this.endDate),
-						departId: dpId,
-						handleState: hState,
+						beginDate: this.beginDate,
+						endDate: this.endDate,
+						departId: this.departId,
+						handleState: this.handleState,
 						accountId:aId,
 					},
 					dataType: 'json',
@@ -270,17 +251,16 @@
 					if (res.retCode == '0000') {
 						if (res.resData.length > 0) {
 							this.rdLsit = res.resData
-							console.log('restDownList:'+this.rdList.toString())
 							$("#myModalQuery").modal('hide');
 						} else {
-							alert('没有查询到相关数据')
+							alert('没有查询到更多相关数据')
 						}
 					} else {
 						alert(res.retMsg)
 					}
 			
 				}).catch((error) => {
-					console.log('请求失败处理')
+					console.log('倒休数据处理失败')
 				});
 			},
 		},

@@ -37,6 +37,20 @@ const queryStartMonth =(month) => {
 const queryEndMonth =(month) => {
   return moment(month).endOf('month').format("YYYY-MM-DD 23:59:59")
 }
+/*查询上个月起止时间*/
+const queryStartLastMonth =(month) => {
+  return moment(month).subtract(1,'month').startOf('month').format("YYYY-MM-DD 00:00:00")
+}
+const queryEndLastMonth =(month) => {
+  return moment(month).subtract(1,'month').endOf('month').format("YYYY-MM-DD 23:59:59")
+}
+/*查询下个月起止时间*/
+const queryStartNextMonth =(month) => {
+  return moment(month).add(1,'month').startOf('month').format("YYYY-MM-DD 00:00:00")
+}
+const queryEndNextMonth =(month) => {
+  return moment(month).add(1,'month').endOf('month').format("YYYY-MM-DD 23:59:59")
+}
 /*初始化添加时间*/
 const addStartTime = () =>{
   return moment().format("YYYY-MM-DD 08:30")
@@ -65,6 +79,10 @@ export default {
     Vue.prototype.$queryEndTime = queryEndTime
     Vue.prototype.$queryStartMonth = queryStartMonth
     Vue.prototype.$queryEndMonth = queryEndMonth
+    Vue.prototype.$queryStartLastMonth = queryStartLastMonth
+    Vue.prototype.$queryEndLastMonth = queryEndLastMonth
+    Vue.prototype.$queryStartNextMonth = queryStartNextMonth
+    Vue.prototype.$queryEndNextMonth = queryEndNextMonth
     Vue.prototype.$addStartTime = addStartTime
     Vue.prototype.$addEndTime = addEndTime
     Vue.prototype.$YYYY_MM_DD_17_30 = YYYY_MM_DD_17_30

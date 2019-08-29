@@ -1,18 +1,18 @@
 <template>
-	<div class="tab-pane fade" id="detailed">
+	<!-- 详细信息 -->
+	<div class="tab-pane fade" id="checkDetailed">
 		<div class="martop1 clearfix">
 			<div class="form-group col-md-6 clearfix">
 				<label class="col-md-4 control-label text-right nopad">身份证号码：</label>
 				<div class="col-md-8">
 					<input type="text" class="form-control" v-model="personalDetail.uIdNum">
-					<!-- <input type="text" class="form-control" v-model="test"> -->
 				</div>
 			</div>
 			<div class="form-group col-md-6 clearfix">
 				<label class="col-md-4 control-label text-right nopad">政治面貌：</label>
 				<div class="col-md-8">
 					<select class="form-control" v-model="personalDetail.uPloitical">
-						<option value="">团员</option>
+						<option value="团员">团员</option>
 					</select>
 				</div>
 			</div>
@@ -25,7 +25,7 @@
 			<div class="form-group col-md-6 clearfix">
 				<label class="col-md-4 control-label text-right nopad">民族：</label>
 				<div class="col-md-8">
-					<nation @nationChange='nationChange'></nation>
+					<nation></nation>
 				</div>
 			</div>
 			<div class="form-group col-md-6 clearfix">
@@ -43,10 +43,7 @@
 			<div class="form-group col-md-6 clearfix">
 				<label class="col-md-4 control-label text-right nopad">婚姻状况：</label>
 				<div class="col-md-8">
-					<select class="form-control" v-model="personalDetail.uMarital">
-						<option value="0">未婚</option>
-						<option value="1">已婚</option>
-					</select>
+					<input type="text" class="form-control" v-model="personalDetail.uMarital">
 				</div>
 			</div>
 			<div class="form-group col-md-6 clearfix">
@@ -73,9 +70,9 @@
 				<label class="col-md-4 control-label text-right nopad">最高学历：</label>
 				<div class="col-md-8">
 					<select class="form-control" v-model="personalDetail.uEducation">
-						<option value="">未知</option>
-						<option value="">博士</option>
-						<option value="">硕士</option>
+						<option value="学士">学士</option>
+						<option value="博士">博士</option>
+						<option value="硕士">硕士</option>
 					</select>
 				</div>
 			</div>
@@ -88,8 +85,8 @@
 			<div class="form-group col-md-6 clearfix">
 				<label class="col-md-4 control-label text-right nopad">毕业时间：</label>
 				<div class="col-md-8 input-group date form_date">
-					<input type="date" class="form-control" v-model="personalDetail.uGraduation">
-				</div>
+					<input type="datetime" class="form-control" v-model="personalDetail.uGraduation">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> </div>
 			</div>
 			<div class="form-group col-md-6 clearfix">
 				<label class="col-md-4 control-label text-right nopad">是否在学：</label>
@@ -141,71 +138,52 @@
 				</div>
 			</div>
 		</div>
-
+		<!--</div>-->
+		<!--</div>-->
 	</div>
-
+	
 </template>
 
 <script>
+	import axios from 'axios'
 	import nation from '../../../vuecommon/nation.vue'
 	export default {
-		components: {
-			nation
-		},
+		components:{nation},
+		
 		data() {
 			return {
-				personalDetail: {
-					uIdNum: '',
-					uPloitical: '',
-					uHomeTown: '',
-					uNationName: '',
-					uAccountProp: '',
-					uMarital: '',
-					uHomeAddress: '',
-					uCurrentAddress: '',
-					uSchools: '',
-					uEducation: '',
-					uProfession: '',
-					uGraduation: '',
-					uAtSchool: '',
-					uContact: '',
-				},
-				// test:'测试',
+				accountId:'',
+				personalDetail:{},
 			};
 		},
-		methods: {
-			initData: function(param) {
-				console.log("详细信息赋值:" + param.idNum)
-				// this.test='测试成功'
-				if (!this.isBlank(param)) {
-					this.personalDetail.uIdNum = param.idNum
-					console.log("详细信息赋值:" + this.personalDetail.uIdNum)
-					this.personalDetail.uPloitical = param.ploitical
-					this.personalDetail.uHomeTown = param.homeTown
-					this.personalDetail.uNationName = param.nation
-					this.personalDetail.uAccountProp = param.accountProp
-					this.personalDetail.uMarital = param.marital
-					this.personalDetail.uHomeAddress = param.homeAddress
-					this.personalDetail.uCurrentAddress = param.address
-
-					this.personalDetail.uSchools = param.school
-					this.personalDetail.uEducation = param.education
-					this.personalDetail.uProfession = param.profession
-					this.personalDetail.uGraduation = param.graduation
-					this.personalDetail.uAtSchool = param.atSchool
-
-					this.personalDetail.uContact = param.phone
-
-				} else {
-					this.personalDetail = {}
-				}
+		methods:{
+			childrenDetailInfo:function(param){
+				
+				this.getEmpDetail(param)
 			},
-			//初始化数据
-			cleanData: function(param) {
-				this.personalDetail = {}
-			},
-			nationChange: function(nationName) {
-				this.personalDetail.uNationName = nationName
+			getEmpDetail:function (param) {
+				var uDetailUrl = this.url + '/search/detailInfo'
+				//个人详细信息
+				axios({
+					method: 'post',
+					url: uDetailUrl,
+					headers: {
+						'Content-Type': this.contentType,
+						'Access-Token': this.accessToken
+					},
+					data: {
+						recruitDataID: param,
+					},
+					dataType: 'json',
+				}).then((response) => {
+					var res = response.data
+					if (res.retCode == '0000') {
+						this.personalDetail=res.resData[0]
+						console.log('personalBase:'+this.personalDetail.uIdNum)
+					}
+				}).catch((error) => {
+					console.log('请求失败处理')
+				});
 			}
 		}
 	}
@@ -214,3 +192,4 @@
 <style>
 
 </style>
+

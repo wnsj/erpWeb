@@ -4,6 +4,7 @@ import App from '../App.vue'
 
 //人员管理
 import employee from '../components/employee/employee.vue'
+import empEntry from '../components/employee/subEmp/empEntry.vue'
 import attendence from '../components/attendence/attendence.vue'
 import recruitment from '../components/recruitment/recruitment.vue'
 
@@ -32,11 +33,11 @@ import forgetPunchProof from '../components/paperlessOffice/forgetPunchProof.vue
 import conferenceRoomManage from '../components/paperlessOffice/conferenceRoomManage.vue'
 import officeSuppliesManage from '../components/paperlessOffice/officeSuppliesManage.vue'
 import computerSupplies from '../components/paperlessOffice/computerSupplies.vue'
-import computerAdvanceApplication from '../components/paperlessOffice/computerAdvanceApplication.vue'
 import empRequire from '../components/paperlessOffice/empRequire.vue'
 import report from '../components/paperlessOffice/report.vue'
 import clock from '../components/paperlessOffice/clock.vue'
 import preApplication from '../components/paperlessOffice/computerPreApplication.vue'
+import leaveOffice from '../components/paperlessOffice/leaveOffice.vue'
 
 
 Vue.use(Router)
@@ -60,7 +61,12 @@ export default new Router({
 			hidden: false,
 			children: [{
 					path: '/employee',
-					component: employee
+					component: employee,
+					children: [{
+						path: '/employee/empEntry',
+						name: 'empEntry',
+						component: empEntry
+					}, ]
 				},
 				{
 					path: '/attendence',
@@ -75,11 +81,11 @@ export default new Router({
 							name: 'recruitChannels',
 							component: recruitChannels
 						},
-            {
-              path: '/recruitment/interview',
-              name: 'interview',
-              component: interview
-            },
+						{
+							path: '/recruitment/interview',
+							name: 'interview',
+							component: interview
+						},
 						{
 							path: '/recruitment/recruitPlan',
 							name: 'recruitPlan',
@@ -140,19 +146,27 @@ export default new Router({
 					component: officeSuppliesManage
 				},
 
+
+
+
 				{
 					path: '/paperlessOffice/conferenceRoomManage',
 					component: conferenceRoomManage
 				},
 				{
 					path: '/paperlessOffice/computerPreApplication',
-          name: 'preApplication',
-          component: preApplication
+					name: 'preApplication',
+					component: preApplication
 				},
 				{
 					path: '/paperlessOffice/empRequire',
 					component: empRequire
-				}
+				},
+				{
+					path: '/paperlessOffice/leaveOffice',
+					component: leaveOffice
+				},
+
 
 			],
 			redirect: '/employee'

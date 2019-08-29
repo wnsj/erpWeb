@@ -6,7 +6,7 @@
       <button type="button" data-dismiss="modal" aria-hidden="true" class="close">
         <span>×</span>
       </button>
-      <h4 id="myModalLabel" class="modal-title">修改面试信息</h4>
+      <h4 id="myModalLabel" class="modal-title">面试信息</h4>
     </div>
     <div class="modal-body">
       <ul class="nav nav-tabs martop">
@@ -25,10 +25,18 @@
     </div>
     <div class="modal-footer">
       <div class="col-md-12">
-        <button type="button" class="btn btn-warning" @click="editInterview">确认</button>
-        <button type="button" data-dismiss="modal" class="btn btn-info">返回</button>
+        <div class="col-md-7 col-md-offset-3">
+          <button type="button" class="btn btn-warning" v-if="isShow" @click="editInterview">确认</button>
+          <button type="button" data-dismiss="modal" class="btn btn-warning">返回</button>
+        </div>
+        <div class="col-md-2">
+          <button type="button" class="btn btn-info" v-if="isEntryBtn" v-on:click="entry()">入职</button>
+          <button type="button" class="btn btn-info" v-if="isShowBtn" v-on:click="checkEntry()">查看入职</button>
+        </div>
       </div>
     </div>
+		<cee ref="cee"></cee>
+		<ee ref="ee" @addEmployeeInfo='closeUIEAction'></ee>
   </div>
 </template>
 <script>
@@ -37,19 +45,25 @@
   import updateBasicInfo from '../subInterview/subUpdateInterviewEntry/updateInterviewBasic.vue'
   import updateEducationInfo from '../subInterview/subUpdateInterviewEntry/updateEducationExperience.vue'
   import updateApplyInfo from '../subInterview/subUpdateInterviewEntry/updateApplyInformation.vue'
-
+	import cee from '../../recruitment/checkEntryInfo/checkEmpEntry.vue'//查看入职
+	import ee from '../../recruitment/checkEntryInfo/empEntry.vue'//入职
   export default {
     components: {
       updateBasicInfo,
       updateEducationInfo,
-      updateApplyInfo
+      updateApplyInfo,
+			cee,
+			ee
     },
     data() {
       return {
         // -----基本信息-----
         interviewBaseEdit: {},
         educationExprienceEdit: {},
-        applyEdit: {}
+        applyEdit: {},
+        isShow: true,
+        isEntryBtn: false,
+        isShowBtn: false,
       }
     },
     methods: {
@@ -57,6 +71,41 @@
         this.$refs.updateBasic.childBasicInfo(val)
         this.$refs.updateEducation.childBasicEduAndExp(val)
         this.$refs.updateApply.childApply(val)
+      },
+			//入职按钮
+			entry:function(){
+				this.interviewBaseEdit = this.$refs.updateBasic.interviewBase
+				this.educationExprienceEdit = this.$refs.updateEducation.eduAndExpInfo
+				
+				//赋值基本信息和详细信息
+				var entryBaseInfo={},entryDetialInfo={}
+				entryBaseInfo.recruitDataID=this.interviewBaseEdit.id
+				entryBaseInfo.name=this.interviewBaseEdit.name
+				entryBaseInfo.sex=this.interviewBaseEdit.sex
+				entryBaseInfo.birth=this.interviewBaseEdit.birth
+				entryDetialInfo=Object.assign(this.interviewBaseEdit,this.educationExprienceEdit)
+				
+				$("#recruitEntry").modal('show')
+				this.$refs.ee.receiveRecruitmentInfo(entryBaseInfo,entryDetialInfo)
+			},
+			//查看入职
+			checkEntry:function(){
+				this.interviewBaseEdit = this.$refs.updateBasic.interviewBase
+				$("#REModalupdata").modal('show')
+				this.$refs.cee.paramDevliverToSubModel(this.interviewBaseEdit.id)
+			},
+			//关闭当前窗口
+			closeUIEAction:function(){
+				this.$emit('closeUIEAction')
+			},
+			
+      changeBtn() {
+        this.isShow = false
+      },
+      initBtn() {
+        this.isShow = true
+        this.isEntryBtn = false
+        this.isShowBtn = false
       },
       // ---------------------------------------编辑----------------------------------
       editInterview() {

@@ -203,13 +203,6 @@
 
 
 		<div class="modal-footer">
-			<!--按钮-->
-			<div class="col-md-12">
-
-				<button type="button" class="btn btn-info" disabled="true" v-on:click="submitAskForLeaveModify()">确认</button>
-				<button type="button" data-dismiss="modal" class="btn btn-info">返回</button>
-			</div>
-
 			<div class="beihzu">
 
 				<i>按钮用来扩大选择其他人员</i>
@@ -244,7 +237,6 @@
 				delgateEMP: [], //代理人
 				cEmpList: [],
 				emps: [], //人员列表
-
 				empList_check: [],
 				empListCheckTimes: 0,
 				levelCheck: '0',
@@ -254,11 +246,8 @@
 				empList_approval: [],
 				empListApprovalTimes: 0,
 				levelApproval: '0',
-
-
 				beginDate: this.moment('', 'YYYY-MM-DD 08:30'),
 				endDate: this.moment('', 'YYYY-MM-DD 17:30'),
-
 				isModify: '',
 				disabled_check: true,
 				disabled_verify: true,
@@ -274,36 +263,51 @@
 				this.accountId = lInfo.account_ID
 				this.lInfo.updateTime = this.moment()
 				this.lInfo.step = '0'
-
-			},
-			//显示对应的审查、审核、批准、报备人
-			showCVAREmp:function(param){
-				if(param=='check'){
+				if(this.lInfo.account1==this.accountInfo().account_ID){
 					this.disabled_check=false
-				}else if(param=='verify'){
+				}
+				if(this.lInfo.account2==this.accountInfo().account_ID){
 					this.disabled_verify=false
-				}else if(param=='approval'){
+				}
+				if(this.lInfo.account3==this.accountInfo().account_ID){
 					this.disabled_approval=false
-				}else if(param=='report'){
+				}
+				if(this.lInfo.account4==this.accountInfo().account_ID){
 					this.disabled_report=false
 				}
 			},
+			
 			submitCVARBtnAction:function(btnType,isAgree){
 				if(btnType=='check'){
 					this.lInfo.result1=isAgree
 					this.lInfo.time1=this.moment()
+					this.submitAskForLeaveModify()
 				}else if(btnType=='verify'){
-					this.lInfo.result2=isAgree
-					this.lInfo.time2=this.moment()
+					if(this.lInfo.result1=='同意'){
+						this.lInfo.result2=isAgree
+						this.lInfo.time2=this.moment()
+						this.submitAskForLeaveModify()
+					}else{
+						alert('上一步未批准')
+					}
 				}else if(btnType=='approval'){
-					this.lInfo.result3=isAgree
-					this.lInfo.time3=this.moment()
+					if(this.lInfo.result2=='同意'){
+						this.lInfo.result3=isAgree
+						this.lInfo.time3=this.moment()
+						this.submitAskForLeaveModify()
+					}else{
+						alert('上一步未批准')
+					}
 				}else if(btnType=='report'){
-					this.lInfo.time4=this.moment()
-					this.lInfo.result4=isAgree
-				}
+					if(this.lInfo.result3=='同意'){
+						this.lInfo.time4=this.moment()
+						this.lInfo.result4=isAgree
+						this.submitAskForLeaveModify()
+					}else{
+						alert('上一步未批准')
+					}
+				} 
 				
-				this.submitAskForLeaveModify()
 			},
 			submitAskForLeaveModify: function() {
 				var url = this.url + '/wzbg/updateLeaveApplication'
@@ -331,12 +335,10 @@
 					} else {
 						alert(res.retMsg)
 					}
-
 				}).catch((error) => {
 					console.log('请求失败处理')
 				});
 			}
-
 		},
 		mounted: function() {
 			$(function() {
@@ -350,5 +352,4 @@
 </script>
 
 <style>
-
 </style>

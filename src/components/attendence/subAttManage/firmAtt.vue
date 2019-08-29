@@ -18,9 +18,8 @@
 				<div class="col-lg-11 mtr_a"> <span>时间：</span>
 						<dPicker v-model="beginDate" v-on:change="dateAction('begin')"></dPicker>
 						<span>&nbsp;&nbsp;&nbsp;至：</span>
-						<span>
-							<dPicker v-model="endDate" v-on:change="dateAction('end')"></dPicker>
-						</span>
+						<dPicker v-model="endDate" v-on:change="dateAction('end')"></dPicker>
+						
 				</div>
 				<div class="col-lg-11 mtr_a"> <span>注：</span> <span style="color:#FF0000; margin-right:10px;">旷工</span> <span style="color:#CD853F; margin-right:10px;">迟到/早退</span>
 					<span style="color:#000000; margin-right:10px;">正常</span>

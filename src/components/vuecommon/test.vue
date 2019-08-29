@@ -22,6 +22,8 @@
     CallVueMethod
   } from '@/assets/js/constant'
   var vm = null;
+  var change = 1
+
   export default {
     data() {
       return {
@@ -37,18 +39,19 @@
         //CallVueMethod.setApproves(this.websocket);
       },
       test(value) {
-        alert("test2"+value);
+        alert("test2" + value);
       },
       startConection() {
         //判断当前浏览器是否支持WebSocket
         //var url = this.url.replace("http", 'wss').concat("/websocket/").concat(this.accountId);
         var url = "ws://172.16.213.210:8080/ERP/websocket/" + this.accountId;
         if ('WebSocket' in window) {
+
           this.websocket = new WebSocket(url);
         } else if ('MozWebSocket' in window) {
           this.websocket = new MozWebSocket(url);
         } else {
-          this.websocket = new SockJS("http://172.16.56.1:8080/websocket/" + this.accountId);
+          this.websocket = new SockJS("http://172.16.2.248:8080/websocket/" + this.accountId);
         }
         this.setWebSocket();
 
@@ -67,6 +70,8 @@
 
         //接收到消息的回调方法
         this.websocket.onmessage = function(event) {
+          console.log('change:' + change)
+          console.log('this-websocket-onmessage')
           let innerHTML = event.data;
           this.lockReconnect = false;
           vm.test("8888");
@@ -79,9 +84,11 @@
           document.getElementById('message').innerHTML += innerHTML + '<br/>';
         }
 
+
         setInterval(function() {
-         // CallVueMethod.getApproves().send("心跳检测");
+          // CallVueMethod.getApproves().send("心跳检测");
         }, 10 * 1000);
+
       },
 
       //关闭WebSocket连接

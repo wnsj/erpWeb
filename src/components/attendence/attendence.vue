@@ -55,8 +55,7 @@
 				<personalAtt></personalAtt>
 				<employeeAtt></employeeAtt>
 				<attTable></attTable>
-				<attCountTable></attCountTable>
-				<singleDepartAtt></singleDepartAtt>
+				<attCountTable></attCountTable>				<singleDepartAtt></singleDepartAtt>
 				<singleEmployeeAtt></singleEmployeeAtt>
 				<holidaysTypeManage></holidaysTypeManage>
 				<attendanceRulesManage></attendanceRulesManage>

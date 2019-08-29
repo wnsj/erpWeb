@@ -126,15 +126,14 @@
 					<family></family>
 				</div>
 			</div>
-			
+			<!-- <div class="modal fade" id="myModalJoin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog staff_t"> -->
 					<empEntry ref='empEntry' @addEmployeeInfo='addEmployeeInfo'></empEntry>
-				
-			<div class="modal fade" id="myModalupdata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog staff_t">
-					<mEE ref='mEE' :personalBase='personalBase' :personalDetail='personalDetail' :personalFamily='personalFamily'
+				<!-- </div>
+			</div> -->
+			<mEE ref='mEE' :personalBase='personalBase' :personalDetail='personalDetail' :personalFamily='personalFamily'
 					 :personalShift='personalShift' @submitBackUpPage='receivePersonalBase'></mEE>
-				</div>
-			</div>
+				
 		</div>
 	</div>
 
@@ -351,7 +350,8 @@
 			},
 			// 双击弹出员工修改框
 			showEmployeeInfo: function(item) {
-
+				
+				
 				$("#myModalupdata").modal('show')
 				this.accountId = item.accountId
 				this.personalInfo = Object.assign({}, item)

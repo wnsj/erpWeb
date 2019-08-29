@@ -43,7 +43,7 @@
         <date-picker v-model="computer.endDate" type="date" format="YYYY-MM-DD"></date-picker>
       </div>
       <div class="col-md-3 col-md-offset-1">
-        <button type="button" class="btn btn-warning pull-right m_r_10">导出</button>
+        <button type="button" class="btn btn-warning pull-right m_r_10" @click="exportTableToExcel('preAppTable','电脑预申请表')">导出</button>
         <button type="button" class="btn btn-info pull-right m_r_10" @click="preAppBtn" v-if='has(72)'>预申请</button>
         <button type="button" class="btn btn-primary pull-right m_r_10" @click="queryPreApp">查询</button>
       </div>
@@ -107,13 +107,15 @@
                 {{(item.handId == null||item.handId == 0)? '未指配':item.peiJieName}}
               </td>
               <td class="text-center" v-if="has('71')">
-                <button type="button" class="btn btn-sm btn-default" @click="continueBtn(item)"
-                        :disabled="item.status == null? false:'disabled'">
+                <button type="button" class="btn btn-sm btn-info" @click="continueBtn(item)"
+                        :disabled="item.status == 1? false:item.status ==2? 'disabled':false">
                   <b>{{item.status == 1? '进行中':item.status == 2? '已完成':'点击进行'}}</b>
                 </button>
               </td>
               <td class="text-center" v-if="has('71')">
-                <button type="button" class="btn btn-sm btn-default">点击接单</button>
+                <button type="button" class="btn btn-sm btn-warning" @click="clickOrder(item)"
+                        :disabled="item.handName == null? false:'disabled'">
+                  <b>{{item.handName == null? '点击接单':'已接单'}}</b></button>
               </td>
             </tr>
             </tbody>
@@ -315,7 +317,7 @@
             <div class="form-group clearfix">
               <label class="col-md-2 control-label text-right nopad">备注：</label>
               <div class="col-md-3">
-                <textarea class="textarea" v-model="computerForUpdate.remark" placeholder="负责人说明"
+                <textarea class="textarea remark" v-model="computerForUpdate.remark" placeholder="负责人说明"
                           :disabled="computerForUpdate.isAbleForCheck">
                 </textarea>
               </div>
@@ -450,8 +452,8 @@
             accountId: this.has(71) ? '' : JSON.parse(Cookies.get("accountData")).account.account_ID,
             accountName: this.has(71) ? '' : JSON.parse(Cookies.get("accountData")).account.account_Name,
             timeType: this.computer.timeType,
-            beginTime: this.$queryStartTime(this.computer.beginDate),
-            endTime: this.$queryEndTime(this.computer.endDate),
+            beginTime: this.computer.beginDate == null? '':this.$queryStartTime(this.computer.beginDate),
+            endTime: this.computer.endDate == null? '':this.$queryEndTime(this.computer.endDate),
             deptId: this.computer.deptId,
             userName: this.computer.userName,
             handName: this.computer.handName
@@ -653,11 +655,17 @@
       },
       // ---------------------------------------对接----------------------------------
       continueBtn(item) {
-        if (this.isBlank(item.finishTime)) {
-          alert('请点击查看详情,点击完成按钮后再操作此处')
-          return false;
-        } else {
-          const msg = confirm("是否进行？")
+        const loginAccount = JSON.parse(Cookies.get("accountData")).account.account_ID
+        if (item.handId != loginAccount) {
+          alert("非对应交接人不可操作此处！")
+          return false
+        }
+        if(item.status == 1){
+          alert('进行中')
+          return false
+        }
+        const msg = confirm("是否进行？")
+        if (msg) {
           axios({
             method: 'post',
             url: this.url + '/computerController/checkPreApp',
@@ -667,13 +675,11 @@
             },
             data: {
               id: item.id,
-              status: '1',
-              handIsSee: '1'
+              status: '1'
             },
             dataType: 'json',
           }).then(response => {
-            console.log(response.data.retData);
-            $('#preAppUpdateModel').modal('hide');
+            alert("")
             this.queryPreApp();
           }).catch(err => {
             console.log(err)
@@ -710,6 +716,42 @@
             console.log(err)
           });
         }
+      },
+      // ---------------------------------------接单----------------------------------
+      clickOrder(item) {
+        const loginAccount = JSON.parse(Cookies.get("accountData")).account.account_ID
+        const loginName = JSON.parse(Cookies.get("accountData")).account.account_Name
+        if (item.handId != null && item.handId != 0 && item.handId != loginAccount) {
+          alert("此单已指配，非指配人不可接此单！");
+          return false;
+        }
+        if (item.principalAudit != 1) {
+          alert("负责人未同意，不可接单！")
+          return false;
+        }
+        const msg = confirm("是否接单？")
+        if (msg) {
+          axios({
+            method: 'post',
+            url: this.url + '/computerController/checkPreApp',
+            headers: {
+              'Content-Type': this.contentType,
+              'Access-Token': this.accessToken
+            },
+            data: {
+              id: item.id,
+              handName: loginName,
+              handIsSee: '1',
+              peiJieIsSee: '1'
+            },
+            dataType: 'json',
+          }).then(response => {
+            alert('接单成功,请及时进行！')
+            this.queryPreApp();
+          }).catch(error => {
+            console.log(error)
+          });
+        }
       }
     },
     created() {
@@ -739,5 +781,9 @@
   .idNum {
     color: #B34D61;
     font-size: 15px;
+  }
+
+  .remark {
+    color: #FC4B04;
   }
 </style>

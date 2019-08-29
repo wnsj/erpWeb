@@ -1,5 +1,5 @@
 <template>
-	<div class="tab-pane fade in active martop" id="basic">
+	<div class="tab-pane fade in active martop" id="cBasic">
 		<form action="">
 			<div class="form-group clearfix">
 				<label for="cyname" class="col-md-2 control-label text-right nopad">姓名：</label>
@@ -17,11 +17,7 @@
 				
 				<label class="col-md-2 control-label text-right nopad">出生年月：</label>
 				<dPicker v-model="personalBase.birth" v-on:change="dateAction('0')"></dPicker>
-				<!-- <div class="col-md-5 input-group date form_date">
-					
-					<input type="date" class="form-control" v-model="personalBase.birth" value="">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-				</div> -->
+				
 			</div>
 			<div class="form-group clearfix">
 				<label for="gh" class="col-md-2 control-label text-right nopad">工号：</label>
@@ -49,17 +45,11 @@
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">入职日期：</label>
-				<dPicker v-model="personalBase.entryDate" v-on:change="dateAction('1')"></dPicker>
-				<!-- <div class="col-md-5 input-group date form_date">
-					<input type="date" class="form-control" v-model="personalBase.entryDate" value="">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> </div> -->
+				<dPicker v-model="entryDate" v-on:change="dateAction('1')"></dPicker>
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-md-2 control-label text-right nopad">转正日期：</label>
-				<dPicker v-model="personalBase.positiveDate" v-on:change="dateAction('2')"></dPicker>
-				<!-- <div class="col-md-5 input-group date form_date">
-					<input type="date" class="form-control" v-model="personalBase.positiveDate" value="">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span> </div> -->
+				<dPicker v-model="positiveDate" v-on:change="dateAction('2')"></dPicker>
 			</div>
 			
 			<div class="form-group clearfix">
@@ -90,31 +80,24 @@
 		components:{department,position,dPicker},
 		data() {
 			return {
-				personalBase:{
-					birth:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
-					entryDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
-					positiveDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
-					state:'1',
-				},
+				personalBase:{},
 				departmentList:[],
 				positionList:[],
+				entryDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
+				positiveDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
 			};
 		},
 		methods:{
 			//员工入职
 			initDate:function(param){
-				if(!this.isBlank(param)){
-					this.personalBase=param
-				}else{
-					this.personalBase={
-						birth:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
-						entryDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
-						positiveDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
-						state:'1',
-					}
-				}
+				
+				
+				this.personalBase=param
+				this.personalBase.state='1'
 				this.$children[1].setDpart('0')
 				this.$children[2].setPosition('0')
+				this.personalBase.entryDate=this.moment(this.entryDate,'YYYY-MM-DD HH:MM:SS.000')
+				this.personalBase.positiveDate=this.moment(this.positiveDate,'YYYY-MM-DD HH:MM:SS.000')
 			},
 			
 			//时间变化后格式化
@@ -122,9 +105,9 @@
 				if(type=='0'){
 					this.personalBase.birth=this.moment(this.personalBase.birth,'YYYY-MM-DD HH:MM:SS.000')
 				}else if(type=='1'){
-					this.personalBase.entryDate=this.moment(this.personalBase.entryDate,'YYYY-MM-DD HH:MM:SS.000')
+					this.personalBase.entryDate=this.moment(this.entryDate,'YYYY-MM-DD HH:MM:SS.000')
 				}else if(type=='2'){
-					this.personalBase.positiveDate=this.moment(this.personalBase.positiveDate,'YYYY-MM-DD HH:MM:SS.000')
+					this.personalBase.positiveDate=this.moment(this.positiveDate,'YYYY-MM-DD HH:MM:SS.000')
 				}
 			},
 			//获取部门名字和id

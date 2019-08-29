@@ -3,27 +3,26 @@
 <!-- author:天山路小仙女123123-->
 <template>
   <div class="container user-container" id="report-app" v-cloak>
-
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 main-title">
         <h2>请假报备管理</h2>
       </div>
     </div>
     <div class="form-group clearfix col-xs-12 col-sm-12 col-md-12 col-lg-12">
-      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" id="date">
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 
-         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="padding-left: 0;">
-            <label class="control-label text-left nopad">填写日期：</label>
-         </div>
-         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0;">
-            <date-picker v-model="beginDate" type="date" class="queryDate"></date-picker>
-         </div>
-          <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-            <span class="nopad">~</span>
-          </div>
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0;">
-            <date-picker v-model="endDate" type="date" class="queryDate"></date-picker>
-          </div>
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="padding-left: 0;">
+          <label class="control-label text-left nopad">填写日期：</label>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0;">
+          <date-picker v-model="beginDate" type="date" class="queryDate"></date-picker>
+        </div>
+        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+          <span class="nopad">~</span>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0;">
+          <date-picker v-model="endDate" type="date" class="queryDate"></date-picker>
+        </div>
       </div>
       <!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
        <div class="input-group">
@@ -34,33 +33,33 @@
        </div>
       -->
       <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-            <label class="control-label text-left nopad">请假人部门：</label>
-          </div>
-          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" id="dept" style=" padding: 0;">
-            <department ref="departSel" @departChange='departSelChange'></department>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <label class="control-label text-left nopad">请假人部门：</label>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style=" padding: 0;">
+          <department ref="departSel" @departChange='departSelChange'></department>
         </div>
       </div>
 
       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0;">
-            <label class="control-label text-left nopad">姓名：</label>
-          </div>
-          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" id="username" style="padding-right: 0;">
-            <input type="text" class="form-control" placeholder="Username" v-model="leaveName">
-          </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0;">
+          <label class="control-label text-left nopad">姓名：</label>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding-right: 0;">
+          <input type="text" class="form-control" v-model="leaveName">
+        </div>
       </div>
       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0;">
-              <label class="control-label text-left nopad">状态：</label>
-            </div>
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" id="status" style="padding-right: 0;">
-              <select class="form-control" v-model="state">
-                <option v-for="(item,index) in stateList" :key="index" :value="item.value">
-                  {{item.label}}
-                </option>
-              </select>
-            </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0;">
+          <label class="control-label text-left nopad">状态：</label>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding-right: 0;">
+          <select class="form-control" v-model="state">
+            <option v-for="(item,index) in stateList" :key="index" :value="item.value">
+              {{item.label}}
+            </option>
+          </select>
+        </div>
       </div>
     </div>
     <div class="row">
@@ -77,7 +76,6 @@
       </div>
     </div>
     <br>
-		<div></div>
     <!-- 查询结果集 -->
     <div class="row">
       <div class="col-md-12">
@@ -174,7 +172,7 @@
           </table>
         </div>
       </div>
-			<div></div>
+      <div></div>
     </div><!-- /.row 查询页面-->
     <!--模态对话框-->
     <!-- 请假报备申请 -->
@@ -633,7 +631,7 @@
         leaveReviewRemark: '',
         checkRemark: '',
         id: '',
-        ids:[],
+        ids: [],
 
         // 修改
         editId: '',
@@ -680,8 +678,8 @@
             'Access-Token': this.accessToken
           },
           data: {
-            startTime: this.$queryStartTime(this.beginDate),
-            endTime: this.$queryEndTime(this.endDate),
+            startTime: this.beginDate == null ? '' : this.$queryStartTime(this.beginDate),
+            endTime: this.endDate == null ? '' : this.$queryEndTime(this.endDate),
             leaveDeptId: this.departSelId,
             leaveEmpName: this.leaveName,
             accountId: this.has(51) ? '' : JSON.parse(Cookies.get("accountData")).account.account_ID,
@@ -802,12 +800,12 @@
         this.id = item.id
         this.getIds(item);
       },
-      getIds:function (item) {
+      getIds: function (item) {
         const url = this.url + '/leavePrepareController/queryIdsForLeave'
-        axios.get(url).then((response) =>{
+        axios.get(url).then((response) => {
           console.log(response.data.retData);
           this.ids = response.data.retData;
-          if(this.ids.indexOf(this.id) > -1){
+          if (this.ids.indexOf(this.id) > -1) {
             alert("该报备已提交过申请，请查看【请假】状态！")
             return false;
           }
@@ -1468,7 +1466,11 @@
       display: table-cell;
     }
   }
- .form-control{ width: 100% !important;}
+
+  .form-control {
+    width: 100% !important;
+  }
+
   .nopad {
     padding-left: 0;
     padding-right: 0;
@@ -1505,34 +1507,10 @@
     width: 100% !important;
   }
 
- /* #date {
-    width: 31%;
-    margin-left: -10px;
-  } */
-
- /* #dept {
-    width: 18.5%;
-    margin-left: -100px;
-  } */
-
-  /* #username {
-    width: 15%;
-    margin-left: -50px;
-  }
-
-  #status {
-    width: 15%;
-    margin-left: -50px;
-  }
- */
   .table > tbody > tr > td {
     vertical-align: middle;
   }
 
-  /*#btn {*/
-  /*  margin-left: 82.6%;*/
-  /*}*/
-  /* .mx-datepicker{ width: 120px;} */
   .table > tbody > tr > td {
     vertical-align: middle;
   }

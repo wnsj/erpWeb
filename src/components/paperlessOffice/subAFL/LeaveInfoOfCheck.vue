@@ -36,8 +36,7 @@
 				</div>
 				<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
 					<select class="form-control" disabled=＂true＂>
-						<option value="0">崔艳红</option>
-						<option value="1">冯恺</option>
+						<option selected="selected">{{lInfo.agentAccountName}}</option>
 					</select>
 				</div>
 	
@@ -55,22 +54,9 @@
 					<p>请假时间：</p>
 				</div>
 				<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-					<span class="leavespan">
-						<div class='input-group date datetimePicker' id='datetimepicker2' >
-							<input name="endTimeStr" type='text' class="form-control" v-model="beginDate"/>
-							<span class="input-group-addon">
-								<span class="glyphicon glyphicon-calendar"></span>
-							</span>
-						</div>
-					</span> <span class="leavespan01">&nbsp;&nbsp;&nbsp;至：</span>
-					<span class="leavespan">
-						<div class='input-group date datetimePicker' id='datetimepicker2' >
-							<input name="endTimeStr" type='text' class="form-control" v-model="endDate"/>
-							<span class="input-group-addon">
-								<span class="glyphicon glyphicon-calendar"></span>
-							</span>
-						</div>
-					</span>
+					<dPicker v-model="lInfo.startTime" :disabled="true"></dPicker>
+					<span class="leavespan01">&nbsp;&nbsp;&nbsp;至：</span>
+					<dPicker v-model="lInfo.endTime" :disabled="true"></dPicker>
 				</div>
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -78,7 +64,7 @@
 					<p>说明：</p>
 				</div>
 				<div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
-					<textarea class="explain_leave"></textarea>
+					<textarea class="explain_leave" v-model="lInfo.leaveRemark" :disabled="true"></textarea>
 				</div>
 	
 				<div class="col-md-5">
@@ -97,7 +83,7 @@
 				</div>
 				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
 					<select class="form-control" disabled=＂true＂>
-						<option value="0">王斌</option>
+						<option selected="selected">{{lInfo.accountName1}}</option>
 					</select>
 				</div>
 				<div class="col-xs-1 col-sm-1 col-md-1">
@@ -129,8 +115,7 @@
 				</div>
 				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 					<select class="form-control" disabled=＂true＂>
-						<option value="0">王艳杰</option>
-						<option value="1">宋子龙</option>
+						<option selected="selected">{{lInfo.accountName2}}</option>
 					</select>
 				</div>
 				<div class="col-md-1">
@@ -162,8 +147,7 @@
 				</div>
 				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 					<select class="form-control" disabled=＂true＂>
-						<option value="0">王艳杰</option>
-						<option value="1">宋子龙</option>
+						<option selected="selected">{{lInfo.accountName3}}</option>
 					</select>
 				</div>
 				<div class="col-md-1">
@@ -196,7 +180,7 @@
 				</div>
 				<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
 					<select class="form-control" disabled=＂true＂>
-						<option value="0">李珊珊</option>
+						<option selected="selected">{{lInfo.accountName4}}</option>
 					</select>
 				</div>
 			</div>
@@ -218,13 +202,6 @@
 	
 	
 		<div class="modal-footer">
-			<!--按钮-->
-			<div class="col-md-12">
-	
-				<button type="button" class="btn btn-info" v-on:click="submitEmployeeInfo()" disabled=＂true＂>确认</button>
-				<button type="button" data-dismiss="modal" class="btn btn-info" disabled=＂true＂>返回</button>
-			</div>
-	
 			<div class="beihzu">
 	
 				<i>按钮用来扩大选择其他人员</i>
@@ -242,10 +219,12 @@
 <script>
 	import depart from '../../vuecommon/department.vue'
 	import leave from '../../vuecommon/leaveTypes.vue'
+	import dPicker from 'vue2-datepicker'
 	export default {
 		components:{
 			depart,
-			leave
+			leave,
+			dPicker
 		},
 		data() {
 			return {
@@ -260,7 +239,6 @@
 		},
 		methods:{
 			showLInfo:function(lInfo,param){
-				this.beginDate = 
 				this.lInfo=lInfo
 			}
 		}

@@ -25,14 +25,14 @@
       <div class="form-group clearfix">
         <label class="col-md-2 control-label text-right nopad">期望薪资：</label>
         <div class="col-md-3">
-          <input type="text" class="form-control" placeholder="Salary" value="0" v-model="apply.wages">
+          <input type="text" class="form-control" value="0" v-model="apply.wages">
         </div>
         <label class="col-md-1 control-label nopad">元</label>
       </div>
       <div class="form-group clearfix">
         <label class="col-md-2 control-label text-right nopad">面试官：</label>
         <div class="col-md-3">
-          <input type="text" class="form-control" placeholder="Interviewer" v-model="apply.interviewer">
+          <input type="text" class="form-control" v-model="apply.interviewer">
         </div>
         <label class="col-md-2 control-label text-right nopad">面试时间：</label>
         <div class="col-md-3">
@@ -42,7 +42,7 @@
       <div class="form-group clearfix">
         <label class="col-md-2 control-label text-right nopad">面试得分：</label>
         <div class="col-md-3">
-          <input type="text" class="form-control" placeholder="Score" value="0" min="0" max="100" v-model="apply.score">
+          <input type="text" class="form-control" value="0" min="0" max="100" v-model="apply.score">
         </div>
         <label class="col-md-2 control-label text-right nopad">是否合格：</label>
         <div class="col-md-3">
@@ -66,7 +66,7 @@
       <div class="form-group clearfix">
         <label class="col-md-2 control-label text-right nopad">备注：</label>
         <div class="col-md-10">
-          <textarea class="textarea" placeholder="Remark" v-model="apply.remark"></textarea>
+          <textarea class="textarea" v-model="apply.remark"></textarea>
         </div>
       </div>
     </div>

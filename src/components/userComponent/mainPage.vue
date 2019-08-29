@@ -44,7 +44,6 @@
               </li>
             </ul>
             <li>
-
               <i class="fa fa-university" aria-hidden="true" id="offfice01"></i>无纸化办公<i class="fa fa-caret-down item-down"
                 aria-hidden="true"></i>
             </li>
@@ -73,6 +72,9 @@
               </li>
               <li>
                 <router-link to="/paperlessOffice/empRequire"><i class="fa fa-table" aria-hidden="true" id="offfice09"></i>人员需求</router-link>
+              </li>
+              <li>
+                <router-link to="/paperlessOffice/leaveOffice"><i class="fa fa-table" aria-hidden="true" id="offfice10"></i>离职管理</router-link>
               </li>
             </ul>
             <!-- <li><i class="fa fa-area-chart" aria-hidden="true" id="item01"></i>item</li> -->
@@ -158,7 +160,7 @@
       //用户退出
       loginOut() {
         if (confirm("确定退出?") == false) {
-          this.$parent.setRouter("/mainPage");
+          // this.$parent.setRouter("/mainPage");
           return;
         } else {
           //删除cookie

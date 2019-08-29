@@ -1,5 +1,5 @@
 <template>
-	<div class="tab-pane fade" id="detailed">
+	<div class="tab-pane fade" id="cDetailed">
 		<div class="martop1 clearfix">
 			<div class="form-group col-md-6 clearfix">
 				<label class="col-md-4 control-label text-right nopad">身份证号码：</label>

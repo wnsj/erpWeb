@@ -108,7 +108,7 @@
 				}).then((response) => {
 					var res = response.data
 					if (res.retCode == '0000') {
-						alert(res.resData.length)
+						console.log(res.resData.length)
 						console.log("agent:"+res.resData)
 						if (res.resData.length > 0) {
 							this.emps = res.resData
