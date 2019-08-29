@@ -134,7 +134,7 @@ Vue.directive('has', {
 
 // 路由卫士
 router.beforeEach((to, from, next) => {
-  consolelog(to, from);
+  //consolelog(to, from);
   if (to.path == '/login' && from.path == '/mainPage') {
     next();
   } else if (to.path == '/login') {

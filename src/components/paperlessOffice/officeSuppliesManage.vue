@@ -1258,7 +1258,10 @@
                     month: $('#textDatePick2').val(),
                     accountId3: this.account.account_ID,
                     isTiJiao: 1,
-                    state: 1
+                    state: 1,
+                    renShiId:this.actId1,
+                    fuZongId:this.actId2,
+                    caiWuId:this.actId3
                   }]
                 };
                 var url = this.url + "/officeAction/commitAndSheHe";
