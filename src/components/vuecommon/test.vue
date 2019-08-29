@@ -21,7 +21,7 @@
   import {
     CallVueMethod
   } from '@/assets/js/constant'
-
+  var vm = null;
   export default {
     data() {
       return {
@@ -34,7 +34,10 @@
     },
     methods: {
       setWebSocket() {
-        CallVueMethod.setApproves(this.websocket);
+        //CallVueMethod.setApproves(this.websocket);
+      },
+      test(value) {
+        alert("test2"+value);
       },
       startConection() {
         //判断当前浏览器是否支持WebSocket
@@ -66,6 +69,7 @@
         this.websocket.onmessage = function(event) {
           let innerHTML = event.data;
           this.lockReconnect = false;
+          vm.test("8888");
           document.getElementById('message').innerHTML += innerHTML + '<br/>';
         }
 
@@ -76,7 +80,7 @@
         }
 
         setInterval(function() {
-          CallVueMethod.getApproves().send("心跳检测");
+         // CallVueMethod.getApproves().send("心跳检测");
         }, 10 * 1000);
       },
 
@@ -133,6 +137,7 @@
         this.websocket.onmessage = function(event) {
           let innerHTML = event.data;
           this.lockReconnect = false;
+          this.test();
           document.getElementById('message').innerHTML += innerHTML + '<br/>';
         }
 
@@ -142,7 +147,7 @@
           document.getElementById('message').innerHTML += innerHTML + '<br/>';
         }
 
-        setInterval(this.checkHeart(), 10 * 1000);
+        //setInterval(this.checkHeart(), 10 * 1000);
       },
       initDate() {},
       popNotice() {
@@ -190,6 +195,7 @@
         this.closeWebSocket();
       }
       //this.startConection();
+      vm = this;
     }
 
   }

@@ -45,7 +45,6 @@
 							<li class="ac"><a href="#gscqtj" data-toggle="tab" v-on:click="titleBtn($event ,'3')">人员出勤统计</a></li>
 							<li class="ac"><a href="#kqbb" data-toggle="tab" v-on:click="titleBtn($event,'4')">考勤报表</a></li>
 							<li class="ac"><a href="#kqtjbb" data-toggle="tab" v-on:click="titleBtn($event,'5')">考勤统计报表</a></li>
-              <li class="ac"><a href="#testId" data-toggle="tab" v-on:click="titleBtn($event,'6')">test</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -57,7 +56,6 @@
 				<employeeAtt></employeeAtt>
 				<attTable></attTable>
 				<attCountTable></attCountTable>
-        <test></test>
 				<singleDepartAtt></singleDepartAtt>
 				<singleEmployeeAtt></singleEmployeeAtt>
 				<holidaysTypeManage></holidaysTypeManage>
@@ -70,7 +68,6 @@
 				<scheduleManage></scheduleManage>
 				<monday></monday>
 				<deleteSchedule></deleteSchedule>
-
 			</div>
 		</div>
 	</div>
@@ -95,7 +92,6 @@
 	import scheduleManage from './subScheduleManage/scheduleManage.vue'
 	import monday from './subScheduleManage/subMethod/monday.vue'
 	import deleteSchedule from './subScheduleManage/subMethod/deleteSchedule.vue'
-  import test from '@/components/vuecommon/test.vue'
 
 	export default {
 		components: {
@@ -117,7 +113,6 @@
 			scheduleManage,
 			monday,
 			deleteSchedule,
-      test
 		},
 		data() {
 			return {
