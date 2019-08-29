@@ -174,12 +174,12 @@
       //建立WEBSOCKET连接
       STAFF_WEBSOCKET() {
         var websocket = null;
-        //var url = "ws://172.16.56.1:8080/websocket/" + this.accountId;
+        //var url = "wss://172.16.56.1:8080/websocket/" + this.accountId;
         var url = null;
         if (this.url.startsWith("https")) {
-          url = this.url.replace("https", 'ws');
+          url = this.url.replace("https", 'wss');
         } else {
-          url = this.url.replace("http", 'ws');
+          url = this.url.replace("http", 'wss');
         }
         url = url.concat("/websocket/").concat(this.accountId);
         if (this.websocket != null) this.websocket.close();
