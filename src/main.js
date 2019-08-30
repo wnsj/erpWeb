@@ -18,7 +18,7 @@ require('@/../static/js/bootstrap-datetimepicker.js')
 import global_date from '../src/assets/js/global_date'
 import infiniteScroll from 'vue-infinite-scroll'
 
-
+//设置为 false 以阻止 vue 在启动时生成生产提示
 Vue.config.productionTip = false
 Vue.use(VueResource)
 Vue.use(infiniteScroll)
