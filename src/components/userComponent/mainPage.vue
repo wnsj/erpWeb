@@ -301,8 +301,8 @@
       }
       //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
       window.onbeforeunload = function() {
-        this.closeWebSocket();
-        this.clearInterval();
+        vm.closeWebSocket();
+        vm.clearInterval();
       }
     },
     computed: {
