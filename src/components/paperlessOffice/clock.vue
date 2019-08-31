@@ -56,15 +56,15 @@
       </div>
     </div>
     <div class="form-group clearfix">
+
       <div class="col-md-3 col-md-offset-9">
-        <button type="button" class="btn btn-warning  m_r_10 pull-right">导出</button>
+        <button type="button" class="btn btn-warning  m_r_10 pull-right" @click="exportTableToExcel('clockTable','忘打卡证明表')">导出</button>
         <button type="button" class="btn btn-info  m_r_10 pull-right" data-toggle="modal" @click="applyClock">申请</button>
         <button type="button" class="btn btn-primary  m_r_10 pull-right" @click="queryClock">查询</button>
 
-
       </div>
     </div>
-    
+
     <!-- 查询结果集 -->
     <div class="row">
       <div class="col-md-12 col-lg-12">
@@ -966,8 +966,8 @@
           },
           data: {
             accountId: this.has(51) ? '' : JSON.parse(Cookies.get("accountData")).account.account_ID,
-            beginDate: this.$queryStartTime(this.beginDate),
-            endDate: this.$queryEndTime(this.endDate),
+            beginDate: this.beginDate == null? '':this.$queryStartTime(this.beginDate),
+            endDate: this.endDate == null? '':this.$queryEndTime(this.endDate),
             leaveDeptId: this.deptQueryId,
             leaveAccountName: this.accountName,
             state: this.state

@@ -145,11 +145,13 @@
         </div>
       </div>
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0; line-height: 34px;">
           <p>专　　业：</p>
         </div>
         <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0; line-height: 34px;">
-          <input type="text" class="form-control" placeholder="Profession" v-model="profession">
+          <input type="text" class="form-control" v-model="profession">
+
         </div>
       </div>
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -260,7 +262,7 @@
       <div class="modal fade" id="interviewEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <updateInterviewEntry :interviewBase="interviewBase" :educationExprience="educationExprience"
-                                :apply="apply" ref="interviewInfo">
+                                :apply="apply" @closeUIEAction='closeUIEAction' ref="interviewInfo">
           </updateInterviewEntry>
         </div>
       </div>
@@ -355,6 +357,11 @@
     },
     methods: {
       // ---------------------------------------查询----------------------------------
+			//关闭面试的修改接口，返回刷新
+			closeUIEAction:function(){
+				this.queryInterview()
+				$("#interviewEdit").modal('hide')
+			},
       getAge(date) {
         return this.$getAge(date)
       },
@@ -399,8 +406,8 @@
             channel: this.channelId,
             isQualified: this.isQualified,
             dateFlag: this.dateFlag,
-            begDate: this.$queryStartTime(this.begDate),
-            endDate: this.$queryEndTime(this.endDate),
+            begDate: this.begDate == null? '':this.$queryStartTime(this.begDate),
+            endDate: this.endDate == null? '':this.$queryEndTime(this.endDate),
             isEntry: this.isEntry,
             name: this.name,
             phone: this.phone,

@@ -96,6 +96,7 @@
 
 
 				this.personalDetail = this.$refs.detailInfo.personalDetail
+				
 				this.personalFamily = this.$refs.familyInfo.personalFamily
 
 				var url = this.url + '/search/insertUserInfo'

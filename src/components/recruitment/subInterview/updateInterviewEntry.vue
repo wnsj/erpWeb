@@ -36,7 +36,7 @@
       </div>
     </div>
 		<cee ref="cee"></cee>
-		<ee ref="ee"></ee>
+		<ee ref="ee" @addEmployeeInfo='closeUIEAction'></ee>
   </div>
 </template>
 <script>
@@ -85,19 +85,21 @@
 				entryBaseInfo.birth=this.interviewBaseEdit.birth
 				entryDetialInfo=Object.assign(this.interviewBaseEdit,this.educationExprienceEdit)
 				
-				console.log('entryInfo:'+entryDetialInfo.name+entryDetialInfo.education)
+				// this.$refs.ee.receiveRecruitmentInfo(entryBaseInfo,entryDetialInfo)
 				$("#recruitEntry").modal('show')
 				this.$refs.ee.receiveRecruitmentInfo(entryBaseInfo,entryDetialInfo)
 			},
 			//查看入职
 			checkEntry:function(){
 				this.interviewBaseEdit = this.$refs.updateBasic.interviewBase
-				this.$refs.cee.paramDevliverToSubModel(this.interviewBaseEdit.id)
 				$("#REModalupdata").modal('show')
+				this.$refs.cee.paramDevliverToSubModel(this.interviewBaseEdit.id)
 			},
-      checkEntry: function () {
-        $("#REModalupdata").modal('show')
-      },
+			//关闭当前窗口
+			closeUIEAction:function(){
+				this.$emit('closeUIEAction')
+			},
+			
       changeBtn() {
         this.isShow = false
       },

@@ -242,8 +242,8 @@
         this.personalDetail.uEmployeeBasicID = this.personalBase.id
         this.personalFamily = this.$refs.familyInfo.personalFamily
 
-        console.log('personalFamily:' + this.personalFamily.length)
-
+        console.log('personalDetail:' + this.personalDetail.uNationality)
+				
         var userInfo = this.personalDetail
         userInfo = this.personalBase
 

@@ -36,7 +36,7 @@
 							<button type="button" class="btn btn-info btn-sm detl">删除</button>
 						</div>
 						<button type="button" class="btn btn-info" v-on:click="addEmployeeInfo()">确认</button>
-						<button type="button" data-dismiss="modal" class="btn btn-info">返回</button>
+						<button type="button" data-dismiss="modal" class="btn btn-info" v-on:click="closeCurrentPage()">返回</button>
 					</div>
 				</div>
 			</div>
@@ -83,7 +83,6 @@
 				
 			},
 			addEmployeeInfo: function() {
-
 				// 修改基本信息
 				this.personalBase = this.$refs.baseInfo.personalBase
 				this.personalBase.isDelete = '0'
@@ -120,7 +119,7 @@
 					alert("必须选择岗位")
 					return
 				}
-
+				
 				axios({
 					method: 'post',
 					url: url,

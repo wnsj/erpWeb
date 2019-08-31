@@ -22,6 +22,7 @@
 				this.$emit('nationChange',this.nationName)
 			},
 			setNation:function(nationName){
+				console.log('nationName'+nationName)
 				this.nationName = nationName
 			},
 			// 获取所有项目

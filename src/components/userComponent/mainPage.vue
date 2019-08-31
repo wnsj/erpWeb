@@ -44,7 +44,8 @@
               </li>
             </ul>
             <li>
-              <i class="fa fa-university" aria-hidden="true" id="offfice01"></i>无纸化办公<i class="fa fa-caret-down item-down" aria-hidden="true"></i>
+              <i class="fa fa-university" aria-hidden="true" id="offfice01"></i>无纸化办公<i class="fa fa-caret-down item-down"
+                aria-hidden="true"></i>
             </li>
             <ul class="second-menu">
               <li>
@@ -117,21 +118,11 @@
     init
   } from '@/../static/js/common.js'
   import {
-    CallVueMethod,
     isBlank
   } from '@/assets/js/constant.js'
 
-  // const exportMethod = null;
-  const exportMethod = {
-    method: null,
-    setMethod(method) {
-      this.method = method;
-    },
-    getMethod(title,context) {
-      return this.method;
-    }
-  }
-  //
+  var vm = null;
+  var setIntervalObj = null;
   export default {
     components: {},
     data() {
@@ -142,10 +133,30 @@
         },
         websocket: null,
         websocketConnectSucess: false,
-        accountId: ''
+        accountId: '',
       }
     },
     methods: {
+      requestData(url, rquestParam) {
+        return new Promise((resolve, reject) => {
+          axios({
+            method: "post",
+            url: url,
+            headers: {
+              "Content-Type": this.contentType,
+              "Access-Token": this.$root.accountAccessToken
+            },
+            data: rquestParam,
+            dataType: "json"
+          }).then((response) => {
+            resolve(response.data);
+          }).catch(
+            function(error) {
+              reject(error)
+            }
+          );
+        });
+      },
       //用户退出
       loginOut() {
         if (confirm("确定退出?") == false) {
@@ -158,13 +169,21 @@
           this.$parent.setRouter("/login");
           this.closeWebSocket();
           this.accountId = '';
+          this.clearInterval();
         }
       },
       //建立WEBSOCKET连接
       STAFF_WEBSOCKET() {
-        //var url = "ws://172.16.213.210:8080/ERP/websocket/" + accountId;
         var websocket = null;
-        var url = "ws://172.16.56.1:8080/websocket/" + this.accountId;
+        var url = null;
+        if (this.url.startsWith("https")) {
+          url = this.url.replace("https", 'wss');
+        } else {
+          url = this.url.replace("http", 'wss');
+        }
+        url = url.concat("/websocket/").concat(this.accountId);
+        //var url = "ws://172.16.56.1:8080/websocket/" + this.accountId;
+        if (this.websocket != null) this.websocket.close();
         if ('WebSocket' in window) {
           websocket = new WebSocket(url);
         } else if ('MozWebSocket' in window) {
@@ -174,99 +193,99 @@
         }
         this.STAFF_UPDATEWEBSOCKET(websocket);
       },
-      //重新连接WEBSOCKET
-      reConnect() {
-        if (this.websocketConnectSucess) return;
-        setTimeout(this.STAFF_WEBSOCKET(), 30000);
-        if (!this.websocketConnectSucess) this.reConnect();
-      },
       //心跳检测
       checkHeart() {
         if (this.websocket.readyState == this.websocket.CONNECTING) {
-          console.log("websocket 连接中。。。")
+          //console.log("websocket 连接中。。。")
         } else if (this.websocket.readyState == this.websocket.OPEN) {
           this.websocket.send("心跳检测!");
-        } else {
-          // this.websocketConnectSucess = false;
-          // this.reConnect();
+        } else if (this.websocket.readyState == this.websocket.CLOSING) {
+          //console.log("websocket 连接正在关闭。。。")
+        } else if (this.websocket.readyState == this.websocket.CLOSED) {
+          //console.log("websocket 连接已经关闭，或者打开连接失败。。。(--准备重新连接websocket--)")
+          this.STAFF_WEBSOCKET();
         }
       },
       //连接成功，初始化websocket
       STAFF_UPDATEWEBSOCKET(websocket) {
         this.websocket = websocket;
-        CallVueMethod.setApproves(this.checkHeart);
         //连接成功建立的回调方法
         this.websocket.onopen = function() {
-          this.websocketConnectSucess = true;
           console.log("websocket 连接成功!")
         }
 
         //连接发生错误的回调方法
         this.websocket.onerror = function() {
-          this.websocketConnectSucess = false;
           console.log("WebSocket连接发生错误")
         };
 
         //接收到消息的回调方法
         this.websocket.onmessage = function(event) {
-          this.websocketConnectSucess = true;
-          var resData = event.data;
-          console.log("接收到消息:" + resData);
-          if (!isBlank(resData)) {
-            //if (resData.retCode == '1111') return;
-            //var contentData = resData.retData;
-            // var title = contentData.title;
-            // var body = contentData.body;
-            //exportMethod.getMethod();
-           // that.$options.methods.
-           //that.$options.methods.popNotice('123','456');
-           //that.$options.methods.popNotice('123','456')
+          var jsonString = event.data;
+          //console.log("接收到消息:" + jsonString);
+          if (!isBlank(jsonString)) {
+            var title = "";
+            var context = {};
+            var url = "";
+            var resData = JSON.parse(jsonString);
+            if (resData.retCode == '1111') return;
+            var contentData = resData.retData;
+            title = contentData.title;
+            context.body = contentData.body;
+            if (!isBlank(contentData.url)) url = contentData.url;
+            if (!isBlank(contentData.icon)) context.icon = contentData.icon;
+            if (!window.Notification) {
+              console.log('浏览器不支持Notification');
+              return;
+            }
+            var notification = null;
+            // 检查用户是否同意接受通知
+            if (Notification.permission == "granted") {
+              notification = new Notification(title, context);
+            } else if (Notification.permission !== 'denied') {
+              // 否则我们需要向用户获取权限
+              Notification.requestPermission(function(permission) {
+                // 如果用户同意，就可以向他们发送通知
+                if (permission === "granted") {
+                  notification = new Notification(title, context);
+                }
+              });
+            }
+            notification.onclick = function() {
+              if (!isBlank(contentData.requestUrl)) {
+                vm.requestData(contentData.requestUrl, contentData.requestParam).then((responseData) => {
+                  if (responseData.retCode == '0000') {
+                    //alert(responseData.retData);
+                  } else {
+                    //alert(responseData.retMsg);
+                  }
+                }, (error) => {
+                  console.log("请求失败处理");
+                });
+              }
+              if (!isBlank(url)) window.open(url, '_self');
+              notification.close();
+            };
           }
         }
 
         //连接关闭的回调方法
         this.websocket.onclose = function() {
-          this.websocketConnectSucess = false;
           let innerHTML = "WebSocket连接关闭";
           console.log(innerHTML);
         }
-        setInterval(CallVueMethod.getApproves(), 10 * 1000);
+        if (setIntervalObj != null) clearInterval(setIntervalObj);
+        setIntervalObj = setInterval(function() {
+          vm.checkHeart();
+        }, 10000);
       },
       //关闭WebSocket连接
       closeWebSocket() {
         this.websocket.close();
       },
-      popNotice(title, context) {
-        if (!window.Notification) {
-          alert('浏览器不支持Notification');
-          return;
-        }
-        // var text = document.getElementById('text');
-        // var title = "Hi，帅哥：";
-        // var context = {
-        //   body: '可以加你为好友吗？',
-        //   icon: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565946516414&di=2f925456dfc0bbfc8ba457c6e38fb0ce&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201607%2F13%2F20160713110827_vyiPR.thumb.700_0.png'
-        // }
-        // 检查用户是否同意接受通知
-        if (Notification.permission == "granted") {
-          var notification = new Notification(title, context);
-          notification.onclick = function() {
-            if (!isBlank(context.url)) window.open(context.url);
-            notification.close();
-          };
-        } else if (Notification.permission !== 'denied') {
-          // 否则我们需要向用户获取权限
-          Notification.requestPermission(function(permission) {
-            // 如果用户同意，就可以向他们发送通知
-            if (permission === "granted") {
-              var notification = new Notification(title, context);
-              notification.onclick = function() {
-                if (!isBlank(context.url)) window.open(context.url);
-                notification.close();
-              };
-            }
-          });
-        }
+      //清除setInterval
+      clearInterval() {
+        if (setIntervalObj != null) clearInterval(setIntervalObj);
       }
     },
     created() {
@@ -274,18 +293,17 @@
     },
     mounted() {
       init();
+      vm = this;
       this.accountData = JSON.parse(Cookies.get("accountData"));
       this.accountId = this.accountData.account.account_ID;
       if (!this.isBlank(this.accountData.account.account_ID)) {
-        // this.STAFF_WEBSOCKET();
-        //this.reConnect();
+        this.STAFF_WEBSOCKET();
       }
       //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
       window.onbeforeunload = function() {
-        this.closeWebSocket();
+        vm.closeWebSocket();
+        vm.clearInterval();
       }
-
-      exportMethod.setMethod(this.popNotice);
     },
     computed: {
 

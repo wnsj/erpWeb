@@ -25,7 +25,7 @@
 			<div class="form-group col-md-6 clearfix">
 				<label class="col-md-4 control-label text-right nopad">民族：</label>
 				<div class="col-md-8">
-					<nation></nation>
+					<nation ref='nation'></nation>
 				</div>
 			</div>
 			<div class="form-group col-md-6 clearfix">
@@ -157,12 +157,12 @@
 			};
 		},
 		methods:{
-			childrenDetailInfo:function(userId){
-				this.personalDetail.uEmployeeBasicID = this.userId
-				this.getEmpDetail(userId)
+			childrenDetailInfo:function(param){
+				
+				this.getEmpDetail(param)
 			},
 			getEmpDetail:function (param) {
-				var uDetailUrl = this.url + '/search/singleUDInfo'
+				var uDetailUrl = this.url + '/search/detailInfo'
 				//个人详细信息
 				axios({
 					method: 'post',
@@ -172,13 +172,16 @@
 						'Access-Token': this.accessToken
 					},
 					data: {
-						userId: param,
+						recruitDataID: param,
 					},
 					dataType: 'json',
 				}).then((response) => {
-					console.log('personalDetail')
-					this.personalDetail = Object.assign({},response.data[0])
-					console.log(this.personalDetail)
+					var res = response.data
+					if (res.retCode == '0000') {
+						this.personalDetail=res.resData[0]
+						this.$refs.nation.setNation(this.personalDetail.uNationality)
+						console.log('personalBase:'+this.personalDetail.uIdNum)
+					}
 				}).catch((error) => {
 					console.log('请求失败处理')
 				});

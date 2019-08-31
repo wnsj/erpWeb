@@ -200,7 +200,7 @@
 			},
 			//人员添加成功，刷新界面
 			addEmployeeInfo: function() {
-				this.getEmployee()
+				this.getEmployee('all')
 			},
 			formatJson(filterVal, jsonData) {
 				return jsonData.map(v => filterVal.map(j => v[j]))
