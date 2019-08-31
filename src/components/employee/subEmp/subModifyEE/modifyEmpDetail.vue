@@ -172,7 +172,7 @@
 			},
 			dateAction:function(){
 				if(!this.isBlank(this.personalDetail.uGraduation)){
-					this.personalDetail.uGraduation=this.moment(this.personalDetail.uGraduation,'YYYY-MM-DD HH:MM:SS.000')
+					this.personalDetail.uGraduation=this.moment(this.personalDetail.uGraduation,'YYYY-MM-DD HH:mm:ss.000')
 				}
 			},
 			//是否在校

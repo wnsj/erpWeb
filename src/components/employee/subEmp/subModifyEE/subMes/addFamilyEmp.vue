@@ -82,7 +82,7 @@
 			},
 			//修改时间
 			dateAction:function(){
-				this.familyInfo.birth=this.moment(this.familyInfo.birth,'YYYY-MM-DD HH:MM:SS.000')
+				this.familyInfo.birth=this.moment(this.familyInfo.birth,'YYYY-MM-DD HH:mm:ss.000')
 			},
 			
 			//提交数据

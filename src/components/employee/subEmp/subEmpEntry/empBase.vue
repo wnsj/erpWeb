@@ -17,11 +17,7 @@
 				
 				<label class="col-md-2 control-label text-right nopad">出生年月：</label>
 				<dPicker v-model="personalBase.birth" v-on:change="dateAction('0')"></dPicker>
-				<!-- <div class="col-md-5 input-group date form_date">
-					
-					<input type="date" class="form-control" v-model="personalBase.birth" value="">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-				</div> -->
+				
 			</div>
 			<div class="form-group clearfix">
 				<label for="gh" class="col-md-2 control-label text-right nopad">工号：</label>
@@ -91,9 +87,9 @@
 		data() {
 			return {
 				personalBase:{
-					birth:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
-					entryDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
-					positiveDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
+					birth:this.moment('','YYYY-MM-DD HH:mm:ss.000'),
+					entryDate:this.moment('','YYYY-MM-DD HH:mm:ss.000'),
+					positiveDate:this.moment('','YYYY-MM-DD HH:mm:ss.000'),
 					state:'1',
 				},
 				departmentList:[],
@@ -107,9 +103,9 @@
 					this.personalBase=param
 				}else{
 					this.personalBase={
-						birth:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
-						entryDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
-						positiveDate:this.moment('','YYYY-MM-DD HH:MM:SS.000'),
+						birth:this.moment('','YYYY-MM-DD HH:mm:ss.000'),
+						entryDate:this.moment('','YYYY-MM-DD HH:mm:ss.000'),
+						positiveDate:this.moment('','YYYY-MM-DD HH:mm:ss.000'),
 						state:'1',
 					}
 				}
@@ -120,11 +116,11 @@
 			//时间变化后格式化
 			dateAction:function(type){
 				if(type=='0'){
-					this.personalBase.birth=this.moment(this.personalBase.birth,'YYYY-MM-DD HH:MM:SS.000')
+					this.personalBase.birth=this.moment(this.personalBase.birth,'YYYY-MM-DD HH:mm:ss.000')
 				}else if(type=='1'){
-					this.personalBase.entryDate=this.moment(this.personalBase.entryDate,'YYYY-MM-DD HH:MM:SS.000')
+					this.personalBase.entryDate=this.moment(this.personalBase.entryDate,'YYYY-MM-DD HH:mm:ss.000')
 				}else if(type=='2'){
-					this.personalBase.positiveDate=this.moment(this.personalBase.positiveDate,'YYYY-MM-DD HH:MM:SS.000')
+					this.personalBase.positiveDate=this.moment(this.personalBase.positiveDate,'YYYY-MM-DD HH:mm:ss.000')
 				}
 			},
 			//获取部门名字和id

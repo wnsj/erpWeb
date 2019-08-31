@@ -178,9 +178,9 @@
         //var url = "wss://172.16.56.1:8080/websocket/" + this.accountId;
         var url = null;
         if (this.url.startsWith("https")) {
-          url = this.url.replace("https", 'wss');
+          url = this.url.replace("https", 'ws');
         } else {
-          url = this.url.replace("http", 'wss');
+          url = this.url.replace("http", 'ws');
         }
         url = url.concat("/websocket/").concat(this.accountId);
         if (this.websocket != null) this.websocket.close();
@@ -301,8 +301,8 @@
       }
       //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
       window.onbeforeunload = function() {
-        this.closeWebSocket();
-        this.clearInterval();
+        vm.closeWebSocket();
+        vm.clearInterval();
       }
     },
     computed: {

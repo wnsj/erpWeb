@@ -4,6 +4,7 @@
 		<div class="row">
 			<div class="col-md-12 col-lg-12 main-title">
 				<h2>请假管理</h2>
+				<test></test>
 			</div>
 		</div>
 		<div class="row">
@@ -167,6 +168,7 @@
 	import lioh from '../paperlessOffice/subAFL/LeaveInfoOfHandle.vue'
 	import liom from '../paperlessOffice/subAFL/LeaveInfoOfModify.vue'
 	import depart from '../vuecommon/department.vue'
+	import test from '../vuecommon/test.vue'
 	export default {
 		components:{
 			dPicker,
@@ -174,7 +176,8 @@
 			lioc,
 			lioh,
 			liom,
-			depart
+			depart,
+			test
 		},
 		data() {
 			return {
