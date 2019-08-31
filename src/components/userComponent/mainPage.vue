@@ -92,7 +92,7 @@
               <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right my-signed">
                   <li>
-                    <a href="#"><i class="fa fa-user fa-fw"></i>{{accountData.account.account_Name}}</a>
+                    <a href="#"><i class="fa fa-user fa-fw" style="font-size: 18px;"></i>{{accountData.account.account_Name}}</a>
                   </li>
                   <li><a href="#">个人中心</a></li>
                   <li><a href="#" @click="loginOut">退出</a></li>
@@ -101,7 +101,7 @@
             </div>
           </nav>
 
-          <div class="embed-responsive embed-responsive-16by9 my-main">
+          <div class="embed-responsive embed-responsive-16by9 my-main" style="overflow: inherit;">
             <router-view />
           </div>
         </div>
@@ -368,6 +368,8 @@
 
   #aside-menu a {
     color: #fff;
+    display: block;
+    width: 100%;
   }
 
   /* .fa-sort-down:before, .fa-sort-desc:before {

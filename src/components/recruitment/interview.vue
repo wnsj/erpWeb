@@ -8,26 +8,34 @@
     </div>
     <div class="row">
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <div class="input-group">
-          <span class="input-group-addon">应聘部门</span>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0; line-height: 34px;">
+          <p>应聘部门：</p>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0; line-height: 34px;">
           <department :departId="departId" @departChange='departChange'></department>
         </div>
       </div>
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <div class="input-group">
-          <span class="input-group-addon">应聘职位</span>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0; line-height: 34px;">
+          <p>应聘职位：</p>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0; line-height: 34px;">
           <positionInfo :pid="positionId" @jobChange="positionChange" ref="position"></positionInfo>
         </div>
       </div>
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <div class="input-group">
-          <span class="input-group-addon">应聘渠道</span>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0; line-height: 34px;">
+          <p>应聘渠道：</p>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0; line-height: 34px;">
           <channel :channel="channelId" @channelChange="channelChange"></channel>
         </div>
       </div>
       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-        <div class="input-group">
-          <span class="input-group-addon">是否合格</span>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 0; line-height: 34px;">
+          <p>是否合格：</p>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 0; line-height: 34px;">
           <select class="form-control" v-model="isQualified">
             <option v-for="(item,index) in qualifiedStatus" :key="index" :value="item.value">
               {{item.label}}
@@ -39,8 +47,10 @@
     <br>
     <div class="row">
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <div class="input-group">
-          <span class="input-group-addon">日期类型</span>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0; line-height: 34px;">
+          <p>日期类型：</p>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0; line-height: 34px;">
           <select class="form-control" v-model="dateFlag">
             <option v-for="(item,index) in dateFlagList" :key="index" :value="item.value">
               {{item.label}}
@@ -48,15 +58,25 @@
           </select>
         </div>
       </div>
-      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-        <label class="control-label text-left nopad">查询时间：</label>
-        <date-picker v-model="begDate" type="date" format="YYYY-MM-DD"></date-picker>
-        <span class="nopad">~</span>
-        <date-picker v-model="endDate" type="date" format="YYYY-MM-DD"></date-picker>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="padding: 0; line-height: 34px;">
+          <label class="control-label text-left nopad">查询时间：</label>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0; line-height: 34px;">
+          <date-picker v-model="begDate" type="date" format="YYYY-MM-DD"></date-picker>
+        </div>
+        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="padding: 0; line-height: 34px;">
+          <span class="nopad">~</span>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0; line-height: 34px;">
+          <date-picker v-model="endDate" type="date" format="YYYY-MM-DD"></date-picker>
+        </div>
       </div>
       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-        <div class="input-group">
-          <span class="input-group-addon">入职状态</span>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 0; line-height: 34px;">
+          <p>入职状态：</p>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 0; line-height: 34px;">
           <select class="form-control" v-model="isEntry">
             <option v-for="(item,index) in entryStatus" :key="index" :value="item.value">
               {{item.label}}
@@ -64,24 +84,32 @@
           </select>
         </div>
       </div>
-    </div>
-    <br>
-    <div class="row">
-      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <div class="input-group">
-          <span class="input-group-addon">姓名</span>
+
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 0; line-height: 34px;">
+          <p>姓　　名：</p>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 0; line-height: 34px;">
           <input type="text" class="form-control" v-model="name">
         </div>
       </div>
+    </div>
+    <br>
+    <div class="row">
+
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <div class="input-group">
-          <span class="input-group-addon">联系方式</span>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0; line-height: 34px;">
+          <p>联系方式：</p>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0; line-height: 34px;">
           <input type="text" class="form-control" placeholder="电话\邮箱\QQ" v-model="phone">
         </div>
       </div>
-      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-        <div class="input-group">
-          <span class="input-group-addon">性别</span>
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0; line-height: 34px;">
+          <p>性　　别：</p>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0; line-height: 34px;">
           <select class="form-control" v-model="sex">
             <option v-for="(item,index) in sexStatus" :key="index" :value="item.value">
               {{item.label}}
@@ -90,8 +118,10 @@
         </div>
       </div>
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <div class="input-group">
-          <span class="input-group-addon">是否报销路费</span>
+        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5" style="padding: 0; line-height: 34px;">
+          <p>是否报销路费：</p>
+        </div>
+        <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="padding: 0; line-height: 34px;">
           <select class="form-control" v-model="isPay">
             <option v-for="(item,index) in status" :key="index" :value="item.value">
               {{item.label}}
@@ -103,8 +133,10 @@
     <br>
     <div class="row">
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <div class="input-group">
-          <span class="input-group-addon">学历</span>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0; line-height: 34px;">
+          <p>学　　历：</p>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0; line-height: 34px;">
           <select class="form-control" v-model="education">
             <option v-for="(item,index) in educationState" :key="index" :value="item.value">
               {{item.label}}
@@ -113,14 +145,18 @@
         </div>
       </div>
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <div class="input-group">
-          <span class="input-group-addon">专业</span>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0; line-height: 34px;">
+          <p>专　　业：</p>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0; line-height: 34px;">
           <input type="text" class="form-control" placeholder="Profession" v-model="profession">
         </div>
       </div>
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <div class="input-group">
-          <span class="input-group-addon">是否在学</span>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0; line-height: 34px;">
+          <p>是否在学：</p>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0; line-height: 34px;">
           <select class="form-control" v-model="atSchool">
             <option v-for="(item,index) in status" :key="index" :value="item.value">
               {{item.label}}
@@ -533,5 +569,3 @@
     margin-left: 150px;
   }
 </style>
-
-

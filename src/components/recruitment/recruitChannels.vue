@@ -14,9 +14,9 @@
     <br>
     <!-- 查询结果集 -->
     <div class="row">
-      <div class="col-md-12 col-lg-12">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="pre-scrollable">
-          <table class="table table-bordered table-hover text-nowrap" id="datatable">
+          <table class="table table-bordered table-hover text-nowrap">
             <thead>
             <tr>
               <th class="text-center">序号</th>

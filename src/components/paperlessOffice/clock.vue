@@ -6,43 +6,65 @@
         <h2>忘打卡证明</h2>
       </div>
     </div>
-    <div class="form-group clearfix">
-      <div class="col-md-4" id="date">
-        <label class="control-label text-left nopad">申请日期：</label>
-        <date-picker v-model="beginDate" type="date" format="YYYY-MM-DD" class="queryDate"></date-picker>
-        <span class="nopad">~</span>
-        <date-picker v-model="endDate" type="date" format="YYYY-MM-DD" class="queryDate"></date-picker>
+    <div class="form-group clearfix col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="padding-left: 0;">
+          <label class="control-label text-left nopad">申请日期：</label>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0;">
+          <date-picker v-model="beginDate" type="date" class="queryDate"></date-picker>
+        </div>
+        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+          <span class="nopad">~</span>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0;">
+          <date-picker v-model="endDate" type="date" class="queryDate"></date-picker>
+        </div>
+
       </div>
-      <div class="col-md-1">
-        <label class="control-label text-left nopad">部门：</label>
+
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-right: 0;">
+          <label class="control-label text-left nopad">部门：</label>
+        </div>
+        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+          <department ref="deptQuery" @departChange='deptChangeForQuery'></department>
+        </div>
       </div>
-      <div class="col-md-2" id="dept">
-        <department ref="deptQuery" @departChange='deptChangeForQuery'></department>
+
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0;">
+          <label class="control-label text-left nopad">姓名：</label>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding-right: 0;">
+          <input type="text" class="form-control" placeholder="Username" v-model="accountName">
+        </div>
       </div>
-      <div class="col-md-1">
-        <label class="control-label text-left nopad">姓名：</label>
-      </div>
-      <div class="col-md-2" id="username">
-        <input type="text" class="form-control" placeholder="Username" v-model="accountName">
-      </div>
-      <div class="col-md-1">
-        <label class="control-label text-left nopad">状态：</label>
-      </div>
-      <div class="col-md-2" id="status">
-        <select class="form-control" v-model="state">
-          <option v-for="(item,index) in stateList" :key="index" :value="item.value">
-            {{item.label}}
-          </option>
-        </select>
+
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+       <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0;">
+          <label class="control-label text-left nopad">状态：</label>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding-right: 0;">
+          <select class="form-control" v-model="state">
+            <option v-for="(item,index) in stateList" :key="index" :value="item.value">
+              {{item.label}}
+            </option>
+          </select>
+        </div>
       </div>
     </div>
     <div class="form-group clearfix">
-      <div class="col-md-3 col-md-offset-9" id="btn">
-        <button type="button" class="btn btn-primary  m_r_10" @click="queryClock">查询</button>
-        <button type="button" class="btn btn-info  m_r_10" data-toggle="modal" @click="applyClock">申请</button>
-        <button type="button" class="btn btn-warning  m_r_10">导出</button>
+      <div class="col-md-3 col-md-offset-9">
+        <button type="button" class="btn btn-warning  m_r_10 pull-right">导出</button>
+        <button type="button" class="btn btn-info  m_r_10 pull-right" data-toggle="modal" @click="applyClock">申请</button>
+        <button type="button" class="btn btn-primary  m_r_10 pull-right" @click="queryClock">查询</button>
+
+
       </div>
     </div>
+    
     <!-- 查询结果集 -->
     <div class="row">
       <div class="col-md-12 col-lg-12">
@@ -2090,29 +2112,5 @@
     width: 120px;
   }
 
-  #date {
-    width: 33%;
-    margin-left: -10px;
-  }
 
-  #dept {
-    width: 18.5%;
-    margin-left: -50px;
-  }
-
-  #username {
-    width: 15%;
-    margin-left: -50px;
-  }
-
-  #status {
-    width: 15%;
-    margin-left: -50px;
-  }
-
-  #btn {
-    margin-left: 82.6%;
-  }
 </style>
-
-

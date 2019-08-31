@@ -7,15 +7,25 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-        <label class="control-label text-left nopad">计划月份：</label>
-        <date-picker v-model="beginMonth" type="month" format="YYYY-MM"></date-picker>
-        <span class="nopad">~</span>
-        <date-picker v-model="endMonth" type="month" format="YYYY-MM"></date-picker>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="padding-left: 0;">
+          <label class="control-label text-left nopad">计划月份：</label>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0;">
+          <date-picker v-model="beginMonth" type="month" format="YYYY-MM"></date-picker>
+        </div>
+        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+          <span class="nopad">~</span>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0;">
+          <date-picker v-model="endMonth" type="month" format="YYYY-MM"></date-picker>
+        </div>
       </div>
       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-        <div class="input-group">
-          <span class="input-group-addon">是否完成</span>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 0; line-height: 34px;">
+          <p>是否完成：</p>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 0;">
           <select class="form-control" v-model="isYes">
             <option v-for="(item,index) in status" :key="index" :value="item.value">
               {{item.label}}
@@ -24,8 +34,10 @@
         </div>
       </div>
       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-        <div class="input-group">
-          <span class="input-group-addon">是否撤销</span>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 0; line-height: 34px;">
+          <p>是否撤销：</p>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 0;">
           <select class="form-control" v-model="isBack">
             <option v-for="(item,index) in status" :key="index" :value="item.value">
               {{item.label}}
@@ -33,26 +45,35 @@
           </select>
         </div>
       </div>
-    </div>
-    <div class="row">
+
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <div class="input-group">
-          <span class="input-group-addon">部门</span>
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="padding: 0; line-height: 34px;">
+          <p>部门：</p>
+        </div>
+        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9" style="padding: 0; line-height: 34px;">
           <department :departId="departId" @departChange='departChange'></department>
         </div>
       </div>
+
+
+    </div>
+    <div class="row">
+      <br/>
       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-        <div class="input-group">
-          <span class="input-group-addon">应聘职位</span>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0; line-height: 34px;">
+          <p>应聘职位：</p>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding: 0; line-height: 34px;">
           <positionInfo :pid="positionId" @jobChange="positionChange" ref="position"></positionInfo>
         </div>
       </div>
-      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-md-offset-2">
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 pull-right">
         <button type="button" class="btn btn-warning pull-right m_r_10" @click="exportTableToExcel('recruitPlanTB','招聘计划管理')">导出</button>
         <button type="button" class="btn btn-info pull-right m_r_10" @click="addBtn" v-if="has(67)">添加</button>
         <button type="button" class="btn btn-primary pull-right m_r_10" @click="queryRecruitPlan">查询</button>
       </div>
     </div>
+    <br/>
     <!-- 查询结果集 -->
     <div class="row ">
       <div class="col-md-12 col-lg-12">
@@ -520,4 +541,7 @@
   input[type="date"] {
     line-height: 26px !important;
   }
+
+  .mx-datepicker{ width: 100% !important;}
+
 </style>
