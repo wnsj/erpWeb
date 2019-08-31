@@ -182,7 +182,7 @@
           url = this.url.replace("http", 'wss');
         }
         url = url.concat("/websocket/").concat(this.accountId);
-        //var url = "ws://172.16.56.1:8080/websocket/" + this.accountId;
+        var url = "ws://172.16.56.1:8080/websocket/" + this.accountId;
         if (this.websocket != null) this.websocket.close();
         if ('WebSocket' in window) {
           websocket = new WebSocket(url);
@@ -251,21 +251,23 @@
                 }
               });
             }
-            notification.onclick = function() {
-              if (!isBlank(contentData.requestUrl)) {
-                vm.requestData(contentData.requestUrl, contentData.requestParam).then((responseData) => {
-                  if (responseData.retCode == '0000') {
-                    //alert(responseData.retData);
-                  } else {
-                    //alert(responseData.retMsg);
-                  }
-                }, (error) => {
-                  console.log("请求失败处理");
-                });
-              }
-              if (!isBlank(url)) window.open(url, '_self');
-              notification.close();
-            };
+            if (notification != null) {
+              notification.onclick = function() {
+                if (!isBlank(contentData.requestUrl)) {
+                  vm.requestData(contentData.requestUrl, contentData.requestParam).then((responseData) => {
+                    if (responseData.retCode == '0000') {
+                      //alert(responseData.retData);
+                    } else {
+                      //alert(responseData.retMsg);
+                    }
+                  }, (error) => {
+                    console.log("请求失败处理");
+                  });
+                }
+                if (!isBlank(url)) window.open(url, '_self');
+                notification.close();
+              };
+            }
           }
         }
 
