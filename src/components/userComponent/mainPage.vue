@@ -182,7 +182,7 @@
           url = this.url.replace("http", 'ws');
         }
         url = url.concat("/websocket/").concat(this.accountId);
-        var url = "ws://172.16.56.1:8080/websocket/" + this.accountId;
+        //var url = "ws://172.16.56.1:8080/websocket/" + this.accountId;
         if (this.websocket != null) this.websocket.close();
         if ('WebSocket' in window) {
           websocket = new WebSocket(url);
