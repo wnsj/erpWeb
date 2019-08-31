@@ -1,6 +1,5 @@
 <!-- author:dingdong -->
-<!-- author:天山路小仙女-->
-<!-- author:天山路小仙女123123-->
+
 <template>
   <div class="container user-container" id="report-app" v-cloak>
     <div class="row">
@@ -24,14 +23,7 @@
           <date-picker v-model="endDate" type="date" class="queryDate"></date-picker>
         </div>
       </div>
-      <!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-       <div class="input-group">
-         <span class="input-group-addon"  style="border: 1px solid #ccc;border-radius: 4px;background-color: transparent;">填写日期</span>
-         <input type="date" value="" id="firstTime" v-model="beginDate" style="border: 1px solid #ccc;border-radius: 4px; margin-right: 6px; "/></span>
-         <span style="padding: 0; line-height: 34px;">&nbsp;~&nbsp;</span>
-         <input type="date" value="" id="secondTime" v-model="endDate" style="border: 1px solid #ccc;border-radius: 4px; margin-left: 6px; "/></span>
-       </div>
-      -->
+
       <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
           <label class="control-label text-left nopad">请假人部门：</label>

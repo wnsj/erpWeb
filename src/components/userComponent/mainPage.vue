@@ -93,7 +93,7 @@
               <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right my-signed">
                   <li>
-                    <a href="#"><i class="fa fa-user fa-fw"></i>{{accountData.account.account_Name}}</a>
+                    <a href="#"><i class="fa fa-user fa-fw" style="font-size: 18px;"></i>{{accountData.account.account_Name}}</a>
                   </li>
                   <li><a href="#">个人中心</a></li>
                   <li><a href="#" @click="loginOut">退出</a></li>
@@ -102,7 +102,7 @@
             </div>
           </nav>
 
-          <div class="embed-responsive embed-responsive-16by9 my-main">
+          <div class="embed-responsive embed-responsive-16by9 my-main" style="overflow: inherit;">
             <router-view />
           </div>
         </div>
@@ -175,7 +175,6 @@
       //建立WEBSOCKET连接
       STAFF_WEBSOCKET() {
         var websocket = null;
-        //var url = "wss://172.16.56.1:8080/websocket/" + this.accountId;
         var url = null;
         if (this.url.startsWith("https")) {
           url = this.url.replace("https", 'ws');
@@ -183,6 +182,7 @@
           url = this.url.replace("http", 'ws');
         }
         url = url.concat("/websocket/").concat(this.accountId);
+        //var url = "ws://172.16.56.1:8080/websocket/" + this.accountId;
         if (this.websocket != null) this.websocket.close();
         if ('WebSocket' in window) {
           websocket = new WebSocket(url);
@@ -386,6 +386,8 @@
 
   #aside-menu a {
     color: #fff;
+    display: block;
+    width: 100%;
   }
 
   /* .fa-sort-down:before, .fa-sort-desc:before {

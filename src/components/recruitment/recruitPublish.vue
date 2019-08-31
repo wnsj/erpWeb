@@ -7,36 +7,48 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-        <label class="control-label text-left nopad">发布时间：</label>
-        <date-picker v-model="beginDate" type="date" format="YYYY-MM-DD"></date-picker>
-        <span class="nopad">~</span>
-        <date-picker v-model="endDate" type="date" format="YYYY-MM-DD"></date-picker>
-      </div>
       <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-        <div class="col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="padding-left: 0;">
+          <label class="control-label text-left nopad">发布时间：</label>
+        </div>
+         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0;">
+            <date-picker v-model="beginDate" type="date" format="YYYY-MM-DD"></date-picker>
+         </div>
+         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+            <span class="nopad">~</span>
+         </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0;">
+          <date-picker v-model="endDate" type="date" format="YYYY-MM-DD"></date-picker>
+        </div>
+      </div>
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">
           <p>渠道：</p>
         </div>
-        <div class="col-md-10 col-lg-10">
+        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
           <channel :channel="channelId" @channelChange="channelChange"></channel>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-        <div class="col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">
+
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">
           <p>职位：</p>
         </div>
-        <div class="col-md-10 col-lg-10">
+        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
           <positionInfo :pid="positionId" @jobChange="positionChange"></positionInfo>
         </div>
       </div>
-      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-md-offset-5">
+
+    </div>
+    <div class="row">
+
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 pull-right">
         <button type="button" class="btn btn-warning pull-right m_r_10" @click="exportTableToExcel('recruitPublishTB','招聘发布管理')">导出</button>
         <button type="button" class="btn btn-info pull-right m_r_10" @click="addBtn" v-if="has(65)">添加</button>
         <button type="button" class="btn btn-primary pull-right m_r_10" @click="queryRecruitPublish">查询</button>
       </div>
     </div>
+    </br/>
     <!-- 查询结果集 -->
     <div class="row">
       <div class="col-md-12 col-lg-12">
@@ -98,8 +110,10 @@
                 </div>
               </div>
               <div class="form-group clearfix">
-                <label class="control-label text-left nopad">发布时间：</label>
+                <label class="col-md-2 control-label text-right nopad">发布时间：</label>
+                <div class="col-md-5">
                 <date-picker v-model="publishAddDate" type="date" format="YYYY-MM-DD"></date-picker>
+                </div>
               </div>
               <div class="form-group clearfix">
                 <label class="col-md-2 control-label text-right nopad">发布人数：</label>
@@ -456,4 +470,5 @@
   input[type="date"] {
     line-height: 26px !important;
   }
+   .mx-datepicker{ width: 100% !important;}
 </style>
