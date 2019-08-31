@@ -81,7 +81,7 @@
 				this.familyInfo=param
 			},
 			dateAction:function(){
-				this.familyInfo.birth=this.moment(this.familyInfo.birth,'YYYY-MM-DD HH:MM:SS.000')
+				this.familyInfo.birth=this.moment(this.familyInfo.birth,'YYYY-MM-DD HH:mm:ss.000')
 				console.log(this.familyInfo.birth)
 			},
 			submitFamilyInfo:function(){

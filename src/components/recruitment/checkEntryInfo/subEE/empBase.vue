@@ -105,19 +105,19 @@
 			//员工入职
 			initDate: function(param) {
 
-				this.personalBase.name = param.name
-				this.personalBase.birth = param.birth
-				this.personalBase.sex = param.sex
-				this.personalBase.recruitDataID = param.id
-				this.personalBase.state = '1'
+// 				this.personalBase.name = param.name
+// 				this.personalBase.birth = param.birth
+// 				this.personalBase.sex = param.sex
+// 				this.personalBase.recruitDataID = param.id
+// 				this.personalBase.state = '1'
 				this.eDate = this.moment('', 'YYYY-MM-DD HH:MM:SS.000')
 				this.pDate = this.moment('', 'YYYY-MM-DD HH:MM:SS.000')
-				this.personalBase.entryDate = this.moment('', 'YYYY-MM-DD HH:MM:SS.000')
-				this.personalBase.positiveDate = this.moment('', 'YYYY-MM-DD HH:MM:SS.000')
+// 				this.personalBase.entryDate = this.moment('', 'YYYY-MM-DD HH:MM:SS.000')
+// 				this.personalBase.positiveDate = this.moment('', 'YYYY-MM-DD HH:MM:SS.000')
 				// 				
 
-				this.$children[1].setDpart('0')
-				this.$children[2].setPosition('0')
+// 				this.$children[1].setDpart('0')
+// 				this.$children[2].setPosition('0')
 			},
 
 			//时间变化后格式化
@@ -130,14 +130,14 @@
 						this.personalBase.birth = this.moment('', 'YYYY-MM-DD HH:MM:SS.000')
 					}
 				} else if (type == '1') {
-					if (!this.isBlank(eDate)) {
-						this.personalBase.entryDate = this.moment(eDate, 'YYYY-MM-DD HH:MM:SS.000')
+					if (!this.isBlank(this.eDate)) {
+						this.personalBase.entryDate = this.moment(this.eDate, 'YYYY-MM-DD HH:MM:SS.000')
 					} else {
 						this.personalBase.entryDate = this.moment('', 'YYYY-MM-DD HH:MM:SS.000')
 					}
 				} else if (type == '2') {
-					if (!this.isBlank(pDate)) {
-						this.personalBase.positiveDate = this.moment(pDate, 'YYYY-MM-DD HH:MM:SS.000')
+					if (!this.isBlank(this.pDate)) {
+						this.personalBase.positiveDate = this.moment(this.pDate, 'YYYY-MM-DD HH:MM:SS.000')
 					} else {
 						this.personalBase.positiveDate = this.moment('', 'YYYY-MM-DD HH:MM:SS.000')
 					}

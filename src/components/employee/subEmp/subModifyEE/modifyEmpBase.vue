@@ -135,13 +135,13 @@
 			//时间格式化
 			dateChange:function(param){
 				if(param=='0'){
-					this.personalBase.birth=this.moment(this.personalBase.birth,'YYYY-MM-DD HH:MM:SS.000')
+					this.personalBase.birth=this.moment(this.personalBase.birth,'YYYY-MM-DD HH:mm:ss.000')
 				}else if(param=='1'){
-					this.personalBase.entryDate=this.moment(this.personalBase.entryDate,'YYYY-MM-DD HH:MM:SS.000')
+					this.personalBase.entryDate=this.moment(this.personalBase.entryDate,'YYYY-MM-DD HH:mm:ss.000')
 				}else if(param=='2'){
-					this.personalBase.positiveDate=this.moment(this.personalBase.positiveDate,'YYYY-MM-DD HH:MM:SS.000')
+					this.personalBase.positiveDate=this.moment(this.personalBase.positiveDate,'YYYY-MM-DD HH:mm:ss.000')
 				}else if(param=='3'){
-					this.personalBase.resignDate=this.moment(this.personalBase.resignDate,'YYYY-MM-DD HH:MM:SS.000')
+					this.personalBase.resignDate=this.moment(this.personalBase.resignDate,'YYYY-MM-DD HH:mm:ss.000')
 				}
 			},
 			//清空岗位调动信息
