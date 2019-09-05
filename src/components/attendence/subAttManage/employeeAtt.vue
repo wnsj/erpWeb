@@ -1,28 +1,65 @@
 <template>
 	<div class="tab-pane fade" id="gscqtj">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		<div class="row">
 			<div class="table-responsive">
-				<div class="col-lg-10 mtr_a"> <span>部门：</span> <span class="com-sel">
-						<depart @departChange='departChange'></depart>
-					</span> <span>职位：</span> <span class="com-sel">
-						<position @positionChange='positionChange'></position>
-					</span> <span>姓名：</span> <span>
-						<input type="text" value="" id="" v-model='name' />
-					</span> <span>工号：</span> <span>
-						<input type="text" value="" id="" v-model="jobNum" />
-					</span> <span class="search">
+				<div class="col-md-3 col-lg-3"> 
+					<div class="col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">
+						<span>部门：</span>
+					</div>
+					<div class="col-md-10 col-lg-10">
+						<span class="com-sel">
+							<depart @departChange='departChange'></depart>
+						</span> 
+					</div>	
+				</div>	
+				<div class="col-md-3 col-lg-3"> 
+					<div class="col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">
+						<span>职位：</span> 
+					</div>
+					<div class="col-md-10 col-lg-10">
+						<span class="com-sel">
+							<position @positionChange='positionChange'></position>
+						</span>
+					</div>	
+				</div>	
+				<div class="col-md-3 col-lg-3"> 
+					<div class="col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">
+						<span>姓名：</span>
+					</div>
+					<div class="col-md-10 col-lg-10">
+						<span class="com-sel">
+							<input type="text" value="" id="" v-model='name' />
+						</span> 
+					</div>	
+				</div>	
+				<div class="col-md-3 col-lg-3"> 
+					<div class="col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">
+						<span>工号：</span>
+					</div>
+					<div class="col-md-10 col-lg-10">
+						<span class="com-sel">
+							<input type="text" value="" id="" v-model="jobNum" />
+						</span>
+					</div>	
+				</div>	
+					
+
+				
+				<div class="col-md-12 col-lg-12 mtr_a"> 
+					<span>时间：</span> <span>
+						<dPicker v-model="beginDate" v-on:change="dateAction('begin')"></dPicker>
+					</span> <span>&nbsp;&nbsp;&nbsp;至：</span> <span>
+						<dPicker v-model="endDate" v-on:change="dateAction('end')"></dPicker>
+					</span> 
+					<span class="search">
 						<button class="btn btn-warning" v-on:click="searchRYKQInfo('0')">查询所有</button>
 					</span> <span class="search">
 						<button class="btn btn-warning" v-on:click="searchRYKQInfo('1')">查询</button>
 					</span> <span class="search">
 						<button class="btn btn-primary" @click="exportTableToExcel('employeeAttTB','人员出勤统计')">导出</button>
-					</span> </div>
-				<div class="col-lg-11 mtr_a"> <span>时间：</span> <span>
-						<dPicker v-model="beginDate" v-on:change="dateAction('begin')"></dPicker>
-					</span> <span>&nbsp;&nbsp;&nbsp;至：</span> <span>
-						<dPicker v-model="endDate" v-on:change="dateAction('end')"></dPicker>
-					</span> </div>
-				<div class="col-lg-11 mtr_a"> <span>注：</span> <span style="color:#FF0000; margin-right:10px;">旷工</span> <span style="color:#CD853F; margin-right:10px;">迟到</span>
+					</span> 
+				</div>
+				<div class="col-md-12 col-lg-12 mtr_a"> <span>注：</span> <span style="color:#FF0000; margin-right:10px;">旷工</span> <span style="color:#CD853F; margin-right:10px;">迟到</span>
 					<span style="color:#000000; margin-right:10px;">正常</span>
 					<span style="color:#9370DB; margin-right:10px;">休息</span> <span style="color:#006400; margin-right:10px;">请假</span>
 					<span style="color:#00679D; margin-right:10px;">倒休</span> <span style="color:#FF7F50; margin-right:10px;">打卡异常</span>
