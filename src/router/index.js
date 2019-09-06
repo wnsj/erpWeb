@@ -37,6 +37,7 @@ import report from '../components/paperlessOffice/report.vue'
 import clock from '../components/paperlessOffice/clock.vue'
 import preApplication from '../components/paperlessOffice/computerPreApplication.vue'
 import leaveOffice from '../components/paperlessOffice/leaveOffice.vue'
+import computerManage from '@/components/paperlessOffice/computerManage.vue'
 
 
 Vue.use(Router)
@@ -165,7 +166,10 @@ export default new Router({
 					path: '/paperlessOffice/leaveOffice',
 					component: leaveOffice
 				},
-
+        {
+          path:'/paperlessOffice/computerManage',
+          component:computerManage
+        },
 
 			],
 			redirect: '/employee'

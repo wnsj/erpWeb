@@ -76,6 +76,9 @@
               <li>
                 <router-link to="/paperlessOffice/leaveOffice"><i class="fa fa-table" aria-hidden="true" id="offfice10"></i>离职管理</router-link>
               </li>
+               <li>
+                <router-link to="/paperlessOffice/computerManage"><i class="fa fa-table" aria-hidden="true" id="offfice11"></i>电脑用品管理</router-link>
+              </li>
             </ul>
             <!-- <li><i class="fa fa-area-chart" aria-hidden="true" id="item01"></i>item</li> -->
           </ul>
@@ -182,7 +185,7 @@
           url = this.url.replace("http", 'wss');
         }
         url = url.concat("/websocket/").concat(this.accountId);
-        //var url = "ws://172.16.56.1:8080/websocket/" + this.accountId;
+        var url = "ws://172.16.56.1:8080/websocket/" + this.accountId;
         if (this.websocket != null) this.websocket.close();
         if ('WebSocket' in window) {
           websocket = new WebSocket(url);
