@@ -76,6 +76,9 @@
               <li>
                 <router-link to="/paperlessOffice/leaveOffice"><i class="fa fa-table" aria-hidden="true" id="offfice10"></i>离职管理</router-link>
               </li>
+               <li>
+                <router-link to="/paperlessOffice/computerManage"><i class="fa fa-table" aria-hidden="true" id="offfice11"></i>电脑用品管理</router-link>
+              </li>
             </ul>
             <!-- <li><i class="fa fa-area-chart" aria-hidden="true" id="item01"></i>item</li> -->
           </ul>
