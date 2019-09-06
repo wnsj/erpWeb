@@ -1,8 +1,8 @@
 <template>
 	<div class="tab-pane fade" id="kqtjbb">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		<div class="row">
 			<div class="table-responsive">
-				<div class="col-lg-8 mtr_a"> <span>部门：</span> <span class="com-sel">
+				<div class="col-md-12 col-lg-12 mtr_a"> <span>部门：</span> <span class="com-sel">
 						<depart @departChange='departChange'></depart>
 					</span> <span>时间：</span> <span>
 						<dPicker v-model="beginDate" v-on:change="dateAction('begin')"></dPicker>
@@ -13,12 +13,12 @@
 					</span> <span class="search">
 						<button class="btn btn-primary" @click="exportTableToExcel('attCountTableTB','考勤统计报表')">导出</button>
 					</span> </div>
-				<div class="col-lg-11 mtr_a"> <span>姓名：</span> <span>
+				<div class="col-md-12 col-lg-12 mtr_a"> <span>姓名：</span> <span>
 						<input type="text" value="" id="" v-model="name"/>
 					</span> <span>工号：</span> <span>
 						<input type="text" value="" id="" v-model="jobNum"/>
 					</span> </div>
-				<div class="col-lg-11 mtr_a"> <span>注：</span> <span style="color:#000000; margin-right:10px;">正常</span> <span
+				<div class="col-md-12 col-lg-12 mtr_a"> <span>注：</span> <span style="color:#000000; margin-right:10px;">正常</span> <span
 					 style="color:#00FFFF; margin-right:10px;">其他</span> </div>
 				<table class="table table-bordered table-hover" id="attCountTableTB">
 					<thead>

@@ -55,24 +55,26 @@
 			</div>
 			<div class="row add-mt"> 
 				<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xs-offset-2 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
-					<div class="col-md-3 col-lg-3 clear-mp" style="line-height: 34px;">
+					<div class="col-md-4 col-lg-4 clear-mp" style="line-height: 34px;">
 						<label>查看生日在：</label>
 					</div>
-					<div class="col-md-7 col-lg-7 clear-mp">
+					<div class="col-md-5 col-lg-5 clear-mp">
 						<select class="form-control" v-on:change="submitAdvacedParam('0')" v-model="birthday">
 							<option value="0">全部</option>
 							<option v-for="n in 12" v-bind:value="n">{{n}}月</option>
 						</select>
 					</div>
-					<div class="col-md-2 col-lg-2 clear-mp" style="line-height: 34px; text-align: right">
+					<div class="col-md-3 col-lg-3 clear-mp" style="line-height: 34px; text-align: right">
 						<label>月份员工</label>
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-						<button type="button" class="btn btn-primary" v-on:click="submitAdvacedParam('1')">查询</button>
-					</div>
 				</div>
+				
 			</div>
+			
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-primary" v-on:click="submitAdvacedParam('1')">查询</button>
+			<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 		</div>
 	</div>
 </template>

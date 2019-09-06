@@ -1,21 +1,29 @@
 <template>
 	<div class="tab-pane fade" id="bmcqmx">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		<div class="row">
 			<div class="table-responsive" id="common-app">
-				<div class="col-lg-8 mtr_a"> <span>部门：</span> <span class="com-sel">
-						<depart :departName="departName" :departId="departId" @departChange='departChange'></depart>
-					</span> <span>时间：</span> <span>
-						<dPicker v-model="beginDate" v-on:change="dateAction('begin')"></dPicker>
-					</span> <span>&nbsp;&nbsp;&nbsp;至：</span> <span>
-						<dPicker v-model="endDate" v-on:change="dateAction('end')"></dPicker>
-					</span> <span class="search">
-						<button class="btn btn-warning" v-on:click="searchDepartKQInfo('0')">查询所有</button>
-					</span> <span class="search">
-						<button class="btn btn-warning" v-on:click="searchDepartKQInfo('1')">查询</button>
-					</span> <span class="search">
-						<button class="btn btn-primary" @click="exportTableToExcel('deptAttTB','部门出勤统计')">导出</button>
-					</span> </div>
-				<div class="col-lg-11 mtr_a"> <span>注：</span> <span style="color:#FF0000; margin-right:10px;">旷工</span> <span style="color:#CD853F; margin-right:10px;">迟到</span>
+				<div class="col-md-12 col-lg-12 mtr_a"> 
+					<div class="col-md-9 col-lg-9" style="padding: 0; line-height: 34px;">
+						<span>部门：</span> 
+						<span class="com-sel">
+							<depart :departName="departName" :departId="departId" @departChange='departChange'></depart>
+						</span> <span>时间：</span> <span>
+							<dPicker v-model="beginDate" v-on:change="dateAction('begin')"></dPicker>
+						</span> <span>&nbsp;&nbsp;&nbsp;至：</span> <span>
+							<dPicker v-model="endDate" v-on:change="dateAction('end')"></dPicker>
+						</span>
+					</div>
+					<div class="col-md-3 col-lg-3">
+						<span class="search">
+							<button class="btn btn-warning" v-on:click="searchDepartKQInfo('0')">查询所有</button>
+						</span> <span class="search">
+							<button class="btn btn-warning" v-on:click="searchDepartKQInfo('1')">查询</button>
+						</span> <span class="search">
+							<button class="btn btn-primary" @click="exportTableToExcel('deptAttTB','部门出勤统计')">导出</button>
+						</span>
+					</div> 
+				</div>
+				<div class="col-md-12 col-lg-12 mtr_a"> <span>注：</span> <span style="color:#FF0000; margin-right:10px;">旷工</span> <span style="color:#CD853F; margin-right:10px;">迟到</span>
 					<span style="color:#000000; margin-right:10px;">正常</span>
 					<span style="color:#9370DB; margin-right:10px;">休息</span> <span style="color:#006400; margin-right:10px;">请假</span>
 					<span style="color:#00679D; margin-right:10px;">倒休</span> <span style="color:#FF7F50; margin-right:10px;">打卡异常</span>
