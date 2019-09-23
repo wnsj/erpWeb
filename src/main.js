@@ -88,6 +88,7 @@ Vue.prototype.getYYYYMMDDHHMMSS_24 = function(param) {
 Vue.prototype.getYYYYMMDDHHMMSS_00 = function(param) {
   return date.getYYYYMMDDHHMMSS_00(param)
 }
+//必须安装的三个依赖 npm install --save script-loader/file-saver/Blob.js/xlsx
 Vue.prototype.exportTableToExcel = function(tbId, fileName) {
   if (!confirm("确定导出?")) {
     return;
