@@ -46,8 +46,9 @@
 
 				
 				<div class="col-md-12 col-lg-12 mtr_a"> 
+				<dPicker v-model="beginDate" v-on:change="dateAction('begin')"></dPicker>
 					<span>时间：</span> <span>
-						<dPicker v-model="beginDate" v-on:change="dateAction('begin')"></dPicker>
+						
 					</span> <span>&nbsp;&nbsp;&nbsp;至：</span> <span>
 						<dPicker v-model="endDate" v-on:change="dateAction('end')"></dPicker>
 					</span> 
