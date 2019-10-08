@@ -45,7 +45,7 @@
 		<div class="row add-mt">
 			<button type="button" class="btn btn-primary pull-right" @click="dowmelxe('人员需求表')">导出</button>
 			<button type="button" class="btn btn-primary pull-right m_r_10" data-toggle="modal" v-on:click="showERInfo()">申请</button>
-			<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" v-on:click="checkEMPRequirel()">查询</button>
+			<button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal" v-on:click="checkEMPRequire()">查询</button>
 
 		</div>
 		<erApply @empRequireApply='feedbackApplyInfo'></erApply>
@@ -98,11 +98,11 @@
 								<td class="text-center">{{item.state}}</td>
 								<td class="text-center">{{item.renliName}}</td>
 								<td class="text-center">{{item.renliTime}}</td>
-								<td class="text-center">{{item.state}}</td>
+								<td class="text-center">{{item.state=='1' ? '已取消' : '正常'}}</td>
 								<td class="text-center"><button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal"
 									 	 >查看详情</button></td>
 								<td class="text-center"><button type="button" class="btn btn-warning pull-right m_r_10" data-toggle="modal"
-									 >点击取消</button></td>
+									 v-on:click="updateEMPRequire(item)">点击取消</button></td>
 							</tr>
 						
 						</tbody>
@@ -164,7 +164,7 @@
 				this.positionId=positionId
 			},
 			//check applications of employee required
-			checkEMPRequirel:function(){
+			checkEMPRequire:function(){
 				var url = this.url + '/wzbg/empRequireLsit'
 				console.log(url)
 				axios({
@@ -189,6 +189,41 @@
 								console.log('erList'+res.resData)
 								this.erList=res.resData
 							}
+						} else {
+							alert(res.retMsg)
+						}
+					})
+					.catch(function(error) {
+						console.log("请求失败处理");
+					});
+			},
+			//check applications of employee required
+			updateEMPRequire:function(item){
+				if(item.state=='1'){
+					alert('已取消')
+					return
+				}
+				var url = this.url + '/wzbg/updateRYRequire'
+				console.log(url)
+				axios({
+						method: "post",
+						url: url,
+						headers: {
+							"Content-Type": this.contentType,
+							"Access-Token": this.accessToken
+						},
+						data: {
+							id:item.id,
+							state:'1',
+						},
+						dataType: "json"
+					})
+					.then(response => {
+						var res = response.data
+						console.log(JSON.stringify(res))
+						if (res.retCode == '0000') {
+							alert(res.retMsg)
+							this.checkEMPRequire()
 						} else {
 							alert(res.retMsg)
 						}
