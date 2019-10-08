@@ -170,7 +170,7 @@
                 <th class="text-center">{{item.fuName}}</th>
                 <th class="text-center">{{item.fuAdvice}}</th>
                 <th class="text-center">
-                  <div v-if="thFlag" @click="thFlag = false">{{item.prepareName}}</div>
+                  <div v-if="thFlag" @click="thFlagChange()">{{item.prepareName}}</div>
                   <select class="form-control" v-model="item.peiJiedanId" @change="updateJieDanRen(item)" v-if="!thFlag">
                     <option value="null">未接单</option>
                     <option v-for="item in jieDanRenList" :key="item.ACCOUNT_ID" :value="item.ACCOUNT_ID">{{item.ACCOUNT_NAME}}</option>
@@ -1130,6 +1130,7 @@
           rquestParam.Shuoming = this.shuoming;
           if (!this.isBlank(this.peiJieDanId)) {
             rquestParam.peiJiedanId = this.peiJieDanId;
+            rquestParam.isPei = 1;
             this.jieDanRenList.forEach((item) => {
               if (item.ACCOUNT_ID == this.peiJieDanId) {
                 rquestParam.prepareName = item.ACCOUNT_NAME;
@@ -1233,7 +1234,8 @@
         var rquestParam = {
           id: item.id,
           peiJiedanId: item.peiJiedanId,
-          prepareName: item.prepareName
+          prepareName: item.prepareName,
+          isPei: 1
         };
 
         var url = this.url.concat("/computerManageController/shenHe");
@@ -1293,6 +1295,10 @@
         this.setTimeObj = setTimeout(function() {
           vm.exportTableToExcel('datatable', '电脑用品管理')
         }, 2000);
+      },
+      thFlagChange() {
+        if (!this.isFu()) this.thFlag = false;
+        else this.thFlag = true;
       }
     },
     created() {
