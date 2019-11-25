@@ -38,6 +38,7 @@ import clock from '../components/paperlessOffice/clock.vue'
 import preApplication from '../components/paperlessOffice/computerPreApplication.vue'
 import leaveOffice from '../components/paperlessOffice/leaveOffice.vue'
 import computerManage from '@/components/paperlessOffice/computerManage.vue'
+import goOutRegister from '../components/paperlessOffice/goOutRegister.vue'
 
 
 Vue.use(Router)
@@ -169,6 +170,10 @@ export default new Router({
         {
           path:'/paperlessOffice/computerManage',
           component:computerManage
+        },
+        {
+          path:'/paperlessOffice/goOutRegister',
+          component:goOutRegister
         },
 
 			],

@@ -79,6 +79,9 @@
                <li>
                 <router-link to="/paperlessOffice/computerManage"><i class="fa fa-table" aria-hidden="true" id="offfice11"></i>电脑用品管理</router-link>
               </li>
+              <li>
+                <router-link to="/paperlessOffice/goOutRegister"><i class="fa fa-table" aria-hidden="true" id="offfice12"></i>外出登记</router-link>
+              </li>
             </ul>
             <!-- <li><i class="fa fa-area-chart" aria-hidden="true" id="item01"></i>item</li> -->
           </ul>
@@ -182,9 +185,10 @@
         if (this.url.startsWith("https")) {
           url = this.url.replace("https", 'wss');
         } else {
-          url = this.url.replace("http", 'wss');
+          url = this.url.replace("http", 'ws');
         }
         url = url.concat("/websocket/").concat(this.accountId);
+        console.log("现在的url是:"+url);
         // var url = "ws://172.16.2.248:8080/ERP/websocket/" + this.accountId;
         if (this.websocket != null) this.websocket.close();
         if ('WebSocket' in window) {
