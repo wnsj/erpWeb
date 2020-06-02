@@ -3,7 +3,7 @@
 	<div class="tab-pane fade" id="jqzlgl">
 		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style=" overflow-y: scroll;">
 			<div class="table-responsive col-xs-6 col-sm-6 col-md-6 col-lg-6">
-				<div class="col-lg-8 mtr_a"> <span>假期种类：</span> </div>
+				<div class="col-lg-8 mtr_a" style="padding:0"> <span>假期种类：</span> </div>
 				<table class="table table-bordered table-hover">
 					<thead>
 						<tr>

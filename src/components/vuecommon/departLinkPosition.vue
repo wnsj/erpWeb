@@ -3,7 +3,7 @@
 		<span class="countdate">部门：</span>
 		<depart @departChange='departChange'></depart>
 		<span class="countdate">岗位：</span>
-		<select class="form-control" v-model.lazy="positionId" v-on:change="positionChange()">
+		<select class="form-control" v-model.lazy="positionId" v-on:change="positionChange(),positionChangeAction()">
 			<option value="0">---请选择---</option>
 			<option v-for="(item,index) in positionList" :key="index" v-bind:value="item.position_ID">{{item.position_Name}}</option>
 		</select>
@@ -38,7 +38,21 @@
 			positionChange: function() {
 				this.$emit('positionChange', this.positionId)
 			},
+			//获取岗位对象
+			positionChangeAction:function(){
+				this.$emit('positionChangeAction',this.exchangePositionItem(this.positionId))
+			},
+			//添加前缀的岗位名字兑换原来的名字
+			exchangePositionItem: function(param) {
+			  var res = {}
 			
+			  for (var i = 0; i < this.positionList.length; i++) {
+			    res = this.positionList[i]
+			    if (res.position_ID == param) {
+			      return res
+			    }
+			  }
+			},
 			//岗位随部门ID联动
 			departLinkChange(departId) {
 				var url = this.url + "/kqParamSetContr/queryDepartmentPosition";

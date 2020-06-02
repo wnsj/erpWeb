@@ -37,7 +37,7 @@
 						</div>
 						<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
 
-							<dlp @positionChange='positionChange' @departChange='departChange'></dlp>
+							<dlp @positionChangeAction='positionChangeAction' @departChange='departChange'></dlp>
 						</div>
 					</div>
 					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -45,8 +45,8 @@
 							<p>申请原因：</p>
 						</div>
 						<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-							<select class="form-control" v-model="emprInfo.Apply_type">
-								<option v-for="(item,index) in applyReason" :key="index" v-bind:value="item.name">{{item.name}}</option>
+							<select class="form-control" v-model="emprInfo.Apply_type" v-on:change="applyReasonFun(emprInfo.Apply_type)">
+								<option v-for="(item,index) in applyReason" :key="index" v-bind:value="item.id">{{item.name}}</option>
 							</select>
 						</div>
 					</div>
@@ -85,8 +85,7 @@
 				</div>
 				<!-- 上传附件 -->
 				<div class="row add-mt add_people">
-					<button type="button" class="btn btn-warning pull-right">上传附件</button>
-
+					<updateFile v-show="isShow"></updateFile>
 				</div>
 
 
@@ -290,9 +289,9 @@
 							<p>审查负责人：</p>
 						</div>
 						<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 0; line-height: 34px;">
-							<select class="form-control" v-model="checkEMPId">
-								<option value="0">---未选择---</option>
-								<option v-for="(item,index) in checkEMPList" :key='index' v-bind:value="item.id">{{item.name}}</option>
+							<select class="form-control" v-model="emprInfo.shenchaId">
+								<option v-for="(item,index) in checkEMPList" :key='index' v-bind:value="item.accountId">{{item.accountName}}</option>
+
 							</select>
 						</div>
 						<div class="col-md-1">
@@ -317,7 +316,8 @@
 						</div>
 						<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 0; line-height: 34px;">
 							<select class="form-control" v-model="emprInfo.shenpiId">
-								<option v-for="(item,index) in approvalEMPList" :key='index' v-bind:value="item.id" >{{item.name}}</option>
+								<option v-for="(item,index) in approvalEMPList" :key='index' v-bind:value="item.accountId">{{item.accountName}}</option>
+
 							</select>
 						</div>
 					</div>
@@ -339,7 +339,8 @@
 						</div>
 						<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding: 0; line-height: 34px;">
 							<select class="form-control" v-model="emprInfo.renliId">
-								<option value="1127">李珊珊</option>
+								<option v-for="(item,index) in verifyEMPList" :key='index' v-bind:value="item.accountId">{{item.accountName}}</option>
+
 							</select>
 						</div>
 
@@ -389,10 +390,12 @@
 	import axios from 'axios'
 	import dlp from '../../../components/vuecommon/departLinkPosition.vue'
 	import datePicker from 'vue2-datepicker'
+	import updateFile from '../../vuecommon/updateFile.vue'
 	export default {
 		components: {
 			datePicker,
 			dlp,
+			updateFile,
 		},
 		data() {
 			return {
@@ -402,16 +405,34 @@
 				applyTime: this.moment(),
 				needTime: this.moment(),
 				numOfPeople: 1,
-				positionTypeId:'',
-				applyReason:[
-					{id:0,name:'离职补缺',},
-					{id:1,name:'岗位调动',},
-					{id:2,name:'业务发展扩编',},
-					{id:3,name:'替换人员',},
-					{id:4,name:'新增职位 附《工作说明》',},
-					{id:5,name:'其他',}
+				positionTypeId: '',//选择的岗位类型
+				isShow:false,
+				applyReason: [{
+						id: 0,
+						name: '离职补缺',
+					},
+					{
+						id: 1,
+						name: '岗位调动',
+					},
+					{
+						id: 2,
+						name: '业务发展扩编',
+					},
+					{
+						id: 3,
+						name: '替换人员',
+					},
+					{
+						id: 4,
+						name: '新增职位 附《工作说明》',
+					},
+					{
+						id: 5,
+						name: '其他',
+					}
 				],
-				
+
 				/* 中 */
 				addAgeGroups: [], //年龄段
 				addYearsOfWorkGroups: [], //工龄
@@ -421,18 +442,19 @@
 				addMajor: [], //专业
 				addComputerLevel: ['一般', '熟练', '其他', '无要求'], //电脑水平
 				addFLLevel: ['一般', '熟练', '其他', '无要求'], //外语水平
-				
+
 				/* 下 */
-				checkEMPList:[],		//审查人列表
-				checkEMPId:'0',
-				approvalEMPList:[],		//审批人
-				btnTime:'0',
-				applyName:this.accountInfo().account_Name
+				checkEMPList: [], //审查人列表
+				checkEMPId: '0',
+				verifyEMPList: [],
+				approvalEMPList: [], //审批人
+				btnTime: '0',
+				applyName: this.accountInfo().account_Name
 			};
 		},
 		methods: {
 			initEMPRInfo: function() {
-				this.emprInfo.applyTime = this.applyTime
+				this.emprInfo.applyTime = this.moment(this.applyTime, 'YYYY-MM-DD HH:mm:ss.000')
 				this.emprInfo.needTime = this.needTime
 
 				this.requireAllData('selectWorkAge', 'yowg')
@@ -440,12 +462,14 @@
 				this.requireAllData('jobHopFrequency', 'jhf')
 				this.requireAllData('industryBackground', 'ib')
 				this.requireAllData('selectAgeLsit', 'ag')
-				
-				this.checkEMPList=[]
-				this.approvalEMPList=[]
-				this.btnTime='0'
-				this.emprInfo.applyId=this.accountInfo().account_ID
+
+				this.checkEMPList = []
+				this.verifyEMPList = []
+				this.approvalEMPList = []
+				this.btnTime = '0'
+				this.emprInfo.applyId = this.accountInfo().account_ID
 			},
+			
 			//空缺人数
 			changeNum: function(param) {
 				if (param == '上') {
@@ -454,44 +478,52 @@
 					this.numOfPeople--
 				}
 			},
+			applyReasonFun:function(param){
+				if(param=='新增职位 附《工作说明》'){
+					this.isShow=true
+				}else{
+					this.isShow=false
+				}
+			},
 			//部门变化
 			departChange: function(departId, departName) {
 				this.emprInfo.departmentId = departId
 				this.emprInfo.departmentName = departName
 			},
 			//岗位变化
-			positionChange: function(positionId) {
-				this.emprInfo.positionId = positionId
-				this.checkEMPList=[]
-				this.approvalEMPList=[]
+			positionChangeAction: function(param) {
+				this.emprInfo.positionId = param.position_ID
+				this.positionTypeId = param.positionType_ID
+				this.checkEMPList = []
+				this.verifyEMPList = []
+				this.approvalEMPList = []
 				this.checkBtn()
+				this.verifyBtn()
 				this.apparovalBtn()
 			},
 			//‘+’点击
-			addAction:function(){
-				if(this.btnTime=='0'){
-					this.btnTime='1'
-				}else{
-					this.btnTime='0'
+			addAction: function() {
+				if (this.btnTime == '0') {
+					this.btnTime = '1'
+				} else {
+					this.btnTime = '0'
 				}
 				this.checkBtn()
 			},
-			selectCheckAction:function(item){
-				// this.emp
-			},
+
 			//审查人 ‘+’
 			checkBtn: function() {
-				if(this.isBlank(this.emprInfo.departmentId)){
+				if (this.isBlank(this.emprInfo.departmentId)) {
 					alert('请先选择部门')
 					return
 				}
-				if(this.isBlank(this.emprInfo.positionId)){
+				if (this.isBlank(this.emprInfo.positionId)) {
 					alert('请先选择岗位')
 					return
 				}
-				
-				this.checkEMPList=[]
-				
+
+				this.checkEMPList = []
+
 				var url = this.url + '/wzbg/empRequireCheckList'
 				axios({
 						method: "post",
@@ -500,19 +532,61 @@
 							"Content-Type": this.contentType,
 							"Access-Token": this.accessToken
 						},
-						data:{
-							btnTime:this.btnTime,
-							departId:this.emprInfo.departmentId,
-							positionId:this.emprInfo.positionId,
+						data: {
+							clickTimes: this.btnTime,
+							departId: this.emprInfo.departmentId,
+							positionId: this.emprInfo.positionId,
 						},
 						dataType: "json"
 					})
 					.then(response => {
 						var res = response.data
 						if (res.retCode == '0000') {
-							console.log(res)
+							// console.log(res)
 							if (res.resData.length > 0) {
 								this.checkEMPList = res.resData
+								this.emprInfo.shenchaId = this.checkEMPList[0].accountId
+							}
+						} else {
+							alert(res.retMsg)
+						}
+					})
+					.catch(function(error) {
+						console.log("请求失败处理");
+					});
+			},
+			//审核人 ‘+’
+			verifyBtn: function() {
+				if (this.isBlank(this.emprInfo.departmentId)) {
+					alert('请先选择部门')
+					return
+				}
+				if (this.isBlank(this.emprInfo.positionId)) {
+					alert('请先选择岗位')
+					return
+				}
+
+				this.verifyEMPList = []
+
+				var url = this.url + '/wzbg/empRequireVerifyList'
+				axios({
+						method: "post",
+						url: url,
+						headers: {
+							"Content-Type": this.contentType,
+							"Access-Token": this.accessToken
+						},
+						data: {},
+						dataType: "json"
+					})
+					.then(response => {
+						var res = response.data
+						if (res.retCode == '0000') {
+							// console.log(res)
+							if (res.resData.length > 0) {
+
+								this.verifyEMPList = res.resData
+								this.emprInfo.renliId = this.verifyEMPList[0].accountId
 							}
 						} else {
 							alert(res.retMsg)
@@ -524,18 +598,18 @@
 			},
 			//审批人
 			apparovalBtn: function() {
-				if(this.isBlank(this.emprInfo.departmentId)){
+				if (this.isBlank(this.emprInfo.departmentId)) {
 					alert('请先选择部门')
 					return
 				}
-				if(this.isBlank(this.emprInfo.positionId)){
+				if (this.isBlank(this.emprInfo.positionId)) {
 					alert('请先选择岗位')
 					return
 				}
-				
-				this.checkEMPList=[]
-				
-				var url = this.url + '/wzbg/empRequireApprolList'
+
+				this.approvalEMPList = []
+
+				var url = this.url + '/wzbg/empRequireApprovalList'
 				axios({
 						method: "post",
 						url: url,
@@ -543,17 +617,18 @@
 							"Content-Type": this.contentType,
 							"Access-Token": this.accessToken
 						},
-						data:{
-							positionId:this.emprInfo.positionId,
+						data: {
+							positionTypeId: this.positionTypeId,
 						},
 						dataType: "json"
 					})
 					.then(response => {
 						var res = response.data
 						if (res.retCode == '0000') {
-							console.log(res)
+							// console.log(res)
 							if (res.resData.length > 0) {
 								this.approvalEMPList = res.resData
+								this.emprInfo.shenpiId = this.approvalEMPList[0].accountId
 							}
 						} else {
 							alert(res.retMsg)
@@ -563,7 +638,7 @@
 						console.log("请求失败处理");
 					});
 			},
-			
+
 			//职位要求 中所有可选数据
 			requireAllData(partUrl, param) {
 				var url = this.url + '/wzbg/' + partUrl
@@ -579,7 +654,7 @@
 					.then(response => {
 						var res = response.data
 						if (res.retCode == '0000') {
-							console.log(res)
+							// console.log(res)
 							if (res.resData.length > 0) {
 								if (param == 'yowg') {
 									this.addYearsOfWorkGroups = res.resData
@@ -602,43 +677,46 @@
 						console.log("请求失败处理");
 					});
 			},
-		
+
 			//申请
-			empRequireApply:function(){
-				if(this.isBlank(this.emprInfo.departmentId)){
+			empRequireApply: function() {
+				console.log('shenpiId:'+JSON.stringify(this.emprInfo))
+				console.log('shenpiId:'+JSON.stringify(this.approvalEMPList[0]))
+				if (this.isBlank(this.emprInfo.departmentId)) {
 					alert('请先选择部门')
 					return
 				}
-				if(this.isBlank(this.emprInfo.positionId)){
+				if (this.isBlank(this.emprInfo.positionId)) {
 					alert('请先选择岗位')
 					return
 				}
-				this.emprInfo.needTime=this.moment(this.needTime,'YYYY-MM-DD hh-mm-ss')
-				this.emprInfo.num=this.numOfPeople
-				if(this.emprInfo.needTime<=this.moment('','YYYY-MM-DD hh-mm-ss')){
+				this.emprInfo.needTime = this.moment(this.needTime, 'YYYY-MM-DD HH:mm:ss.000')
+				this.emprInfo.num = this.numOfPeople
+				if (this.emprInfo.needTime <= this.moment('', 'YYYY-MM-DD HH:mm:ss.000')) {
 					alert('到岗日期必须大于当前日期')
 					return
 				}
-				this.emprInfo.applyReason=this.emprInfo.Apply_type+this.emprInfo.fileName
-				if(this.isBlank(this.emprInfo.Apply_type)){
+				this.emprInfo.applyReason = this.emprInfo.Apply_type + this.emprInfo.fileName
+				if (this.isBlank(this.emprInfo.Apply_type)) {
 					alert('申请原因不能为空')
 					return
 				}
-				alert(this.emprInfo.applyReason)
-				this.checkEMPList=[]
-				if(this.isBlank(this.checkEMPId) || this.checkEMPId=='0'){
+				console.log('shenchaId:'+this.emprInfo.shenchaId)
+				if (this.isBlank(this.emprInfo.shenchaId)) {
 					alert('请选择审查人')
 					return
-				}else{
-					this.emprInfo.shenchaId=this.checkEMPId
 				}
-				if(this.isBlank(this.emprInfo.shenpiId)){
+				console.log('shenpiId:'+this.emprInfo.shenpiId)
+				if (this.isBlank(this.emprInfo.shenpiId)) {
 					alert('请选择审批人')
 					return
 				}
-				
-				
-				
+				console.log('renliId:'+this.emprInfo.renliId)
+				if (this.isBlank(this.emprInfo.renliId)) {
+					alert('请选择审核人')
+					return
+				}
+
 				var url = this.url + '/wzbg/insertEmpRequireApply'
 				axios({
 						method: "post",
@@ -647,13 +725,13 @@
 							"Content-Type": this.contentType,
 							"Access-Token": this.accessToken
 						},
-						data:this.emprInfo,
+						data: this.emprInfo,
 						dataType: "json"
 					})
 					.then(response => {
 						var res = response.data
 						if (res.retCode == '0000') {
-							console.log(res)
+							// console.log(res)
 							if (res.resData == 1) {
 								alert('申请成功')
 								this.$emit('empRequireApply', 'apply')
@@ -667,8 +745,10 @@
 					.catch(function(error) {
 						console.log("请求失败处理");
 					});
-			}
+			},
+
 		},
+
 	}
 </script>
 

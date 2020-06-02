@@ -8,14 +8,18 @@
           </div>
         </div>
       </div>
-      <div class="table-responsive col-xs-9 col-sm-9 col-md-9 col-lg-9" style="position:relative; padding-bottom:30px;">
-        <div class="col-lg-4 mtr_a clearfix"> <span>查找：</span> <span>
-            <input type="text" name="" class="form-control" placeholder="输入姓名,快速查找..." style="width:200px;"
+      <div class="table-responsive col-xs-10 col-sm-10 col-md-10 col-lg-10" style="position:relative; padding-bottom:30px;">
+        <div class="col-md-4 col-lg-4 mtr_a clearfix" style="padding: 0; line-height: 34px;"> 
+            <span>查找：</span> 
+            <span>
+              <input type="text" name="" class="form-control" placeholder="输入姓名,快速查找..." style="width:150px;"
               v-model.lazy="searchWords" />
-          </span> <span>
+            </span> 
+            <span>
             <button class="btn btn-infor" @click="searchShifts">查询</button>
-          </span> </div>
-        <div class="col-lg-8 mtr_a big_font_size">
+            </span> 
+        </div>
+        <div class="col-md-8 col-lg-8 mtr_a big_font_size"  style="padding: 0;">
           <span>
             <a href="#monday" data-toggle="tab" aria-expanded="true" @click="changeToMon()">月</a>
           </span>
@@ -29,11 +33,11 @@
           <span>
             <button id="last-week" @click="prevWeek()">&lt;</button>
           </span>
-          <span id="sub"></span>
+          <span id="sub" style=" line-height: 18px;"></span>
           <span>
             <button id="next-week" @click="nextWeek()">&gt;</button>
           </span>
-          <font class="pull-right"> 员工:<span id="uname">{{ryScheduleListName}}</span>
+          <font class="pull-right" style="padding: 0; line-height: 34px;"> 员工:<span id="uname">{{ryScheduleListName}}</span>
           </font>
         </div>
         <!-- <div id="main" style="width: 1000px;height:1000px; margin-bottom:30px; top:50px; position:static;"></div> -->

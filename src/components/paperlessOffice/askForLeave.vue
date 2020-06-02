@@ -4,7 +4,7 @@
 		<div class="row">
 			<div class="col-md-12 col-lg-12 main-title">
 				<h2>请假管理</h2>
-				<test></test>
+				<!-- <test></test> -->
 			</div>
 		</div>
 		<div class="row">

@@ -41,7 +41,7 @@
         // alert(this.positionId+this.positionName)
         // this.$emit('positionChange',this.positionId,this.positionName)
       },
-      //添加前缀的部门名字兑换原来的名字
+			
       exchangePositionName: function(param) {
         var res = {}
 

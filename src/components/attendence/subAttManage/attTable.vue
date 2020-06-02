@@ -1,8 +1,8 @@
 <template>
 	<div class="tab-pane fade" id="kqbb">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		<div class="row">
 			<div class="table-responsive">
-				<div class="col-lg-10 mtr_a"> <span>
+				<div class="col-md-12 col-lg-12 mtr_a"> <span>
 						<input type="radio" checked="checked" name="xm"  v-on:change="conditionChangeAction('depart')"/>
 					</span> <span>部门：</span> <span class="com-sel">
 						<depart @departChange="departChange"></depart>
@@ -19,7 +19,7 @@
 					</span> <span class="search">
 						<button class="btn btn-primary" @click="exportTableToExcel('attTableTB','考勤报表')">导出</button>
 					</span> </div>
-				<div class="col-lg-11 mtr_a"> <span>
+				<div class="col-lg-12 mtr_a"> <span>
 						<input type="radio" name="xm" v-on:change="conditionChangeAction('project')" />
 					</span> <span>项目：</span> <span class="com-sel">
 						<project @projectChange="projectChange"></project>

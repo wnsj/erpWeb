@@ -2,12 +2,15 @@
 	<div class="m-5">
 		<div class="uploadBox">
 			<h3>上传文件</h3>
+			<!-- <button v-on:click="downLoadFile()">点击下载项目中的文件</button> -->
+			<a href="http://172.16.2.248:8080/ERP/wzbg/downloadFile">点击下载项目中的文件</a>
 			<div class="fileBox">
 				<input type="file" id="myFile" class="inputfile" @change="handlerUpload($event)">
 				<label for="myFile">
 					<i class="iconfont">&#xe632;</i>点击上传本地文件
 				</label>
 			</div>
+			
 			<ul class="files">
 				<li v-for="(file, index) in files">
 					<div class="fileInfo">
@@ -50,6 +53,31 @@
 			}
 		},
 		methods: {
+			downLoadFile:function(){
+				var url = this.url + '/wzbg/downloadFile'
+				axios({
+						method: "post",
+						url: url,
+						headers: {
+							"Content-Type": this.contentType,
+							"Access-Token": this.accessToken
+						},
+						data: {
+						},
+						dataType: "json"
+					})
+					.then(response => {
+						var res = response.data
+						if (res.retCode == '0000') {
+							
+						} else {
+							alert(res.retMsg)
+						}
+					})
+					.catch(function(error) {
+						console.log("请求失败处理");
+					});
+			},
 			handlerUpload: function(e) {
 				//获取选定的文件
 				let tFiles = e.target.files;
@@ -94,7 +122,7 @@
 							item.uploadPercentage = completeProgress;
 						}
 					};
-					axios.post('http://172.16.2.248:8080/import', param, config).then(function(
+					axios.post('http://172.16.2.248:8080/ERP/wzbg/import', param, config).then(function(
 						response) {
 						console.log(response);
 						item.uploadStatus = 2;
@@ -114,7 +142,7 @@
 				return this.formatFileSize(fileSize / 1024, ++idx);
 			},
 			checkFileType: function(fileType) {
-				const acceptTypes = ['xlsx','xls', 'doc', 'jpg'];
+				const acceptTypes = ['xlsx', 'xls', 'doc', 'jpg'];
 				for (var i = 0; i < acceptTypes.length; i++) {
 					if (fileType === acceptTypes[i]) {
 						return true;

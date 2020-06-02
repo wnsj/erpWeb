@@ -1,31 +1,66 @@
 <template>
 	<div class="tab-pane fade in active" id="gscqmx">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-			<div class="table-responsive">
-				<div class="col-lg-9 mtr_a"> <span>部门：</span> <span class="com-sel">
-						<depart :departName="departName" :departId="departId" @departChange='departChange'></depart>
-					</span> <span>职位：</span> <span class="com-sel">
-						<position @positionChange='positionChange'></position>
-					</span> <span>姓名：</span> <span>
-						<input type="text" value="" class="form-control" v-model="kquName" />
-					</span> <span>工号：</span> <span>
-						<input type="text" value="" class="form-control" v-model="kquJobNum" />
-					</span> <span class="search pull-right">
-						<button class="btn btn-primary" @click="exportTableToExcel('firmAttTB','公司出勤明细')">导出</button>
-					</span> <span class="search pull-right">
-						<button class="btn btn-warning" v-on:click="searchKQInfo()">查询</button>
-					</span> </div>
-				<div class="col-lg-11 mtr_a"> <span>时间：</span>
-						<dPicker v-model="beginDate" v-on:change="dateAction('begin')"></dPicker>
-						<span>&nbsp;&nbsp;&nbsp;至：</span>
-						<dPicker v-model="endDate" v-on:change="dateAction('end')"></dPicker>
-						
+		<div class="row">
+			<div>
+				<div class="col-md-3 col-lg-3"> 
+					<div class="col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">部门：</div>
+					<div class="col-md-10 col-lg-10">
+						<span class="com-sel">
+							<depart :departName="departName" :departId="departId" @departChange='departChange'></depart>
+						</span>
+					</div>
 				</div>
-				<div class="col-lg-11 mtr_a"> <span>注：</span> <span style="color:#FF0000; margin-right:10px;">旷工</span> <span style="color:#CD853F; margin-right:10px;">迟到/早退</span>
-					<span style="color:#000000; margin-right:10px;">正常</span>
-					<span style="color:#9370DB; margin-right:10px;">休息</span> <span style="color:#006400; margin-right:10px;">请假</span>
-					<span style="color:#00679D; margin-right:10px;">倒休</span> <span style="color:#FF7F50; margin-right:10px;">打卡异常</span>
-					<span style="color:#87CEFA; margin-right:10px;">加班</span> <span style="color:#D2B48C; margin-right:10px;">漏打卡</span>
+				<div class="col-md-3 col-lg-3">  
+					<div class="col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">职位：</div>
+					<div class="col-md-10 col-lg-10">
+						<span class="com-sel">
+							<position @positionChange='positionChange'></position>
+						</span> 
+					</div>	
+				</div>
+				<div class="col-md-3 col-lg-3">  
+					<div class="col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">姓名：</div> 
+					<div class="col-md-10 col-lg-10">
+						<span>
+							<input type="text" value="" class="form-control" v-model="kquName" />
+						</span>
+					</div>	 
+				</div>
+				<div class="col-md-3 col-lg-3">  	
+					<div class="col-md-2 col-lg-2" style="padding: 0; line-height: 34px;">工号：</div> 
+					<div class="col-md-10 col-lg-10">
+						<span>
+							<input type="text" value="" class="form-control" v-model="kquJobNum" />
+						</span> 
+					</div>
+				</div>	
+				<div class="col-md-12 col-lg-12 mtr_a"> 
+					<div class="col-md-8 col-lg-8" style="padding: 0; line-height: 34px;">
+						<div class="col-md-1 col-lg-1" style="padding: 0; line-height: 34px;">时间：</div>
+						<div class="col-md-10 col-lg-10" style="padding: 0; line-height: 34px;">
+							<dPicker v-model="beginDate" v-on:change="dateAction('begin')"></dPicker>
+							<span>&nbsp;&nbsp;&nbsp;至：</span>
+							<dPicker v-model="endDate" v-on:change="dateAction('end')"></dPicker>	
+						</div>
+					</div>
+					<div class="col-md-4 col-lg-4">
+						<span class="search pull-right">
+							<button class="btn btn-primary" @click="exportTableToExcel('firmAttTB','公司出勤明细')">导出</button>
+						</span> 
+						<span class="search pull-right">
+							<button class="btn btn-warning" v-on:click="searchKQInfo()">查询</button>
+						</span> 
+					</div>
+				</div>
+				<div class="col-md-12 col-lg-12 mtr_a" style="margin-top:0"> 
+					<div class="col-md-1 col-lg-1" style="padding: 0; line-height: 34px;">注：</div> 
+					<div class="col-md-11 col-lg-11" style="padding: 0; line-height: 34px;">
+						<span style="color:#FF0000; margin-right:10px;">旷工</span> <span style="color:#CD853F; margin-right:10px;">迟到/早退</span>
+						<span style="color:#000000; margin-right:10px;">正常</span>
+						<span style="color:#9370DB; margin-right:10px;">休息</span> <span style="color:#006400; margin-right:10px;">请假</span>
+						<span style="color:#00679D; margin-right:10px;">倒休</span> <span style="color:#FF7F50; margin-right:10px;">打卡异常</span>
+						<span style="color:#87CEFA; margin-right:10px;">加班</span> <span style="color:#D2B48C; margin-right:10px;">漏打卡</span>
+					</div>
 				</div>
 				<table class="table table-bordered table-hover" id="firmAttTB">
 					<thead>
@@ -62,7 +97,6 @@
 			</div>
 		</div>
 	</div>
-
 </template>
 
 <script>

@@ -37,8 +37,9 @@
 					<department ref='department' @departChange='departChange'></department>
 				</div>
 			</div>
-
-			<button type="button" class="btn btn-info" v-on:click="getEmployee('all')">显示所有</button>
+			<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+				<button type="button" class="btn btn-info" v-on:click="getEmployee('all')">显示所有</button>
+			</div>
 		</div>
 		<div class="row add-mt">
 			<div style="padding: 0; width:3.3%; display:inline-block; float:left; margin-left:15px; line-height: 34px; font-size:0;">

@@ -37,7 +37,13 @@ import report from '../components/paperlessOffice/report.vue'
 import clock from '../components/paperlessOffice/clock.vue'
 import preApplication from '../components/paperlessOffice/computerPreApplication.vue'
 import leaveOffice from '../components/paperlessOffice/leaveOffice.vue'
+<<<<<<< HEAD
 import outRegistration from '../components/paperlessOffice/outRegistration.vue'
+=======
+import computerManage from '@/components/paperlessOffice/computerManage.vue'
+import goOutRegister from '../components/paperlessOffice/goOutRegister.vue'
+
+>>>>>>> 33153066837bf63a2f25f91e2f0ab9312b80b280
 
 Vue.use(Router)
 
@@ -165,11 +171,22 @@ export default new Router({
 					path: '/paperlessOffice/leaveOffice',
 					component: leaveOffice
 				},
+<<<<<<< HEAD
 				{
 					path: '/paperlessOffice/outRegistration',
 					component: outRegistration
 				},
 
+=======
+        {
+          path:'/paperlessOffice/computerManage',
+          component:computerManage
+        },
+        {
+          path:'/paperlessOffice/goOutRegister',
+          component:goOutRegister
+        },
+>>>>>>> 33153066837bf63a2f25f91e2f0ab9312b80b280
 
 			],
 			redirect: '/employee'

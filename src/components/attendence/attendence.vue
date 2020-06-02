@@ -3,7 +3,7 @@
 		<div class="col-md-12 col-lg-12 main-title">
 			<div>
 				<ul id="myTab" class="nav nav-tabs">
-					<h2 class="col-lg-2" id="tresult">考勤管理</h2>
+					<h2 class="col-lg-3" id="tresult">考勤管理</h2>
 					<li class="col-lg-1 pull-right dropdown">
 						<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
 						 aria-haspopup="true" aria-expanded="true"> 请假倒休 <span class="caret"></span> </button>

@@ -76,8 +76,16 @@
               <li>
                 <router-link to="/paperlessOffice/leaveOffice"><i class="fa fa-table" aria-hidden="true" id="offfice10"></i>离职管理</router-link>
               </li>
+<<<<<<< HEAD
               <li>
                 <router-link to="/paperlessOffice/outRegistration"><i class="fa fa-table" aria-hidden="true" id="offfice11"></i>外出登记</router-link>
+=======
+               <li>
+                <router-link to="/paperlessOffice/computerManage"><i class="fa fa-table" aria-hidden="true" id="offfice11"></i>电脑用品管理</router-link>
+              </li>
+              <li>
+                <router-link to="/paperlessOffice/goOutRegister"><i class="fa fa-table" aria-hidden="true" id="offfice12"></i>外出登记</router-link>
+>>>>>>> 33153066837bf63a2f25f91e2f0ab9312b80b280
               </li>
             </ul>
             <!-- <li><i class="fa fa-area-chart" aria-hidden="true" id="item01"></i>item</li> -->
@@ -182,10 +190,11 @@
         if (this.url.startsWith("https")) {
           url = this.url.replace("https", 'wss');
         } else {
-          url = this.url.replace("http", 'wss');
+          url = this.url.replace("http", 'ws');
         }
         url = url.concat("/websocket/").concat(this.accountId);
-        //var url = "ws://172.16.56.1:8080/websocket/" + this.accountId;
+        console.log("现在的url是:"+url);
+        // var url = "ws://172.16.2.248:8080/ERP/websocket/" + this.accountId;
         if (this.websocket != null) this.websocket.close();
         if ('WebSocket' in window) {
           websocket = new WebSocket(url);
