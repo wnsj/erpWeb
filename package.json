@@ -20,7 +20,7 @@
     "mint-ui": "^2.2.13",
     "moment": "^2.24.0",
     "peer": "^0.2.10",
-    "qs": "^6.7.0",
+    "qs": "^6.7.3",
     "sass-resources-loader": "^2.0.0",
     "script-loader": "^0.7.2",
     "unit": "^1.4.3-0",
